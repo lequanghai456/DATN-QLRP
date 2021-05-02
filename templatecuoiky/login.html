@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+
+    <title>Movie Review</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+
+    <!-- Loading third party fonts -->
+    <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+    <link href="fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Loading main css file -->
+    <link rel="stylesheet" href="style.css">
+
+    <!--[if lt IE 9]>
+		<script src="js/ie-support/html5.js"></script>
+		<script src="js/ie-support/respond.js"></script>
+		<![endif]-->
+
+</head>
+
+<body>
+    <div id="site-content">
+        <header class="site-header">
+			<div class="container">
+				<a href="index.html" id="branding">
+					<img src="images/logo.png" alt="" class="logo">
+					<div class="logo-copy">
+						<h1 class="site-title">Cine plus +</h1>
+						<small class="site-description">Tagline goes here</small>
+					</div>
+				</a> <!-- #branding -->
+
+				<div class="main-navigation">
+					<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+					<ul class="menu">
+						<li class="menu-item current-menu-item"><a href="index.html">
+								<img src="images/home.png" width="24" height="24" />
+								Trang chủ</a></li>
+
+						<li class="menu-item"><a href="about.html">
+								<img src="images/speech.png" width="24" height="24" />
+								Giới thiệu</a></li>
+
+						<li class="menu-item">
+							<div class="row">
+								<a href="about.html">
+									<img src="images/cinema.png" alt="" srcset="" width="24" height="24">
+									Rạp chiếu</a>
+							</div>
+						</li>
+						&nbsp;
+						&nbsp;
+						<li class="menu-item">
+							<div class="row">
+								<a href="about.html">
+									<img src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-cgv/icon_ticket25.png"
+										alt="" srcset="" width="24" height="24">
+									Vé của tôi</a>
+							</div>
+						</li>
+						<li class="menu-item"><a href="contact.html">
+								<img src="images/information.png" width="24" height="24" />
+								Liên hệ</a></li>
+						<li class="menu-item"><a href="contact.html">
+								<img src="images/newspaper.png" width="24" height="24">
+								Tin tức</a></li>
+						<li class="menu-item"><a href="contact.html">
+								<img src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-cgv/icon_login25.png"
+									width="24" height="24">
+								Xin chào Tín <a>Logout</a></a>
+						</li>
+
+					</ul> <!-- .menu -->
+
+				</div> <!-- .main-navigation -->
+
+				<div class="mobile-navigation"></div>
+			</div>
+		</header>
+        <main class="main-content">
+            <div class="container" style="width: fit-content; height: 350px;">
+                <div class="card" style="height: 100%;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-12 text-center">
+                                        <h1 style="color: red;">Đăng nhập</h1>
+                                    </div>
+                                </div>
+                                <form action="" method="post">
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <h4 style="display: flex; align-items: center; height: 100%;">Tên đăng nhập:
+                                            </h4>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="inputPassword">
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <h4 style="display: flex; align-items: center; height: 100%;">Mật khẩu:
+                                            </h4>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <input type="password" class="form-control" id="inputPassword">
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p>Nếu bạn chưa có tài khoản ? <a href="#">Đăng ký</a></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 text-center">
+                                            <button type="button" class="btn btn-success" style="width:200px;">Đăng
+                                                nhập</button>
+                                        </div>
+                                        <div class="col-sm-6 text-center">
+                                            <button type="button" class="btn btn-dark" style="width:200px;">Hủy bỏ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- .container -->
+        </main>
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="widget">
+                            <h3 class="widget-title">About Us</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia tempore vitae mollitia
+                                nesciunt saepe cupiditate</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="widget">
+                            <h3 class="widget-title">Recent Review</h3>
+                            <ul class="no-bullet">
+                                <li><a href="#">Lorem ipsum dolor</a></li>
+                                <li><a href="#">Sit amet consecture</a></li>
+                                <li><a href="#">Dolorem respequem</a></li>
+                                <li><a href="#">Invenore veritae</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="widget">
+                            <h3 class="widget-title">Help Center</h3>
+                            <ul class="no-bullet">
+                                <li><a href="#">Lorem ipsum dolor</a></li>
+                                <li><a href="#">Sit amet consecture</a></li>
+                                <li><a href="#">Dolorem respequem</a></li>
+                                <li><a href="#">Invenore veritae</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="widget">
+                            <h3 class="widget-title">Join Us</h3>
+                            <ul class="no-bullet">
+                                <li><a href="#">Lorem ipsum dolor</a></li>
+                                <li><a href="#">Sit amet consecture</a></li>
+                                <li><a href="#">Dolorem respequem</a></li>
+                                <li><a href="#">Invenore veritae</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="widget">
+                            <h3 class="widget-title">Social Media</h3>
+                            <ul class="no-bullet">
+                                <li><a href="#">Facebook</a></li>
+                                <li><a href="#">Twitter</a></li>
+                                <li><a href="#">Google+</a></li>
+                                <li><a href="#">Pinterest</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="widget">
+                            <h3 class="widget-title">Newsletter</h3>
+                            <form action="#" class="subscribe-form">
+                                <input type="text" placeholder="Email Address">
+                            </form>
+                        </div>
+                    </div>
+                </div> <!-- .row -->
+
+                <div class="colophon">Copyright 2014 Company name, Designed by Themezy. All rights reserved</div>
+            </div> <!-- .container -->
+
+        </footer>
+    </div>
+    <!-- Default snippet for navigation -->
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>

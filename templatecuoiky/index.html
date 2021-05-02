@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+
+	<title>Movie Review</title>
+	<!-- Loading third party fonts -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+		integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+		crossorigin="anonymous" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+		integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+		crossorigin="anonymous"></script>
+	<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+	<link href="fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+		integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+		crossorigin="anonymous"></script>
+
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
+	<script src="js/jquery-1.11.1.min.js"></script>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+		integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+		crossorigin="anonymous" />
+
+
+	<!-- Loading main css file -->
+	<link rel="stylesheet" href="style.css">
+
+	<!--[if lt IE 9]>
+		<script src="js/ie-support/html5.js"></script>
+		<script src="js/ie-support/respond.js"></script>
+		<![endif]-->
+
+	<style>
+
+	</style>
+
+</head>
+
+<body>
+	<div id="site-content">
+		<header class="site-header">
+			<div class="container">
+				<a href="index.html" id="branding">
+					<img src="images/logo.png" alt="" class="logo">
+					<div class="logo-copy">
+						<h1 class="site-title">Cine plus +</h1>
+						<small class="site-description">Tagline goes here</small>
+					</div>
+				</a> <!-- #branding -->
+
+				<div class="main-navigation">
+					<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+					<ul class="menu">
+						<li class="menu-item current-menu-item"><a href="index.html">
+								<img src="images/home.png" width="24" height="24" />
+								Trang chủ</a></li>
+
+						<li class="menu-item"><a href="about.html">
+								<img src="images/speech.png" width="24" height="24" />
+								Giới thiệu</a></li>
+
+						<li class="menu-item">
+							<div class="row">
+								<a href="about.html">
+									<img src="images/cinema.png" alt="" srcset="" width="24" height="24">
+									Rạp chiếu</a>
+							</div>
+						</li>
+						&nbsp;
+						&nbsp;
+						&nbsp;
+						<li class="menu-item">
+							<div class="row">
+								<a href="about.html">
+									<img src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-cgv/icon_ticket25.png"
+										alt="" srcset="" width="24" height="24">
+									Vé của tôi</a>
+							</div>
+						</li>
+						&nbsp;
+						&nbsp;
+						<li class="menu-item"><a href="contact.html">
+								<img src="images/information.png" width="24" height="24" />
+								Liên hệ</a></li>
+						<li class="menu-item"><a href="contact.html">
+								<img src="images/newspaper.png" width="24" height="24">
+								Tin tức</a></li>
+						<li class="menu-item"><a href="contact.html">
+								<img src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-cgv/icon_login25.png"
+									width="24" height="24">
+								Xin chào Tín <a>Logout</a></a>
+						</li>
+
+					</ul> <!-- .menu -->
+
+				</div> <!-- .main-navigation -->
+
+				<div class="mobile-navigation"></div>
+			</div>
+		</header>
+		<main class="main-content">
+			<div class="container">
+				<div class="page">
+					<div class="row">
+						<div class="col-sm">
+							<div class="slider">
+								<ul class="slides">
+									<li><a href="#"><img
+												src="https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/r/s/rsz_t_j_ctkc_rollingbanner_980x448px_1.jpg"
+												alt="Slide 1"></a></li>
+									<li><a href="#"><img
+												src="https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/h/a/happy-new-year-980x448_1.png"
+												alt="Slide 2"></a></li>
+									<li><a href="#"><img
+												src="https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/k/v/kv_980x448.jpg"
+												alt="Slide 3"></a></li>
+								</ul>
+							</div>
+						</div>
+
+					</div> <!-- .row -->
+				</div>
+				<div class="row"
+					style="background: url(images/bg_h3_line.jpg) repeat-x scroll left center rgba(0, 0, 0, 0);">
+					<div style="background-color: #ffffff; padding-left: 10px; padding-right: 10px; margin: 0px auto;">
+						<img src="h3_movie_selection.gif">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12" style="height: fit-content;">
+						<div class="bbb_viewed">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="bbb_main_container">
+										<div class="bbb_viewed_title_container">
+											<div class="bbb_viewed_nav_container">
+												<div class="bbb_viewed_nav bbb_viewed_prev"><i
+														class="fas fa-chevron-left"></i></div>
+												<div class="bbb_viewed_nav bbb_viewed_next"><i
+														class="fas fa-chevron-right"></i></div>
+											</div>
+										</div>
+										<div class="bbb_viewed_slider_container">
+											<div class="owl-carousel owl-theme bbb_viewed_slider">
+												<div class="owl-item">
+													<div class="temp"
+														style="width: 270px; margin-right: 0px; height: 400px;">
+														<img src="https://www.galaxycine.vn/media/c/o/cogai_2.jpg"
+															width="270" height="400" />
+														<div class="row abc" style="position: relative; top: -399px;">
+															<div class="col-sm-12">
+																<a href="#" data-toggle="modal" id="a"
+																	data-target="#exampleModal">
+																	<img
+																		src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-transparent-grey.png" />
+																</a>
+
+															</div>
+														</div>
+
+														<div class="row abc"
+															style=" height: 100px; background: url(images/bg-black-transparent.png);z-index: 999; position: relative; top: -500px;; left: 15px; width: 270px;">
+															<div class="col-sm-12">
+																<div class="row">
+																	<div class="col-sm-12"
+																		style="display: flex; align-items: center; border: 1px solid red;">
+																		<h4 style="color: #FFFFFF; font-size: 18px; position: relative; top: 5x; left: -10px; text-transform: uppercase">Cô
+																			gái đến từ hôm qua</h4>
+																	</div>
+																</div>
+														
+																<div class="row" style="position: relative; top: 8px;">
+																	<div class="col-sm-6"
+																		style="display: flex; align-items: center; justify-content: center;  padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+																		<button style="text-transform: uppercase;"
+																			type="button" class="btn btn-secondary">Xem
+																			chi tiết</button>
+																	</div>
+																	<div class="col-sm-6"
+																		style="display: flex; align-items: center; justify-content: center; padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+																		<button style="width: 120px;" type="button"
+																			class="btn btn-secondary">
+																			<div class="row">
+																				<div
+																					style="width: fit-content; position: relative; top: 0.5px; left: 10px; border: 1px solid red;">
+																					<img src="images/bg-cate-booking.png"
+																						alt="photo" width="9"
+																						height="23" />
+																				</div>
+																				<div class="col-sm"
+																					style="text-transform: uppercase; font-size: 15px;">
+																					đặt vé
+																				</div>
+																			</div>
+																		</button>
+																	</div>
+																</div>
+
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="owl-item">
+													<div class="temp"
+														style="width: 270px; margin-right: 0px; height: 400px;">
+														<img src="https://www.galaxycine.vn/media/c/o/cogai_2.jpg"
+															width="270" height="400" />
+														<div class="row abc" style="position: relative; top: -399px;">
+															<div class="col-sm-12">
+																<a href="#" data-toggle="modal"
+																	data-target="#exampleModal">
+																	<img
+																		src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-transparent-grey.png" />
+																</a>
+
+															</div>
+														</div>
+
+														<div class="row abc"
+															style=" height: 70px; background: url(images/bg-black-transparent.png);z-index: 999; position: relative; top:-470px; left: 15px; width: 270px; 	">
+															<div class="col-sm-6"
+																style="display: flex; align-items: center; justify-content: center;  padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+																<button style="text-transform: uppercase;" type="button"
+																	class="btn btn-secondary">Xem
+																	chi tiết</button>
+															</div>
+															<div class="col-sm-6"
+																style="display: flex; align-items: center; justify-content: center; padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+																<button style="width: 120px;" type="button"
+																	class="btn btn-secondary">
+																	<div class="row">
+																		<div
+																			style="width: fit-content; position: relative; top: 0.5px; left: 10px; border: 1px solid red;">
+																			<img src="images/bg-cate-booking.png"
+																				alt="photo" width="9" height="23" />
+																		</div>
+																		<div class="col-sm"
+																			style="text-transform: uppercase; font-size: 15px;">
+																			đặt vé
+																		</div>
+																	</div>
+																</button>
+															</div>
+
+														</div>
+													</div>
+												</div>
+												<div class="owl-item">
+													<div class="temp"
+														style="width: 270px; margin-right: 0px; height: 400px;">
+														<img src="https://www.galaxycine.vn/media/c/o/cogai_2.jpg"
+															width="270" height="400" />
+														<div class="row abc" style="position: relative; top: -399px;">
+															<div class="col-sm-12">
+																<a href="#" data-toggle="modal"
+																	data-target="#exampleModal">
+																	<img
+																		src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-transparent-grey.png" />
+																</a>
+
+															</div>
+														</div>
+
+														<div class="row abc"
+															style=" height: 70px; background: url(images/bg-black-transparent.png);z-index: 999; position: relative; top:-470px; left: 15px; width: 270px; 	">
+															<div class="col-sm-6"
+																style="display: flex; align-items: center; justify-content: center;  padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+																<button style="text-transform: uppercase;" type="button"
+																	class="btn btn-secondary">Xem
+																	chi tiết</button>
+															</div>
+															<div class="col-sm-6"
+																style="display: flex; align-items: center; justify-content: center; padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+																<button style="width: 120px;" type="button"
+																	class="btn btn-secondary">
+																	<div class="row">
+																		<div
+																			style="width: fit-content; position: relative; top: 0.5px; left: 10px; border: 1px solid red;">
+																			<img src="images/bg-cate-booking.png"
+																				alt="photo" width="9" height="23" />
+																		</div>
+																		<div class="col-sm"
+																			style="text-transform: uppercase; font-size: 15px;">
+																			đặt vé
+																		</div>
+																	</div>
+																</button>
+															</div>
+
+														</div>
+													</div>
+												</div>
+												<div class="owl-item">
+													<div class="temp"
+														style="width: 270px; margin-right: 0px; height: 400px;">
+														<img src="https://www.galaxycine.vn/media/c/o/cogai_2.jpg"
+															width="270" height="400" />
+														<div class="row abc" style="position: relative; top: -399px;">
+															<div class="col-sm-12">
+																<a href="#" data-toggle="modal"
+																	data-target="#exampleModal">
+																	<img
+																		src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-transparent-grey.png" />
+																</a>
+
+															</div>
+														</div>
+
+														<div class="row abc"
+															style=" height: 70px; background: url(images/bg-black-transparent.png);z-index: 999; position: relative; top:-470px; left: 15px; width: 270px; 	">
+															<div class="col-sm-6"
+																style="display: flex; align-items: center; justify-content: center;  padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+																<button style="text-transform: uppercase;" type="button"
+																	class="btn btn-secondary">Xem
+																	chi tiết</button>
+															</div>
+															<div class="col-sm-6"
+																style="display: flex; align-items: center; justify-content: center; padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+																<button style="width: 120px;" type="button"
+																	class="btn btn-secondary">
+																	<div class="row">
+																		<div
+																			style="width: fit-content; position: relative; top: 0.5px; left: 10px; border: 1px solid red;">
+																			<img src="images/bg-cate-booking.png"
+																				alt="photo" width="9" height="23" />
+																		</div>
+																		<div class="col-sm"
+																			style="text-transform: uppercase; font-size: 15px;">
+																			đặt vé
+																		</div>
+																	</div>
+																</button>
+															</div>
+
+														</div>
+													</div>
+												</div>
+												<div class="owl-item">
+													<div class="temp"
+														style="width: 270px; margin-right: 0px; height: 400px;">
+														<img src="https://www.galaxycine.vn/media/c/o/cogai_2.jpg"
+															width="270" height="400" />
+														<div class="row abc" style="position: relative; top: -399px;">
+															<div class="col-sm-12">
+																<a href="#" data-toggle="modal"
+																	data-target="#exampleModal">
+																	<img
+																		src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-transparent-grey.png" />
+																</a>
+
+															</div>
+														</div>
+
+														<div class="row abc"
+															style=" height: 70px; background: url(images/bg-black-transparent.png);z-index: 999; position: relative; top:-470px; left: 15px; width: 270px; 	">
+															<div class="col-sm-6"
+																style="display: flex; align-items: center; justify-content: center;  padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+																<button style="text-transform: uppercase;" type="button"
+																	class="btn btn-secondary">Xem
+																	chi tiết</button>
+															</div>
+															<div class="col-sm-6"
+																style="display: flex; align-items: center; justify-content: center; padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+																<button style="width: 120px;" type="button"
+																	class="btn btn-secondary">
+																	<div class="row">
+																		<div
+																			style="width: fit-content; position: relative; top: 0.5px; left: 10px; border: 1px solid red;">
+																			<img src="images/bg-cate-booking.png"
+																				alt="photo" width="9" height="23" />
+																		</div>
+																		<div class="col-sm"
+																			style="text-transform: uppercase; font-size: 15px;">
+																			đặt vé
+																		</div>
+																	</div>
+																</button>
+															</div>
+
+														</div>
+													</div>
+												</div>
+												<div class="owl-item">
+													<div class="temp"
+														style="width: 270px; margin-right: 0px; height: 400px;">
+														<img src="https://www.galaxycine.vn/media/c/o/cogai_2.jpg"
+															width="270" height="400" />
+														<div class="row abc" style="position: relative; top: -399px;">
+															<div class="col-sm-12">
+																<a href="#" data-toggle="modal"
+																	data-target="#exampleModal">
+																	<img
+																		src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-transparent-grey.png" />
+																</a>
+
+															</div>
+														</div>
+
+														<div class="row abc"
+															style=" height: 70px; background: url(images/bg-black-transparent.png);z-index: 999; position: relative; top:-470px; left: 15px; width: 270px; 	">
+															<div class="col-sm-6"
+																style="display: flex; align-items: center; justify-content: center;  padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+																<button style="text-transform: uppercase;" type="button"
+																	class="btn btn-secondary">Xem
+																	chi tiết</button>
+															</div>
+															<div class="col-sm-6"
+																style="display: flex; align-items: center; justify-content: center; padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+																<button style="width: 120px;" type="button"
+																	class="btn btn-secondary">
+																	<div class="row">
+																		<div
+																			style="width: fit-content; position: relative; top: 0.5px; left: 10px; border: 1px solid red;">
+																			<img src="images/bg-cate-booking.png"
+																				alt="photo" width="9" height="23" />
+																		</div>
+																		<div class="col-sm"
+																			style="text-transform: uppercase; font-size: 15px;">
+																			đặt vé
+																		</div>
+																	</div>
+																</button>
+															</div>
+
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+							aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<div class="modal-body">
+										<iframe width="100%" height="480" id="video"
+											src="https://www.youtube.com/embed/MzuI--9WRqo" frameborder="0"
+											allow="clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+											allowfullscreen></iframe>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-primary">Dừng xem</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- </div> -->
+					</div>
+				</div>
+				<div class="row"
+					style="background: url(images/bg_h3_line.jpg) repeat-x scroll left center rgba(0, 0, 0, 0);">
+					<div style="background-color: #ffffff; padding-left: 10px; padding-right: 10px; margin: 0px auto;">
+						<img src="images/h3_event.png">
+					</div>
+				</div>
+				<br />
+				<br />
+				<div class="row" style="display: flex; justify-content: center;">
+					<div
+						style="margin-right: 3px; border: 3px solid black; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;">
+						<img src="https://www.cgv.vn/media/wysiwyg/packages/214x245.jpg" />
+					</div>
+					<div
+						style="margin-right: 3px; border: 3px solid black; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;">
+						<img src="https://www.cgv.vn/media/wysiwyg/2021/012021/U22-496x247-01.jpg" />
+					</div>
+					<div
+						style="margin-right: 3px; border: 3px solid black; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;">
+						<img src="https://www.cgv.vn/media/wysiwyg/2019/DEC2019/LATE-SHOW-NEW-12.2019-214x245.jpg" />
+					</div>
+				</div>
+			</div>
+		</main>
+	</div> <!-- .container -->
+	</main>
+	<footer class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2">
+					<div class="widget">
+						<h3 class="widget-title">About Us</h3>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia tempore vitae mollitia
+							nesciunt saepe cupiditate</p>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="widget">
+						<h3 class="widget-title">Recent Review</h3>
+						<ul class="no-bullet">
+							<li><a href="#">Lorem ipsum dolor</a></li>
+							<li><a href="#">Sit amet consecture</a></li>
+							<li><a href="#">Dolorem respequem</a></li>
+							<li><a href="#">Invenore veritae</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="widget">
+						<h3 class="widget-title">Help Center</h3>
+						<ul class="no-bullet">
+							<li><a href="#">Lorem ipsum dolor</a></li>
+							<li><a href="#">Sit amet consecture</a></li>
+							<li><a href="#">Dolorem respequem</a></li>
+							<li><a href="#">Invenore veritae</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="widget">
+						<h3 class="widget-title">Join Us</h3>
+						<ul class="no-bullet">
+							<li><a href="#">Lorem ipsum dolor</a></li>
+							<li><a href="#">Sit amet consecture</a></li>
+							<li><a href="#">Dolorem respequem</a></li>
+							<li><a href="#">Invenore veritae</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="widget">
+						<h3 class="widget-title">Social Media</h3>
+						<ul class="no-bullet">
+							<li><a href="#">Facebook</a></li>
+							<li><a href="#">Twitter</a></li>
+							<li><a href="#">Google+</a></li>
+							<li><a href="#">Pinterest</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="widget">
+						<h3 class="widget-title">Newsletter</h3>
+						<form action="#" class="subscribe-form">
+							<input type="text" placeholder="Email Address">
+						</form>
+					</div>
+				</div>
+			</div> <!-- .row -->
+
+			<div class="colophon">Copyright 2014 Company name, Designed by Themezy. All rights reserved</div>
+		</div> <!-- .container -->
+
+	</footer>
+	</div>
+	<!-- Default snippet for navigation -->
+
+
+
+
+
+	<script src="js/plugins.js"></script>
+	<script src="js/app.js"></script>
+
+	<script>
+		$(document).ready(function () {
+
+
+			if ($('.bbb_viewed_slider').length) {
+				var viewedSlider = $('.bbb_viewed_slider');
+
+				viewedSlider.owlCarousel(
+					{
+						loop: true,
+						margin: 280,
+						autoplay: true,
+						autoplayTimeout: 6000,
+						nav: false,
+						dots: false,
+						responsive:
+						{
+							0: { items: 1 },
+							575: { items: 2 },
+							768: { items: 3 },
+							991: { items: 4 },
+							1199: { items: 6 }
+						}
+					});
+
+				if ($('.bbb_viewed_prev').length) {
+					var prev = $('.bbb_viewed_prev');
+					prev.on('click', function () {
+						viewedSlider.trigger('prev.owl.carousel');
+					});
+				}
+
+				if ($('.bbb_viewed_next').length) {
+					var next = $('.bbb_viewed_next');
+					next.on('click', function () {
+						viewedSlider.trigger('next.owl.carousel');
+					});
+				}
+
+				let trvet = "";
+				let bat = true;
+				$(document).click(function (event) {
+					if ($(event.target).closest('.modal').length) {
+						if (!trvet) {
+							trvet = $('#video').attr("src");
+							$('#video').attr("src", '')
+						}
+
+					} else {
+						if (trvet !== "") {
+							$('#video').attr("src", trvet);
+						}
+					}
+				})
+
+				$("#a").click(function () {
+					console.log("ABC");
+				})
+
+
+			}
+		});
+	</script>
+</body>
+
+</html>
