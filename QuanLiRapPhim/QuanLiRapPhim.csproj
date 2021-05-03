@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\img\**" />
+    <Content Remove="wwwroot\img\**" />
+    <EmbeddedResource Remove="wwwroot\img\**" />
+    <None Remove="wwwroot\img\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Areas\" />
     <Folder Include="Areas\Admin\Controllers\" />
     <Folder Include="Areas\Admin\Data\" />
@@ -15,7 +22,6 @@
     <Folder Include="Areas\API\Models\" />
     <Folder Include="Areas\API\Views\" />
     <Folder Include="wwwroot\admin\" />
-    <Folder Include="wwwroot\img\pro\" />
   </ItemGroup>
 
   <ItemGroup>
