@@ -1,19 +1,19 @@
-﻿(function () {
-    'use strict';
+﻿var ctxfolderurl = "/View/font-end/Index";
 
-    angular
-        .module('app')
-        .controller('controller', controller);
+var app = angular.module('App', ['ngRoute']);
 
-    controller.$inject = ['$location'];
+app.controller('Ctroller', function () {
 
-    function controller($location) {
-        /* jshint validthis:true */
-        var vm = this;
-        vm.title = 'controller';
+});
 
-        activate();
+app.config(function ($routeProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl: ctxfolderurl + '/index.html',
+            controller: 'index'
+        })
+});
 
-        function activate() { }
-    }
-})();
+app.controller('index', function ($scope) {
+    $scope.hello = 'hello word';
+});
