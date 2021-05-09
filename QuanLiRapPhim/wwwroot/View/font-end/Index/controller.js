@@ -16,4 +16,5 @@ app.config(function ($routeProvider) {
 
 app.controller('index', function ($scope) {
     $scope.hello = 'hello word';
+   
 });
