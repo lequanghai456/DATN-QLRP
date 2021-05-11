@@ -179,6 +179,11 @@
     <None Include="wwwroot\admin\vendor\jquery\jquery.slim.min.js" />
     <None Include="wwwroot\admin\vendor\malihu-custom-scrollbar-plugin\jquery.mCustomScrollbar.concat.min.js" />
     <None Include="wwwroot\admin\vendor\malihu-custom-scrollbar-plugin\jquery.mCustomScrollbar.js" />
+    <None Include="wwwroot\js\ie-support\html5.js" />
+    <None Include="wwwroot\js\ie-support\pie.htc" />
+    <None Include="wwwroot\js\ie-support\respond.js" />
+    <None Include="wwwroot\js\min\app-min.js" />
+    <None Include="wwwroot\js\min\plugins-min.js" />
   </ItemGroup>
 
   <ItemGroup>

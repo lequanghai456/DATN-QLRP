@@ -15,6 +15,16 @@ app.config(function ($routeProvider) {
 });
 
 app.controller('index', function ($scope) {
-    $scope.hello = 'hello word';
-   
+    $scope.mvs = [];
+    for (var i = 0; i < 7; i++){
+        $scope.mvs[i] = {
+            id: i,
+            img: 'https://www.galaxycine.vn/media/c/o/cogai_2.jpg',
+            trailer: 'https://www.youtube.com/embed/LggaymnzDjc'
+        };
+
+    }
+    $scope.play = function (stt) {
+        $scope.trailer = $scope.mvs[stt].trailer;
+    }
 });
