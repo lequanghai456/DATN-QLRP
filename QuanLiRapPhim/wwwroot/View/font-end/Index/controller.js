@@ -23,6 +23,11 @@ app.controller('index', function ($scope) {
             trailer: 'https://www.youtube.com/embed/LggaymnzDjc'
         };
     }
+    $scope.slider = [
+        "https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/r/s/rsz_t_j_ctkc_rollingbanner_980x448px_1.jpg",
+        "https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/h/a/happy-new-year-980x448_1.png",
+        "https://www.cgv.vn/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/k/v/kv_980x448.jpg",
+    ];
     $scope.play = function (stt) {
         $scope.trailer = $scope.mvs[stt].trailer;
     }
@@ -45,6 +50,7 @@ app.controller('index', function ($scope) {
                 1199: { items: 6 }
             }
         });
+        $(".carousel-item:first").addClass("active");
         
     }
     setTimeout(function () {
@@ -57,4 +63,5 @@ app.controller('index', function ($scope) {
     $scope.next = function () {
         $scope.viewedSlider.trigger('next.owl.carousel');
     }
+    
 });
