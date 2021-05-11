@@ -1,2 +1,132 @@
-﻿<input ng-model="name"/>
-<div>{{name}}</div>
+﻿<div id="carouselExampleControls" class="page carousel slide" data-ride="carousel">
+    <div class="slider carousel-inner" >
+        <div class="carousel-item" ng-repeat="x in slider">
+            <img class="d-block w-100" src="{{x}}" alt="First slide">
+        </div>
+    </div>
+    <div class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </div>
+    <div class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </div>
+</div>
+
+<div class="row"
+     style="background: url(images/bg_h3_line.jpg) repeat-x scroll left center rgba(0, 0, 0, 0);">
+    <div style="background-color: #ffffff; padding-left: 10px; padding-right: 10px; margin: 0px auto;">
+        <img src="../images/h3_movie_selection.gif">
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12" style="height: fit-content;">
+        <div class="bbb_viewed">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="bbb_main_container">
+                        <div class="bbb_viewed_title_container">
+                            <div class="bbb_viewed_nav_container">
+                                <div class="bbb_viewed_nav bbb_viewed_prev" ng-click="prev()">
+                                    <i class="fas fa-chevron-left"></i>
+                                </div>
+                                <div class="bbb_viewed_nav bbb_viewed_next" ng-click="next()">
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bbb_viewed_slider_container">
+                            <div class="owl-carousel owl-theme bbb_viewed_slider">
+                                <div class="temp" ng-repeat="x in mvs" style="width: 270px; margin-right: 0px; height: 400px;">
+                                    <img src="{{x.img}}" width="270" height="400" />
+                                    <div class="row abc" style="position: relative; top: -399px;">
+                                        <div class="col-sm-12">
+                                            <a href="#" data-toggle="modal" id="a" ng-click="play(x.id)"
+                                               data-target="#exampleModal">
+                                                <img src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-transparent-grey.png" />
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="row abc"
+                                         style=" height: 100px; background: url(images/bg-black-transparent.png);z-index: 999; position: relative; top: -500px;; left: 15px; width: 270px;">
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="col-sm-12"
+                                                     style="display: flex; align-items: center; border: 1px solid red;">
+                                                    <h4 style="color: #FFFFFF; font-size: 18px; position: relative; top: 5x; left: -10px; text-transform: uppercase">
+                                                        Cô
+                                                        gái đến từ hôm qua
+                                                    </h4>
+                                                </div>
+                                            </div>
+
+                                            <div class="row" style="position: relative; top: 8px;">
+                                                <div class="col-sm-6"
+                                                     style="display: flex; align-items: center; justify-content: center;  padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+                                                    <button style="text-transform: uppercase;"
+                                                            type="button" class="btn btn-secondary">
+                                                        Xem
+                                                        chi tiết
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-6"
+                                                     style="display: flex; align-items: center; justify-content: center; padding: 0px 0px 0px 0px; margin-bottom: 5px;">
+                                                    <button style="width: 120px;" type="button"
+                                                            class="btn btn-secondary">
+                                                        <div class="row">
+                                                            <div style="width: fit-content; position: relative; top: 0.5px; left: 10px; border: 1px solid red;">
+                                                                <img src="images/bg-cate-booking.png"
+                                                                     alt="photo" width="9"
+                                                                     height="23" />
+                                                            </div>
+                                                            <div class="col-sm"
+                                                                 style="text-transform: uppercase; font-size: 15px;">
+                                                                đặt vé
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe width="100%" height="500"
+                                src='https://www.youtube.com/embed/LggaymnzDjc'
+                                title="YouTube video player"
+                                frameborder="0" allow="accelerometer;
+                                autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Dừng xem</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+    </div>
+</div>
+
+<!--<div class="row"
+     style="background: url(images/bg_h3_line.jpg) repeat-x scroll left center rgba(0, 0, 0, 0);">
+    <div style="background-color: #ffffff; padding-left: 10px; padding-right: 10px; margin: 0px auto;">
+        <img src="../images/h3_event.png">
+    </div>
+</div>-->
