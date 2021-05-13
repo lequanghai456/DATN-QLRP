@@ -11,33 +11,33 @@
         <div class="main-navigation">
             <button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
             <ul class="menu">
-                <li class="menu-item current-menu-item">
+                <li class="menu-item" id="home">
                     <a asp-controller="Home">
                         <img src="~/images/home.png" width="24" height="24" />
                         Home
                     </a>
                 </li>
 
-                <li class="menu-item">
+                <li class="menu-item" id="about">
                     <a asp-controller="about">
                         <img src="~/images/speech.png" width="24" height="24" />
                         About
                     </a>
                 </li>
 
-                <li class="menu-item">
-            <div class="row">
-                <a asp-controller="moviereview">
-                    <img src="~/images/cinema.png" alt="" srcset="" width="24" height="24">
-                    Movie Review
-                </a>
-            </div>
-        </li>
+                <li class="menu-item" id="movie_review">
+                    <div class="row">
+                        <a asp-controller="moviereview">
+                            <img src="~/images/cinema.png" alt="" srcset="" width="24" height="24">
+                            Movie Review
+                        </a>
+                    </div>
+                </li>
 
                 &nbsp;
                 &nbsp;
                 &nbsp;
-                <li class="menu-item">
+                <li class="menu-item" id="my_order">
                     <div class="row">
                         <a asp-controller="YourOrder">
                             <img src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-cgv/icon_ticket25.png"
@@ -48,14 +48,14 @@
                 </li>
                 &nbsp;
                 &nbsp;
-                <li class="menu-item">
+                <li class="menu-item" id="contact">
                     <a asp-controller="Contact">
                         <img src="~/images/information.png" width="24" height="24" />
                         Contact
                     </a>
                 </li>
 
-                <li class="menu-item">
+                <li class="menu-item" id="profile">
                     <a asp-controller="Profile">
                         <img src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-cgv/icon_login25.png"
                              width="24" height="24">

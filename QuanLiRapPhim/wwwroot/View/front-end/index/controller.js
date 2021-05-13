@@ -34,6 +34,8 @@ app.controller('index', function ($scope) {
 
 
     $scope.init = function () {
+        $("#home").addClass("current-menu-item");
+        
         $scope.viewedSlider = $('.bbb_viewed_slider');
         $scope.viewedSlider.owlCarousel({
             loop: true,

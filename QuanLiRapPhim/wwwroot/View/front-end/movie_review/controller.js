@@ -2,8 +2,11 @@
 
 var app = angular.module('App', ['ngRoute']);
 
-app.controller('Ctroller', function () {
-
+app.controller('Ctroller', function ($scope) {
+    $scope.init = function () {
+        $("#movie_review").addClass("current-menu-item");
+    }
+    $scope.init();
 });
 
 app.config(function ($routeProvider) {
@@ -27,7 +30,6 @@ app.config(function ($routeProvider) {
 });
 
 app.controller('index', function ($scope) {
-    
     
 });
 

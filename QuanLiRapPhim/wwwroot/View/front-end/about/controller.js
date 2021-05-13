@@ -15,6 +15,9 @@ app.config(function ($routeProvider) {
 });
 
 app.controller('index', function ($scope) {
-    
+    $scope.init = function () {
+        $("#about").addClass("current-menu-item");
+    }
+    $scope.init();
     
 });
