@@ -35,7 +35,10 @@ app.controller('moviedetail', function ($scope) {
 
 });
 app.controller('bookticket', function ($scope) {
-
+    $scope.Click = function ($event) {
+        $('.seat').attr("src", "images/seattrong.png");
+        angular.element($event.currentTarget).attr("src", "images/seatchon.png");
+    }
 });
 app.controller('payment', function ($scope) {
 
