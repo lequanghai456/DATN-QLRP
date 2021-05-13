@@ -1,4 +1,4 @@
-﻿var ctxfolderurl = "/View/font-end/profile";
+﻿var ctxfolderurl = "/View/front-end/contact";
 
 var app = angular.module('App', ['ngRoute']);
 
@@ -15,5 +15,6 @@ app.config(function ($routeProvider) {
 });
 
 app.controller('index', function ($scope) {
+    
     
 });

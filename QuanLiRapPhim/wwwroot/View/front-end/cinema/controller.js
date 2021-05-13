@@ -1,4 +1,4 @@
-﻿var ctxfolderurl = "/View/font-end/cinema";
+﻿var ctxfolderurl = "/View/front-end/cinema";
 
 var app = angular.module('App', ['ngRoute']);
 
