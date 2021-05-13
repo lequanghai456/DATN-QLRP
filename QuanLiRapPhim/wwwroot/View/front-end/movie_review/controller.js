@@ -1,4 +1,4 @@
-﻿var ctxfolderurl = "/View/front-end/about";
+﻿var ctxfolderurl = "/View/front-end/movie_review";
 
 var app = angular.module('App', ['ngRoute']);
 
@@ -15,6 +15,10 @@ app.config(function ($routeProvider) {
             templateUrl: ctxfolderurl + '/moviedetail.html',
             controller: 'moviedetail'
         })
+        .when('/:NameMovie/bookticket', {
+            templateUrl: ctxfolderurl + '/bookticket.html',
+            controller: 'bookticket'
+        })
 });
 
 app.controller('index', function ($scope) {
@@ -23,5 +27,8 @@ app.controller('index', function ($scope) {
 });
 
 app.controller('moviedetail', function ($scope) {
+
+});
+app.controller('bookticket', function ($scope) {
 
 });
