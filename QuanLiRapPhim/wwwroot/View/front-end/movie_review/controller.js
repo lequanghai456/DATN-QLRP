@@ -37,7 +37,6 @@ app.controller('moviedetail', function ($scope) {
 
 });
 app.controller('bookticket', function ($scope) {
-   
     $scope.room = {
         row: 8,
         col: 9,
@@ -64,6 +63,7 @@ app.controller('bookticket', function ($scope) {
             angular.element($event.currentTarget).attr("src", "images/seatchon.png");
             angular.element($event.currentTarget).attr("class", "seatchon");
         }
+
     }
 });
 app.controller('payment', function ($scope) {
