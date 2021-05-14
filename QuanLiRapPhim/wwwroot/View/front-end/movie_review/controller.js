@@ -37,12 +37,6 @@ app.controller('moviedetail', function ($scope) {
 
 });
 app.controller('bookticket', function ($scope) {
-<<<<<<< HEAD
-    $scope.Click = function ($event) {
-        $('.seat').attr("src", "images/seattrong.png");
-        angular.element($event.currentTarget).attr("src", "images/seatchon.png");
-=======
-   
     $scope.room = {
         row: 8,
         col: 9,
@@ -68,7 +62,7 @@ app.controller('bookticket', function ($scope) {
             angular.element($event.currentTarget).attr("src", "images/seatchon.png");
             angular.element($event.currentTarget).attr("class", "seatchon");
         }
->>>>>>> 57e9dc1e9845e40a3e37d20da55fc059aef819e7
+
     }
 });
 app.controller('payment', function ($scope) {
