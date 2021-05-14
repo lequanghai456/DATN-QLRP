@@ -4,6 +4,7 @@
             <div class="col-sm-7">
                 <h1 class="text-center" style="color: #000000;">Chọn ghế</h1>
                 <div>
+<<<<<<< HEAD
                     <div class="row">
                         <div class="col-sm-1">
                             <h5>A</h5>
@@ -163,155 +164,27 @@
                         </div>
                         <div class="col-sm-1">
                             <img src="images/seattrong.png" />
+=======
+                    <!--ds ghế-->
+                    <div class="row" ng-repeat="s in seats">
+                        <div class="col-sm-1">
+                            <h5 style="padding-top:4px">{{s.name}}</h5>
+                        </div> 
+                        <div class="row col-10">
+                            <div class="d-inline-block" style="margin:0 auto" ng-repeat="s2 in s">
+                                <img width="16" height="14" src="{{s2.status?'images/seattrong.png':''}}" ng-click="Click($event,s2)" />
+                            </div>
+>>>>>>> 57e9dc1e9845e40a3e37d20da55fc059aef819e7
                         </div>
                         <div class="col-sm-1">
-                            <h5>E</h5>
+                            <h5 style="padding-top:4px">{{s.name}}</h5>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-1">
-                            <h5>F</h5>
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1"></div>
-                        <div class="col-sm-1">
 
+                    <div class="row" style="padding: 15px 15px 15px 15px;">
+                        <div class="col-sm-12" style="height: 100px ; border-left: 45px solid transparent; border-right: 45px solid transparent; border-bottom: 100px solid #555;">
+                            <h1 class="text-center" style="position: relative; top: 30px;color: aliceblue;">Màn hình</h1>
                         </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-
-                        <div class="col-sm-1">
-                            <h5>F</h5>
-                        </div>
-
-                    </div>
-                </div>
-                <br />
-                <div>
-                    <div class="row">
-                        <div class="col-sm-1">
-                            <h5>G</h5>
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <h5>G</h5>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-1">
-                            <h5>H</h5>
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <h5>H</h5>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-1">
-                            <h5>I</h5>
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <img src="images/seattrong.png" />
-                        </div>
-                        <div class="col-sm-1">
-                            <h5>I</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="padding: 15px 15px 15px 15px;">
-                    <div class="col-sm-12" style="height: 100px ; border-left: 45px solid transparent; border-right: 45px solid transparent; border-bottom: 100px solid #555;">
-                        <h1 class="text-center" style="position: relative; top: 30px;color: aliceblue;">Màn hình</h1>
                     </div>
                 </div>
             </div>
@@ -407,6 +280,7 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 <!--<script>
     let lvet; // chua có giá trị gì hết
     function clickimgaghe(event) {
@@ -422,3 +296,8 @@
         }
     }
 </script>-->
+=======
+<script>
+    
+</script>
+>>>>>>> 57e9dc1e9845e40a3e37d20da55fc059aef819e7
