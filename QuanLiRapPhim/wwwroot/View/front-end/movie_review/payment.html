@@ -67,10 +67,10 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <button style="width: 100%;" type="button" class="btn btn-success">Thanh toán</button>
+                <button style="width: 100%;" type="button" class="btn btn-success" ng-click="payment()">Payment</button>
             </div>
             <div class="col-sm-6">
-                <button style="width: 100%;" type="button" class="btn btn-dark">Quay lại</button>
+                <button style="width: 100%;" type="button" class="btn btn-dark" ng-click="back()">Back</button>
             </div>
         </div>
         <br />
@@ -81,23 +81,8 @@
                 <p style="font-weight: bold; ">Thời gian thanh toán trong: </p>
             </div>
             <div class="col-sm-4">
-                <h1 class="minuted" style=" color: red; float: left;">01:</h1>
-                <h1 class="second" style=" color: red;">10</h1>
+                <h1 style=" color: red; float: left;">{{minuted}}:{{second}}</h1>
             </div>
         </div>
-
     </div>
 </div>
-<script>
-    let second = parseInt($('.second').text())
-    setInterval(function () {
-        second -= 1;
-        $('.second').text(second.toString().padStart(2, 0));
-        if (second == 0) {
-            let minuted = parseInt($('.minuted').text());
-            minuted -= 1;
-            $('.minuted').text(minuted.toString().padStart(2, 0) + ":");
-            second = 60;
-        }
-    }, 1000)
-</script>

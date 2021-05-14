@@ -60,11 +60,33 @@ app.controller('bookticket', function ($scope) {
     $scope.Click = function ($event,seat) {
         if (seat.status) {
             $(".seatchon").attr("src", "images/seattrong.png");
+            $(".seatchon").removeClass("seatchon");
             angular.element($event.currentTarget).attr("src", "images/seatchon.png");
             angular.element($event.currentTarget).attr("class", "seatchon");
         }
     }
 });
 app.controller('payment', function ($scope) {
-
+    $scope.init = function () {
+        $scope.minuted = 1;
+        $scope.second = 10;
+        $scope.timeID = setInterval(function () {
+            $scope.second -= 1;
+            if ($scope.second == 0) {
+                if ($scope.minuted == 0) {
+                    clearInterval($scope.timeID);
+                    history.back();
+                } else
+                    $scope.minuted -= 1;
+                $scope.second = 60;
+            }
+            $scope.$apply();
+        }, 1000);
+    }
+    $scope.init();
+    $scope.back = function () {
+        clearInterval($scope.timeID);
+        history.back();
+    }
+    $scope.payment = function () {}
 });
