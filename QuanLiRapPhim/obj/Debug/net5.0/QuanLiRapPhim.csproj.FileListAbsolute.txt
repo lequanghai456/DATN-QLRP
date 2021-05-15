@@ -451,3 +451,8 @@ D:\DATN\Use case\QuanLiRapPhim\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.De
 D:\DATN\Use case\QuanLiRapPhim\obj\Debug\net5.0\QuanLiRapPhim.csprojAssemblyReference.cache
 D:\DATN\Use case\QuanLiRapPhim\obj\Debug\net5.0\Razor\Areas\Admin\Views\_ViewImports.cshtml.g.cs
 D:\DATN\Use case\QuanLiRapPhim\obj\Debug\net5.0\Razor\Areas\Admin\Views\_ViewStart.cshtml.g.cs
+D:\DATN\Use case\QuanLiRapPhim\obj\Debug\net5.0\Razor\Views\About\Index.cshtml.g.cs
+D:\DATN\Use case\QuanLiRapPhim\obj\Debug\net5.0\Razor\Views\Contact\Index.cshtml.g.cs
+D:\DATN\Use case\QuanLiRapPhim\obj\Debug\net5.0\Razor\Views\MovieReview\Index.cshtml.g.cs
+D:\DATN\Use case\QuanLiRapPhim\obj\Debug\net5.0\Razor\Views\Profile\Index.cshtml.g.cs
+D:\DATN\Use case\QuanLiRapPhim\obj\Debug\net5.0\Razor\Views\YourOrder\Index.cshtml.g.cs
