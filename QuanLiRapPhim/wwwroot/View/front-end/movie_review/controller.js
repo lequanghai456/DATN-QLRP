@@ -37,8 +37,13 @@ app.controller('moviedetail', function ($scope) {
 
 });
 app.controller('bookticket', function ($scope) {
+    var socket = io.connect('http://localhost:3000');
+    socket.on('connect', function (data) {
+        socket.emit('join', 'Hello from client');
+    });
+
     $scope.room = {
-        row: 8,
+        row: 8, 
         col: 9,
     }
 
@@ -58,13 +63,25 @@ app.controller('bookticket', function ($scope) {
 
     $scope.Click = function ($event,seat) {
         if (seat.status) {
+            socket.emit('chonghe', seat.id);
+        }
+    }
+
+    socket.on('dachonghe', function (data) {
+        if (data.isemit) {
+            $('#' + data.id).attr('src', 'images/seatdadat.png');
             $(".seatchon").attr("src", "images/seattrong.png");
             $(".seatchon").removeClass("seatchon");
-            angular.element($event.currentTarget).attr("src", "images/seatchon.png");
             angular.element($event.currentTarget).attr("class", "seatchon");
         }
+        else {
+            $('#' + data.id).attr("src", "images/seatchon.png");
+        }
+    });
+    socket.on('huydachon', function (data) {
+        $('#' + data).attr("src", "images/seattrong.png");
+    });
 
-    }
 });
 app.controller('payment', function ($scope) {
     $scope.init = function () {
@@ -76,6 +93,7 @@ app.controller('payment', function ($scope) {
                 if ($scope.minuted == 0) {
                     clearInterval($scope.timeID);
                     history.back();
+                    socket.on('huychon', '4');
                 } else
                     $scope.minuted -= 1;
                 $scope.second = 60;
