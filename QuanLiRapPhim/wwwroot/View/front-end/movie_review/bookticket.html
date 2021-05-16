@@ -7,10 +7,10 @@
                     <div class="row" ng-repeat="s in seats">
                         <div class="col-sm-1">
                             <h5 style="padding-top:4px">{{s.name}}</h5>
-                        </div> 
+                        </div>
                         <div class="row col-10">
                             <div class="d-inline-block" style="margin:0 auto" ng-repeat="s2 in s">
-                                <img width="16" height="14" src="{{s2.status?'images/seattrong.png':''}}" ng-click="Click($event,s2)" />
+                                <img width="16" height="14" src="{{s2.status?'images/seattrong.png':''}}" ng-click="Click($event,s2)" id="{{s2.id}}" />
                             </div>
                         </div>
                         <div class="col-sm-1">
