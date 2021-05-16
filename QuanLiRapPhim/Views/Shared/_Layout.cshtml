@@ -22,17 +22,18 @@
             </div>
         </main>
     </div> <!-- .container -->
-    </main>
+
 
     @await Html.PartialAsync("_PartialFooter")
-    </div>
+
     <!-- Default snippet for navigation -->
 
+    @await Html.PartialAsync("Login")
 
     @await Html.PartialAsync("_PartialJS")
 
-    @await RenderSectionAsync("Scripts",false)
-    
+    @await RenderSectionAsync("Scripts", false)
+
 </body>
 
 </html>
