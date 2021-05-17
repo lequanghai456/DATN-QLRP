@@ -32,21 +32,62 @@ app.config(function ($routeProvider) {
 app.controller('index', function ($scope) {
     
 });
-
-app.controller('moviedetail', function ($scope) {
-
+app.controller('moviedetail', function ($scope, $routeParams) {
+    $scope.NameMovie = $routeParams.NameMovie;
+    $scope.Movie = [{
+        name: 'a',
+        Name: 'A'
+    },
+    {
+        name: 'b',
+        Name:'B'
+        }];
+    //viết api kiểm tra tồn tại của phim
+    if ($scope.NameMovie == $scope.Movie[0].name || $scope.NameMovie == $scope.Movie[0].name) {
+        //đưa phim lên web
+        $scope.currenMovie = $scope.Movie[0];
+    }
+    else {
+        //vào trang không tìm thấy phim
+        history.back();
+    }
 });
 app.controller('bookticket', function ($scope) {
+    $scope.seat;
+    
+    $scope.init = function (data) {
+        //kiểm tra tồn tại của phim
+        if (false) {
+            //vào trang không tìm thấy phim
+        } 
+        
+    }
+
     var socket = io.connect('http://localhost:3000');
     socket.on('connect', function (data) {
         socket.emit('join', 'Hello from client');
     });
 
+    socket.on('load_ghe_da_chon', function (data) {
+        $scope.dsghedachon = data;
+        $scope.loadghedachon();
+    });
+    //load ds ghe được chọn bởi người khác
+    $scope.loadghedachon = function () {
+        $('.seat .seatdadat').attr("class", "seat");
+        $scope.dsghedachon.forEach(function (item, index) {
+            if (item != -1) {
+                if ($scope.seat == null || item != $scope.seat.id)
+                    $('#' + item).attr("class", "seat seatdadat");
+            }
+        });
+    }
     $scope.room = {
-        row: 8, 
+        row: 8,
         col: 9,
     }
 
+    //khởi tạo ghế cho phòng
     $scope.seats = [];
     for (var i = 0; i < $scope.room.col; i++) {
         $scope.seats[i] = [];
@@ -58,28 +99,38 @@ app.controller('bookticket', function ($scope) {
             };
         }
     }
+
+    //khởi tạo ghế hỏng
     $scope.seats[0][0].status = false;
 
-
-    $scope.Click = function ($event,seat) {
+    //khi chon 1 ghe
+    $scope.Click = function (seat) {
+        if ($scope.dsghedachon.indexOf(seat.id)===-1)
         if (seat.status) {
-            socket.emit('chonghe', seat.id);
+            var data = {
+                key: 'chon_ghe',
+                value: seat.id
+            };
+        
+            //đổi thuộc tính ghế đã chọn
+            $scope.seat = seat;
+
+            //gửi socket lên sever
+            socket.emit('Client-to-server-to-all', data);
+
+            //hien thi ghe da chon
+            $scope.apply();
         }
     }
-
-    socket.on('dachonghe', function (data) {
-        if (data.isemit) {
-            $('#' + data.id).attr('src', 'images/seatdadat.png');
-            $(".seatchon").attr("src", "images/seattrong.png");
-            $(".seatchon").removeClass("seatchon");
-            angular.element($event.currentTarget).attr("class", "seatchon");
-        }
-        else {
-            $('#' + data.id).attr("src", "images/seatchon.png");
-        }
+    //lắng nghe xem có ai đang chọn ghế
+    socket.on('chon_ghe', function (data) {
+        //ai do dang chon ghe nay
+        $('#' + data).attr("class", "seat seatdadat");
     });
+    //lắng nghe xem có ai đã hủy 1 ghế
     socket.on('huydachon', function (data) {
-        $('#' + data).attr("src", "images/seattrong.png");
+        //ai do huy chon ghe nay
+        $('#' + data).attr("class", "seat");
     });
 
 });
@@ -93,7 +144,6 @@ app.controller('payment', function ($scope) {
                 if ($scope.minuted == 0) {
                     clearInterval($scope.timeID);
                     history.back();
-                    socket.on('huychon', '4');
                 } else
                     $scope.minuted -= 1;
                 $scope.second = 60;

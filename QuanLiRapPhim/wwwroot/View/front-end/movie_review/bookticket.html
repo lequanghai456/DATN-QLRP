@@ -1,4 +1,20 @@
-﻿<div class="card">
+﻿<style>
+    .seat, .seatdadat, .seatchon, .seatbad {
+        width: 16px;
+        height: 14px;
+    }
+    .seat {
+        background-image: url("images/seattrong.png");
+    }
+    .seatchon 
+    {
+        background-image: url("images/seatchon.png");
+    }
+    .seatdadat {
+        background-image: url('images/seatdadat.png');
+    }
+</style>
+<div class="card">
     <div class="card-body">
         <div class="row">
             <div class="col-sm-7">
@@ -6,15 +22,17 @@
                 <div>
                     <div class="row" ng-repeat="s in seats">
                         <div class="col-sm-1">
-                            <h5 style="padding-top:4px">{{s.name}}</h5>
+                            <h5>{{s.name}}</h5>
                         </div>
                         <div class="row col-10">
                             <div class="d-inline-block" style="margin:0 auto" ng-repeat="s2 in s">
-                                <img width="16" height="14" src="{{s2.status?'images/seattrong.png':''}}" ng-click="Click($event,s2)" id="{{s2.id}}" />
+                                <div ng-click="Click(s2)"
+                                     class="{{s2.status?'seat '+(seat.id==s2.id?'seatchon':''):'seatbad'}}" id="{{s2.id}}">
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-1">
-                            <h5 style="padding-top:4px">{{s.name}}</h5>
+                            <h5>{{s.name}}</h5>
                         </div>
                     </div>
 
@@ -99,7 +117,7 @@
                                 <h4 style="color: #f20;">Ghế: </h4>
                             </div>
                             <div class="col-sm-8">
-                                <p style="color: #f20;">Tên ghế ABC</p>
+                                <p style="color: #f20;">{{seat==null?'Chưa chọn':seat.id}}</p>
                             </div>
                         </div>
                         <div class="row">
