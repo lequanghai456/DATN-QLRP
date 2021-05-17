@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QuanLiRapPhim.Areas.Admin.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +29,8 @@ namespace QuanLiRapPhim
             services.AddControllersWithViews().AddSessionStateTempDataProvider();
             services.AddRazorPages()
                .AddSessionStateTempDataProvider();
-            //services.AddDbContext<DPContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DPContext")));
+            services.AddDbContext<DPContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DPContext")));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
