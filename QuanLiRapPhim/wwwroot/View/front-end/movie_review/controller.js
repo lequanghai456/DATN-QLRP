@@ -18,7 +18,7 @@ app.config(function ($routeProvider) {
             templateUrl: ctxfolderurl + '/moviedetail.html',
             controller: 'moviedetail'
         })
-        .when('/:NameMovie/bookticket', {
+        .when('/:NameMovie/bookticket/:id', {
             templateUrl: ctxfolderurl + '/bookticket.html',
             controller: 'bookticket'
         })
@@ -52,10 +52,11 @@ app.controller('moviedetail', function ($scope, $routeParams) {
         history.back();
     }
 });
-app.controller('bookticket', function ($scope) {
+app.controller('bookticket', function ($scope, $routeParams) {
     $scope.seat;
-    
-    $scope.init = function (data) {
+    $scope.dsghedachon = [];
+
+    $scope.init = function () {
         //kiểm tra tồn tại của phim
         if (false) {
             //vào trang không tìm thấy phim
@@ -63,25 +64,21 @@ app.controller('bookticket', function ($scope) {
         
     }
 
-    var socket = io.connect('http://localhost:3000');
-    socket.on('connect', function (data) {
-        socket.emit('join', 'Hello from client');
+    var socket = io.connect('http://localhost:3000/bookticket');
+    socket.on('connect', function () {
+        socket.emit('Join room', { idLichChieu: $routeParams.id }); 
     });
 
     socket.on('load_ghe_da_chon', function (data) {
-        $scope.dsghedachon = data;
-        $scope.loadghedachon();
+        $scope.dsghedachon = [];
+        if (data != null) {
+            data.forEach(function (seat, ind) {
+                $scope.dsghedachon.push(seat.idGhe);
+            });
+        }
+        $scope.$apply();
     });
-    //load ds ghe được chọn bởi người khác
-    $scope.loadghedachon = function () {
-        $('.seat .seatdadat').attr("class", "seat");
-        $scope.dsghedachon.forEach(function (item, index) {
-            if (item != -1) {
-                if ($scope.seat == null || item != $scope.seat.id)
-                    $('#' + item).attr("class", "seat seatdadat");
-            }
-        });
-    }
+
     $scope.room = {
         row: 8,
         col: 9,
@@ -105,33 +102,27 @@ app.controller('bookticket', function ($scope) {
 
     //khi chon 1 ghe
     $scope.Click = function (seat) {
-        if ($scope.dsghedachon.indexOf(seat.id)===-1)
         if (seat.status) {
-            var data = {
-                key: 'chon_ghe',
-                value: seat.id
-            };
-        
-            //đổi thuộc tính ghế đã chọn
-            $scope.seat = seat;
+            if ($scope.dsghedachon.indexOf(seat.id) === -1) {
+                var data = {
+                    key: 'chon-ghe',
+                    idGhe: seat.id,
+                    idLichChieu: $routeParams.id
+                };
 
-            //gửi socket lên sever
-            socket.emit('Client-to-server-to-all', data);
+                //đổi thuộc tính ghế đã chọn
+                $scope.seat = seat;
 
-            //hien thi ghe da chon
-            $scope.apply();
+                //gửi socket lên sever
+                socket.emit('Client-to-server-to-all', data);
+
+                //hien thi ghe da chon
+                //$scope.$apply();
+            }
         }
     }
-    //lắng nghe xem có ai đang chọn ghế
-    socket.on('chon_ghe', function (data) {
-        //ai do dang chon ghe nay
-        $('#' + data).attr("class", "seat seatdadat");
-    });
-    //lắng nghe xem có ai đã hủy 1 ghế
-    socket.on('huydachon', function (data) {
-        //ai do huy chon ghe nay
-        $('#' + data).attr("class", "seat");
-    });
+
+    
 
 });
 app.controller('payment', function ($scope) {
