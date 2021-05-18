@@ -8,7 +8,7 @@ app.use('/',function(req, res, next) {
 });
 
 var server = require('http').Server(app);
-var seats = [];
+var listShowTimeId = [];
 var Clients = [];
 const io = require('socket.io')(server, {
   cors: {
@@ -16,49 +16,58 @@ const io = require('socket.io')(server, {
   }
 });
 
-const bookticket=io.of('/bookticket');
-//Whenever someone connects this gets executed
-bookticket.on('connection', function (client) {
-    console.log(client.id +' connected');
+const bookticket = io.of('/bookticket');
 
-    //Whenever someone disconnects this piece of code executed
+bookticket.on('connection', function (client) {
     client.on('Join room', function (data) {
-        client.join(data.idLichChieu);
-        console.log(client.id + " :vừa gia nhập " + data.idLichChieu);
+        var room = data.idLichChieu;
+        client.join(room);
+        console.log(client.id + " :vừa gia nhập " + room);
 
         Clients.push(client.id);
-        seats.push(-1);
+        listShowTimeId.push({ id: room, idGhe: -1 });
 
-        console.log(seats);
-        console.log(Clients);
+        console.log(listShowTimeId);
 
-        client.to(data.idLichChieu).emit('load_ghe_da_chon', seats);
+        client.emit('load_ghe_da_chon', listShowTimeId.filter(val => val.id == room));
+
     });
 
     client.on('Client-to-server-to-all', function (data) {
-        console.log(client.id+' send to all: ' + data.key + ' : ' + data.value);
+        console.log(client.id + ' send to all: ' + data.key + ' : ' + data.value);
+        console.log(data);
         switch (data.key) {
-            case 'chon_ghe':
-                seats[Clients.indexOf(client.id)]=data.value;
+            case 'chon-ghe':
+                chonGhe(client.id, data.idGhe);
                 break;
-            case 'huydachon':
-                delete seats[Clients.indexOf(client.id)];
+            case 'huy-ghe-da-chon':
+                huyChon(client.id);
                 break;
         }
 
-        console.log(seats); console.log(Clients);
-        client.to().broadcast.emit('load_ghe_da_chon', seats);
-        client.emit('load_ghe_da_chon', seats);
+        console.log(listShowTimeId);
+        console.log(Clients);
+        var room = data.idLichChieu;
+
+        client.to(data.idLichChieu).emit('load_ghe_da_chon', listShowTimeId.filter(val => val.id == room));
+        client.emit('load_ghe_da_chon', listShowTimeId.filter(val => val.id == room));
+
     });
 
     client.on('disconnect', function (reason) {
-        seats = arrRemove(seats, Clients.indexOf(client.id));
-        Clients = arrRemove(Clients, Clients.indexOf(client.id));
-        
-        client.broadcast.emit('load_ghe_da_chon', seats);
         console.log(client.id + ' user disconnected: ' + reason);
 
-        console.log(seats); console.log(Clients);
+        var index = Clients.indexOf(client.id);
+        
+        var room = listShowTimeId[index].id;
+        console.log(room);
+        Clients = arrRemove(Clients, index);
+        listShowTimeId = arrRemove(listShowTimeId, index);
+
+        console.log(Clients);
+        client.broadcast.emit('load_ghe_da_chon', listShowTimeId.filter(val => val.id == room));
+
+        console.log(listShowTimeId); console.log(Clients);
     });
 });
 
@@ -69,3 +78,22 @@ server.listen(3000, function () {
 function arrRemove(array, index) {
     return array.filter(function (val) { return val != array[index]; });
 }
+
+function chonGhe(clientId, data) {
+
+    console.log('Chon Ghe:');
+    var index = Clients.indexOf(clientId);
+    listShowTimeId[index].idGhe = data;
+    
+}
+
+function huyGhe(clientId) {
+
+    console.log('Huy Ghe:');
+    var index = Clients.indexOf(clientId);
+    listShowTimeId[index].idGhe = -1;
+
+}
+
+//data={idLichChieu,idGhe}
+//listShowTimeId=[idLichChieu:{id,idGhe}]

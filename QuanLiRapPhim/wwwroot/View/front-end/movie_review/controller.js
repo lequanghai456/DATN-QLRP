@@ -18,7 +18,7 @@ app.config(function ($routeProvider) {
             templateUrl: ctxfolderurl + '/moviedetail.html',
             controller: 'moviedetail'
         })
-        .when('/:NameMovie/bookticket', {
+        .when('/:NameMovie/bookticket/:id', {
             templateUrl: ctxfolderurl + '/bookticket.html',
             controller: 'bookticket'
         })
@@ -52,7 +52,7 @@ app.controller('moviedetail', function ($scope, $routeParams) {
         history.back();
     }
 });
-app.controller('bookticket', function ($scope) {
+app.controller('bookticket', function ($scope, $routeParams) {
     $scope.seat;
     $scope.dsghedachon = [];
 
@@ -66,11 +66,16 @@ app.controller('bookticket', function ($scope) {
 
     var socket = io.connect('http://localhost:3000/bookticket');
     socket.on('connect', function () {
-        socket.emit('join room', { idLichChieu: 1 }); 
+        socket.emit('Join room', { idLichChieu: $routeParams.id }); 
     });
 
     socket.on('load_ghe_da_chon', function (data) {
-        $scope.dsghedachon = data;
+        $scope.dsghedachon = [];
+        if (data != null) {
+            data.forEach(function (seat, ind) {
+                $scope.dsghedachon.push(seat.idGhe);
+            });
+        }
         $scope.$apply();
     });
 
@@ -100,9 +105,9 @@ app.controller('bookticket', function ($scope) {
         if (seat.status) {
             if ($scope.dsghedachon.indexOf(seat.id) === -1) {
                 var data = {
-                    key: 'chon_ghe',
-                    value: seat.id,
-                    idLichChieu='1';
+                    key: 'chon-ghe',
+                    idGhe: seat.id,
+                    idLichChieu: $routeParams.id
                 };
 
                 //đổi thuộc tính ghế đã chọn
@@ -116,6 +121,8 @@ app.controller('bookticket', function ($scope) {
             }
         }
     }
+
+    
 
 });
 app.controller('payment', function ($scope) {
