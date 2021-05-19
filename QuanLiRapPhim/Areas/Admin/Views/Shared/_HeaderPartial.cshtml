@@ -7,16 +7,8 @@
                         <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">Dashboard</strong></div>
                     </a>
                 </div>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <a asp-controller="Login" asp-action="Logout">@User.Identity.Name, Logout</a>
-                }
-                else
-                {
-                    <a asp-controller="Login" asp-action="Index">Login</a>
-                   
-                }
 
+                    <a asp-controller="Login" asp-action="Logout">@User.Identity.Name, Logout</a>
             </div>
         </div>
     </nav>

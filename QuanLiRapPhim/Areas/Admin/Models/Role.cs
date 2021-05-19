@@ -10,7 +10,5 @@ namespace QuanLiRapPhim.Areas.Admin.Models
 {
     public class Role : IdentityRole<int>
     {
-
-        public ICollection<Staff> list_staff { get; set; }
     }
 }

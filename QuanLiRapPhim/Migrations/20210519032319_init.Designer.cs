@@ -10,7 +10,7 @@ using QuanLiRapPhim.Areas.Admin.Data;
 namespace QuanLiRapPhim.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20210518044759_init")]
+    [Migration("20210519032319_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -195,9 +195,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -217,6 +214,9 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("img")
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int>("roleid")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -226,8 +226,6 @@ namespace QuanLiRapPhim.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -281,18 +279,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Staff", b =>
-                {
-                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Role", null)
-                        .WithMany("list_staff")
-                        .HasForeignKey("RoleId");
-                });
-
-            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Role", b =>
-                {
-                    b.Navigation("list_staff");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,13 +10,12 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     public class Staff : IdentityUser<int>
     {
         [Column(TypeName = "nvarchar(255)")]
-        public String fullname { get; set; }
-        public int RoleId { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime date_of_birth { get; set; }
+        public String FullName { get; set; }
+        public DateTime DateOfBirth { get; set; }
         [Column(TypeName = "nvarchar(255)")]
-        public String img { get; set; }
-       
+        public String Img { get; set; }
+        public  int RoleId { get; set; }
+        
 
 
 

@@ -12,6 +12,5 @@ namespace QuanLiRapPhim.Areas.Admin.Data
             : base(options)
         {
         }
-        public DbSet<Staff> Users { get; set; }
     }
 }
