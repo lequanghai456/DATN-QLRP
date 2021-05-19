@@ -7,8 +7,21 @@ html {
 }
 
 body {
-  font-family: "Poppins", sans-serif;
-  height: 100vh;
+    font-family: "Poppins", sans-serif;
+    height: 100vh;
+    background-image: url(../dummy/Anhnen.jpg);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    color: #84878d;
+    font-family: "Roboto", "Open Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: normal;
+    width: 100%;
 }
 
 a {

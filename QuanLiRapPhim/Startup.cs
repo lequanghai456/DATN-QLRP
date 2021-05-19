@@ -73,7 +73,7 @@ namespace QuanLiRapPhim
             {
                 endpoints.MapControllerRoute(
                   name: "Admin",
-                  pattern: "{area:exists}/{controller=home}/{action=Index}/{id?}");
+                  pattern: "{area:exists}/{controller=Login}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -26,15 +26,17 @@
             border: 1px solid gray;
         }
     </style> }
-    <div class="wrapper fadeInDown" style="margin:auto">
-        <div id="formContent">
+    <div class="wrapper fadeInDown">
+        <div id="formContent" style="margin: auto;">
         <div class="fadeIn first"><img src="~/admin/img/Icon_User.png" id="icon" alt="User Icon" /></div>
 
         <form method="post" asp-action="Login" asp-controller="Login">
             <input type="text" asp-for="UserName" id="login" class="fadeIn second" name="UserName" placeholder="Nhập tài khoản" required>
             <input type="password" asp-for="PasswordHash" id="password" class="fadeIn third" name="PasswordHash" placeholder="Nhập mật khẩu" required>
-            <input type="submit" class="fadeIn fourth" value="Log In">
-        </form>
+            <h6 style='color: red;'>
+                @ViewData["Message"]</h6>
+                        <input type="submit" class="fadeIn fourth" value="Log In">
+</form>
         <div id="formFooter">             
             <a class="underlineHover" href="#">Forgot Password?</a>
         </div>
