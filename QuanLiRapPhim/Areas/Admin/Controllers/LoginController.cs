@@ -42,35 +42,35 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             return RedirectToAction("Index", "Login");
         }
         public List<IdentityRole> roles { set; get; }
-        public async Task<IActionResult> RegisterAsync()
-        {
-            try
-            {
-                ViewBag.Message = "Admin already registered";
-                Staff staff = await StaffMgr.FindByNameAsync("Admin");
+        //public async Task<IActionResult> RegisterAsync()
+        //{
+        //    try
+        //    {
+        //        ViewBag.Message = "Admin already registered";
+        //        Staff staff = await StaffMgr.FindByNameAsync("Admin");
 
-                Role role = await RoleMgr.FindByNameAsync("Admin");
-                if (staff == null)
-                {
-                    staff = new Staff();
-                    staff.UserName = "Admin";
-                    staff.PasswordHash = "abc123";
-                    staff.fullname = "Lê Quang Hải";
-                    staff.roleid = 1;
-                    IdentityResult result = await StaffMgr.CreateAsync(staff, "abc123");
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "home");
-                    }
-                }
-                    return View("RegisterFail");
+        //        Role role = await RoleMgr.FindByNameAsync("Admin");
+        //        if (staff == null)
+        //        {
+        //            staff = new Staff();
+        //            staff.UserName = "Admin";
+        //            staff.PasswordHash = "abc123";
+        //            staff.FullName = "Lê Quang Hải";
+        //            staff.RoleId = 1;
+        //            IdentityResult result = await StaffMgr.CreateAsync(staff, "abc123");
+        //            if (result.Succeeded)
+        //            {
+        //                return RedirectToAction("Index", "home");
+        //            }
+        //        }
+        //            return View("RegisterFail");
 
-            }
-            catch (Exception ex)
-            {
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-            }
-            return View();
-        }
+        //    }
+        //    return View();
+        //}
     }
 }
