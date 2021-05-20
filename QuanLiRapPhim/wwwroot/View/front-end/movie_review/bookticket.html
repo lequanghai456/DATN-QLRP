@@ -13,6 +13,25 @@
     .seatdadat {
         background-image: url('images/seatdadat.png');
     }
+    .modal.fade.in {
+        opacity: 1;
+    }
+
+    .modal.fade .modal-dialog {
+        transform: translate(0, 0) !important;
+    }
+
+    .modal-backdrop.fade {
+        opacity: 0.5 !important;
+    }
+
+    .modal-header {
+        display: block;
+    }
+
+    .modal-content {
+        border-radius: 1.3rem !important;
+    }
 </style>
 <div class="card">
     <div class="card-body">
@@ -76,10 +95,10 @@
                 <br />
                 <div class="row">
                     <div class="col-sm-6" style="display: flex; justify-content: center;">
-                        <button type="button" class="btn btn-success">Bước kế tiếp</button>
+                        <button type="button" class="btn btn-success" ng-click="open()">Bước kế tiếp</button>
                     </div>
                     <div class="col-sm-6" style="display: flex; justify-content: center;">
-                        <button type="button" class="btn btn-dark">Quay lại</button>
+                        <button type="button" class="btn btn-dark" ng-click="">Quay lại</button>
                     </div>
                 </div>
                 <br />
