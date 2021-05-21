@@ -12,13 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\API\Controllers\" />
-    <Folder Include="Areas\API\Data\" />
-    <Folder Include="Areas\API\Models\" />
-    <Folder Include="Areas\API\Views\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\admin\fonts\dashboard.svg" />
     <None Include="wwwroot\admin\icons-reference\fonts\dashboard.svg" />
     <None Include="wwwroot\admin\img\brand\brand-1.svg" />

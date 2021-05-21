@@ -10,5 +10,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
 {
     public class Role : IdentityRole<int>
     {
+        [Required]
+        public virtual string Name { get; set; }
     }
 }

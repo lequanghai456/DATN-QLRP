@@ -21,14 +21,22 @@ app.controller('index', function ($scope,$uibModal) {
     //$scope.init();
     $scope.show = function () {
         $scope.modalInstance = $uibModal.open({
-            ariaLabelledBy: "modal-title",
-            ariaDescribedBy: "modal-body",
             templateUrl: '/Admin/Roles/Create',
-            controller: 'index',
+            controller: 'create',
             backdrop: 'static',
             size: '50'
         });
 
+
     }
     
+});
+app.controller('create', function ($scope, $uibModal, $uibModalInstance) {
+    $scope.cancel = function () {
+        $uibModalInstance.close('cancel');
+    }
+    $scope.Create = function () {
+
+    }
+
 });
