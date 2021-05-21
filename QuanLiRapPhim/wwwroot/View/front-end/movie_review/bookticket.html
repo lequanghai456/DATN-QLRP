@@ -13,6 +13,25 @@
     .seatdadat {
         background-image: url('images/seatdadat.png');
     }
+    .modal.fade.in {
+        opacity: 1;
+    }
+
+    .modal.fade .modal-dialog {
+        transform: translate(0, 0) !important;
+    }
+
+    .modal-backdrop.fade {
+        opacity: 0.5 !important;
+    }
+
+    .modal-header {
+        display: block;
+    }
+
+    .modal-content {
+        border-radius: 1.3rem !important;
+    }
 </style>
 <div class="card">
     <div class="card-body">
@@ -27,7 +46,8 @@
                         <div class="row col-10">
                             <div class="d-inline-block" style="margin:0 auto" ng-repeat="s2 in s">
                                 <div ng-click="Click(s2)"
-                                     class="{{s2.status?'seat '+(seat.id==s2.id?'seatchon':''):'seatbad'}}" id="{{s2.id}}">
+                                     class="{{s2.status?'seat '+ (seat.id==s2.id?'seatchon':(dsghedachon.indexOf(s2.id)==-1?'':'seatdadat')):'seatbad'}}" 
+                                     id="{{s2.id}}">
                                 </div>
                             </div>
                         </div>
@@ -75,10 +95,10 @@
                 <br />
                 <div class="row">
                     <div class="col-sm-6" style="display: flex; justify-content: center;">
-                        <button type="button" class="btn btn-success">Bước kế tiếp</button>
+                        <button type="button" class="btn btn-success" ng-click="open()">Bước kế tiếp</button>
                     </div>
                     <div class="col-sm-6" style="display: flex; justify-content: center;">
-                        <button type="button" class="btn btn-dark">Quay lại</button>
+                        <button type="button" class="btn btn-dark" ng-click="">Quay lại</button>
                     </div>
                 </div>
                 <br />

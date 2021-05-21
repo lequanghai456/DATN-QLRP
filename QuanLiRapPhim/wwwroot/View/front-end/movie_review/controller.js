@@ -1,6 +1,6 @@
 ﻿var ctxfolderurl = "/View/front-end/movie_review";
 
-var app = angular.module('App', ['ngRoute']);
+var app = angular.module('App', ['ui.bootstrap', 'ngRoute', 'ngAnimate']);
 
 app.controller('Ctroller', function ($scope) {
     $scope.init = function () {
@@ -18,20 +18,19 @@ app.config(function ($routeProvider) {
             templateUrl: ctxfolderurl + '/moviedetail.html',
             controller: 'moviedetail'
         })
-        .when('/:NameMovie/bookticket', {
+        .when('/:NameMovie/bookticket/:id', {
             templateUrl: ctxfolderurl + '/bookticket.html',
             controller: 'bookticket'
-        })
-        .when('/:NameMovie/bookticket/payment', {
+        }).when('/:NameMovie/bookticket/:id/payment', {
             templateUrl: ctxfolderurl + '/payment.html',
             controller: 'payment'
-        })
-
+        });
 });
 
 app.controller('index', function ($scope) {
     
 });
+
 app.controller('moviedetail', function ($scope, $routeParams) {
     $scope.NameMovie = $routeParams.NameMovie;
     $scope.Movie = [{
@@ -52,10 +51,11 @@ app.controller('moviedetail', function ($scope, $routeParams) {
         history.back();
     }
 });
-app.controller('bookticket', function ($scope) {
+app.controller('bookticket', function ($scope, $routeParams,$uibModal) {
     $scope.seat;
-    
-    $scope.init = function (data) {
+    $scope.dsghedachon = [];
+
+    $scope.init = function () {
         //kiểm tra tồn tại của phim
         if (false) {
             //vào trang không tìm thấy phim
@@ -63,25 +63,28 @@ app.controller('bookticket', function ($scope) {
         
     }
 
-    var socket = io.connect('http://localhost:3000');
-    socket.on('connect', function (data) {
-        socket.emit('join', 'Hello from client');
+    var socket = io.connect('http://localhost:3000/bookticket');
+
+    socket.on('connect', function () {
+        socket.emit('Join room', { idLichChieu: $routeParams.id });
     });
 
+    //api lấy ghế đã thanh toán
+    var dsGheDaThanhToan = [1, 2, 5, 3];
+
+    //load những ghế đang được người khác chọn
     socket.on('load_ghe_da_chon', function (data) {
-        $scope.dsghedachon = data;
-        $scope.loadghedachon();
+        $scope.dsghedachon = [];
+        if (data != null) {
+            data.forEach(function (seat, ind) {
+                if (seat.idGhe!=-1)
+                $scope.dsghedachon.push(seat.idGhe);
+            });
+        }
+        $scope.dsghedachon = $scope.dsghedachon.concat(dsGheDaThanhToan);
+        $scope.$apply();
     });
-    //load ds ghe được chọn bởi người khác
-    $scope.loadghedachon = function () {
-        $('.seat .seatdadat').attr("class", "seat");
-        $scope.dsghedachon.forEach(function (item, index) {
-            if (item != -1) {
-                if ($scope.seat == null || item != $scope.seat.id)
-                    $('#' + item).attr("class", "seat seatdadat");
-            }
-        });
-    }
+
     $scope.room = {
         row: 8,
         col: 9,
@@ -105,36 +108,55 @@ app.controller('bookticket', function ($scope) {
 
     //khi chon 1 ghe
     $scope.Click = function (seat) {
-        if ($scope.dsghedachon.indexOf(seat.id)===-1)
         if (seat.status) {
+            if ($scope.dsghedachon.indexOf(seat.id) === -1) {
+                //đổi thuộc tính ghế đã chọn
+                $scope.seat = seat;
+            }
+        }
+    }
+
+    $scope.open = function () {
+        if ($scope.seat != null) {
             var data = {
-                key: 'chon_ghe',
-                value: seat.id
+                key: 'chon-ghe',
+                idGhe: $scope.seat.id,
+                idLichChieu: $routeParams.id
             };
-        
-            //đổi thuộc tính ghế đã chọn
-            $scope.seat = seat;
 
             //gửi socket lên sever
             socket.emit('Client-to-server-to-all', data);
 
-            //hien thi ghe da chon
-            $scope.apply();
-        }
-    }
-    //lắng nghe xem có ai đang chọn ghế
-    socket.on('chon_ghe', function (data) {
-        //ai do dang chon ghe nay
-        $('#' + data).attr("class", "seat seatdadat");
-    });
-    //lắng nghe xem có ai đã hủy 1 ghế
-    socket.on('huydachon', function (data) {
-        //ai do huy chon ghe nay
-        $('#' + data).attr("class", "seat");
-    });
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: ctxfolderurl + "/payment.html",
+                controller: "payment",
+                size: 'lg',
+            });
 
+            modalInstance.result.then(function (response) {
+                if (response == 'cancel') {
+                    data.key = 'huy-ghe-da-chon';
+                    socket.emit('Client-to-server-to-all', data);
+                }
+            }, function () {
+                    data.key = 'huy-ghe-da-chon';
+                    socket.emit('Client-to-server-to-all', data);
+            });
+        }
+        else {
+            alert('Ban chưa chon ghe');
+        }
+
+        
+
+    };
+
+    $scope.payment = function () {
+        
+    }
 });
-app.controller('payment', function ($scope) {
+app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
     $scope.init = function () {
         $scope.minuted = 1;
         $scope.second = 10;
@@ -142,8 +164,7 @@ app.controller('payment', function ($scope) {
             $scope.second -= 1;
             if ($scope.second == 0) {
                 if ($scope.minuted == 0) {
-                    clearInterval($scope.timeID);
-                    history.back();
+                    $scope.back();
                 } else
                     $scope.minuted -= 1;
                 $scope.second = 60;
@@ -151,10 +172,17 @@ app.controller('payment', function ($scope) {
             $scope.$apply();
         }, 1000);
     }
+
     $scope.init();
+
     $scope.back = function () {
         clearInterval($scope.timeID);
-        history.back();
+        $uibModalInstance.close('cancel');
     }
-    $scope.payment = function () {}
+
+    $scope.payment = function () {
+        clearInterval($scope.timeID);
+        $uibModalInstance.close('ok');
+    }
+
 });
