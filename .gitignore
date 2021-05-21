@@ -1,3 +1,4 @@
+QuanLiRapPhim/obj/Debug/net5.0/Razor/Views/Shared/Login.cshtml.g.cs
 QuanLiRapPhim/bin/Debug/net5.0/Castle.Core.dll
 QuanLiRapPhim/bin/Debug/net5.0/Castle.Windsor.dll
 QuanLiRapPhim/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.Internal.dll
@@ -13,13 +14,13 @@ QuanLiRapPhim/bin/Debug/net5.0/Microsoft.Extensions.Identity.Stores.dll
 QuanLiRapPhim/bin/Debug/net5.0/QuanLiRapPhim.StaticWebAssets.xml
 QuanLiRapPhim/obj/Debug/net5.0/QuanLiRapPhim.MvcApplicationPartsAssemblyInfo.cs
 QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Login/Login.cshtml.g.cs
+QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Login/RegisterFail.cshtml.g.cs
+QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Shared/_Layout2.cshtml.g.cs
+QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Shared/_LoginPartial.cshtml.g.cs
 QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Roles/Create.cshtml.g.cs
 QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Roles/Delete.cshtml.g.cs
 QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Roles/Details.cshtml.g.cs
 QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Roles/Edit.cshtml.g.cs
 QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Roles/Index.cshtml.g.cs
-QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Shared/_Layout2.cshtml.g.cs
 QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Shared/_Layout3.cshtml.g.cs
-QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Shared/_LoginPartial.cshtml.g.cs
 QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Shared/_ValidationScriptsPartial.cshtml.g.cs
-QuanLiRapPhim/obj/Debug/net5.0/Razor/Views/Shared/Login.cshtml.g.cs
