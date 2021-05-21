@@ -77,8 +77,11 @@ app.controller('bookticket', function ($scope, $routeParams,$uibModal) {
         $scope.dsghedachon = [];
         if (data != null) {
             data.forEach(function (seat, ind) {
-                if (seat.idGhe!=-1)
-                $scope.dsghedachon.push(seat.idGhe);
+                if (seat.idGhe != -1) {
+                    $scope.dsghedachon.push(seat.idGhe);
+                    if ($scope.seat!=null && $scope.seat == seat.idGhe) $scope.seat = null;
+                }
+                    
             });
         }
         $scope.dsghedachon = $scope.dsghedachon.concat(dsGheDaThanhToan);
@@ -111,7 +114,10 @@ app.controller('bookticket', function ($scope, $routeParams,$uibModal) {
         if (seat.status) {
             if ($scope.dsghedachon.indexOf(seat.id) === -1) {
                 //đổi thuộc tính ghế đã chọn
-                $scope.seat = seat;
+                $scope.seat = seat.id;
+            }
+            else {
+                alert('ghế đã có người chọn');
             }
         }
     }
@@ -120,7 +126,7 @@ app.controller('bookticket', function ($scope, $routeParams,$uibModal) {
         if ($scope.seat != null) {
             var data = {
                 key: 'chon-ghe',
-                idGhe: $scope.seat.id,
+                idGhe: $scope.seat,
                 idLichChieu: $routeParams.id
             };
 
@@ -138,6 +144,7 @@ app.controller('bookticket', function ($scope, $routeParams,$uibModal) {
                 if (response == 'cancel') {
                     data.key = 'huy-ghe-da-chon';
                     socket.emit('Client-to-server-to-all', data);
+                    $scope.seat = data.idGhe;
                 }
             }, function () {
                     data.key = 'huy-ghe-da-chon';
