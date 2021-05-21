@@ -34,14 +34,14 @@ bookticket.on('connection', function (client) {
     });
 
     client.on('Client-to-server-to-all', function (data) {
-        console.log(client.id + ' send to all: ' + data.key + ' : ' + data.value);
+        console.log(client.id + ' send to all: ' + data.key + ' : ' + data.idGhe);
         console.log(data);
         switch (data.key) {
             case 'chon-ghe':
                 chonGhe(client.id, data.idGhe);
                 break;
             case 'huy-ghe-da-chon':
-                huyChon(client.id);
+                huyGhe(client.id);
                 break;
         }
 

@@ -1,6 +1,6 @@
 ﻿var ctxfolderurl = "/View/front-end/movie_review";
 
-var app = angular.module('App', ['ngRoute']);
+var app = angular.module('App', ['ui.bootstrap', 'ngRoute', 'ngAnimate']);
 
 app.controller('Ctroller', function ($scope) {
     $scope.init = function () {
@@ -21,17 +21,16 @@ app.config(function ($routeProvider) {
         .when('/:NameMovie/bookticket/:id', {
             templateUrl: ctxfolderurl + '/bookticket.html',
             controller: 'bookticket'
-        })
-        .when('/:NameMovie/bookticket/payment', {
+        }).when('/:NameMovie/bookticket/:id/payment', {
             templateUrl: ctxfolderurl + '/payment.html',
             controller: 'payment'
-        })
-
+        });
 });
 
 app.controller('index', function ($scope) {
     
 });
+
 app.controller('moviedetail', function ($scope, $routeParams) {
     $scope.NameMovie = $routeParams.NameMovie;
     $scope.Movie = [{
@@ -52,7 +51,7 @@ app.controller('moviedetail', function ($scope, $routeParams) {
         history.back();
     }
 });
-app.controller('bookticket', function ($scope, $routeParams) {
+app.controller('bookticket', function ($scope, $routeParams,$uibModal) {
     $scope.seat;
     $scope.dsghedachon = [];
 
@@ -65,17 +64,24 @@ app.controller('bookticket', function ($scope, $routeParams) {
     }
 
     var socket = io.connect('http://localhost:3000/bookticket');
+
     socket.on('connect', function () {
-        socket.emit('Join room', { idLichChieu: $routeParams.id }); 
+        socket.emit('Join room', { idLichChieu: $routeParams.id });
     });
 
+    //api lấy ghế đã thanh toán
+    var dsGheDaThanhToan = [1, 2, 5, 3];
+
+    //load những ghế đang được người khác chọn
     socket.on('load_ghe_da_chon', function (data) {
         $scope.dsghedachon = [];
         if (data != null) {
             data.forEach(function (seat, ind) {
+                if (seat.idGhe!=-1)
                 $scope.dsghedachon.push(seat.idGhe);
             });
         }
+        $scope.dsghedachon = $scope.dsghedachon.concat(dsGheDaThanhToan);
         $scope.$apply();
     });
 
@@ -104,28 +110,53 @@ app.controller('bookticket', function ($scope, $routeParams) {
     $scope.Click = function (seat) {
         if (seat.status) {
             if ($scope.dsghedachon.indexOf(seat.id) === -1) {
-                var data = {
-                    key: 'chon-ghe',
-                    idGhe: seat.id,
-                    idLichChieu: $routeParams.id
-                };
-
                 //đổi thuộc tính ghế đã chọn
                 $scope.seat = seat;
-
-                //gửi socket lên sever
-                socket.emit('Client-to-server-to-all', data);
-
-                //hien thi ghe da chon
-                //$scope.$apply();
             }
         }
     }
 
-    
+    $scope.open = function () {
+        if ($scope.seat != null) {
+            var data = {
+                key: 'chon-ghe',
+                idGhe: $scope.seat.id,
+                idLichChieu: $routeParams.id
+            };
 
+            //gửi socket lên sever
+            socket.emit('Client-to-server-to-all', data);
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: ctxfolderurl + "/payment.html",
+                controller: "payment",
+                size: 'lg',
+            });
+
+            modalInstance.result.then(function (response) {
+                if (response == 'cancel') {
+                    data.key = 'huy-ghe-da-chon';
+                    socket.emit('Client-to-server-to-all', data);
+                }
+            }, function () {
+                    data.key = 'huy-ghe-da-chon';
+                    socket.emit('Client-to-server-to-all', data);
+            });
+        }
+        else {
+            alert('Ban chưa chon ghe');
+        }
+
+        
+
+    };
+
+    $scope.payment = function () {
+        
+    }
 });
-app.controller('payment', function ($scope) {
+app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
     $scope.init = function () {
         $scope.minuted = 1;
         $scope.second = 10;
@@ -133,8 +164,7 @@ app.controller('payment', function ($scope) {
             $scope.second -= 1;
             if ($scope.second == 0) {
                 if ($scope.minuted == 0) {
-                    clearInterval($scope.timeID);
-                    history.back();
+                    $scope.back();
                 } else
                     $scope.minuted -= 1;
                 $scope.second = 60;
@@ -142,10 +172,17 @@ app.controller('payment', function ($scope) {
             $scope.$apply();
         }, 1000);
     }
+
     $scope.init();
+
     $scope.back = function () {
         clearInterval($scope.timeID);
-        history.back();
+        $uibModalInstance.close('cancel');
     }
-    $scope.payment = function () {}
+
+    $scope.payment = function () {
+        clearInterval($scope.timeID);
+        $uibModalInstance.close('ok');
+    }
+
 });
