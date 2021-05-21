@@ -46,7 +46,7 @@
                         <div class="row col-10">
                             <div class="d-inline-block" style="margin:0 auto" ng-repeat="s2 in s">
                                 <div ng-click="Click(s2)"
-                                     class="{{s2.status?'seat '+ (seat.id==s2.id?'seatchon':(dsghedachon.indexOf(s2.id)==-1?'':'seatdadat')):'seatbad'}}" 
+                                     class="{{s2.status?'seat '+ (seat==s2.id?'seatchon':(dsghedachon.indexOf(s2.id)==-1?'':'seatdadat')):'seatbad'}}" 
                                      id="{{s2.id}}">
                                 </div>
                             </div>
