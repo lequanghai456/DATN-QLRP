@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QuanLiRapPhim.Areas.Admin.Data;
+using QuanLiRapPhim.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,20 @@ namespace QuanLiRapPhim
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<Staff, Role>(options =>
+            {
+                options.User.RequireUniqueEmail = false;
+            }).AddEntityFrameworkStores<IdentityContext>();
+            services.AddDbContext<IdentityContext>(cfg =>
+            {
+                cfg.UseSqlServer(Configuration.GetConnectionString("DPContext"));
+            });
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            });
+
             services.AddDistributedMemoryCache();
             services.AddControllersWithViews().AddSessionStateTempDataProvider();
             services.AddRazorPages()
@@ -52,12 +68,12 @@ namespace QuanLiRapPhim
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseAuthentication();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                   name: "Admin",
-                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                  pattern: "{area:exists}/{controller=Login}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

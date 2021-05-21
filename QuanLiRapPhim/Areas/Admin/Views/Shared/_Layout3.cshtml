@@ -1,0 +1,14 @@
+﻿
+@await Html.PartialAsync("_HeadPartial")
+@RenderSection("css", required: false)
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">@ViewData["Title"]</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    @RenderBody()
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
+@await Html.PartialAsync("_LibJSPartial")
+@RenderSection("Scripts", required: false)
