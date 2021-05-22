@@ -1,0 +1,19 @@
+đăng nhập heroku:
+giabao158357@gmail.com
+gql@12345
+
+cài đặt cli của heroku:
+https://cli-assets.heroku.com/heroku-x64.exe
+
+login vào heroku trước khi thao tác nếu tắt thì login lại:
+heroku login
+
+mở cmd clone project(nếu muốn sửa code mà chưa có file .git)
+heroku git:clone -a my-cinema-qlrp
+cd my-cinema-qlrp
+
+sửa code xong thì push lên server:
+git add .
+git commit -am "commit"
+git push heroku master
+

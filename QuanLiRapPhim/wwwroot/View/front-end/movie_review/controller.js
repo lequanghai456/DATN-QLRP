@@ -63,7 +63,8 @@ app.controller('bookticket', function ($scope, $routeParams,$uibModal) {
         
     }
 
-    var socket = io.connect('http://localhost:3000/bookticket');
+    //var socket = io.connect('https://my-cinema-qlrp.herokuapp.com/bookticket');
+    var socket = io.connect('localhost:3000/bookticket');
 
     socket.on('connect', function () {
         socket.emit('Join room', { idLichChieu: $routeParams.id });
