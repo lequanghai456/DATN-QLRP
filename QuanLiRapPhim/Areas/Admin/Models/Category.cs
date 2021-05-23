@@ -11,6 +11,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         [Key]
         public int Id { get; set; }
         public string Title { get; set; }
-        public ICollection<CategoryMovie> lstMovie { get; set; }
+        public ICollection<Movie> lstMovie { get; set; }
     }
 }

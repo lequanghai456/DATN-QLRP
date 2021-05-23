@@ -14,8 +14,9 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public DateTime DateOfBirth { get; set; }
         [Column(TypeName = "nvarchar(255)")]
         public String Img { get; set; }
-        public  int RoleId { get; set; }
-        
+        public  int? RoleId { get; set; }
+        [ForeignKey("RoleId")]
+        public virtual Role Role { get; set; }
 
 
 

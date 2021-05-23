@@ -33,19 +33,30 @@ namespace QuanLiRapPhim
             }).AddEntityFrameworkStores<IdentityContext>();
             services.AddDbContext<IdentityContext>(cfg =>
             {
-                cfg.UseSqlServer(Configuration.GetConnectionString("DPContext"));
+                cfg.UseSqlServer(Configuration.GetConnectionString("IdentityContext"));
             });
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
             });
-
+            services.AddIdentityCore<User>(options =>
+            {
+                options.User.RequireUniqueEmail = false;
+            }).AddEntityFrameworkStores<IdentityContext>().AddSignInManager();
+            services.AddDbContext<IdentityContext>(cfg =>
+            {
+                cfg.UseSqlServer(Configuration.GetConnectionString("IdentityContext"));
+            });
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            });
             services.AddDistributedMemoryCache();
             services.AddControllersWithViews().AddSessionStateTempDataProvider();
             services.AddRazorPages()
                .AddSessionStateTempDataProvider();
-            services.AddDbContext<DPContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DPContext")));
             
         }
 
