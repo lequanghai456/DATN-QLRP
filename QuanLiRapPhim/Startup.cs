@@ -30,20 +30,17 @@ namespace QuanLiRapPhim
             services.AddIdentity<Staff, Role>(options =>
             {
                 options.User.RequireUniqueEmail = false;
-            }).AddEntityFrameworkStores<IdentityContext>();
+            }).AddEntityFrameworkStores<IdentityContext>().AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>();
+            
             services.AddDbContext<IdentityContext>(cfg =>
             {
                 cfg.UseSqlServer(Configuration.GetConnectionString("IdentityContext"));
             });
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-            });
+ 
             services.AddIdentityCore<User>(options =>
             {
                 options.User.RequireUniqueEmail = false;
-            }).AddEntityFrameworkStores<IdentityContext>().AddSignInManager();
+            }).AddEntityFrameworkStores<IdentityContext>().AddSignInManager().AddClaimsPrincipalFactory<CustomUserClaims>();
             services.AddDbContext<IdentityContext>(cfg =>
             {
                 cfg.UseSqlServer(Configuration.GetConnectionString("IdentityContext"));
