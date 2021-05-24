@@ -14,20 +14,11 @@ app.config(function ($routeProvider) {
         })
 });
 
-app.controller('index', function ($scope, $uibModal, $rootScope) {
-    $rootScope.validate = {
-        rules: {
-            Name: {
-                required: true
-            }
-
-        },
-        message: {
-            Name: {
-                required: "Không được bỏ trống tên chức vụ"
-            }
-        }
-    }
+app.controller('index', function ($scope,$uibModal) {
+    //$scope.init = function () {
+     
+    //}
+    //$scope.init();
     $scope.show = function () {
         $scope.modalInstance = $uibModal.open({
             templateUrl: '/Admin/Roles/Create',

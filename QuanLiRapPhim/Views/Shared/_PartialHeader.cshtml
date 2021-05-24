@@ -51,18 +51,18 @@
                         Contact
                     </a>
                 </li>
-                @if (SignInManager.IsSignedIn(User) && @User.FindFirst("FullNameUser") != null)
+                @if (SignInManager.IsSignedIn(User))
                 {
                     <li class="menu-item" id="profile">
                         <a asp-controller="Profile">
                             <img src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-cgv/icon_login25.png"
                                  width="24" height="24">
-                            @User.FindFirst("FullNameUser").Value!
+                            @UserManager.GetUserName(User)!
                         </a>
                     </li>
                     <li class="menu-item">
                         <img class="fas fa-sign-out" width="24" height="24" />
-                        <a asp-controller="Login" asp-action="Logout" style="height:100%">
+                        <a asp-controller="Profile" style="height:100%">
                             Logout
                         </a>
                     </li>

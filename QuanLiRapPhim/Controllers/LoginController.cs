@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
@@ -15,13 +14,11 @@ namespace QuanLiRapPhim.Controllers
         private UserManager<User> StaffMgr { get; }
         private SignInManager<User> SignInMgr { get; }
         private readonly IdentityContext _identityConext;
-        
         public LoginController(UserManager<User> userManager, SignInManager<User> signInManager,IdentityContext identityContext)
         {
             _identityConext = identityContext;
             StaffMgr = userManager;
             SignInMgr = signInManager;
-            //_httpContextAccessor = httpContextAccessor;
         }
         public IActionResult Index()
         {
@@ -67,7 +64,6 @@ namespace QuanLiRapPhim.Controllers
         }
         public async Task<IActionResult> Logout()
         {
-             
             await SignInMgr.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }

@@ -578,9 +578,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(255)");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
