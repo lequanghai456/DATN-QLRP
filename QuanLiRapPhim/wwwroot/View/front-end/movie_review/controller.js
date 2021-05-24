@@ -9,6 +9,20 @@ app.controller('Ctroller', function ($scope) {
     $scope.init();
 });
 
+app.factory('dataservice', function ($http) {
+    var headers = {
+        "Content-Type": "application/json;odata=verbose",
+        "Accept": "application/json;odata=verbose",
+    }
+
+    return {
+        GetMovie: function (callback) {
+            $http.get('/moviereview/getmovie').then(callback);
+        }
+            
+    }
+});
+
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
@@ -27,110 +41,69 @@ app.config(function ($routeProvider) {
         });
 });
 
-app.controller('index', function ($scope, $rootscope) {
-    $rootscope.data = [
-        {
-            id:1,
-            name: 'Maleficient',
-            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
-            img: 'thumb-3.jpg'
-        }, {
-            id: 2,
-            name: 'Maleficient',
-            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
-            img: 'thumb-4.jpg'
-        }, {
-            id: 3,
-            name: 'The adventure of Tintin',
-            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
-            img: 'thumb-5.jpg'
-        }, {
-            id: 4,
-            name: 'Hobbit',
-            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
-            img: 'thumb-6.jpg'
-        }, {
-            id: 5,
-            name: 'Exists',
-            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
-            img: 'thumb-7.jpg'
-        }, {
-            id: 6,
-            name: 'Drive hard',
-            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
-            img: 'thumb-8.jpg'
-        }, {
-            id: 7,
-            name: 'Maleficient',
-            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
-            img: 'thumb-1.jpg'
-        }, {
-            id: 8,
-            name: 'Robocop',
-            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
-            img: 'thumb-2.jpg'
-        }, {
-            id: 9,
-            name: 'Life of Pi',
-            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
-            img: 'thumb-3.jpg'
-        }, {
-            id: 10,
-            name: 'The Colony',
-            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
-            img: 'thumb-3.jpg'
-        }
-    ];
+app.controller('index', function ($scope, $rootScope, dataservice) {
+    $scope.init = function () {
+        dataservice.GetMovie(function (rs) {
+            $rootScope.data = rs.data;
 
-    $scope.totalItems = $rootscope.data.length;
-    $scope.currentPage = 1;
-    $scope.numPerPage = 8;
-    $scope.maxSize = 5; //Number of pager buttons to show
+            if ($rootScope.data == null) {
+                console.log('Không có phim');
+            } else {
+                $scope.totalItems = $rootScope.data.length;
+                $scope.currentPage = 1;
+                $scope.numPerPage = 8;
+                $scope.maxSize = 5; //Number of pager buttons to show
 
-    $scope.setPage = function (pageNo) {
-        $scope.currentPage = pageNo;
-    };
+                $scope.setPage = function (pageNo) {
+                    $scope.currentPage = pageNo;
+                };
 
-    $scope.numPages = function () {
-        return Math.ceil($rootscope.data.length / $scope.numPerPage);
+                $scope.numPages = function () {
+                    return Math.ceil($rootScope.data.length / $scope.numPerPage);
+                }
+
+                $scope.pageChanged = function () {
+                    console.log('Page changed to: ' + $scope.currentPage);
+                };
+
+                $scope.setItemsPerPage = function (num) {
+                    $scope.itemsPerPage = num;
+                    $scope.currentPage = 1;
+                }
+                $scope.$watch('currentPage + numPerPage', function () {
+                    var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+                        , end = begin + $scope.numPerPage;
+
+                    $scope.movies = $rootScope.data.slice(begin, end);
+                });
+                $(document).ready(function () {
+                    $(".pagination li").addClass("page-item");
+                    $(".pagination li a").addClass("page-link");
+                });
+                    }
+        });
     }
-
-    $scope.pageChanged = function () {
-        console.log('Page changed to: ' + $scope.currentPage);
-    };
-
-    $scope.setItemsPerPage = function (num) {
-        $scope.itemsPerPage = num;
-        $scope.currentPage = 1;
-    }
-    $scope.$watch('currentPage + numPerPage', function () {
-        var begin = (($scope.currentPage - 1) * $scope.numPerPage)
-            , end = begin + $scope.numPerPage;
-
-        $scope.movies = $rootscope.data.slice(begin, end);
-    });
-    $(document).ready(function () {
-        $(".pagination li").addClass("page-item");
-        $(".pagination li a").addClass("page-link");
-    });
+    $scope.init();
 });
 
 app.controller('moviedetail', function ($scope, $routeParams) {
     $scope.NameMovie = $routeParams.NameMovie;
     //viết api kiểm tra tồn tại của phim
-    
-});
-app.controller('bookticket', function ($scope, $routeParams,$uibModal) {
-    $scope.seat;
-    $scope.dsghedachon = [];
 
     $scope.init = function () {
         //kiểm tra tồn tại của phim
         if (false) {
             //vào trang không tìm thấy phim
-        } 
-        
+        }
+
     }
+    
+});
+app.controller('bookticket', function ($scope, $routeParams,$uibModal,$rootScope) {
+    $scope.seat;
+    $scope.dsghedachon = [];
+
+    
 
     //var socket = io.connect('https://my-cinema-qlrp.herokuapp.com/bookticket');
     var socket = io.connect('localhost:3000/bookticket');
