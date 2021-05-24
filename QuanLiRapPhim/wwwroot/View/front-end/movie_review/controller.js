@@ -27,29 +27,98 @@ app.config(function ($routeProvider) {
         });
 });
 
-app.controller('index', function ($scope) {
-    
+app.controller('index', function ($scope, $rootscope) {
+    $rootscope.data = [
+        {
+            id:1,
+            name: 'Maleficient',
+            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
+            img: 'thumb-3.jpg'
+        }, {
+            id: 2,
+            name: 'Maleficient',
+            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
+            img: 'thumb-4.jpg'
+        }, {
+            id: 3,
+            name: 'The adventure of Tintin',
+            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
+            img: 'thumb-5.jpg'
+        }, {
+            id: 4,
+            name: 'Hobbit',
+            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
+            img: 'thumb-6.jpg'
+        }, {
+            id: 5,
+            name: 'Exists',
+            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
+            img: 'thumb-7.jpg'
+        }, {
+            id: 6,
+            name: 'Drive hard',
+            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
+            img: 'thumb-8.jpg'
+        }, {
+            id: 7,
+            name: 'Maleficient',
+            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
+            img: 'thumb-1.jpg'
+        }, {
+            id: 8,
+            name: 'Robocop',
+            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
+            img: 'thumb-2.jpg'
+        }, {
+            id: 9,
+            name: 'Life of Pi',
+            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
+            img: 'thumb-3.jpg'
+        }, {
+            id: 10,
+            name: 'The Colony',
+            descript: 'Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.',
+            img: 'thumb-3.jpg'
+        }
+    ];
+
+    $scope.totalItems = $rootscope.data.length;
+    $scope.currentPage = 1;
+    $scope.numPerPage = 8;
+    $scope.maxSize = 5; //Number of pager buttons to show
+
+    $scope.setPage = function (pageNo) {
+        $scope.currentPage = pageNo;
+    };
+
+    $scope.numPages = function () {
+        return Math.ceil($rootscope.data.length / $scope.numPerPage);
+    }
+
+    $scope.pageChanged = function () {
+        console.log('Page changed to: ' + $scope.currentPage);
+    };
+
+    $scope.setItemsPerPage = function (num) {
+        $scope.itemsPerPage = num;
+        $scope.currentPage = 1;
+    }
+    $scope.$watch('currentPage + numPerPage', function () {
+        var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+            , end = begin + $scope.numPerPage;
+
+        $scope.movies = $rootscope.data.slice(begin, end);
+    });
+    $(document).ready(function () {
+        $(".pagination li").addClass("page-item");
+        $(".pagination li a").addClass("page-link");
+    });
 });
 
 app.controller('moviedetail', function ($scope, $routeParams) {
     $scope.NameMovie = $routeParams.NameMovie;
-    $scope.Movie = [{
-        name: 'a',
-        Name: 'A'
-    },
-    {
-        name: 'b',
-        Name:'B'
-        }];
     //viết api kiểm tra tồn tại của phim
-    if ($scope.NameMovie == $scope.Movie[0].name || $scope.NameMovie == $scope.Movie[0].name) {
-        //đưa phim lên web
-        $scope.currenMovie = $scope.Movie[0];
-    }
-    else {
-        //vào trang không tìm thấy phim
-        history.back();
-    }
+    
 });
 app.controller('bookticket', function ($scope, $routeParams,$uibModal) {
     $scope.seat;
