@@ -47,15 +47,15 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             try
             {
                 ViewBag.Message = "Admin already registered";
-                Staff staff = await StaffMgr.FindByNameAsync("Admin");
+                Staff staff = await StaffMgr.FindByNameAsync("Admin1");
 
-                Role role = await RoleMgr.FindByNameAsync("Admin");
+                Role role = await RoleMgr.FindByNameAsync("Admin1");
                 if (staff == null)
                 {
                     staff = new Staff();
-                    staff.UserName = "Admin";
+                    staff.UserName = "Admin1";
                     staff.PasswordHash = "abc123";
-                    staff.FullName = "Lê Quang Hải";
+                    staff.FullName = "Hồ Gia Bảo";
                     staff.RoleId = 1;
                     IdentityResult result = await StaffMgr.CreateAsync(staff, "abc123");
                     if (result.Succeeded)
