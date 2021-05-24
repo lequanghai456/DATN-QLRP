@@ -10,8 +10,8 @@ using QuanLiRapPhim.Areas.Admin.Data;
 namespace QuanLiRapPhim.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20210521015338_updatemodel")]
-    partial class updatemodel
+    [Migration("20210522095059_CreateAdmin")]
+    partial class CreateAdmin
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -205,7 +205,7 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
@@ -227,6 +227,8 @@ namespace QuanLiRapPhim.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -280,6 +282,20 @@ namespace QuanLiRapPhim.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Staff", b =>
+                {
+                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Role", "Role")
+                        .WithMany("Staffs")
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Role", b =>
+                {
+                    b.Navigation("Staffs");
                 });
 #pragma warning restore 612, 618
         }
