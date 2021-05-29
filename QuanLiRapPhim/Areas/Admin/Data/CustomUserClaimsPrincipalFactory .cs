@@ -19,7 +19,13 @@ namespace QuanLiRapPhim.Areas.Admin.Data
             var identity = await base.GenerateClaimsAsync(user);
 
             identity.AddClaim(new Claim("FullName", user.FullName));
-
+            identity.AddClaim(new Claim("RoleId", user.RoleId.ToString()));
+            var roles = await UserManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role, role));
+                identity.AddClaim(new Claim("Role", role));
+            }
             return identity;
         }
     }
