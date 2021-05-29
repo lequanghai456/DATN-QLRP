@@ -35,7 +35,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             if(result.Succeeded)
             {
 
-                HttpContext.Session.SetString("Role", RoleMgr.FindByIdAsync(User.FindFirstValue("RoleId")).ToString());
+                //HttpContext.Session.SetString("Role", RoleMgr.FindByIdAsync(User.FindFirstValue("RoleId")).ToString());
                 return RedirectToAction("Index", "home");
             }
             ViewData["Message"] = "Tài khoản hoặc mật khẩu không chính xát vui lòng đăng nhập lại";
@@ -43,10 +43,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Logout()
         {
-            var demo = User.FindFirstValue("RoleId");
-            //var listRole = RoleMgr.Roles.ToListAsync();
-            var demo1 = User.Claims.ToList();
-            HttpContext.Session.Clear();
+            //var demo = User.FindFirstValue("RoleId");
+            ////var listRole = RoleMgr.Roles.ToListAsync();
+            //var demo1 = User.Claims.ToList();
+            //HttpContext.Session.Clear();
             await SignInMgr.SignOutAsync();
             return RedirectToAction("Index", "Login");
         }
