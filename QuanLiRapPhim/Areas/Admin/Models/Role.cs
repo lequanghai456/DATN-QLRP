@@ -11,8 +11,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     public class Role : IdentityRole<int>
     {
         
-        [Required]
-        public string Name { get; set; }
+       
         public virtual ICollection<Staff> Staffs { get; set; }
     }
 }

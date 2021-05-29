@@ -1,4 +1,7 @@
-﻿<header class="header">
+﻿@using Microsoft.AspNetCore.Identity
+@using QuanLiRapPhim.Areas.Admin.Models
+@inject SignInManager<Staff> SignInManager
+<header class="header">
     <nav class="navbar">
         <div class="container-fluid">
             <div class="navbar-holder d-flex align-items-center justify-content-between">
@@ -7,8 +10,11 @@
                         <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">Dashboard</strong></div>
                     </a>
                 </div>
-                    <a asp-controller="Login" asp-action="Logout">@User.FindFirst("FullName").Value, Logout</a>
-            </div>
+                <a asp-controller="Login" asp-action="Logout">
+                    @if (SignInManager.IsSignedIn(User) && User.FindFirst("FullName") != null)
+                    {@User.FindFirst("FullName").Value}!,Logout
+            </a>
         </div>
-    </nav>
+    </div>
+</nav>
 </header>
