@@ -97,6 +97,9 @@ app.controller('moviedetail', function ($scope, $routeParams) {
         }
 
     }
+    $scope.traloi = function (id) {
+        $scope.comment = id;
+    }
     
 });
 app.controller('bookticket', function ($scope, $routeParams,$uibModal,$rootScope) {

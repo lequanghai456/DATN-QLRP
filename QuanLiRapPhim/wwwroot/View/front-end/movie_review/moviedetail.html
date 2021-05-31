@@ -195,3 +195,103 @@
         </div>
     </div>
 </div>
+<style>
+    .comment-author img {
+        margin: 0 auto;
+    }
+    .comment-content {
+        color: #999;
+        width: 80%;
+        min-height: 60px;
+        max-height: 60px;
+        padding: 5px 10px;
+        background-color: #fff;
+        cursor: text;
+        border: 1px solid #bbb;
+    }
+    .summary {
+        padding: 5px;
+        background-color: #fff;
+        cursor: text;
+        border: 1px solid #bbb;
+    }
+    .commentItems{
+        padding-top:10px;
+    }
+    .commentItems2{
+        padding: 10px 0 0 100px;
+    }
+    .comment-item2 {
+        padding-top: 10px;
+    }
+    .form-comment2{
+        padding-top:10px;
+    }
+    .comment{
+        padding:10px;
+    }
+</style>
+<div class="comment">
+    <span><h1>Comment</h1></span>
+    <form class="comment-area row">
+        <textarea class="comment-content col-11" placeholder="Comment here!"></textarea>
+        <input type="submit" class="btn btn-success col-1" value="Send"/>
+    </form>
+    <div class="commentItems">
+        <div class="comment-item row">
+            <div class="comment-author col-1">
+                <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                <div>
+                    <input type="submit" class="btn btn-success" value="trả lời" height="5" ng-click="traloi(1)" />
+                </div>
+            </div>
+
+            <div class="summary col-11">
+                <div><span><h2>name user</h2></span></div>
+                <div><span>comment</span></div>
+            </div>
+
+            <div ng-show="comment == 1" class="col-12 form-comment2">
+                <form class="comment-area2 row">
+                    <textarea class="comment-content col-11" placeholder="Comment here!"></textarea>
+                    <input type="submit" class="btn btn-success col-1" value="Send" />
+                </form>
+            </div>
+
+            <div class="commentItems2 col-12">
+
+                <div class="comment-item2 row">
+                    <div class="comment-author col-1">
+                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                    </div>
+                    <div class="summary col-11">
+                        <div><span><h2>name user</h2></span></div>
+                        <div><span>comment</span></div>
+                    </div>
+                </div>
+
+                <div class="comment-item2 row">
+                    <div class="comment-author col-1">
+                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                    </div>
+                    <div class="summary col-11">
+                        <div><span><h2>name user</h2></span></div>
+                        <div><span>comment</span></div>
+                    </div>
+                </div>
+
+                <div class="comment-item2 row">
+                    <div class="comment-author col-1">
+                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                    </div>
+                    <div class="summary col-11">
+                        <div><span><h2>name user</h2></span></div>
+                        <div><span>comment</span></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>       
+    </div>
+</div>
