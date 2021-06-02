@@ -3,6 +3,14 @@
 <head>
     @await Html.PartialAsync("_HeadPartial")
     @RenderSection("css", required: false)
+    <style>
+        .form-control{
+            width: 100% !important;
+        }
+        span .selection{
+            display:block;
+        }
+    </style>
 </head>
 <body>
     @await Html.PartialAsync("_SidebarPartial")

@@ -20,9 +20,9 @@
     </div>
     <div class="movie-list">
         <div class="movie" ng-repeat="movie in movies">
-            <figure class="movie-poster"><img src="../../dummy/{{movie.img}}" alt="#"></figure>
-            <div class="movie-title"><a href="moviereview/#!{{movie.name}}">{{movie.name}}</a></div>
-            <p>{{movie.descript}}</p>
+            <figure class="movie-poster"><img src="../../dummy/{{movie.poster}}" alt="#"></figure>
+            <div class="movie-title"><a href="moviereview/#!{{movie.title}}">{{movie.title}}</a></div>
+            <p>{{movie.describe}}</p>
         </div>
     </div> <!-- .movie-list -->
         <ul uib-pagination
