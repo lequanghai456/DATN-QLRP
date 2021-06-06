@@ -112,5 +112,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     //    $scope.selected = [];
     //    vm.selectAll = false;
     //}
+    $scope.create = true;
 
+    $scope.action = "Create";
 });
