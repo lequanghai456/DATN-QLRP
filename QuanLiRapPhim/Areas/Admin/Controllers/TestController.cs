@@ -30,8 +30,11 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             _context = context;
         }
 
+        public IActionResult Index() { 
+            return View();
+        }
 
-        public IActionResult Index(int? id)
+        public IActionResult CreateEdit(int? id)
         {
             if (id != null)
             {

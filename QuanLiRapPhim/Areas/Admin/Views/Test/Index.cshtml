@@ -1,16 +1,15 @@
 ﻿@model QuanLiRapPhim.Areas.Admin.Models.Test
     <div  id='contentMain'  class="row" ng-app="App" ng-controller="Ctroller">
-        <div class="col-4" ng-show="{{create}}">
-            @await Html.PartialAsync("Create")
+        <div class="col-4" ng-view>
+
         </div>
         <div class="col" >
-            <div ng-view>
-                <table class="table dataTable table-hover table-striped"
+            <a href="/admin/Test#!create" class="btn btn-success">Create</a>
+            <table class="table dataTable table-hover table-striped"
                        datatable
                        dt-options="dtEnglishOptions"
                        dt-columns="dtEnglishColumns"
                        id="tblData"></table>
-            </div>
         </div>
     </div>
 

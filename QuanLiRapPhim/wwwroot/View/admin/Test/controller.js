@@ -1,7 +1,28 @@
 ﻿var ctxfolderurl = "/View/Admin/Test";
 
-var app = angular.module('App', ['datatables']);
+var app = angular.module('App', ['datatables', 'ngRoute']);
 
+app.config(function ($routeProvider) {
+    $routeProvider
+        .when('/', {
+            controller: 'index1'
+        })
+        .when('/create', {
+            templateUrl: 'https://localhost:44350/admin/Test/CreateEdit',
+            controller: 'create'
+        })
+        .when('/:id*', {
+            templateUrl: function (urlattr) { return 'https://localhost:44350/admin/Test/CreateEdit/' + urlattr.id },
+            controller: 'edit'
+        })
+});
+
+app.controller('create', function ($scope) {
+    $scope.action = 'Create';
+});
+app.controller('edit', function ($scope) {
+    $scope.action = 'Edit';
+});
 app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile) {
     var vm = $scope;
     
@@ -56,7 +77,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         return data;
     }));
     vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('id','abc').withOption('sWidth', '60px').renderWith(function (data, type) {
-        return '<a href="/Admin/Test/index/' + data + '">detail</a>|<a href="/Admin/Test/index/' + data +'">edit</a>';
+        return '<a href="/admin/Test#!/' + data + '">detail</a>|<a href="/admin/Test#!/' + data +'">edit</a>';
     }));
     vm.reloadData = reloadData;
     vm.dtInstance = {};
@@ -92,11 +113,4 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     //    vm.selectAll = false;
     //}
 
-    $scope.init = function () {
-        $scope.create = true;
-
-        $scope.action = "Create";
-    }
-
-    $scope.init();
 });
