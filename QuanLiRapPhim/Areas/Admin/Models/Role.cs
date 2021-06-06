@@ -13,5 +13,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         
        
         public virtual ICollection<Staff> Staffs { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

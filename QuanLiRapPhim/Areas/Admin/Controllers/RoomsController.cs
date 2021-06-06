@@ -41,7 +41,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         public  JsonResult JsonRoom()
         {
             var data =  _context.Rooms.Include(r=>r.Staff).ToList();
-            return Json(data);
+            return Json(new { data = data });
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -49,6 +49,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 _context.Add(room);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

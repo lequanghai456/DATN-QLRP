@@ -13,5 +13,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public String Title { get; set; }
         public int Age { get; set; }
         public String Describe { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

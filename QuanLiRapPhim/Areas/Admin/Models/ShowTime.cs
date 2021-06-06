@@ -21,5 +21,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         [ForeignKey("MovieId")]
         public virtual Movie Movie { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

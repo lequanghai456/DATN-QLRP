@@ -6,14 +6,7 @@ app.config(function ($routeProvider) {
         .when('/', {
             controller: 'Ctroller'
         })
-        //.when('/create', {
-        //    templateUrl: 'https://localhost:44350/admin/Test/CreateEdit',
-        //    controller: 'create'
-        //})
-        //.when('/:id*', {
-        //    templateUrl: function (urlattr) { return 'https://localhost:44350/admin/Test/CreateEdit/' + urlattr.id },
-        //    controller: 'edit'
-        //})
+      
 });
 app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile) {
     var vm = $scope;
@@ -35,7 +28,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
                 , complete: function (data) {
                     $.unblockUI("#contentMain");
-                    /*console.log(JSON.stringify(data.data));*/
+                  
                 }
             })
             .withPaginationType('full_numbers')
@@ -74,11 +67,9 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         //}
         if (id != null) {
             vm.create = true;
-            vm.classDataTable = "col-7";
-
+            
         }
         else {
-            vm.classDataTable = "col";
             vm.create = false;
         }
         

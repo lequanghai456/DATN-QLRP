@@ -16,6 +16,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public DateTime DateOfBirth { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }
         public virtual ICollection<Rate> Rate { get; set; }
-        
+        public bool IsDelete { get; set; }
+
     }
 }

@@ -8,5 +8,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public int X{get;set;}
         public int Y{get;set;}
         public virtual ICollection<Ticket> Ticket { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

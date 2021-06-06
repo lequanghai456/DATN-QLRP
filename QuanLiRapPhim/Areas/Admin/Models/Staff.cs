@@ -19,7 +19,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public  int? RoleId { get; set; }
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
-
+        public bool IsDelete { get; set; }
 
 
     }

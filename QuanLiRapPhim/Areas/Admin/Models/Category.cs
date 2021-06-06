@@ -12,5 +12,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public ICollection<Movie> lstMovie { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

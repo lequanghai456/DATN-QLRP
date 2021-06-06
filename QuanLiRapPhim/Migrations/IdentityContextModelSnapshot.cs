@@ -145,11 +145,11 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -172,6 +172,9 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<int?>("BillId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<int>("IsTicket")
                         .HasColumnType("int");
 
@@ -183,9 +186,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -207,11 +207,11 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -228,7 +228,13 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Parent")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("SubmittedDate")
@@ -236,9 +242,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -260,6 +263,9 @@ namespace QuanLiRapPhim.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -268,9 +274,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<int>("Staus")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -294,11 +297,11 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -314,6 +317,9 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("MacId")
                         .HasColumnType("int");
@@ -334,9 +340,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("Trailer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MacId");
@@ -351,6 +354,9 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("MovieId")
                         .HasColumnType("int");
 
@@ -362,9 +368,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -386,6 +389,9 @@ namespace QuanLiRapPhim.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -393,9 +399,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -420,14 +423,14 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<int?>("IdStaftManager")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Row")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -443,14 +446,14 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -467,14 +470,14 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("MovieId")
                         .HasColumnType("int");
 
                     b.Property<int?>("RoomId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -515,6 +518,9 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("Img")
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -551,9 +557,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -576,6 +579,9 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -594,6 +600,9 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("PurchaseDate")
                         .HasColumnType("datetime2");
 
@@ -602,9 +611,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<int?>("ShowTimeId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -640,6 +646,9 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -669,9 +678,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

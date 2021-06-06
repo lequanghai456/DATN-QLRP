@@ -13,6 +13,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public int? RoomId { get; set; }
         [ForeignKey("RoomId")]
         public virtual Room Room { get; set; }
+        public bool IsDelete { get; set; }
 
     }
 }
