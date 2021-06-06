@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLiRapPhim.Areas.Admin.Data;
 
 namespace QuanLiRapPhim.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20210605082431_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,9 +150,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.ToTable("Bills");
@@ -184,9 +183,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BillDetailId");
@@ -209,9 +205,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -236,9 +229,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -269,9 +259,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<int>("Staus")
                         .HasColumnType("int");
 
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RoomId");
@@ -296,9 +283,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -334,9 +318,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("Trailer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MacId");
@@ -362,9 +343,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -393,9 +371,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -426,9 +401,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<int>("Row")
                         .HasColumnType("int");
 
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdStaftManager");
@@ -448,9 +420,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -472,9 +441,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<int?>("RoomId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -551,9 +517,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -602,9 +565,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<int?>("ShowTimeId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -669,9 +629,6 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isdelete")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
