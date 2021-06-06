@@ -29,6 +29,8 @@ namespace QuanLiRapPhim.Areas.Admin.Data
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Staff> Staffs { get; set; }
+        public DbSet<Test> Test { get; set; }
 
     }
 }

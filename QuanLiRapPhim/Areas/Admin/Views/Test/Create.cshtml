@@ -1,0 +1,30 @@
+﻿@model QuanLiRapPhim.Areas.Admin.Models.Test
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Test</h4>
+<hr />
+<div class="row">
+    <div class="col">
+        <form asp-action="CreateOrEdit" ng-validate="validate">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Number" class="control-label"></label>
+                <input asp-for="Number" class="form-control" />
+                <span asp-validation-for="Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="{{action}}" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
