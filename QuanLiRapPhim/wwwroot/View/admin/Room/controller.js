@@ -4,14 +4,26 @@ var app = angular.module('App', ['datatables', 'ngRoute']);
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
+            
             controller: 'Ctroller'
         })
       
 });
-app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile) {
+app.factory('dataservice', function ($http) {
+    return {
+        deleteRoom: function (data, callback) {
+            $http.post('/Admin/Rooms/DeleteRoom?id='+data).then(callback);
+        },
+    }
+});
+
+app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice) {
     var vm = $scope;
     var id = document.getElementById('idEdit');
+
    
+    
+    
     $scope.init = function () {
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withOption('ajax', {
@@ -54,7 +66,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         }));
        
         vm.dtColumns.push(DTColumnBuilder.newColumn('id', 'Option').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Rooms/Index/' + data + '#! > Edit</a >|<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Rooms/Index/' + data +'#! > Delete</a >';
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Rooms/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" ng-click="delete('+data+')">Delete</button>';
         }));
         //vm.reloadData = reloadData;
         //vm.dtInstance = {};
@@ -75,10 +87,15 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         
     }
     $scope.init();
-
+    
     vm.Show = function () {
         vm.create = !vm.create;
+    };
+    $scope.delete = function (idDelete) {
+        dataservice.deleteRoom(idDelete, function (rs) {
+            rs = rs.data;
+        });
     }
-   
+
 
 });

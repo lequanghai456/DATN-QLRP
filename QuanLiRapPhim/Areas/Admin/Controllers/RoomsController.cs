@@ -20,12 +20,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             _context = context;
         }
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
+        //public override void OnActionExecuted(ActionExecutedContext context)
+        //{
           
-            ViewBag.List = _context.Rooms.Include(r => r.Staff);
-            base.OnActionExecuted(context);
-        }
+        //    ViewBag.List = _context.Rooms.Include(r => r.Staff);
+        //    base.OnActionExecuted(context);
+        //}
         public IActionResult Index(int? id)
         {
             Room room = null;
@@ -40,8 +40,22 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         //Danh sach phong json
         public  JsonResult JsonRoom()
         {
-            var data =  _context.Rooms.Include(r=>r.Staff).ToList();
+            var data =  _context.Rooms.Include(r=>r.Staff).Where(x=>x.IsDelete == false).ToList();
             return Json(new { data = data });
+        }
+       
+        public JsonResult DeleteRoom(int? id)
+        {
+            Room room = new Room();
+            room = _context.Rooms.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
+            if(room == null)
+            {
+                return Json("Fail");
+            }
+            room.IsDelete = true;
+            _context.Update(room);
+            _context.SaveChangesAsync();
+            return Json("Pass");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
