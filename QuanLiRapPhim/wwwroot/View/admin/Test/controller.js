@@ -16,7 +16,6 @@ app.config(function ($routeProvider) {
             controller: 'edit'
         })
 });
-
 app.controller('create', function ($scope) {
     $scope.action = 'Create';
 });
@@ -35,10 +34,9 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     vm.dtEnglishOptions = DTOptionsBuilder.newOptions()
         .withOption('ajax', {
             url: "/Admin/Test/GetAll"
-            ,beforeSend: function (jqXHR, settings) {
+            , beforeSend: function (jqXHR, settings) {
                 //resetCheckbox();
                 $.blockUI({
-                    target: "#contentMain",
                     boxed: true,
                     message: 'loading...'
                 });
@@ -48,8 +46,8 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             //    d.Name = $scope.model.Name;
             //    d.Number = $scope.model.Number;
             //}
-            ,complete: function (data) {
-                $.unblockUI("#contentMain");
+            , complete: function (data) {
+                $.unblockUI();
                 console.log(JSON.stringify(data.data));
             }
         })
@@ -57,15 +55,11 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         //.withDOM("<'table-scrollable't>ip")
         .withDataProp('data')
         .withDisplayLength(10)
-        //.withOption('initComplete', function (settings, json) {
-        //})
-        //.withOption('createdRow', function (row, data, dataIndex) {
-        //    const contextScope = $scope.$new(true);
-        //    contextScope.data = data;
-        //    contextScope.contextMenu = $scope.contextMenu;
-        //    $compile(angular.element(row).contents())($scope);
-        //    $compile(angular.element(row).attr('context-menu', 'contextMenu'))(contextScope);
-        //});
+        .withOption('createdRow', function (row) {
+            $compile(angular.element(row).contents())($scope);
+        });;
+
+
     vm.dtEnglishColumns = [];
     vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('id', 'ID').withOption('sWidth', '60px').renderWith(function (data, type) {
         return data;
@@ -76,12 +70,17 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('number', 'Number').withOption('sWidth', '60px').renderWith(function (data, type) {
         return data;
     }));
-    vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('id','abc').withOption('sWidth', '60px').renderWith(function (data, type) {
-        return '<a href="/admin/Test#!/' + data + '">detail</a>|<a href="/admin/Test#!/' + data +'">edit</a>';
-    }));
+    vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('id', 'abc').withOption('sWidth', '60px').renderWith(render).withOption('searchable', false).notSortable());
     vm.reloadData = reloadData;
     vm.dtInstance = {};
 
+    $scope.del = function (id) {
+        alert("deleted " + id);
+    }
+    function render (data) {
+        var html = '<button class="btn btn-success" ng-click="del(' + data + ')" >delete</button>|<a href="/admin/Test#!/' + data + '">edit</a>';
+        return html;
+    }
     function reloadData(resetPaging) {
         vm.dtEnglishInstance.reloadData(callback, resetPaging);
     }
@@ -112,5 +111,4 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     //    $scope.selected = [];
     //    vm.selectAll = false;
     //}
-
 });
