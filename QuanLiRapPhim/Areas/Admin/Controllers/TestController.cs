@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
 using System;
@@ -16,7 +17,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             Name = v1;
             Number = v2;
         }
-
         public string Name { get; set; }
         public string Number { get; set; }
     }
@@ -69,8 +69,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             return View("Index");
         }
 
-        //[HttpGet]
-        public JsonResult JtableTestModel(JTableModelCustom jTablePara)
+        [HttpGet]
+        public string JtableTestModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
             var query = from a in _context.Test
@@ -80,13 +80,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
             int count = query.Count();
 
-
             var data = query.AsQueryable()
                 .Skip(intBegin)
                 .Take(jTablePara.Length);
 
             var jdata =JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Name", "Number");
-            return Json(jdata);
+            return JsonConvert.SerializeObject(jdata);
         }
 
         [HttpGet]
