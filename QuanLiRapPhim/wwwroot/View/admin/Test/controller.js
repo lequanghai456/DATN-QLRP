@@ -57,14 +57,14 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             }
             , type: 'GET'
             ,data: function (d) {
-                d.Name = '';
+                d.Name = 'a';
                 d.Number = '';
             }
-            , contentType: "application/json; charset=utf-8"
+            //, contentType: "application/json; charset=utf-8"
             , dataType: "json"
             , complete: function (rs) {
                 $.unblockUI();
-                console.log(rs.responseJSON);
+                console.log(rs);
                 if (rs && rs.responseJSON && rs.responseJSON.Error) {
                     App.toastrError(rs.responseJSON.Title);
                 }

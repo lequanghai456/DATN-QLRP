@@ -12,11 +12,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
     public class JTableModelCustom : JTableModel
     {
-        public JTableModelCustom(string v1, string v2)
-        {
-            Name = v1;
-            Number = v2;
-        }
         public string Name { get; set; }
         public string Number { get; set; }
     }
@@ -50,7 +45,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 try
                 {
-                    if (test.Id != 0)
+                    if (test.Id == 0)
                     {
                         _context.Add(test);
                     }
