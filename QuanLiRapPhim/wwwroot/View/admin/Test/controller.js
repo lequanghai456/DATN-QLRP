@@ -2,6 +2,21 @@
 
 var app = angular.module('App', ['datatables', 'ngRoute']);
 
+
+app.factory('dataservice', function ($http) {
+    var headers = {
+        "Content-Type": "application/json;odata=verbose",
+        "Accept": "application/json;odata=verbose",
+    }
+
+    return {
+        GetALL: function (callback) {
+            $http.get('/Admin/Test/GetAll').then(callback);
+        }
+
+    }
+});
+
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
@@ -22,7 +37,7 @@ app.controller('create', function ($scope) {
 app.controller('edit', function ($scope) {
     $scope.action = 'Edit';
 });
-app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile) {
+app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice) {
     var vm = $scope;
     
     //$scope.selected = [];
@@ -30,47 +45,59 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     //$scope.toggleAll = toggleAll;
     //$scope.toggleOne = toggleOne;
 
-    //var titleHtml = '<label class="mt-checkbox"><input type="checkbox" ng-model="selectAll" ng-change="toggleAll(selectAll, selected)"/><span></span></label>';
+    var titleHtml = '<label class="mt-checkbox"><input type="checkbox" ng-model="selectAll" ng-change="toggleAll(selectAll, selected)"/><span></span></label>';
     vm.dtEnglishOptions = DTOptionsBuilder.newOptions()
         .withOption('ajax', {
-            url: "/Admin/Test/GetAll"
+            url: "/Admin/Test/JtableTestModel"
             , beforeSend: function (jqXHR, settings) {
-                //resetCheckbox();
                 $.blockUI({
                     boxed: true,
                     message: 'loading...'
                 });
             }
             , type: 'GET'
-            //,data: function (d) {
-            //    d.Name = $scope.model.Name;
-            //    d.Number = $scope.model.Number;
-            //}
-            , complete: function (data) {
+            ,data: function (d) {
+                d.Name = '';
+                d.Number = '';
+            }
+            , contentType: "application/json; charset=utf-8"
+            , dataType: "json"
+            , complete: function (rs) {
                 $.unblockUI();
-                console.log(JSON.stringify(data.data));
+                console.log(rs.responseJSON);
+                if (rs && rs.responseJSON && rs.responseJSON.Error) {
+                    App.toastrError(rs.responseJSON.Title);
+                }
             }
         })
-        .withPaginationType('full_numbers')
-        //.withDOM("<'table-scrollable't>ip")
-        .withDataProp('data')
-        .withDisplayLength(10)
+        .withPaginationType('full_numbers').withDOM("<'table-scrollable't>ip")
+        .withDataProp('data').withDisplayLength(1)
+        .withOption('order', [1, 'desc'])
+        .withOption('serverSide', true)
+        .withOption('headerCallback', function (header) {
+            if (!$scope.headerCompiled) {
+                $scope.headerCompiled = true;
+                $compile(angular.element(header).contents())($scope);
+            }
+        })
+        .withOption('initComplete', function (settings, json) {
+        })
         .withOption('createdRow', function (row) {
             $compile(angular.element(row).contents())($scope);
-        });;
+        });
 
 
     vm.dtEnglishColumns = [];
-    vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('id', 'ID').withOption('sWidth', '60px').renderWith(function (data, type) {
+    vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('Id', 'ID').withOption('sWidth', '60px').renderWith(function (data, type) {
         return data;
     }));
-    vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('name', 'Name').withOption('sWidth', '60px').renderWith(function (data, type) {
+    vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('Name', 'Name').withOption('sWidth', '60px').renderWith(function (data, type) {
         return data;
     }));
-    vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('number', 'Number').withOption('sWidth', '60px').renderWith(function (data, type) {
+    vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('Number', 'Number').withOption('sWidth', '60px').renderWith(function (data, type) {
         return data;
     }));
-    vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('id', 'abc').withOption('sWidth', '60px').renderWith(render).withOption('searchable', false).notSortable());
+    vm.dtEnglishColumns.push(DTColumnBuilder.newColumn('Id', 'abc').withOption('sWidth', '60px').renderWith(render).withOption('searchable', false).notSortable());
     vm.reloadData = reloadData;
     vm.dtInstance = {};
 

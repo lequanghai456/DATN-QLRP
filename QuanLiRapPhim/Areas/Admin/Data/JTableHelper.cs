@@ -47,6 +47,5 @@ namespace QuanLiRapPhim.Areas.Admin.Data
             jobjectTalbe.Add("data", aaData);
             return jobjectTalbe;
         }
-
     }
 }
