@@ -54,13 +54,13 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                     boxed: true,
                     message: 'loading...'
                 });
-            }
-            , type: 'GET'
-            ,data: function (d) {
+            },
+            type: 'GET',
+            data: function (d) {
                 d.Name = '';
                 d.Number = '';
             }
-            , contentType: "application/json; charset=utf-8"
+            /*, contentType: "application/json; charset=utf-8"*/
             , dataType: "json"
             , complete: function (rs) {
                 $.unblockUI();

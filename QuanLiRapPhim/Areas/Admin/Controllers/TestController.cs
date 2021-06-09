@@ -70,7 +70,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public string JtableTestModel(JTableModelCustom jTablePara)
+        public String JtableTestModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
             var query = from a in _context.Test
