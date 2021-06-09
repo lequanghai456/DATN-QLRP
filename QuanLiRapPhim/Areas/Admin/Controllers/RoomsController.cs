@@ -6,14 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
 
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
+    
     [Area("Admin")]
     public class RoomsController : Controller
     {
+        public class JTableModelCustom : JTableModel
+        {
+            public string NameRoom { get; set; }
+            public string Staff { get; set; }
+        }
         private readonly IdentityContext _context;
 
         public RoomsController(IdentityContext context)
@@ -38,12 +45,24 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             return View(room);
         }
         //Danh sach phong json
-        public  JsonResult JsonRoom()
+        //public  JsonResult JsonRoom()
+        //{
+        //    var data =  _context.Rooms.Include(r=>r.Staff).Where(x=>x.IsDelete == false).ToList();
+        //    return Json(new { data = data });
+        //}
+        [HttpGet]
+        public String JtableRoomModel(JTableModelCustom jTablePara)
         {
-            var data =  _context.Rooms.Include(r=>r.Staff).Where(x=>x.IsDelete == false).ToList();
-            return Json(new { data = data });
+            int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
+            var query = _context.Rooms.Include(r => r.Staff).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.NameRoom) || x.Name.Contains(jTablePara.NameRoom)) && ((String.IsNullOrEmpty(jTablePara.Staff)) || x.Staff.FullName.Contains(jTablePara.Staff)));
+            int count = query.Count();
+            var data = query.AsQueryable().Select(x=> new { x.Id,x.Name,x.Row,x.Col,x.Staff.FullName})
+                .Skip(intBegin)
+                .Take(jTablePara.Length);
+
+            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Name","Row","Col","FullName");
+            return JsonConvert.SerializeObject(jdata);
         }
-       
         public JsonResult DeleteRoom(int? id)
         {
             Room room = new Room();
@@ -106,5 +125,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             return _context.Rooms.Any(e => e.Id == id);
         }
+       
     }
 }

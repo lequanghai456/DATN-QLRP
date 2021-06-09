@@ -40,10 +40,10 @@ app.controller('edit', function ($scope) {
 app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice) {
     var vm = $scope;
     
-    //$scope.selected = [];
-    //$scope.selectAll = false;
-    //$scope.toggleAll = toggleAll;
-    //$scope.toggleOne = toggleOne;
+    $scope.selected = [];
+    $scope.selectAll = false;
+    $scope.toggleAll = toggleAll;
+    $scope.toggleOne = toggleOne;
 
     var titleHtml = '<label class="mt-checkbox"><input type="checkbox" ng-model="selectAll" ng-change="toggleAll(selectAll, selected)"/><span></span></label>';
     vm.dtEnglishOptions = DTOptionsBuilder.newOptions()
@@ -57,7 +57,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             }
             , type: 'GET'
             ,data: function (d) {
-                d.Name = 'a';
+                d.Name = '';
                 d.Number = '';
             }
             //, contentType: "application/json; charset=utf-8"
@@ -114,14 +114,14 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     function callback(json) {
 
     }
-    //$scope.Search = function () { reloadData(true) };
-    //function toggleAll(selectAll, selectedItems) {
-    //    for (var id in selectedItems) {
-    //        if (selectedItems.hasOwnProperty(id)) {
-    //            selectedItems[id] = selectAll;
-    //        }
-    //    }
-    //}
+    $scope.Search = function () { reloadData(true) };
+    function toggleAll(selectAll, selectedItems) {
+        for (var id in selectedItems) {
+            if (selectedItems.hasOwnProperty(id)) {
+                selectedItems[id] = selectAll;
+            }
+        }
+    }
     //function toggleOne(selectedItems, evt) {
     //    $(evt.target).closest('tr').toggleClass('selected');
     //    for (var id in selectedItems) {

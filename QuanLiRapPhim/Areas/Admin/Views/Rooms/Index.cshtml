@@ -11,12 +11,14 @@
                     @await Html.PartialAsync("Create")
                 </div>
                 <div>
-                    <button class="btn btn-primary" ng-click="Show()">Input</button>
+                    <input type="text" ng-model="valueName"/>
+                    <button ng-click="Search()" >Tìm kiếm</button>
+                                        <button class="btn btn-primary" ng-click="Show()">Input</button>
                     <table class="table dataTable table-hover table-striped"
                            datatable
                            dt-options="dtOptions"
                            dt-columns="dtColumns"
-                           id="tblData"></table>
+                           id="tblData" dt-instance="dtInstance"></table>
                 </div>
             </div>
     @section Scripts {

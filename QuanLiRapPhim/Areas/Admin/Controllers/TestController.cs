@@ -10,14 +10,15 @@ using System.Threading.Tasks;
 
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
-    public class JTableModelCustom : JTableModel
-    {
-        public string Name { get; set; }
-        public string Number { get; set; }
-    }
+    
     [Area("Admin")]
     public class TestController : Controller
     {
+        public class JTableModelCustom : JTableModel
+        {
+            public string Name { get; set; }
+            public string Number { get; set; }
+        }
         private readonly IdentityContext _context;
 
         public TestController(IdentityContext context)
