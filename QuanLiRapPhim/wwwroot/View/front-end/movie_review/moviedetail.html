@@ -15,11 +15,13 @@
             <div class="col-md-6">
                 <h2 class="movie-title">{{NameMovie}}</h2>
                 <ul class="movie-meta">
-                    <li>
+                    <li class="Rated">
                         <strong>Đánh giá:</strong>
-                        <div class="star-rating" title="Rated 4.00 out of 5">
-                            <span style="width:80%"><strong class="rating">4.00</strong> out of 5</span>
-                        </div>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
                     </li>
                     <li><strong>Thời gian chiếuchiếu:</strong> 98 min</li>
                     <li><strong>Ngày khởi chiếu:</strong> 22 March 2013 (USA)</li>
@@ -31,100 +33,16 @@
                             <div class="col-sm-6">
                                 <button type="button" class="btn btn-success" data-toggle="modal"
                                         data-target="#exampleModal" style="width: 150px;">
-                                    Đặt
-                                    vé
+                                    Bookticket
                                 </button>
-                                <div class="modal fade" id="exampleModal" tabindex="-1"
-                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">
-                                                    Chọn suất
-                                                    chiếu trong rap
-                                                </h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <p style="height: 100%; display: flex; align-items: center; color: red;">
-                                                                Chọn ngay đặt vé:
-                                                            </p>
-                                                        </div>
-                                                        <div class="col-sm-9">
-                                                            <input type="date" class="form-control"
-                                                                   placeholder="Ngày đặt vé"
-                                                                   aria-label="Username"
-                                                                   aria-describedby="basic-addon1">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <div>
-                                                    <h1>Tên rạp 1</h1>
-                                                    <div style="display: flex; flex-direction: row; ">
-                                                        <div class="text-center"
-                                                             style="margin-left: 10px; display:flex; justify-content: center; align-items: center;width: 100px; height: 25px; border: 1px solid red;">
-                                                            <a href="chonghe.html">Suất chiếu 1</a>
-                                                        </div>
-                                                        <div class="text-center"
-                                                             style=" margin-left: 10px;display:flex; justify-content: center; align-items: center;width: 100px; height: 25px; border: 1px solid red;">
-                                                            <a href="#">Suất chiếu 2</a>
-                                                        </div>
-                                                        <div class="text-center"
-                                                             style=" margin-left: 10px; display:flex; justify-content: center; align-items: center;width: 100px; height: 25px; border: 1px solid red;">
-                                                            <a href="#">Suất chiếu 3</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <hr>
-                                                <div>
-                                                    <h1>Tên rạp 2</h1>
-                                                    <div style="display: flex; flex-direction: row; ">
-                                                        <div class="text-center"
-                                                             style="margin-left: 10px; display:flex; justify-content: center; align-items: center;width: 100px; height: 25px; border: 1px solid red;">
-                                                            <a href="#">Suất chiếu 1</a>
-                                                        </div>
-                                                        <div class="text-center"
-                                                             style=" margin-left: 10px;display:flex; justify-content: center; align-items: center;width: 100px; height: 25px; border: 1px solid red;">
-                                                            <a href="#">Suất chếu 2</a>
-                                                        </div>
-                                                        <div class="text-center"
-                                                             style=" margin-left: 10px; display:flex; justify-content: center; align-items: center;width: 100px; height: 25px; border: 1px solid red;">
-                                                            <a href="#">Suất chiếu 3</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <hr>
-                                                <div>
-                                                    <h1>Tên rạp 3</h1>
-                                                    <div style="display: flex; flex-direction: row; ">
-                                                        <div class="text-center"
-                                                             style="margin-left: 10px; display:flex; justify-content: center; align-items: center;width: 100px; height: 25px; border: 1px solid red;">
-                                                            <a href="#">Suất chiếu 1</a>
-                                                        </div>
-                                                        <div class="text-center"
-                                                             style=" margin-left: 10px;display:flex; justify-content: center; align-items: center;width: 100px; height: 25px; border: 1px solid red;">
-                                                            <a href="#">Suất chiếu 2</a>
-                                                        </div>
-                                                        <div class="text-center"
-                                                             style=" margin-left: 10px; display:flex; justify-content: center; align-items: center;width: 100px; height: 25px; border: 1px solid red;">
-                                                            <a href="#">Suất chiếu 3</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="button"data-toggle="modal"
+                                        data-target="#Rate"
+                                        class="btn btn-success" 
+                                        style="width: 150px;">
+                                    Ratting
+                                </button>
                             </div>
                         </div>
                     </li>
@@ -199,6 +117,7 @@
     .comment-author img {
         margin: 0 auto;
     }
+
     .comment-content {
         color: #999;
         width: 80%;
@@ -209,33 +128,48 @@
         cursor: text;
         border: 1px solid #bbb;
     }
+
     .summary {
         padding: 5px;
         background-color: #fff;
         cursor: text;
         border: 1px solid #bbb;
     }
-    .commentItems{
-        padding-top:10px;
+
+    .commentItems {
+        padding-top: 10px;
     }
-    .commentItems2{
+
+    .commentItems2 {
         padding: 10px 0 0 100px;
     }
+
     .comment-item2 {
         padding-top: 10px;
     }
-    .form-comment2{
-        padding-top:10px;
+
+    .form-comment2 {
+        padding-top: 10px;
     }
-    .comment{
-        padding:10px;
+
+    .comment {
+        padding: 10px;
     }
+    .Rate {
+        width:50%;
+        margin:auto;
+    }
+        .Rate span {
+            width: 20%;
+            margin: auto;
+        }
+        
 </style>
 <div class="comment">
     <span><h1>Comment</h1></span>
     <form class="comment-area row">
         <textarea class="comment-content col-11" placeholder="Comment here!"></textarea>
-        <input type="submit" class="btn btn-success col-1" value="Send"/>
+        <input type="submit" class="btn btn-success col-1" value="Send" />
     </form>
     <div class="commentItems">
         <div class="comment-item row">
@@ -292,6 +226,74 @@
 
             </div>
 
-        </div>       
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Chọn suất
+                    chiếu trong rap
+                </h5>
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p style="height: 100%; display: flex; align-items: center; color: red;">
+                                Chọn ngay đặt vé:
+                            </p>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control"
+                                   placeholder="Ngày đặt vé"
+                                   aria-label="Username"
+                                   aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <div style="display: flex; flex-direction: row;">
+                        <div class="text-center" ng-repeat="item in List"
+                             style="margin-left: 10px; display:flex; justify-content: center; align-items: center;width: 100px; height: 25px; border: 1px solid red;">
+                            <a href="#!{{NameMovie}}/bookticket/{{item.id}}">Suất chiếu {{item.id}}</a>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Rate" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">
+                    Đánh giá
+                </h3>
+                <button type="button" class="close left" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="Rate center">
+                    <span class="fa fa-star fa-3x" ng-repeat="x in [1,2,3,4,5]" ></span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

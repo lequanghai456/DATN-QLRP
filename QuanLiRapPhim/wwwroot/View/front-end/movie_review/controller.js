@@ -18,8 +18,10 @@ app.factory('dataservice', function ($http) {
     return {
         GetMovie: function (callback) {
             $http.get('/moviereview/getmovie').then(callback);
+       },
+        GetListShowTime: function (callback) {
+            $http.get('/moviereview/GetListShowTime').then(callback);
         }
-            
     }
 });
 
@@ -86,30 +88,61 @@ app.controller('index', function ($scope, $rootScope, dataservice) {
     $scope.init();
 });
 
-app.controller('moviedetail', function ($scope, $routeParams) {
+app.controller('moviedetail', function ($scope, $routeParams, dataservice) {
     $scope.NameMovie = $routeParams.NameMovie;
     //viết api kiểm tra tồn tại của phim
+    function Rated(rate,se) {
+        if (rate <= 5 && rate >= 0) {
+            var temp = Math.round(rate);
+            for (var i = 0; i < temp; i++) {
+                $(se+" span.fa-star").eq(i).addClass("checked");
+            }
+        }
+    }
+    function Rate() {
+        
+        $(".Rate span").hover(function () {
+            // highlight the mouseover target
 
+            Rated(5, ".Rate");
+
+            // reset the color after a short delay
+            setTimeout(function () {
+                Rated(0, ".Rate");
+            }, 500);
+        }, false);
+    }
+    $scope.Rated = Rated;
     $scope.init = function () {
         //kiểm tra tồn tại của phim
         if (false) {
             //vào trang không tìm thấy phim
         }
+        else {
+            dataservice.GetListShowTime(function (rs) {
+                $scope.List =  rs.data;
+            });
+
+            $scope.Rated(3.3, ".Rated");
+
+            Rate();
+        }
 
     }
+
+    $scope.init();
     $scope.traloi = function (id) {
         $scope.comment = id;
     }
-    
 });
+
+
 app.controller('bookticket', function ($scope, $routeParams,$uibModal,$rootScope) {
     $scope.seat;
-    $scope.dsghedachon = [];
+    $scope.dsghedachon = [];    
 
-    
-
-    //var socket = io.connect('https://my-cinema-qlrp.herokuapp.com/bookticket');
-    var socket = io.connect('localhost:3000/bookticket');
+    var socket = io.connect('https://my-cinema-qlrp.herokuapp.com/bookticket');
+    //var socket = io.connect('localhost:3000/bookticket');
 
     socket.on('connect', function () {
         socket.emit('Join room', { idLichChieu: $routeParams.id });
