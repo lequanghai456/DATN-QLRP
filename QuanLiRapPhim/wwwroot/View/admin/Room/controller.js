@@ -1,6 +1,8 @@
-﻿var ctxfolderurl = "https://localhost:44350";
+﻿
 
-var app = angular.module('App', ['datatables', 'ngRoute']);
+var ctxfolderurl = "https://localhost:44350";
+
+var app = angular.module('App', ['datatables', 'ngRoute', 'checklist-model']);
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
@@ -21,12 +23,14 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     var vm = $scope;
     var id = document.getElementById('idEdit');
     $scope.selected = [];
+    $scope.items = [];
     $scope.selectAll = false;
-    $scope.toggleAll = toggleAll;
+    var LengthPage = 3;
+    var itam = LengthPage;
     $scope.toggleOne = toggleOne;
    
     
-    var titleHtml = '<label class="mt-checkbox"><input type="checkbox" ng-model="selectAll" ng-change="toggleAll(selectAll, selected)"/><span></span></label>';
+    
     $scope.init = function () {
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withOption('ajax', {
@@ -52,7 +56,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 }
             })
             .withPaginationType('full_numbers').withDOM("<'table-scrollable't>ip")
-            .withDataProp('data').withDisplayLength(4)
+            .withDataProp('data').withDisplayLength(LengthPage)
             .withOption('order', [1, 'desc'])
             .withOption('serverSide', true)
            
@@ -85,13 +89,15 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             
             return data;
         }));
-       
+        var titleHtml = '<input ng-model="selectAll" name="typeOption" type="checkbox" "/>';
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').notSortable().withOption('searchable', false).renderWith(function (data, type) {
             return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Rooms/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" ng-click="delete('+data+')">Delete</button>';
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return titleHtml;
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', titleHtml).notSortable().withOption('searchable', false).renderWith(function (data, type) {
+            $("input:checkbox[name=type]:checked").removeAttr('checked');
+            return '<input id="checkbox" value=' + data + ' ng-checked="selectAll" name="type" type="checkbox" ng-click="toggleOne(' + data + ',$event)">';
         }));
+       
         if (id != null) {
             vm.create = true;
             
@@ -121,28 +127,21 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
     }
     $scope.Search = function () { reloadData(true) };
-    function toggleAll(selectAll, selectedItems) {
-        for (var id in selectedItems) {
-            if (selectedItems.hasOwnProperty(id)) {
-                selectedItems[id] = selectAll;
-            }
-        }
-    }
-    function toggleOne(selectedItems, evt) {
-        $(evt.target).closest('tr').toggleClass('selected');
-        for (var id in selectedItems) {
-            if (selectedItems.hasOwnProperty(id)) {
-                if (!selectedItems[id]) {
-                    vm.selectAll = false;
-                    return;
-                }
-            }
-        }
-        vm.selectAll = true;
-    }
-    function resetCheckbox() {
-        $scope.selected = [];
-        vm.selectAll = false;
-    }
+    function toggleOne(item, $event) {
+        if (angular.element($event.currentTarget).prop('checked')) {
+            angular.element($event.currentTarget).attr("checked", "true");
+            
+        } else
 
+            angular.element($event.currentTarget).removeAttr("checked");
+    }
+    $scope.deleteAll = function () {
+        $("input:checkbox[name=type]:checked").each(function () {
+            $scope.selected.push($(this).val());
+        });
+        console.log($scope.selected);
+        $scope.selected = [];
+    }
+    
+    
 });
