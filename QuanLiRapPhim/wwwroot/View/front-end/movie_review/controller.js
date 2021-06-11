@@ -93,26 +93,25 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice) {
     //viết api kiểm tra tồn tại của phim
     function Rated(rate,se) {
         if (rate <= 5 && rate >= 0) {
+            $(se + " span.fa-star").removeClass("checked");
             var temp = Math.round(rate);
             for (var i = 0; i < temp; i++) {
                 $(se+" span.fa-star").eq(i).addClass("checked");
             }
         }
     }
-    function Rate() {
-        
-        $(".Rate span").hover(function () {
-            // highlight the mouseover target
-
-            Rated(5, ".Rate");
-
-            // reset the color after a short delay
-            setTimeout(function () {
-                Rated(0, ".Rate");
-            }, 500);
-        }, false);
-    }
+    $scope.Rate = function (index) {
+        Rated(index, ".Rate");
+        $scope.star = index;
+    };
     $scope.Rated = Rated;
+    $scope.OK = function () {
+        alert($scope.star);
+    }
+    $scope.close = function () {
+        $scope.star = 0;
+    }
+
     $scope.init = function () {
         //kiểm tra tồn tại của phim
         if (false) {
@@ -125,7 +124,6 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice) {
 
             $scope.Rated(3.3, ".Rated");
 
-            Rate();
         }
 
     }
