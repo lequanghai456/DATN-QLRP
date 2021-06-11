@@ -51,7 +51,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         //    return Json(new { data = data });
         //}
         [HttpGet]
-        public String JtableRoomModel(JTableModelCustom jTablePara)
+        public async Task<String> JtableRoomModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
             var query = _context.Rooms.Include(r => r.Staff).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.NameRoom) || x.Name.Contains(jTablePara.NameRoom)) && ((String.IsNullOrEmpty(jTablePara.Staff)) || x.Staff.FullName.Contains(jTablePara.Staff)));
@@ -75,6 +75,34 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             _context.Update(room);
             _context.SaveChangesAsync();
             return Json("Pass");
+        }
+        public int DeleteRoomAll(String Listid)
+        {
+            int itam = 0;
+            try
+            {
+
+            String[] List = Listid.Split(',');
+            Room room = new Room();
+            foreach (String id in List)
+            {
+                
+                    room = _context.Rooms.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
+                    room.IsDelete = true;
+                    _context.Update(room);
+                    itam++;
+                
+            }
+            }
+            catch (Exception er)
+            {
+                _context.SaveChangesAsync();
+                return itam;
+            }
+            _context.SaveChangesAsync();
+            return itam;
+           
+            
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -16,6 +16,9 @@ app.factory('dataservice', function ($http) {
         deleteRoom: function (data, callback) {
             $http.post('/Admin/Rooms/DeleteRoom?id='+data).then(callback);
         },
+        deleteRoomCheckbox: function (data, callback) {
+            $http.post('/Admin/Rooms/DeleteRoomAll?Listid=' + data).then(callback);
+        },
     }
 });
 
@@ -57,7 +60,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             })
             .withPaginationType('full_numbers').withDOM("<'table-scrollable't>ip")
             .withDataProp('data').withDisplayLength(LengthPage)
-            .withOption('order', [1, 'desc'])
+            
             .withOption('serverSide', true)
            
             .withOption('headerCallback', function (header) {
@@ -140,7 +143,12 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             $scope.selected.push($(this).val());
         });
         console.log($scope.selected);
-        $scope.selected = [];
+        dataservice.deleteRoomCheckbox($scope.selected, function (rs) {
+            rs = rs.data;
+            $scope.selected = [];
+            reloadData(true);
+        });
+        
     }
     
     
