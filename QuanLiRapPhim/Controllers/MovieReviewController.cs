@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QuanLiRapPhim.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,18 @@ namespace QuanLiRapPhim.Controllers
         public async Task<JsonResult> GetMovie()
         {            
             return Json(movies);
+        }
+        [HttpGet]
+        public JsonResult GetListShowTime()
+        {
+            List<ShowTime> data = new List<ShowTime>();
+            for (int i = 0; i < 3; i++) {
+                ShowTime item = new ShowTime();
+                item.DateTime = DateTime.Now;
+                item.Id = i;
+                data.Add(item);
+            }
+            return Json(data);
         }
     }
     class movie

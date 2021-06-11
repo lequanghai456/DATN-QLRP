@@ -45,6 +45,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     $scope.toggleAll = toggleAll;
     $scope.toggleOne = toggleOne;
 
+    
     var titleHtml = '<label class="mt-checkbox"><input type="checkbox" ng-model="selectAll" ng-change="toggleAll(selectAll, selected)"/><span></span></label>';
     vm.dtEnglishOptions = DTOptionsBuilder.newOptions()
         .withOption('ajax', {

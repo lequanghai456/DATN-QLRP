@@ -1,3 +1,6 @@
+.checked {
+    color: orange;
+}
 .seat, .seatdadat, .seatchon, .seatbad {
     width: 16px;
     height: 14px;
