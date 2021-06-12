@@ -156,8 +156,10 @@
         padding: 10px;
     }
     .Rate {
-        width:50%;
-        margin:auto;
+        width: 50%;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
     }
         .Rate span {
             width: auto;
@@ -282,11 +284,11 @@
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: flex; justify-content: space-between;">
                 <h3 class="modal-title" id="exampleModalLabel">
                     Đánh giá
                 </h3>
-                <button type="button" class="close left" data-dismiss="modal"
+                <button type="button" class="close" data-dismiss="modal"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
