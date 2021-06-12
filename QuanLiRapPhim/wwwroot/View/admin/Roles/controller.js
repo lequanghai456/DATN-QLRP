@@ -30,7 +30,7 @@ app.controller('index', function ($scope, $uibModal, $rootScope) {
     }
     $scope.show = function () {
         $scope.modalInstance = $uibModal.open({
-            templateUrl: '/Admin/Roles/Create',
+            templateUrl: '/Admin/Rooms/Create',
             controller: 'create',
             backdrop: 'static',
             size: '50'

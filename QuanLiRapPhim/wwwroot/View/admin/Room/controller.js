@@ -1,6 +1,4 @@
-﻿
-
-var ctxfolderurl = "https://localhost:44350";
+﻿var ctxfolderurl = "https://localhost:44350";
 
 var app = angular.module('App', ['datatables', 'ngRoute', 'checklist-model']);
 app.config(function ($routeProvider) {
@@ -69,6 +67,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                     $compile(angular.element(header).contents())($scope);
                 }
             })
+            .withOption('responsive', true)
             .withOption('initComplete', function (settings, json) {
             })
             .withOption('createdRow', function (row) {
@@ -76,6 +75,11 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             });
 
         vm.dtColumns = [];
+        var titleHtml = '<input ng-model="selectAll" name="typeOption" type="checkbox" "/>';
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', titleHtml).withClass('align-middle').notSortable().withOption('searchable', false).renderWith(function (data, type) {
+            $("input:checkbox[name=type]:checked").removeAttr('checked');
+            return '<input id="checkbox" style="margin: 0 auto;" value=' + data + ' ng-checked="selectAll" name="type" type="checkbox" ng-click="toggleOne(' + data + ',$event)">';
+        }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').renderWith(function (data, type) {
             return data;
         }));
@@ -92,14 +96,11 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             
             return data;
         }));
-        var titleHtml = '<input ng-model="selectAll" name="typeOption" type="checkbox" "/>';
+        
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Rooms/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" ng-click="delete('+data+')">Delete</button>';
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Rooms/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', titleHtml).notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            $("input:checkbox[name=type]:checked").removeAttr('checked');
-            return '<input id="checkbox" value=' + data + ' ng-checked="selectAll" name="type" type="checkbox" ng-click="toggleOne(' + data + ',$event)">';
-        }));
+        
        
         if (id != null) {
             vm.create = true;
@@ -118,6 +119,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     $scope.delete = function (idDelete) {
         dataservice.deleteRoom(idDelete, function (rs) {
             rs = rs.data;
+            $scope.notification = rs;
             reloadData(true);
         });
     }
@@ -144,9 +146,12 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         });
         console.log($scope.selected);
         dataservice.deleteRoomCheckbox($scope.selected, function (rs) {
+            
             rs = rs.data;
+            $scope.notification = rs;
             $scope.selected = [];
             reloadData(true);
+            
         });
         
     }

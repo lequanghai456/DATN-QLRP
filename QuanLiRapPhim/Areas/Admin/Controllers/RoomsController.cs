@@ -29,10 +29,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
         //public override void OnActionExecuted(ActionExecutedContext context)
         //{
-          
+
         //    ViewBag.List = _context.Rooms.Include(r => r.Staff);
         //    base.OnActionExecuted(context);
         //}
+        [TempData]
+        public string Message { get; set; }
         public IActionResult Index(int? id)
         {
             Room room = null;
@@ -69,14 +71,16 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             room = _context.Rooms.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
             if(room == null)
             {
+                
                 return Json("Fail");
             }
             room.IsDelete = true;
             _context.Update(room);
             _context.SaveChangesAsync();
-            return Json("Pass");
+            
+            return Json("Success");
         }
-        public int DeleteRoomAll(String Listid)
+        public JsonResult DeleteRoomAll(String Listid)
         {
             int itam = 0;
             try
@@ -96,11 +100,13 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             }
             catch (Exception er)
             {
+                Message = "Successfully deleted rooms";
                 _context.SaveChangesAsync();
-                return itam;
+                return Json("Successfully deleted "+ itam +" rooms");
             }
+            Message = "Successfully deleted rooms";
             _context.SaveChangesAsync();
-            return itam;
+            return Json("Successfully deleted " + itam + " rooms");
            
             
         }
@@ -113,6 +119,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 
                 _context.Add(room);
                 await _context.SaveChangesAsync();
+                Message = "Successfully create rooms";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdStaftManager"] = new SelectList(_context.Staffs ,"Id", "FullName", room.IdStaftManager);
@@ -147,6 +154,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 }
             }
             ViewData["IdStaftManager"] = new SelectList(_context.Staffs, "Id", "FullName", room.IdStaftManager);
+            Message = "Successfully Update rooms";
             return RedirectToAction(nameof(Index));
         }
         private bool RoomExists(int id)

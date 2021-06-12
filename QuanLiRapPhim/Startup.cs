@@ -36,7 +36,7 @@ namespace QuanLiRapPhim
             {
                 cfg.UseSqlServer(Configuration.GetConnectionString("IdentityContext"));
             });
- 
+            services.AddSession();
             services.AddIdentityCore<User>(options =>
             {
                 options.User.RequireUniqueEmail = false;
@@ -74,7 +74,7 @@ namespace QuanLiRapPhim
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
             app.UseAuthentication();
             app.UseEndpoints(endpoints =>
