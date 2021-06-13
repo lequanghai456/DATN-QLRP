@@ -19,8 +19,8 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public String Describe { get; set; }
         public int Status { get; set; }
         public int Time { get; set; }
-        public Decimal TotalRating { get; set; }
-        public Decimal TotalReviewers { get; set; }
+        public int TotalRating { get; set; }
+        public int TotalReviewers { get; set; }
         [ForeignKey("MacId")]
         public virtual Mac Mac { get; set; }
         public virtual ICollection<Category> Lstcategories { get; set; }
