@@ -11,7 +11,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     {
         [Key]
         public int Id{get;set;}
-        public int IsTicket{get;set;}
+       
         public int? SeviceId{get;set;}
         public int Amount{get;set;}
         public Decimal UnitPrice{get;set;}

@@ -18,7 +18,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public virtual Seat Seat { get; set; }
         [ForeignKey("ShowTimeId")]
         public virtual ShowTime ShowTime { get; set; }
-        public virtual ICollection<BillDetail> BillDetails { get; set; }
         public bool IsDelete { get; set; }
     }
 }

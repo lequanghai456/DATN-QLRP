@@ -8,8 +8,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         [Key]
         public int Id{get;set;}
         public String UserName{get;set;}
-        public int? MovieId{get;set;}
-        public int Star{get;set;}
         public bool IsDelete { get; set; }
+
     }
 }

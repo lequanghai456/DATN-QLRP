@@ -17,6 +17,9 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public int? IdStaftManager{get; set;}
         [ForeignKey("IdStaftManager")]
         public virtual Staff Staff { get; set; }
+        public int? RoomId { get; set; }
+        [ForeignKey("RoomId")]
+        public virtual Room Rooms { get; set; }
         public virtual ICollection<ShowTime> LstShowTime { get; set; }
         public virtual ICollection<Device> Devices { get; set; }
         public bool IsDelete { get; set; }
