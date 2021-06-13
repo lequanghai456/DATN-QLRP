@@ -25,7 +25,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public virtual Mac Mac { get; set; }
         public virtual ICollection<Category> Lstcategories { get; set; }
         public virtual ICollection<ShowTime> LstShowTime { get; set; }
-        
         public virtual ICollection<Comment> LstComment { get; set; }
         public bool IsDelete { get; set; }
     }

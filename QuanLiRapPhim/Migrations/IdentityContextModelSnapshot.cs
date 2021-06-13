@@ -166,22 +166,13 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BillDetailId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("BillId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
-                    b.Property<int>("IsTicket")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SeviceId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TicketId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
@@ -189,13 +180,9 @@ namespace QuanLiRapPhim.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BillDetailId");
-
                     b.HasIndex("BillId");
 
                     b.HasIndex("SeviceId");
-
-                    b.HasIndex("TicketId");
 
                     b.ToTable("BillDetails");
                 });
@@ -337,6 +324,12 @@ namespace QuanLiRapPhim.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("TotalRating")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalReviewers")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Trailer")
                         .HasColumnType("nvarchar(max)");
 
@@ -357,12 +350,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Star")
-                        .HasColumnType("int");
-
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
@@ -370,8 +357,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
 
                     b.HasIndex("UserId");
 
@@ -420,21 +405,21 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<int>("Col")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdStaftManager")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Row")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdStaftManager");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Rooms");
                 });
@@ -475,6 +460,9 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<int?>("MovieId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("RoomId")
                         .HasColumnType("int");
@@ -688,6 +676,9 @@ namespace QuanLiRapPhim.Migrations
                 {
                     b.HasBaseType("QuanLiRapPhim.Areas.Admin.Models.Device");
 
+                    b.Property<decimal>("ExtraPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("X")
                         .HasColumnType("int");
 
@@ -765,10 +756,6 @@ namespace QuanLiRapPhim.Migrations
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.BillDetail", b =>
                 {
-                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.BillDetail", null)
-                        .WithMany("BillDetails")
-                        .HasForeignKey("BillDetailId");
-
                     b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Bill", "Bill")
                         .WithMany()
                         .HasForeignKey("BillId");
@@ -776,10 +763,6 @@ namespace QuanLiRapPhim.Migrations
                     b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Sevice", "Sevice")
                         .WithMany()
                         .HasForeignKey("SeviceId");
-
-                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Ticket", null)
-                        .WithMany("BillDetails")
-                        .HasForeignKey("TicketId");
 
                     b.Navigation("Bill");
 
@@ -821,10 +804,6 @@ namespace QuanLiRapPhim.Migrations
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Rate", b =>
                 {
-                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Movie", null)
-                        .WithMany("LstRate")
-                        .HasForeignKey("MovieId");
-
                     b.HasOne("QuanLiRapPhim.Areas.Admin.Models.User", null)
                         .WithMany("Rate")
                         .HasForeignKey("UserId");
@@ -832,11 +811,11 @@ namespace QuanLiRapPhim.Migrations
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Room", b =>
                 {
-                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Staff", "Staff")
+                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("IdStaftManager");
+                        .HasForeignKey("RoleId");
 
-                    b.Navigation("Staff");
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.ShowTime", b =>
@@ -878,16 +857,9 @@ namespace QuanLiRapPhim.Migrations
                     b.Navigation("ShowTime");
                 });
 
-            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.BillDetail", b =>
-                {
-                    b.Navigation("BillDetails");
-                });
-
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Movie", b =>
                 {
                     b.Navigation("LstComment");
-
-                    b.Navigation("LstRate");
 
                     b.Navigation("LstShowTime");
                 });
@@ -907,11 +879,6 @@ namespace QuanLiRapPhim.Migrations
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.ShowTime", b =>
                 {
                     b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Ticket", b =>
-                {
-                    b.Navigation("BillDetails");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.User", b =>
