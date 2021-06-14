@@ -42,8 +42,8 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     
     $scope.selected = [];
     $scope.selectAll = false;
-    $scope.toggleAll = toggleAll;
-    $scope.toggleOne = toggleOne;
+    //$scope.toggleAll = toggleAll;
+    //$scope.toggleOne = toggleOne;
 
     
     var titleHtml = '<label class="mt-checkbox"><input type="checkbox" ng-model="selectAll" ng-change="toggleAll(selectAll, selected)"/><span></span></label>';
@@ -116,13 +116,13 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
     }
     $scope.Search = function () { reloadData(true) };
-    function toggleAll(selectAll, selectedItems) {
-        for (var id in selectedItems) {
-            if (selectedItems.hasOwnProperty(id)) {
-                selectedItems[id] = selectAll;
-            }
-        }
-    }
+    //function toggleAll(selectAll, selectedItems) {
+    //    for (var id in selectedItems) {
+    //        if (selectedItems.hasOwnProperty(id)) {
+    //            selectedItems[id] = selectAll;
+    //        }
+    //    }
+    //}
     //function toggleOne(selectedItems, evt) {
     //    $(evt.target).closest('tr').toggleClass('selected');
     //    for (var id in selectedItems) {

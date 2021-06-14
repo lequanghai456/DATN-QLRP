@@ -9,12 +9,12 @@
                datatable
                dt-options="dtEnglishOptions"
                dt-columns="dtEnglishColumns"
-               id="tblData" ></table>
+               id="tblData"></table>
     </div>
 </div>
 
-    @section Scripts {
-        <script src="~/View/admin/Test/controller.js"></script>
-
-    }
+@section Scripts {
+    <script src="~/View/admin/Test/controller.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 

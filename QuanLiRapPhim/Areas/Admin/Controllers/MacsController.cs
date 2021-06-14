@@ -11,22 +11,22 @@ using QuanLiRapPhim.Areas.Admin.Models;
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class RolesController : Controller
+    public class MacsController : Controller
     {
         private readonly IdentityContext _context;
 
-        public RolesController(IdentityContext context)
+        public MacsController(IdentityContext context)
         {
             _context = context;
         }
 
-        // GET: Admin/Roles
+        // GET: Admin/Macs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Roles.ToListAsync());
+            return View(await _context.Macs.ToListAsync());
         }
 
-        // GET: Admin/Roles/Details/5
+        // GET: Admin/Macs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +34,39 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Roles
+            var mac = await _context.Macs
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (role == null)
+            if (mac == null)
             {
                 return NotFound();
             }
 
-            return View(role);
+            return View(mac);
         }
 
-        // GET: Admin/Roles/Create
+        // GET: Admin/Macs/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Roles/Create
+        // POST: Admin/Macs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Id,NormalizedName,ConcurrencyStamp")] Role role)
+        public async Task<IActionResult> Create([Bind("Id,Title,Age,Describe,IsDelete")] Mac mac)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(role);
+                _context.Add(mac);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(role);
+            return View(mac);
         }
 
-        // GET: Admin/Roles/Edit/5
+        // GET: Admin/Macs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +74,22 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Roles.FindAsync(id);
-            if (role == null)
+            var mac = await _context.Macs.FindAsync(id);
+            if (mac == null)
             {
                 return NotFound();
             }
-            return View(role);
+            return View(mac);
         }
 
-        // POST: Admin/Roles/Edit/5
+        // POST: Admin/Macs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,NormalizedName,ConcurrencyStamp")] Role role)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Age,Describe,IsDelete")] Mac mac)
         {
-            if (id != role.Id)
+            if (id != mac.Id)
             {
                 return NotFound();
             }
@@ -98,12 +98,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(role);
+                    _context.Update(mac);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RoleExists(role.Id))
+                    if (!MacExists(mac.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +114,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(role);
+            return View(mac);
         }
 
-        // GET: Admin/Roles/Delete/5
+        // GET: Admin/Macs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,30 +125,30 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Roles
+            var mac = await _context.Macs
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (role == null)
+            if (mac == null)
             {
                 return NotFound();
             }
 
-            return View(role);
+            return View(mac);
         }
 
-        // POST: Admin/Roles/Delete/5
+        // POST: Admin/Macs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var role = await _context.Roles.FindAsync(id);
-            _context.Roles.Remove(role);
+            var mac = await _context.Macs.FindAsync(id);
+            _context.Macs.Remove(mac);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RoleExists(int id)
+        private bool MacExists(int id)
         {
-            return _context.Roles.Any(e => e.Id == id);
+            return _context.Macs.Any(e => e.Id == id);
         }
     }
 }

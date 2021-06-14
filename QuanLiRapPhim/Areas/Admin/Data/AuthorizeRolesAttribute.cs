@@ -33,7 +33,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     var role = context.HttpContext.User.FindFirst("Role").Value;
                     foreach (string item in _acceptedRoles)
                     {
-                        if (item.Contains(role))
+                        if (item.ToUpper().Contains(role.ToUpper()))
                         {
                             flag = true;
                             break;

@@ -55,25 +55,25 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             try
             {
                 ViewBag.Message = "Admin already registered";
-                Staff staff = await StaffMgr.FindByNameAsync("Admin");
+                //Staff staff = await StaffMgr.FindByNameAsync("ManagerRoom");
 
-                Role role = await RoleMgr.FindByNameAsync("Admin");
+                Role role = await RoleMgr.FindByNameAsync("ManagerRoom");
                 role = new Role();
-                role.Name = "Tester";
+                role.Name = "Intership";
                 await RoleMgr.CreateAsync(role);
-                if (staff == null)
-                {
-                    staff = new Staff();
-                    staff.UserName = "Admin";
-                    staff.PasswordHash = "abc123";
-                    staff.FullName = "Lê Quang Hải";
-                    staff.RoleId = 1;
-                    IdentityResult result = await StaffMgr.CreateAsync(staff, "abc123");
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "home");
-                    }
-                }
+                //if (staff == null)
+                //{
+                //    staff = new Staff();
+                //    staff.UserName = "ManagerRoom";
+                //    staff.PasswordHash = "abc123";
+                //    staff.FullName = "Hồ Gia Bảo";
+                //    staff.RoleId = 1;
+                //    IdentityResult result = await StaffMgr.CreateAsync(staff, "abc123");
+                //    if (result.Succeeded)
+                //    {
+                //        return RedirectToAction("Index", "home");
+                //    }
+                //}
                 
                 return View("Login");
 
