@@ -14,6 +14,12 @@ namespace QuanLiRapPhim.Areas.Admin.Data
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Seed();            
+        }
+
         public DbSet<Bill> Bills { get; set; }
         public DbSet<BillDetail> BillDetails { get; set; }
         public DbSet<Category> Categories { get; set; }
