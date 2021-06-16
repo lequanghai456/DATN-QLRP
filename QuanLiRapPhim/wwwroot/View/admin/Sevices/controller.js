@@ -11,11 +11,11 @@ app.config(function ($routeProvider) {
 });
 app.factory('dataservice', function ($http) {
     return {
-        deleteMac: function (data, callback) {
-            $http.post('/Admin/Macs/DeleteMac?id='+data).then(callback);
+        deleteSevice: function (data, callback) {
+            $http.post('/Admin/Sevices/DeleteSevice?id='+data).then(callback);
         },
-        deleteMacCheckbox: function (data, callback) {
-            $http.post('/Admin/Macs/DeleteMacList?Listid=' + data).then(callback);
+        deleteSeviceCheckbox: function (data, callback) {
+            $http.post('/Admin/Sevices/DeleteSeviceList?Listid=' + data).then(callback);
         },
     }
 });
@@ -35,7 +35,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     $scope.init = function () {
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withOption('ajax', {
-                url: "/Admin/Macs/JtableMacsModel"
+                url: "/Admin/Sevices/JtableSeviceModel"
                 , beforeSend: function (jqXHR, settings) {
                     $.blockUI({
                         boxed: true,
@@ -44,8 +44,8 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 }
                 , type: 'GET'
                 , data: function (d) {
-                    d.Title = $scope.valueName;
-                    d.Age = $scope.valueName;
+                    d.Name = $scope.valueName;
+                    d.Price = $scope.valueName;
                 }
                
                 , dataType: "json"
@@ -84,17 +84,14 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Title', 'Title').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Name', 'Name').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Age', 'Age').withClass('Center').renderWith(function (data, type) {
-            return data;
-        }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Describe', 'Describe').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Price', 'Price').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Macs/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Sevices/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
         }));
         
        
@@ -113,7 +110,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.create = !vm.create;
     };
     $scope.delete = function (idDelete) {
-        dataservice.deleteMac(idDelete, function (rs) {
+        dataservice.deleteSevice(idDelete, function (rs) {
             rs = rs.data;
             $scope.notification = rs;
             reloadData(true);
@@ -136,12 +133,12 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
             angular.element($event.currentTarget).removeAttr("checked");
     }
-    $scope.deleteMacList = function () {
+    $scope.deleteSeviceList = function () {
         $("input:checkbox[name=type]:checked").each(function () {
             $scope.selected.push($(this).val());
         });
         console.log($scope.selected);
-        dataservice.deleteMacCheckbox($scope.selected, function (rs) {
+        dataservice.deleteSeviceCheckbox($scope.selected, function (rs) {
             
             rs = rs.data;
             $scope.notification = rs;

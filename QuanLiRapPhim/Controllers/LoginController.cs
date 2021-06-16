@@ -38,6 +38,7 @@ namespace QuanLiRapPhim.Controllers
                 {
                     user = new User();
                     user.UserName = "ChoBao";
+                    user.FullName = "Hồ Gia Bảo";
                     user.PasswordHash = "abc123";
                     IdentityResult result =  await StaffMgr.CreateAsync(user, "abc123");
                     if (result.Succeeded)

@@ -39,14 +39,14 @@
                 <div class="row modal-header">
                     <h4 class="col-3 modal-title">Notification</h4>
                     <div class="col-5"></div>
-                    <button type="button" class="col-3 close" data-dismiss="modal">&times;</button>
+                    <button type="button" class="col-3 close" ng-click="reloadData(true)" data-dismiss="modal">&times;</button>
 
                 </div>
                 <div class="modal-body">
                     <h2 class="alert alert-success">{{notification}}</h2>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" ng-click="reloadData(true)" data-dismiss="modal">Close</button>
                 </div>
             </div>
 

@@ -11,31 +11,20 @@ app.config(function ($routeProvider) {
 });
 app.factory('dataservice', function ($http) {
     return {
-        deleteCategory: function (data, callback) {
-            $http.post('/Admin/Categories/DeleteCategories?id='+data).then(callback);
-        },
-        deleteCategoryCheckbox: function (data, callback) {
-            $http.post('/Admin/Categories/DeleteCategoriesAll?Listid=' + data).then(callback);
-        },
+       
     }
 });
 
 app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice) {
     var vm = $scope;
-    var id = document.getElementById('idEdit');
-    $scope.selected = [];
-    $scope.items = [];
-    $scope.selectAll = false;
     var LengthPage = 3;
-    var itam = LengthPage;
-    $scope.toggleOne = toggleOne;
    
     
     
     $scope.init = function () {
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withOption('ajax', {
-                url: "/Admin/Categories/JtableCategoryModel"
+                url: "/Admin/BillDetails/JtableBillDetailModel"
                 , beforeSend: function (jqXHR, settings) {
                     $.blockUI({
                         boxed: true,
@@ -44,7 +33,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 }
                 , type: 'GET'
                 , data: function (d) {
-                    d.Title = $scope.valueName;
+                    d.IdBill = $scope.valueName;
                 }
                
                 , dataType: "json"
@@ -75,36 +64,25 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             });
 
         vm.dtColumns = [];
-        var titleHtml = '<input ng-model="selectAll" name="typeOption" type="checkbox" "/>';
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', titleHtml).withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            $("input:checkbox[name=type]:checked").removeAttr('checked');
-            return '<input id="checkbox" style="margin: 0 auto;" value=' + data + ' ng-checked="selectAll" name="type" type="checkbox" ng-click="toggleOne(' + data + ',$event)">';
+        vm.dtColumns.push(DTColumnBuilder.newColumn('BillId', 'BillId').withClass('Center').renderWith(function (data, type) {
+            return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Title', 'Title').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Amount', 'Amount').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Categories/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
-        }));
-        
-       
-        if (id != null) {
-            vm.create = true;
-            
-        }
-        else {
-            vm.create = false;
-        }
-        
+        vm.dtColumns.push(DTColumnBuilder.newColumn('UnitPrice', 'UnitPrice').withClass('Center').renderWith(function (data, type) {
+            return data;
+        })); 
+        vm.dtColumns.push(DTColumnBuilder.newColumn('NameSevice', 'NameSevice').withClass('Center').renderWith(function (data, type) {
+            return data;
+        })); 
     }
     $scope.init();
     
-    vm.Show = function () {
-        vm.create = !vm.create;
-    };
+    
     $scope.delete = function (idDelete) {
         dataservice.deleteCategory(idDelete, function (rs) {
             rs = rs.data;
@@ -121,29 +99,8 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
     }
     $scope.Search = function () { reloadData(true) };
-    function toggleOne(item, $event) {
-        if (angular.element($event.currentTarget).prop('checked')) {
-            angular.element($event.currentTarget).attr("checked", "true");
-            
-        } else
-
-            angular.element($event.currentTarget).removeAttr("checked");
-    }
-    $scope.deleteAll = function () {
-        $("input:checkbox[name=type]:checked").each(function () {
-            $scope.selected.push($(this).val());
-        });
-        console.log($scope.selected);
-        dataservice.deleteCategoryCheckbox($scope.selected, function (rs) {
-            
-            rs = rs.data;
-            $scope.notification = rs;
-            $scope.selected = [];
-            reloadData(true);
-            
-        });
-        
-    }
+  
+   
     
     
 });

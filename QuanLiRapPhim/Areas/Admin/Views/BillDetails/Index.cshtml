@@ -1,0 +1,21 @@
+﻿@model QuanLiRapPhim.Areas.Admin.Models.BillDetail
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div id='contentMain' ng-app="App" ng-controller="Ctroller">
+    <input style="margin-left:30px;" placeholder="Search Name" class="col-3" type="text" ng-model="valueName" />
+    <button class="icon col-1" ng-click="Search()"><i class="fa fa-search"></i></button>
+    <table class="table dataTable table-hover table-striped"
+           datatable
+           dt-options="dtOptions"
+           dt-columns="dtColumns"
+           id="tblData" dt-instance="dtInstance"></table>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/View/admin/BillDetail/controller.js"></script>
+}

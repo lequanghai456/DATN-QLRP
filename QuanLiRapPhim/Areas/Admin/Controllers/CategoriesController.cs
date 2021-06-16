@@ -112,7 +112,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             category.IsDelete = true;
             _context.Update(category);
             _context.SaveChangesAsync();
-
+            Message = "Successfully deleted Categories";
             return Json("Success");
         }
         [TempData]
@@ -136,11 +136,11 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             }
             catch (Exception er)
             {
-                Message = "Successfully deleted Categories";
+                Message = "Successfully deleted " + itam + " Categories";
                 _context.SaveChangesAsync();
                 return Json("Successfully deleted " + itam + " Categories");
             }
-            Message = "Successfully deleted Categories";
+            Message = "Successfully deleted " + itam + " Categories";
             _context.SaveChangesAsync();
             return Json("Successfully deleted " + itam + " Categories");
 

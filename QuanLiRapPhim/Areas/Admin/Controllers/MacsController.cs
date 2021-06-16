@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
 
@@ -19,37 +20,22 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             _context = context;
         }
-
-        // GET: Admin/Macs
-        public async Task<IActionResult> Index()
+        public class JTableModelCustom : JTableModel
         {
-            return View(await _context.Macs.ToListAsync());
+            public string Title { get; set; }
         }
-
-        // GET: Admin/Macs/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Admin/Macs
+        public async Task<IActionResult> Index(int? id)
         {
-            if (id == null)
+            Mac mac = null;
+            if (id != null)
             {
-                return NotFound();
+                mac = _context.Macs.FirstOrDefault(s => s.Id == id);
             }
-
-            var mac = await _context.Macs
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (mac == null)
-            {
-                return NotFound();
-            }
-
             return View(mac);
         }
 
-        // GET: Admin/Macs/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
+       
         // POST: Admin/Macs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -61,23 +47,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 _context.Add(mac);
                 await _context.SaveChangesAsync();
+                Message = "Successfully create mac";
                 return RedirectToAction(nameof(Index));
-            }
-            return View(mac);
-        }
-
-        // GET: Admin/Macs/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var mac = await _context.Macs.FindAsync(id);
-            if (mac == null)
-            {
-                return NotFound();
             }
             return View(mac);
         }
@@ -100,6 +71,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 {
                     _context.Update(mac);
                     await _context.SaveChangesAsync();
+                    Message = "Successfully update mac";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -116,36 +88,65 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             }
             return View(mac);
         }
-
-        // GET: Admin/Macs/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpGet]
+        public async Task<String> JtableMacsModel(JTableModelCustom jTablePara)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
+            var query = _context.Macs.Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Title) || x.Title.Contains(jTablePara.Title)));
+            int count = query.Count();
+            var data = query.AsQueryable()
+                .Skip(intBegin)
+                .Take(jTablePara.Length);
 
-            var mac = await _context.Macs
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Title","Age","Describe");
+            return JsonConvert.SerializeObject(jdata);
+        }
+        public JsonResult DeleteMac(int? id)
+        {
+            Mac mac = new Mac();
+            mac = _context.Macs.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
             if (mac == null)
             {
-                return NotFound();
+
+                return Json("Fail");
             }
-
-            return View(mac);
+            mac.IsDelete = true;
+            _context.Update(mac);
+            _context.SaveChangesAsync();
+            Message = "Successfully deleted mac";
+            return Json("Success");
         }
-
-        // POST: Admin/Macs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [TempData]
+        public string Message { get; set; }
+        public JsonResult DeleteMacList(String Listid)
         {
-            var mac = await _context.Macs.FindAsync(id);
-            _context.Macs.Remove(mac);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            int itam = 0;
+            try
+            {
 
+                String[] List = Listid.Split(',');
+                Mac mac = new Mac();
+                foreach (String id in List)
+                {
+                    mac = _context.Macs.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
+                    mac.IsDelete = true;
+                    _context.Update(mac);
+                    itam++;
+
+                }
+            }
+            catch (Exception er)
+            {
+                Message = "Successfully deleted " + itam + " mac";
+                _context.SaveChangesAsync();
+                return Json("Successfully deleted " + itam + " mac");
+            }
+            Message = "Successfully deleted " + itam + " mac";
+            _context.SaveChangesAsync();
+            return Json("Successfully deleted " + itam + " mac");
+
+
+        }
         private bool MacExists(int id)
         {
             return _context.Macs.Any(e => e.Id == id);

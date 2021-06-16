@@ -1,0 +1,30 @@
+﻿@model QuanLiRapPhim.Areas.Admin.Models.Sevice
+
+<h1>@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")</h1>
+<form asp-action=@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit") method="post" class="row">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @{ if (ViewContext.RouteData.Values["id"] != null)
+        {
+            <input id="idEdit" type="hidden" asp-for="Id" />
+        }
+    }
+    <div class="form-group col-6">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group col-6">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group col-12 d-flex justify-content-center">
+        <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")" class="btn btn-primary" />
+        @{ if (ViewContext.RouteData.Values["id"] != null)
+            {
+                <a href="~/admin/Sevices" class="btn btn-warning">Canncel</a>
+            }
+        }
+    </div>
+</form>
+
