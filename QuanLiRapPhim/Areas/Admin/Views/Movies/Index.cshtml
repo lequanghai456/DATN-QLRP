@@ -1,0 +1,50 @@
+﻿@model QuanLiRapPhim.Areas.Admin.Models.Movie
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div ng-app="myApp" ng-controller="myCtrl">
+    @await Html.PartialAsync("Create")
+</div>
+@*<div ng-app="myApp" ng-controller="myCtrl">
+    Name: <input type="file" id="fileSelected">
+
+    <p>{{file.val()?file.val():""}}</p>
+</div>*@
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/View/admin/Movie/controller.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
+        function readURL(input, idImg) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $(idImg).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#ful").change(function () {
+            readURL(this, '#imgPre');
+        })
+    </script>
+@*<script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function ($scope) {
+        $scope.file = $('#fileSelected');
+        $scope.file.on('change', function (evt) {
+            var files = $(evt.currentTarget).get(0).files;
+
+            if (files.length > 0) {
+
+                $scope.$apply();
+            }
+        });
+    });
+</script>*@
+}

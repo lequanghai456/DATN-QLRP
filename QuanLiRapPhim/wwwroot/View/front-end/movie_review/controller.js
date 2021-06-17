@@ -138,7 +138,7 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice) {
 app.controller('bookticket', function ($scope, $routeParams,$uibModal,$rootScope) {
     $scope.seat;
     $scope.dsghedachon = [];    
-
+    
     var socket = io.connect('https://my-cinema-qlrp.herokuapp.com/bookticket');
     //var socket = io.connect('localhost:3000/bookticket');
 
