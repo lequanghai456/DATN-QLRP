@@ -1,7 +1,7 @@
 ﻿<div class="page">
     <div class="breadcrumbs">
-        <a href="index.html">Home</a>
-        <a href="review.html">Movie Review</a>
+        <a href="../#!/">Home</a>
+        <a href="#!">Movie Review</a>
         <span>{{NameMovie}}</span>
     </div>
 
@@ -31,8 +31,7 @@
                     <li>
                         <div class="row">
                             <div class="col-sm-6">
-                                <button type="button" class="btn btn-success" data-toggle="modal"
-                                        data-target="#exampleModal" style="width: 150px;">
+                                <button type="button" class="btn btn-success" ng-click="BookTicket()">
                                     Bookticket
                                 </button>
                             </div>
@@ -169,6 +168,7 @@
         
         
 </style>
+
 <div class="comment">
     <span><h1>Comment</h1></span>
     <form class="comment-area row">
@@ -230,52 +230,6 @@
 
             </div>
 
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="exampleModal" tabindex="-1"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                    Chọn suất
-                    chiếu trong rap
-                </h5>
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p style="height: 100%; display: flex; align-items: center; color: red;">
-                                Chọn ngay đặt vé:
-                            </p>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="date" class="form-control"
-                                   placeholder="Ngày đặt vé"
-                                   aria-label="Username"
-                                   aria-describedby="basic-addon1">
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div>
-                    <div style="display: flex; flex-direction: row;">
-                        <div class="text-center" ng-repeat="item in List"
-                             style="margin-left: 10px; display:flex; justify-content: center; align-items: center;width: 100px; height: 25px; border: 1px solid red;">
-                            <a href="#!{{NameMovie}}/bookticket/{{item.id}}">Suất chiếu {{item.id}}</a>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-            </div>
         </div>
     </div>
 </div>

@@ -88,7 +88,7 @@ app.controller('index', function ($scope, $rootScope, dataservice) {
     $scope.init();
 });
 
-app.controller('moviedetail', function ($scope, $routeParams, dataservice) {
+app.controller('moviedetail', function ($scope, $routeParams, dataservice,$uibModal) {
     $scope.NameMovie = $routeParams.NameMovie;
     //viết api kiểm tra tồn tại của phim
     function Rated(rate,se) {
@@ -100,11 +100,31 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice) {
             }
         }
     }
+    $scope.init = function () {
+        dataservice.GetListShowTime(function (rs) {
+            $scope.List = rs.data;
+        });
+    }
+
+    $scope.init();
+
+    $scope.BookTicket = function () {
+        var modalInstance = $uibModal.open({
+            scope: $scope,
+            animation: true,
+            backdrop:true,
+            templateUrl: ctxfolderurl + "/showTimePopup.html",
+            controller: "Popupmodal",
+            size: 'lg',
+        });
+    }
+
     $scope.Rate = function (index) {
         Rated(index, ".Rate");
         $scope.star = index;
     };
     $scope.Rated = Rated;
+
     $scope.OK = function () {
         alert($scope.star);
     }
@@ -118,9 +138,7 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice) {
             //vào trang không tìm thấy phim
         }
         else {
-            dataservice.GetListShowTime(function (rs) {
-                $scope.List =  rs.data;
-            });
+            
 
             $scope.Rated(3.3, ".Rated");
 
@@ -137,8 +155,9 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice) {
 
 app.controller('bookticket', function ($scope, $routeParams,$uibModal,$rootScope) {
     $scope.seat;
-    $scope.dsghedachon = [];    
-    
+    $scope.dsghedachon = [];
+    $scope.NameMovie = $routeParams.NameMovie;
+
     var socket = io.connect('https://my-cinema-qlrp.herokuapp.com/bookticket');
     //var socket = io.connect('localhost:3000/bookticket');
 
@@ -211,6 +230,7 @@ app.controller('bookticket', function ($scope, $routeParams,$uibModal,$rootScope
             socket.emit('Client-to-server-to-all', data);
 
             var modalInstance = $uibModal.open({
+                scope: $scope,
                 animation: true,
                 templateUrl: ctxfolderurl + "/payment.html",
                 controller: "payment",
@@ -236,9 +256,6 @@ app.controller('bookticket', function ($scope, $routeParams,$uibModal,$rootScope
 
     };
 
-    $scope.payment = function () {
-        
-    }
 });
 app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
     $scope.init = function () {
@@ -255,6 +272,7 @@ app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
             }
             $scope.$apply();
         }, 1000);
+        console.log($scope);
     }
 
     $scope.init();
@@ -268,5 +286,16 @@ app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
         clearInterval($scope.timeID);
         $uibModalInstance.close('ok');
     }
+
+});
+app.controller('Popupmodal', function ($scope, $uibModalInstance, $uibModal, dataservice) {
+   
+
+    $scope.close = function () {
+        console.log($scope.List);
+        $uibModalInstance.close('cancel');
+    }
+
+
 
 });
