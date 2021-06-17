@@ -22,7 +22,7 @@ namespace QuanLiRapPhim.Controllers
                 movie movie = new movie
                 {
                     Id = i,
-                    Title = "Maleficient",
+                    Title = "Maleficient " +i,
                     Poster = "thumb-" + i + ".jpg",
                     Describe = "Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.",
                     Status = 0,
