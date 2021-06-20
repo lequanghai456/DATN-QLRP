@@ -16,7 +16,7 @@ namespace QuanLiRapPhim.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("CategoryMovie", b =>
@@ -208,6 +208,20 @@ namespace QuanLiRapPhim.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDelete = false,
+                            Title = "Detective"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDelete = false,
+                            Title = "Adventure"
+                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Comment", b =>
@@ -298,6 +312,40 @@ namespace QuanLiRapPhim.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Macs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Age = 0,
+                            Describe = "phim phù hợp với khán giả ở mọi lứa tuổi",
+                            IsDelete = false,
+                            Title = "P"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Age = 13,
+                            Describe = "phim cho khán giả từ 13 tuổi trở lên",
+                            IsDelete = false,
+                            Title = "C13"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Age = 16,
+                            Describe = "phim cho khán giả từ 16 tuổi trở lên",
+                            IsDelete = false,
+                            Title = "C16"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Age = 18,
+                            Describe = "phim cho khán giả từ 18 tuổi trở lên",
+                            IsDelete = false,
+                            Title = "C18"
+                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Movie", b =>
@@ -317,6 +365,7 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Poster")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -336,6 +385,7 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Trailer")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -343,6 +393,36 @@ namespace QuanLiRapPhim.Migrations
                     b.HasIndex("MacId");
 
                     b.ToTable("Movies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Describe = "Lý Hải trở lại với dòng phim hành động sở trường của mình. Bối cảnh hoành tráng với sự đầu tư nghiêm túc, siêu phẩm hành động Việt Lật Mặt 48h sẽ kể về một hành trình trốn chạy đầy kịch tính, nghẹt thở đến phút cuối cùng.",
+                            IsDelete = false,
+                            MacId = 1,
+                            Poster = "1.jpg",
+                            Status = 0,
+                            Time = 110,
+                            Title = "Lật mặt",
+                            TotalRating = 0,
+                            TotalReviewers = 0,
+                            Trailer = ""
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Describe = "Sau những sự kiện tàn khốc của Avengers: Infinity War (2018), vũ trụ đang dần tàn lụi. Với sự giúp đỡ của các đồng minh còn lại, các Avengers tập hợp một lần nữa để đảo ngược hành động của Thanos và khôi phục lại sự cân bằng cho vũ trụ.",
+                            IsDelete = false,
+                            MacId = 1,
+                            Poster = "2.jpg",
+                            Status = 0,
+                            Time = 110,
+                            Title = "Biệt đội báo thù",
+                            TotalRating = 0,
+                            TotalReviewers = 0,
+                            Trailer = ""
+                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Rate", b =>
@@ -398,26 +478,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ConcurrencyStamp = "ccef5630-3f1b-4285-ac73-999ceba32edb",
-                            Name = "admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ConcurrencyStamp = "ab6e8d1f-ba59-4d95-979d-a485c303c917",
-                            Name = "manager movie"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ConcurrencyStamp = "7e56426b-aef7-4fe9-a312-c47179696a6e",
-                            Name = "staff"
-                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Room", b =>
@@ -491,6 +551,9 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<int?>("RoomId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("startTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -583,25 +646,6 @@ namespace QuanLiRapPhim.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "995a3f6c-f0a2-4235-a30b-77dfe661728a",
-                            DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "0306181100@caothang.edu.vn",
-                            EmailConfirmed = false,
-                            FullName = "Hồ Gia Bảo",
-                            Img = "admin.img",
-                            LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEF9u1bOqWI0jVx9W90CBKSC4tesC72Ddrk3XnwUMBXBIZ5JdeuqgIPGi0UHCQxIUXQ==",
-                            PhoneNumberConfirmed = false,
-                            RoleId = 1,
-                            TwoFactorEnabled = false,
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Test", b =>
@@ -677,6 +721,9 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");

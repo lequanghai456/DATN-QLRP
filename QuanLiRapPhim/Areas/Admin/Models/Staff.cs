@@ -13,6 +13,8 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     {
         [Column(TypeName = "nvarchar(255)")]
         public String FullName { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateOfBirth { get; set; }
         [Column(TypeName = "nvarchar(255)")]
         public String Img { get; set; }

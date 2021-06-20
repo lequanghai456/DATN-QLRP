@@ -194,6 +194,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Views\Shared\Components\" />
+    <Folder Include="wwwroot\admin\img\Trailer\" />
   </ItemGroup>
 
 </Project>

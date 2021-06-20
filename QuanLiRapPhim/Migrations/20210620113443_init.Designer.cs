@@ -10,15 +10,15 @@ using QuanLiRapPhim.Areas.Admin.Data;
 namespace QuanLiRapPhim.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20210615084037_seeding_accountAdmin")]
-    partial class seeding_accountAdmin
+    [Migration("20210620113443_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("CategoryMovie", b =>
@@ -147,10 +147,18 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Bills");
                 });
@@ -165,19 +173,13 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BillDetailId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("BillId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IsTicket")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("SeviceId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TicketId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
@@ -185,13 +187,9 @@ namespace QuanLiRapPhim.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BillDetailId");
-
                     b.HasIndex("BillId");
 
                     b.HasIndex("SeviceId");
-
-                    b.HasIndex("TicketId");
 
                     b.ToTable("BillDetails");
                 });
@@ -203,12 +201,29 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDelete = false,
+                            Title = "Detective"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDelete = false,
+                            Title = "Adventure"
+                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Comment", b =>
@@ -221,7 +236,13 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Parent")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("SubmittedDate")
@@ -249,6 +270,9 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -281,12 +305,49 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Macs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Age = 0,
+                            Describe = "phim phù hợp với khán giả ở mọi lứa tuổi",
+                            IsDelete = false,
+                            Title = "P"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Age = 13,
+                            Describe = "phim cho khán giả từ 13 tuổi trở lên",
+                            IsDelete = false,
+                            Title = "C13"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Age = 16,
+                            Describe = "phim cho khán giả từ 16 tuổi trở lên",
+                            IsDelete = false,
+                            Title = "C16"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Age = 18,
+                            Describe = "phim cho khán giả từ 18 tuổi trở lên",
+                            IsDelete = false,
+                            Title = "C18"
+                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Movie", b =>
@@ -299,10 +360,14 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("MacId")
                         .HasColumnType("int");
 
                     b.Property<string>("Poster")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -315,7 +380,14 @@ namespace QuanLiRapPhim.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TotalRating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalReviewers")
+                        .HasColumnType("int");
+
                     b.Property<string>("Trailer")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -323,6 +395,36 @@ namespace QuanLiRapPhim.Migrations
                     b.HasIndex("MacId");
 
                     b.ToTable("Movies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Describe = "Lý Hải trở lại với dòng phim hành động sở trường của mình. Bối cảnh hoành tráng với sự đầu tư nghiêm túc, siêu phẩm hành động Việt Lật Mặt 48h sẽ kể về một hành trình trốn chạy đầy kịch tính, nghẹt thở đến phút cuối cùng.",
+                            IsDelete = false,
+                            MacId = 1,
+                            Poster = "1.jpg",
+                            Status = 0,
+                            Time = 110,
+                            Title = "Lật mặt",
+                            TotalRating = 0,
+                            TotalReviewers = 0,
+                            Trailer = ""
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Describe = "Sau những sự kiện tàn khốc của Avengers: Infinity War (2018), vũ trụ đang dần tàn lụi. Với sự giúp đỡ của các đồng minh còn lại, các Avengers tập hợp một lần nữa để đảo ngược hành động của Thanos và khôi phục lại sự cân bằng cho vũ trụ.",
+                            IsDelete = false,
+                            MacId = 1,
+                            Poster = "2.jpg",
+                            Status = 0,
+                            Time = 110,
+                            Title = "Biệt đội báo thù",
+                            TotalRating = 0,
+                            TotalReviewers = 0,
+                            Trailer = ""
+                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Rate", b =>
@@ -332,11 +434,8 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Star")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
@@ -345,8 +444,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
 
                     b.HasIndex("UserId");
 
@@ -364,6 +461,9 @@ namespace QuanLiRapPhim.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -380,14 +480,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ConcurrencyStamp = "672d4d6c-b378-442b-95b7-407b83535b0b",
-                            Name = "admin"
-                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Room", b =>
@@ -400,18 +492,21 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<int>("Col")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdStaftManager")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Row")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdStaftManager");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Rooms");
                 });
@@ -422,6 +517,9 @@ namespace QuanLiRapPhim.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -444,11 +542,20 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("MovieId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int?>("RoomId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("startTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -488,6 +595,9 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<string>("Img")
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -538,25 +648,6 @@ namespace QuanLiRapPhim.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "398ce8ed-5b65-47fa-b1c5-9ac0e3ddf602",
-                            DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "0306181100@caothang.edu.vn",
-                            EmailConfirmed = false,
-                            FullName = "Hồ Gia Bảo",
-                            Img = "admin.img",
-                            LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEF9u1bOqWI0jVx9W90CBKSC4tesC72Ddrk3XnwUMBXBIZ5JdeuqgIPGi0UHCQxIUXQ==",
-                            PhoneNumberConfirmed = false,
-                            RoleId = 1,
-                            TwoFactorEnabled = false,
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Test", b =>
@@ -565,6 +656,9 @@ namespace QuanLiRapPhim.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -583,6 +677,9 @@ namespace QuanLiRapPhim.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("PurchaseDate")
                         .HasColumnType("datetime2");
@@ -627,6 +724,12 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -665,6 +768,9 @@ namespace QuanLiRapPhim.Migrations
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Seat", b =>
                 {
                     b.HasBaseType("QuanLiRapPhim.Areas.Admin.Models.Device");
+
+                    b.Property<decimal>("ExtraPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("X")
                         .HasColumnType("int");
@@ -741,12 +847,19 @@ namespace QuanLiRapPhim.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Bill", b =>
+                {
+                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.BillDetail", b =>
                 {
-                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.BillDetail", null)
-                        .WithMany("BillDetails")
-                        .HasForeignKey("BillDetailId");
-
                     b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Bill", "Bill")
                         .WithMany()
                         .HasForeignKey("BillId");
@@ -754,10 +867,6 @@ namespace QuanLiRapPhim.Migrations
                     b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Sevice", "Sevice")
                         .WithMany()
                         .HasForeignKey("SeviceId");
-
-                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Ticket", null)
-                        .WithMany("BillDetails")
-                        .HasForeignKey("TicketId");
 
                     b.Navigation("Bill");
 
@@ -799,10 +908,6 @@ namespace QuanLiRapPhim.Migrations
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Rate", b =>
                 {
-                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Movie", null)
-                        .WithMany("LstRate")
-                        .HasForeignKey("MovieId");
-
                     b.HasOne("QuanLiRapPhim.Areas.Admin.Models.User", null)
                         .WithMany("Rate")
                         .HasForeignKey("UserId");
@@ -810,11 +915,11 @@ namespace QuanLiRapPhim.Migrations
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Room", b =>
                 {
-                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Staff", "Staff")
+                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("IdStaftManager");
+                        .HasForeignKey("RoleId");
 
-                    b.Navigation("Staff");
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.ShowTime", b =>
@@ -856,16 +961,9 @@ namespace QuanLiRapPhim.Migrations
                     b.Navigation("ShowTime");
                 });
 
-            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.BillDetail", b =>
-                {
-                    b.Navigation("BillDetails");
-                });
-
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Movie", b =>
                 {
                     b.Navigation("LstComment");
-
-                    b.Navigation("LstRate");
 
                     b.Navigation("LstShowTime");
                 });
@@ -885,11 +983,6 @@ namespace QuanLiRapPhim.Migrations
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.ShowTime", b =>
                 {
                     b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Ticket", b =>
-                {
-                    b.Navigation("BillDetails");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.User", b =>

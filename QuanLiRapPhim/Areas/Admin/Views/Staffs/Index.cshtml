@@ -1,4 +1,4 @@
-﻿@model QuanLiRapPhim.Areas.Admin.Models.Category
+﻿@model QuanLiRapPhim.Areas.Admin.Models.Staff
 
 @{
     ViewData["Title"] = "Index";
@@ -11,11 +11,11 @@
     </div>
     <div>
         <div class="row">
-            <input style="margin-left:30px;" placeholder="Search Name,Role" class="col-3" type="text" ng-model="valueName" />
+            <input style="margin-left:30px;" placeholder="Search FullName" class="col-3" type="text" ng-model="valueName" />
             <button class="icon col-1" ng-click="Search()"><i class="fa fa-search"></i></button>
             <div class="col-lg-4"></div>
             <button class="btn btn-primary col-1" ng-click="Show()">Input</button>
-            <button class="btn btn-warning col-1" ng-click="deleteCategoryList()" data-toggle="modal" data-target="#myModal">DeleteList</button>
+            <button class="btn btn-warning col-1" ng-click="deleteStaffList()" data-toggle="modal" data-target="#myModal">DeleteList</button>
         </div>
         @{
             if (TempData.Peek("Message") != null)
@@ -55,5 +55,19 @@
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/View/admin/Category/controller.js"></script>
+    <script src="~/View/admin/Staff/controller.js"></script>
+    <script>
+        function readURL(input, idImg) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $(idImg).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#ful").change(function () {
+            readURL(this, '#imgPre');
+        })
+    </script>
 }

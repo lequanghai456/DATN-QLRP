@@ -24,21 +24,6 @@ namespace QuanLiRapPhim.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bills",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IsDelete = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bills", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -66,22 +51,6 @@ namespace QuanLiRapPhim.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Macs", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Rooms",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Row = table.Column<int>(type: "int", nullable: false),
-                    Col = table.Column<int>(type: "int", nullable: false),
-                    IsDelete = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rooms", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -122,6 +91,7 @@ namespace QuanLiRapPhim.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FullName = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Img = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -202,6 +172,29 @@ namespace QuanLiRapPhim.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Rooms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Row = table.Column<int>(type: "int", nullable: false),
+                    Col = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: true),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rooms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rooms_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Movies",
                 columns: table => new
                 {
@@ -209,13 +202,13 @@ namespace QuanLiRapPhim.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MacId = table.Column<int>(type: "int", nullable: true),
-                    Trailer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Poster = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Trailer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Poster = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Describe = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Time = table.Column<int>(type: "int", nullable: false),
-                    TotalRating = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TotalReviewers = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalRating = table.Column<int>(type: "int", nullable: false),
+                    TotalReviewers = table.Column<int>(type: "int", nullable: false),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -230,58 +223,25 @@ namespace QuanLiRapPhim.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Devices",
+                name: "Bills",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Staus = table.Column<int>(type: "int", nullable: false),
-                    RoomId = table.Column<int>(type: "int", nullable: true),
-                    IsDelete = table.Column<bool>(type: "bit", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    X = table.Column<int>(type: "int", nullable: true),
-                    Y = table.Column<int>(type: "int", nullable: true),
-                    ExtraPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Devices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Devices_Rooms_RoomId",
-                        column: x => x.RoomId,
-                        principalTable: "Rooms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BillDetails",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SeviceId = table.Column<int>(type: "int", nullable: true),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BillId = table.Column<int>(type: "int", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BillDetails", x => x.Id);
+                    table.PrimaryKey("PK_Bills", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BillDetails_Bills_BillId",
-                        column: x => x.BillId,
-                        principalTable: "Bills",
+                        name: "FK_Bills_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_BillDetails_Sevices_SeviceId",
-                        column: x => x.SeviceId,
-                        principalTable: "Sevices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -391,6 +351,32 @@ namespace QuanLiRapPhim.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Devices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Staus = table.Column<int>(type: "int", nullable: false),
+                    RoomId = table.Column<int>(type: "int", nullable: true),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    X = table.Column<int>(type: "int", nullable: true),
+                    Y = table.Column<int>(type: "int", nullable: true),
+                    ExtraPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Devices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Devices_Rooms_RoomId",
+                        column: x => x.RoomId,
+                        principalTable: "Rooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CategoryMovie",
                 columns: table => new
                 {
@@ -452,6 +438,7 @@ namespace QuanLiRapPhim.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    startTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MovieId = table.Column<int>(type: "int", nullable: true),
                     RoomId = table.Column<int>(type: "int", nullable: true),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false)
@@ -469,6 +456,35 @@ namespace QuanLiRapPhim.Migrations
                         name: "FK_ShowTimes_Rooms_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Rooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BillDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SeviceId = table.Column<int>(type: "int", nullable: true),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    BillId = table.Column<int>(type: "int", nullable: true),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BillDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BillDetails_Bills_BillId",
+                        column: x => x.BillId,
+                        principalTable: "Bills",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_BillDetails_Sevices_SeviceId",
+                        column: x => x.SeviceId,
+                        principalTable: "Sevices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -500,6 +516,36 @@ namespace QuanLiRapPhim.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "IsDelete", "Title" },
+                values: new object[,]
+                {
+                    { 1, false, "Detective" },
+                    { 2, false, "Adventure" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Macs",
+                columns: new[] { "Id", "Age", "Describe", "IsDelete", "Title" },
+                values: new object[,]
+                {
+                    { 1, 0, "phim phù hợp với khán giả ở mọi lứa tuổi", false, "P" },
+                    { 2, 13, "phim cho khán giả từ 13 tuổi trở lên", false, "C13" },
+                    { 3, 16, "phim cho khán giả từ 16 tuổi trở lên", false, "C16" },
+                    { 4, 18, "phim cho khán giả từ 18 tuổi trở lên", false, "C18" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Movies",
+                columns: new[] { "Id", "Describe", "IsDelete", "MacId", "Poster", "Status", "Time", "Title", "TotalRating", "TotalReviewers", "Trailer" },
+                values: new object[] { 1, "Lý Hải trở lại với dòng phim hành động sở trường của mình. Bối cảnh hoành tráng với sự đầu tư nghiêm túc, siêu phẩm hành động Việt Lật Mặt 48h sẽ kể về một hành trình trốn chạy đầy kịch tính, nghẹt thở đến phút cuối cùng.", false, 1, "1.jpg", 0, 110, "Lật mặt", 0, 0, "" });
+
+            migrationBuilder.InsertData(
+                table: "Movies",
+                columns: new[] { "Id", "Describe", "IsDelete", "MacId", "Poster", "Status", "Time", "Title", "TotalRating", "TotalReviewers", "Trailer" },
+                values: new object[] { 2, "Sau những sự kiện tàn khốc của Avengers: Infinity War (2018), vũ trụ đang dần tàn lụi. Với sự giúp đỡ của các đồng minh còn lại, các Avengers tập hợp một lần nữa để đảo ngược hành động của Thanos và khôi phục lại sự cân bằng cho vũ trụ.", false, 1, "2.jpg", 0, 110, "Biệt đội báo thù", 0, 0, "" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -556,6 +602,11 @@ namespace QuanLiRapPhim.Migrations
                 column: "SeviceId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bills_UserId",
+                table: "Bills",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CategoryMovie_lstMovieId",
                 table: "CategoryMovie",
                 column: "lstMovieId");
@@ -584,6 +635,11 @@ namespace QuanLiRapPhim.Migrations
                 name: "IX_Rates_UserId",
                 table: "Rates",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rooms_RoleId",
+                table: "Rooms",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShowTimes_MovieId",
@@ -654,16 +710,13 @@ namespace QuanLiRapPhim.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "Devices");
 
             migrationBuilder.DropTable(
                 name: "ShowTimes");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Movies");
@@ -673,6 +726,9 @@ namespace QuanLiRapPhim.Migrations
 
             migrationBuilder.DropTable(
                 name: "Macs");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
         }
     }
 }

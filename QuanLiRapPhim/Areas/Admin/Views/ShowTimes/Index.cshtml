@@ -1,21 +1,20 @@
-﻿@model QuanLiRapPhim.Areas.Admin.Models.Category
+﻿@model QuanLiRapPhim.Areas.Admin.Models.ShowTime
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
 <div id='contentMain' ng-app="App" ng-controller="Ctroller">
     <div ng-show="create">
         @await Html.PartialAsync("Create")
     </div>
     <div>
         <div class="row">
-            <input style="margin-left:30px;" placeholder="Search Name,Role" class="col-3" type="text" ng-model="valueName" />
+            <input style="margin-left:30px;" placeholder="Search....." class="col-3" type="text" ng-model="valueName" />
             <button class="icon col-1" ng-click="Search()"><i class="fa fa-search"></i></button>
             <div class="col-lg-4"></div>
             <button class="btn btn-primary col-1" ng-click="Show()">Input</button>
-            <button class="btn btn-warning col-1" ng-click="deleteCategoryList()" data-toggle="modal" data-target="#myModal">DeleteList</button>
+            <button class="btn btn-warning col-1" ng-click="deleteShowTimeList()" data-toggle="modal" data-target="#myModal">DeleteList</button>
         </div>
         @{
             if (TempData.Peek("Message") != null)
@@ -55,5 +54,5 @@
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/View/admin/Category/controller.js"></script>
+    <script src="~/View/admin/Showtimes/controller.js"></script>
 }

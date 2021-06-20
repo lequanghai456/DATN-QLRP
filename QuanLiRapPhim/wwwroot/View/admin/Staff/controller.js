@@ -4,18 +4,18 @@ var app = angular.module('App', ['datatables', 'ngRoute', 'checklist-model']);
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            
+
             controller: 'Ctroller'
         })
-      
+
 });
 app.factory('dataservice', function ($http) {
     return {
-        deleteCategory: function (data, callback) {
-            $http.post('/Admin/Categories/DeleteCategories?id='+data).then(callback);
+        deleteStaff: function (data, callback) {
+            $http.post('/Admin/Staffs/DeleteStaff?id=' + data).then(callback);
         },
-        deleteCategoryCheckbox: function (data, callback) {
-            $http.post('/Admin/Categories/DeleteCategoriesAll?Listid=' + data).then(callback);
+        deleteStaffCheckbox: function (data, callback) {
+            $http.post('/Admin/Staffs/DeleteStaffList?Listid=' + data).then(callback);
         },
     }
 });
@@ -29,13 +29,12 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     var LengthPage = 3;
     var itam = LengthPage;
     $scope.toggleOne = toggleOne;
-   
-    
-    
+
+    console.log(id);
     $scope.init = function () {
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withOption('ajax', {
-                url: "/Admin/Categories/JtableCategoryModel"
+                url: "/Admin/Staffs/JtablestaffModel"
                 , beforeSend: function (jqXHR, settings) {
                     $.blockUI({
                         boxed: true,
@@ -44,9 +43,9 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 }
                 , type: 'GET'
                 , data: function (d) {
-                    d.Title = $scope.valueName;
+                    d.FullName = $scope.valueName;
                 }
-               
+
                 , dataType: "json"
                 , complete: function (rs) {
                     $.unblockUI();
@@ -58,9 +57,9 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             })
             .withPaginationType('full_numbers').withDOM("<'table-scrollable't>ip")
             .withDataProp('data').withDisplayLength(LengthPage)
-            
+
             .withOption('serverSide', true)
-           
+
             .withOption('headerCallback', function (header) {
                 if (!$scope.headerCompiled) {
                     $scope.headerCompiled = true;
@@ -83,34 +82,56 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Title', 'Title').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('FullName', 'FullName').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Categories/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
+        vm.dtColumns.push(DTColumnBuilder.newColumn('date', 'DateOfBirth').withClass('Center').renderWith(function (data, type) {
+            return data;
         }));
-        
-       
+        vm.dtColumns.push(DTColumnBuilder.newColumn('UserName', 'UserName').withClass('Center').renderWith(function (data, type) {
+            return data;
+        }));
+        vm.dtColumns.push(DTColumnBuilder.newColumn('RoleName', 'RoleName').withClass('Center').renderWith(function (data, type) {
+            return data;
+        }));
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Img', 'Img').withClass('Center').renderWith(function (data, type) {
+
+            return '<img id="imgPre" src="/admin/img/' + data + '" alt="Alternate Text" class="img-thumbnail" />';
+        }));
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Staffs/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete(' + data + ')">Delete</button>';
+        }));
+
+
         if (id != null) {
             vm.create = true;
-            
+
         }
         else {
             vm.create = false;
         }
-        
+
     }
     $scope.init();
-    
+
     vm.Show = function () {
         vm.create = !vm.create;
     };
     $scope.delete = function (idDelete) {
-        dataservice.deleteCategory(idDelete, function (rs) {
-            rs = rs.data;
-            $scope.notification = rs;
-            reloadData(true);
-        });
+        var flag = true;
+        if (id != null) {
+            if (id.value == idDelete) {
+                $scope.notification = "Cannot delete object being edited";
+                flag = false;
+            }
+        }
+        if (flag) {
+            dataservice.deleteStaff(idDelete, function (rs) {
+                rs = rs.data;
+                $scope.notification = rs;
+                reloadData(true);
+            });
+        }
     }
     vm.reloadData = reloadData;
     vm.dtInstance = {};
@@ -124,26 +145,30 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     function toggleOne(item, $event) {
         if (angular.element($event.currentTarget).prop('checked')) {
             angular.element($event.currentTarget).attr("checked", "true");
-            
+
         } else
 
             angular.element($event.currentTarget).removeAttr("checked");
     }
-    $scope.deleteCategoryList = function () {
-        $("input:checkbox[name=type]:checked").each(function () {
-            $scope.selected.push($(this).val());
-        });
-        console.log($scope.selected);
-        dataservice.deleteCategoryCheckbox($scope.selected, function (rs) {
-            
-            rs = rs.data;
-            $scope.notification = rs;
-            $scope.selected = [];
-            reloadData(true);
-            
-        });
-        
+    $scope.deleteStaffList = function () {
+        if (id != null) {
+            $scope.notification = "This feature cannot be used while editing";
+        } else {
+            $("input:checkbox[name=type]:checked").each(function () {
+                $scope.selected.push($(this).val());
+            });
+            console.log($scope.selected);
+            dataservice.deleteStaffCheckbox($scope.selected, function (rs) {
+
+                rs = rs.data;
+                $scope.notification = rs;
+                $scope.selected = [];
+                reloadData(true);
+
+            });
+        }
+
     }
-    
-    
+
+
 });

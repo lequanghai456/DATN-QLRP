@@ -14,7 +14,9 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         [Required]
         public string Title { get; set; }
         public int? MacId { get; set; }
-        public String Trailer { get; set; } 
+        [Required]
+        public String Trailer { get; set; }
+        [Required]
         public String Poster { get; set; }
         public String Describe { get; set; }
         public int Status { get; set; }

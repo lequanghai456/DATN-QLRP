@@ -15,6 +15,9 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateTime { get; set; }
         public Decimal Price { get; set; }
+        [DataType(DataType.Time)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}")]
+        public DateTime startTime { get; set; }
         public int? MovieId { get; set; }
         public int? RoomId { get; set; }
         [ForeignKey("RoomId")]

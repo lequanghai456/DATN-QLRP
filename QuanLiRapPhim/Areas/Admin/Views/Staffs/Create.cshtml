@@ -1,0 +1,59 @@
+﻿@model QuanLiRapPhim.Areas.Admin.Models.Staff
+<h1>@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")</h1>
+<form asp-action=@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit") method="post" class="row" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @{ if (ViewContext.RouteData.Values["id"] != null)
+        {
+            <input id="idEdit" type="hidden" asp-for="Id" />
+        }
+    }
+<div class="col-6">
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" name="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoleId" class="control-label">RoleName</label>
+                <select asp-for="RoleId" class="form-control" asp-items="@(new SelectList(ViewBag.Role,"Id","Name"))"></select>
+                <span asp-validation-for="RoleId" class="text-danger"></span>
+            </div>
+            @{ if (ViewContext.RouteData.Values["id"] == null)
+                {
+
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PasswordHash" class="control-label"></label>
+                        <input asp-for="PasswordHash" name="PasswordHash" class="form-control" />
+                        <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                    </div>
+                }
+            }
+</div>
+    <div class="form-group col-6">
+        <div class="custom-file" style="margin-top: 30px;">
+            <input accept="*.png|*.jpg|*.jpep" type="file" name="ful" class="custom-file-input" id="ful" />
+            <label class="custom-file-label" for="ful">Add Images</label>
+        </div>
+        <img id="imgPre" src="~/admin/img/@(ViewContext.RouteData.Values["id"] == null ? "Noimage.png" : ViewData["Img"])" alt="Alternate Text" style="width:400px; height:400px;" />
+
+    </div>
+    <div class="form-group col-12 d-flex justify-content-center">
+        <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")" class="btn btn-primary" />
+        @{ if (ViewContext.RouteData.Values["id"] != null)
+            {
+                <a href="~/admin/Staffs" class="btn btn-warning">Canncel</a>
+            }
+        }
+    </div>
+</form>
+

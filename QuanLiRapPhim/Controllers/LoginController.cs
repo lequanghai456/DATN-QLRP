@@ -33,14 +33,14 @@ namespace QuanLiRapPhim.Controllers
             try
             {
                 ViewBag.Message = "Admin already registered";
-                User user = await StaffMgr.FindByNameAsync("ChoBao");
+                User user = await StaffMgr.FindByNameAsync("User1");
                 if (user == null)
                 {
                     user = new User();
-                    user.UserName = "ChoBao";
+                    user.UserName = "User1";
                     user.FullName = "Hồ Gia Bảo";
-                    user.PasswordHash = "abc123";
-                    IdentityResult result =  await StaffMgr.CreateAsync(user, "abc123");
+                    user.PasswordHash = "abc1234";
+                    IdentityResult result =  await StaffMgr.CreateAsync(user, user.PasswordHash);
                     if (result.Succeeded)
                     {
                         return Json(Message="Succeeded");

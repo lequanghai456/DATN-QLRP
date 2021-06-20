@@ -11,11 +11,11 @@ app.config(function ($routeProvider) {
 });
 app.factory('dataservice', function ($http) {
     return {
-        deleteCategory: function (data, callback) {
-            $http.post('/Admin/Categories/DeleteCategories?id='+data).then(callback);
+        deleteShowTime: function (data, callback) {
+            $http.post('/Admin/ShowTimes/DeleteShowTime?id='+data).then(callback);
         },
-        deleteCategoryCheckbox: function (data, callback) {
-            $http.post('/Admin/Categories/DeleteCategoriesAll?Listid=' + data).then(callback);
+        deleteShowTimeCheckbox: function (data, callback) {
+            $http.post('/Admin/ShowTimes/DeleteShowTimeList?Listid=' + data).then(callback);
         },
     }
 });
@@ -35,7 +35,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     $scope.init = function () {
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withOption('ajax', {
-                url: "/Admin/Categories/JtableCategoryModel"
+                url: "/Admin/ShowTimes/JtableShowTimeModel"
                 , beforeSend: function (jqXHR, settings) {
                     $.blockUI({
                         boxed: true,
@@ -44,7 +44,8 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 }
                 , type: 'GET'
                 , data: function (d) {
-                    d.Title = $scope.valueName;
+                    d.NameRoom = $scope.valueName;
+                   
                 }
                
                 , dataType: "json"
@@ -83,11 +84,20 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Title', 'Title').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('DateTime', 'DateTime').withClass('Center').renderWith(function (data, type) {
+            return data;
+        }));
+        vm.dtColumns.push(DTColumnBuilder.newColumn('NameRoom', 'NameRoom').withClass('Center').renderWith(function (data, type) {
+            return data;
+        }));
+        vm.dtColumns.push(DTColumnBuilder.newColumn('NameMovie', 'NameMovie').withClass('Center').renderWith(function (data, type) {
+            return data;
+        }));
+        vm.dtColumns.push(DTColumnBuilder.newColumn('StartTime', 'StartTime').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Categories/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/ShowTimes/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
         }));
         
        
@@ -106,7 +116,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.create = !vm.create;
     };
     $scope.delete = function (idDelete) {
-        dataservice.deleteCategory(idDelete, function (rs) {
+        dataservice.deleteShowTime(idDelete, function (rs) {
             rs = rs.data;
             $scope.notification = rs;
             reloadData(true);
@@ -129,12 +139,12 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
             angular.element($event.currentTarget).removeAttr("checked");
     }
-    $scope.deleteCategoryList = function () {
+    $scope.deleteShowTimeList = function () {
         $("input:checkbox[name=type]:checked").each(function () {
             $scope.selected.push($(this).val());
         });
         console.log($scope.selected);
-        dataservice.deleteCategoryCheckbox($scope.selected, function (rs) {
+        dataservice.deleteShowTimeCheckbox($scope.selected, function (rs) {
             
             rs = rs.data;
             $scope.notification = rs;

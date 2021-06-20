@@ -23,9 +23,14 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
 
         // GET: Admin/Movies
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
             Movie movie = new Movie();
+            if (id != null)
+            {
+                movie = _context.Movies.FirstOrDefault(x => x.Id == id);
+                movie.Lstcategories = _context.Categories.Where(x => x.Id == id).ToList();
+            }
             ViewData["MacId"] = new SelectList(_context.Macs.Where(x=>x.IsDelete==false), "Id", "Title");
             ViewBag.categories = new SelectList(_context.Categories.Where(x => x.IsDelete == false), "Id", "Title");
             return View(movie);
@@ -37,23 +42,38 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Movie movie, int[] Lstcategories, IFormFile ful)
+        public async Task<IActionResult> Create(Movie movie, int[] Lstcategories, IFormFile ful,IFormFile video)
         {
+            if(ful != null && video != null)
+            {
+                movie.Trailer = "tam";
+                movie.Poster = "tam";
+            }
             if (ModelState.IsValid)
             {
                 foreach (int category in Lstcategories)
                 {
                     movie.Lstcategories.Add(_context.Categories.FirstOrDefault(x => x.Id == category));
                 }
-                _context.Add(movie);
-                _context.SaveChangesAsync();
+                 _context.Add(movie);
+                await _context.SaveChangesAsync();
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Poster",
                    movie.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
+                var pathVideo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Trailer",
+                   movie.Id + "." + video.FileName.Split(".")[video.FileName.Split(".").Length - 1]);
                 using (var stream = new FileStream(path, FileMode.Create))
                 {
-                   ful.CopyToAsync(stream);
+                   await ful.CopyToAsync(stream);
+                    
+                }
+                using (var stream = new FileStream(pathVideo, FileMode.Create))
+                {
+                    await video.CopyToAsync(stream);
                 }
                 movie.Poster = movie.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
+                movie.Trailer = movie.Id + "." + video.FileName.Split(".")[video.FileName.Split(".").Length - 1];
+                _context.Update(movie);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MacId"] = new SelectList(_context.Macs, "Id", "Id", movie.MacId);
@@ -67,7 +87,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Movie movie, IFormFile ful)
+        public async Task<IActionResult> Edit(int id, Movie movie, IFormFile ful, IFormFile video)
         {
             if (id != movie.Id)
             {
@@ -78,8 +98,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(movie);
-                    if (ful != null)
+                   
+                    if (ful != null )
                     {
                         var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Poster", movie.Poster);
                         System.IO.File.Delete(path);
@@ -91,9 +111,21 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                             await ful.CopyToAsync(stream);
                         }
                         movie.Poster = movie.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                        _context.Update(movie);
-                        await _context.SaveChangesAsync();
                     }
+                    if (video != null)
+                    {
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Trailer", movie.Trailer);
+                        System.IO.File.Delete(path);
+
+                        path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Trailer",
+                        movie.Id + "." + video.FileName.Split(".")[video.FileName.Split(".").Length - 1]);
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await video.CopyToAsync(stream);
+                        }
+                        movie.Trailer = movie.Id + "." + video.FileName.Split(".")[video.FileName.Split(".").Length - 1];
+                    }
+                    _context.Update(movie);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
