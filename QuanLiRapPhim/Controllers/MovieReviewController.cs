@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutomatedInvoiceGenerator.Models;
+using Microsoft.AspNetCore.Mvc;
 using QuanLiRapPhim.Areas.Admin.Models;
+using QuanLiRapPhim.SupportJSON;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace QuanLiRapPhim.Controllers
@@ -26,11 +30,29 @@ namespace QuanLiRapPhim.Controllers
                     Poster = "thumb-" + i + ".jpg",
                     Describe = "Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.",
                     Status = 0,
+                    Time=90,
+                    Date=DateTime.Now
                 };
                 movies.Add(movie);
             }
         }
 
+        [HttpGet]
+        public JsonResult GetMovieByName(String Name)
+        {
+            JMessage jMessage = new JMessage();
+            var movie = movies.Where(x => x.Title == Name).FirstOrDefault();
+            jMessage.Error = movie == null;
+            if (!jMessage.Error)
+            {
+                jMessage.Object = movie;
+            }
+            else
+            {
+                jMessage.Title = "<h1>Không có phim "+Name+"</h1>";
+            }
+            return Json(jMessage);
+        }
         public JsonResult GetItem(int id)
         {
             return Json(movies.FirstOrDefault(movie=>movie.Id==id));
@@ -60,6 +82,9 @@ namespace QuanLiRapPhim.Controllers
         public String Poster{ get; set; }
         public String Describe{ get; set; }
         public int Status{ get; set; }
-        public DateTime Time{ get; set; }
+        public int Time{ get; set; }
+        [DataType(DataType.Date)]
+        [JsonConverter(typeof(JsonDateConverter))]
+        public DateTime Date { get; set; }
     }
 }

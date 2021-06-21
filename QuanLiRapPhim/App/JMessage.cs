@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ESEIM.Utils
+namespace QuanLiRapPhim.SupportJSON
 {
     /// <summary>
     /// Đối tượng đóng gói các thông báo khi thêm, sửa, xóa...

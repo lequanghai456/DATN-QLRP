@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using QuanLiRapPhim.App;
 using QuanLiRapPhim.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,12 @@ namespace QuanLiRapPhim.Controllers
         {
             _logger = logger;
         }
-
+        public String SendEmail(String email)
+        {
+            return Email.SendMailGoogleSmtp("giabao158357@gmail.com", email, "TestEmail","<h1>Cho Hai</h1>").Result
+                ? "true"
+                : "false";
+        }
         public IActionResult Index()
         {
             return View();

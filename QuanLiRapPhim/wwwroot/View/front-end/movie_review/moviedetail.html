@@ -1,266 +1,191 @@
-﻿<div class="page">
+﻿    <div class="page">
     <div class="breadcrumbs">
         <a href="../#!/">Home</a>
         <a href="#!">Movie Review</a>
         <span>{{NameMovie}}</span>
     </div>
-
-    <div class="content">
-        <div class="row">
-            <div class="col-md-6">
-                <figure class="movie-poster" style="display: flex; justify-content: center;">
-                    <img width="360" height="500" src="../../dummy/single-image.jpg" alt="#" height="">
-                </figure>
-            </div>
-            <div class="col-md-6">
-                <h2 class="movie-title">{{NameMovie}}</h2>
-                <ul class="movie-meta">
-                    <li class="Rated">
-                        <strong>Đánh giá:</strong>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                    </li>
-                    <li><strong>Thời gian chiếuchiếu:</strong> 98 min</li>
-                    <li><strong>Ngày khởi chiếu:</strong> 22 March 2013 (USA)</li>
-                    <li><strong>Thể loại:</strong> Animation/Adventure/Comedy</li>
-                </ul>
-                <ul class="starring">
-                    <li>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <button type="button" class="btn btn-success" ng-click="BookTicket()">
-                                    Bookticket
-                                </button>
+    <div ng-show="message==null">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-6">
+                    <figure class="movie-poster" style="display: flex; justify-content: center;">
+                        <img width="100%" src="../../dummy/{{model.poster}}" alt="#">
+                    </figure>
+                </div>
+                <div class="col-md-6">
+                    <h2 class="movie-title">{{model.title}}</h2>
+                    <ul class="movie-meta">
+                        <li class="Rated">
+                            <strong>Đánh giá:</strong>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                        </li>
+                        <li><strong>Thời gian chiếuchiếu:</strong>{{model.time}} phút</li>
+                        <li><strong>Ngày khởi chiếu:</strong> {{model.date}}</li>
+                        <li><strong>Thể loại:</strong> Animation/Adventure/Comedy</li>
+                    </ul>
+                    <ul class="starring">
+                        <li>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-success" ng-click="BookTicket()">
+                                        Bookticket
+                                    </button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button type="button" data-toggle="modal"
+                                            data-target="#Rate"
+                                            class="btn btn-success"
+                                            style="width: 150px;" ng-click="Rate(0)">
+                                        Ratting
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-sm-6">
-                                <button type="button"data-toggle="modal"
-                                        data-target="#Rate"
-                                        class="btn btn-success" 
-                                        style="width: 150px;" ng-click="Rate(0)">
-                                    Ratting
-                                </button>
+                        </li>
+                    </ul>
+                </div>
+            </div> <!-- .row -->
+            <div>
+                <h1>Mô tả phim</h1>
+            </div>
+            <div class="entry-content">
+                <p>{{model.describe}}</p>
+            </div>
+            <div>
+                <h1>Trailer phim</h1>
+                <div>
+                    <iframe width="100%" height="400" src="https://www.youtube.com/embed/RqcQyB5q7sY"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                </div>
+
+            </div>
+        </div>
+        <style>
+            .comment-author img {
+                margin: 0 auto;
+            }
+
+            .comment-content {
+                color: #999;
+                width: 80%;
+                min-height: 60px;
+                max-height: 60px;
+                padding: 5px 10px;
+                background-color: #fff;
+                cursor: text;
+                border: 1px solid #bbb;
+            }
+
+            .summary {
+                padding: 5px;
+                background-color: #fff;
+                cursor: text;
+                border: 1px solid #bbb;
+            }
+
+            .commentItems {
+                padding-top: 10px;
+            }
+
+            .commentItems2 {
+                padding: 10px 0 0 100px;
+            }
+
+            .comment-item2 {
+                padding-top: 10px;
+            }
+
+            .form-comment2 {
+                padding-top: 10px;
+            }
+
+            .comment {
+                padding: 10px;
+            }
+
+            .Rate {
+                width: 50%;
+                margin: auto;
+                display: flex;
+                justify-content: space-between;
+            }
+
+                .Rate span {
+                    width: auto;
+                    margin: auto;
+                    padding: 10px;
+                }
+        </style>
+
+        <div class="comment">
+            <span><h1>Comment</h1></span>
+            <form class="comment-area row">
+                <textarea class="comment-content col-11" placeholder="Comment here!"></textarea>
+                <input type="submit" class="btn btn-success col-1" value="Send" />
+            </form>
+            <div class="commentItems">
+                <div class="comment-item row">
+                    <div class="comment-author col-1">
+                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                        <div>
+                            <input type="submit" class="btn btn-success" value="trả lời" height="5" ng-click="traloi(1)" />
+                        </div>
+                    </div>
+
+                    <div class="summary col-11">
+                        <div><span><h2>name user</h2></span></div>
+                        <div><span>comment</span></div>
+                    </div>
+
+                    <div ng-show="comment == 1" class="col-12 form-comment2">
+                        <form class="comment-area2 row">
+                            <textarea class="comment-content col-11" placeholder="Comment here!"></textarea>
+                            <input type="submit" class="btn btn-success col-1" value="Send" />
+                        </form>
+                    </div>
+
+                    <div class="commentItems2 col-12">
+
+                        <div class="comment-item2 row">
+                            <div class="comment-author col-1">
+                                <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                            </div>
+                            <div class="summary col-11">
+                                <div><span><h2>name user</h2></span></div>
+                                <div><span>comment</span></div>
                             </div>
                         </div>
-                    </li>
-                </ul>
-            </div>
-        </div> <!-- .row -->
-        <div>
-            <h1>Mô tả phim</h1>
-        </div>
-        <div class="entry-content">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ac pharetra libero.
-                Integer in suscipit diam, sit amet eleifend nunc. Curabitur egestas nunc nulla, in
-                aliquet risus efficitur quis. Vivamus facilisis est libero, vitae iaculis nulla cursus
-                in. Suspendisse potenti. In et fringilla ipsum, quis varius quam. Morbi eleifend
-                venenatis diam finibus vehicula. Suspendisse eu blandit metus. Sed feugiat pellentesque
-                turpis, in lacinia ipsum. Vivamus nec luctus orci.
-            </p>
-            <p>
-                Aenean vehicula eget risus sit amet posuere. Maecenas id risus maximus, malesuada leo
-                eget, pellentesque arcu. Phasellus vitae leo rhoncus, consectetur mauris vitae, lacinia
-                quam. Nunc turpis erat, accumsan eget justo quis, auctor ultricies magna. Mauris
-                sodales, risus sit amet hendrerit tincidunt, erat ante facilisis sapien, sit amet
-                maximus neque massa a felis. Nullam consectetur justo massa, vel commodo metus gravida
-                in. Aliquam erat volutpat. Nullam a lorem sed lorem euismod gravida a eu velit. Lorem
-                ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis ac ligula vel
-                pharetra. Aenean vitae nulla sed dui volutpat euismod. Nam ex quam, consequat id rutrum
-                sed, porttitor id lectus. Vestibulum venenatis consectetur justo ut sagittis. Duis
-                dignissim tincidunt quam, nec pulvinar libero luctus nec. Morbi blandit nec lorem in
-                ullamcorper.
-            </p>
-            <p>
-                Vestibulum et odio massa. Integer at odio ipsum. Proin vitae tristique nibh. Aenean
-                semper ante sit amet ante ultricies tincidunt. Curabitur cursus, urna non ultricies
-                posuere, dolor lacus cursus lorem, a dapibus nibh ex eget sem. Aliquam semper sagittis
-                sapien a fermentum. Nullam sed iaculis lacus, et imperdiet risus. Praesent quis turpis
-                ac nunc sodales tincidunt. Aliquam at leo odio. Sed a tempor nisl, et mattis felis. Nam
-                mauris nunc, commodo ac orci ut, auctor viverra mauris.
-            </p>
-            <p>
-                Quisque nec justo vitae metus consectetur ultrices. Duis venenatis lorem massa, eu
-                pulvinar quam faucibus sed. Nulla fringilla lorem sit amet sagittis mattis. Nunc in leo
-                a odio mollis consectetur. Etiam ac nisl eget diam ullamcorper porta. Aliquam
-                consectetur neque eget metus egestas sollicitudin. Curabitur ultrices urna et feugiat
-                malesuada.
-            </p>
-            <p>
-                Nulla facilisi. Fusce sed dapibus leo, eu lobortis ante. Duis luctus mauris in ante
-                semper, ut feugiat nisi condimentum. Nullam a odio et justo suscipit tempus. Vestibulum
-                placerat dapibus quam, a egestas turpis efficitur id. Integer suscipit placerat
-                placerat. Phasellus in lorem quis leo egestas accumsan. Nam et euismod ligula. Duis nec
-                erat aliquam, sollicitudin diam non, ornare leo. Pellentesque augue leo, faucibus in
-                nunc nec, tincidunt ullamcorper tortor. Phasellus aliquam condimentum elit. Nulla
-                facilisi. Donec magna libero, bibendum eu faucibus et, mattis at felis. Integer turpis
-                nibh, blandit nec elit vel, euismod laoreet quam. Donec vel ante nisi. Nunc luctus a
-                tellus non.
-            </p>
-        </div>
-        <div>
-            <h1>Trailer phim</h1>
-            <div>
-                <iframe width="100%" height="400" src="https://www.youtube.com/embed/RqcQyB5q7sY"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
-            </div>
 
-        </div>
-    </div>
-</div>
-<style>
-    .comment-author img {
-        margin: 0 auto;
-    }
+                        <div class="comment-item2 row">
+                            <div class="comment-author col-1">
+                                <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                            </div>
+                            <div class="summary col-11">
+                                <div><span><h2>name user</h2></span></div>
+                                <div><span>comment</span></div>
+                            </div>
+                        </div>
 
-    .comment-content {
-        color: #999;
-        width: 80%;
-        min-height: 60px;
-        max-height: 60px;
-        padding: 5px 10px;
-        background-color: #fff;
-        cursor: text;
-        border: 1px solid #bbb;
-    }
+                        <div class="comment-item2 row">
+                            <div class="comment-author col-1">
+                                <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                            </div>
+                            <div class="summary col-11">
+                                <div><span><h2>name user</h2></span></div>
+                                <div><span>comment</span></div>
+                            </div>
+                        </div>
 
-    .summary {
-        padding: 5px;
-        background-color: #fff;
-        cursor: text;
-        border: 1px solid #bbb;
-    }
+                    </div>
 
-    .commentItems {
-        padding-top: 10px;
-    }
-
-    .commentItems2 {
-        padding: 10px 0 0 100px;
-    }
-
-    .comment-item2 {
-        padding-top: 10px;
-    }
-
-    .form-comment2 {
-        padding-top: 10px;
-    }
-
-    .comment {
-        padding: 10px;
-    }
-    .Rate {
-        width: 50%;
-        margin: auto;
-        display: flex;
-        justify-content: space-between;
-    }
-        .Rate span {
-            width: auto;
-            margin: auto;
-            padding:10px;
-        }
-        
-        
-</style>
-
-<div class="comment">
-    <span><h1>Comment</h1></span>
-    <form class="comment-area row">
-        <textarea class="comment-content col-11" placeholder="Comment here!"></textarea>
-        <input type="submit" class="btn btn-success col-1" value="Send" />
-    </form>
-    <div class="commentItems">
-        <div class="comment-item row">
-            <div class="comment-author col-1">
-                <img src="/admin/img/Icon_User.png" height="40" width="40" />
-                <div>
-                    <input type="submit" class="btn btn-success" value="trả lời" height="5" ng-click="traloi(1)" />
                 </div>
-            </div>
-
-            <div class="summary col-11">
-                <div><span><h2>name user</h2></span></div>
-                <div><span>comment</span></div>
-            </div>
-
-            <div ng-show="comment == 1" class="col-12 form-comment2">
-                <form class="comment-area2 row">
-                    <textarea class="comment-content col-11" placeholder="Comment here!"></textarea>
-                    <input type="submit" class="btn btn-success col-1" value="Send" />
-                </form>
-            </div>
-
-            <div class="commentItems2 col-12">
-
-                <div class="comment-item2 row">
-                    <div class="comment-author col-1">
-                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
-                    </div>
-                    <div class="summary col-11">
-                        <div><span><h2>name user</h2></span></div>
-                        <div><span>comment</span></div>
-                    </div>
-                </div>
-
-                <div class="comment-item2 row">
-                    <div class="comment-author col-1">
-                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
-                    </div>
-                    <div class="summary col-11">
-                        <div><span><h2>name user</h2></span></div>
-                        <div><span>comment</span></div>
-                    </div>
-                </div>
-
-                <div class="comment-item2 row">
-                    <div class="comment-author col-1">
-                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
-                    </div>
-                    <div class="summary col-11">
-                        <div><span><h2>name user</h2></span></div>
-                        <div><span>comment</span></div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="Rate" tabindex="-1"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header" style="display: flex; justify-content: space-between;">
-                <h3 class="modal-title" id="exampleModalLabel">
-                    Đánh giá
-                </h3>
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="Rate">
-                    <span class="fa fa-star fa-3x" ng-click="Rate(1)"></span>
-                    <span class="fa fa-star fa-3x" ng-click="Rate(2)"></span>
-                    <span class="fa fa-star fa-3x" ng-click="Rate(3)"></span>
-                    <span class="fa fa-star fa-3x" ng-click="Rate(4)"></span>
-                    <span class="fa fa-star fa-3x" ng-click="Rate(5)"></span>
-                </div>
-                <h3 ng-show="star?true:false" style="text-align:center">{{star}} sao</h3>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" ng-click="OK()" data-dismiss="modal">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
+    <div ng-bind-html="renderHtml(message)"></div>
