@@ -1,6 +1,6 @@
 ﻿var ctxfolderurl = "/View/front-end/your_order";
 
-var app = angular.module('App', ['ui.bootstrap', 'ngRoute', 'ngAnimate']);
+var app = angular.module('App', ['ui.bootstrap', 'ngRoute', 'ngAnimate','datatables']);
 
 app.controller('Ctroller', function () {
 
@@ -14,7 +14,64 @@ app.config(function ($routeProvider) {
         })
 });
 
-app.controller('index', function ($scope, $uibModal) {
+app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnBuilder, $compile) {
+    var vm = $scope;
+
+    vm.dtOrderhOptions = DTOptionsBuilder.newOptions()
+        .withOption('ajax', {
+            url: "/YourOrder/JtableTestModel"
+            , beforeSend: function (jqXHR, settings) {
+                $.blockUI({
+                    boxed: true,
+                    message: 'loading...'
+                });
+            }
+            , type: 'GET'
+            //, contentType: "application/json; charset=utf-8"
+            , dataType: "json"
+            , complete: function (rs) {
+                $.unblockUI();
+                console.log(rs);
+                if (rs && rs.responseJSON && rs.responseJSON.Error) {
+                    App.toastrError(rs.responseJSON.Title);
+                }
+            }
+        })
+        .withPaginationType('full_numbers').withDOM("<'table-scrollable't>ip")
+        .withDataProp('data').withDisplayLength(3)
+        .withOption('order', [1, 'desc'])
+        .withOption('serverSide', true)
+        .withOption('headerCallback', function (header) {
+            if (!$scope.headerCompiled) {
+                $scope.headerCompiled = true;
+                $compile(angular.element(header).contents())($scope);
+            }
+        })
+        .withOption('initComplete', function (settings, json) {
+        })
+        .withOption('createdRow', function (row) {
+            $compile(angular.element(row).contents())($scope);
+        });
+
+
+    vm.dtOrderColumns = [];
+    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('id', 'id').withOption('sWidth', '20px').renderWith(function (data, type) {
+        return data
+    }));
+    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Objects', 'Your Order').withOption('sWidth', '100px').renderWith(function (data, type) {
+        return $scope.render(data);
+    }));
+    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Date', 'Date').withOption('sWidth', '60px').renderWith(function (data, type) {
+        return data;
+    }));
+
+
+    $scope.render = function (data) {
+        var a= JSON.parse(data);
+        return data;
+    }
+
+
     $scope.init = function () {
         $("#my_order").addClass("current-menu-item");
     }
