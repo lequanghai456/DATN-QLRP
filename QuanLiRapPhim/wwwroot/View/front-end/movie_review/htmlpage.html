@@ -1,0 +1,25 @@
+﻿<div class="modal-content">
+    <div class="modal-header" style="display: flex; justify-content: space-between;">
+        <h3 class="modal-title" id="exampleModalLabel">
+            Đánh giá
+        </h3>
+        <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="Rate">
+            <span class="fa fa-star fa-3x" ng-click="Rate(1)"></span>
+            <span class="fa fa-star fa-3x" ng-click="Rate(2)"></span>
+            <span class="fa fa-star fa-3x" ng-click="Rate(3)"></span>
+            <span class="fa fa-star fa-3x" ng-click="Rate(4)"></span>
+            <span class="fa fa-star fa-3x" ng-click="Rate(5)"></span>
+        </div>
+        <h3 ng-show="star?true:false" style="text-align:center">{{star}} sao</h3>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="OK()" data-dismiss="modal">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+</div>

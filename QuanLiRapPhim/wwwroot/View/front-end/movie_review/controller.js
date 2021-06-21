@@ -21,26 +21,30 @@ app.factory('dataservice', function ($http) {
        },
         GetListShowTime: function (callback) {
             $http.get('/moviereview/GetListShowTime').then(callback);
-        }
+        },
+        GetMovieByName: function (name,callback) {
+            $http.get('/moviereview/GetMovieByName?Name='+name).then(callback);
+        },
     }
 });
 
 app.config(function ($routeProvider) {
+    
     $routeProvider
         .when('/', {
             templateUrl: ctxfolderurl + '/index.html',
             controller: 'index'
         }).when('/:NameMovie', {
             templateUrl: ctxfolderurl + '/moviedetail.html',
-            controller: 'moviedetail'
-        })
-        .when('/:NameMovie/bookticket/:id', {
+            controller: 'moviedetail',
+        }).when('/:NameMovie/bookticket/:id', {
             templateUrl: ctxfolderurl + '/bookticket.html',
             controller: 'bookticket'
         }).when('/:NameMovie/bookticket/:id/payment', {
             templateUrl: ctxfolderurl + '/payment.html',
             controller: 'payment'
         });
+
 });
 
 app.controller('index', function ($scope, $rootScope, dataservice) {
@@ -88,9 +92,9 @@ app.controller('index', function ($scope, $rootScope, dataservice) {
     $scope.init();
 });
 
-app.controller('moviedetail', function ($scope, $routeParams, dataservice,$uibModal) {
+app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibModal, $sce) {
     $scope.NameMovie = $routeParams.NameMovie;
-    //viết api kiểm tra tồn tại của phim
+
     function Rated(rate,se) {
         if (rate <= 5 && rate >= 0) {
             $(se + " span.fa-star").removeClass("checked");
@@ -101,9 +105,22 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice,$uibMo
         }
     }
     $scope.init = function () {
-        dataservice.GetListShowTime(function (rs) {
-            $scope.List = rs.data;
+        dataservice.GetMovieByName($scope.NameMovie, function (rs) {
+            rs= rs.data;
+            $scope.model = rs.object;
+            if (rs.error) {
+                $scope.message = rs.title;
+                $scope.renderHtml = function (html_code) {
+                    return $sce.trustAsHtml(html_code);
+                };
+            } else {
+                dataservice.GetListShowTime(function (rs) {
+                    $scope.List = rs.data;
+                });
+                $scope.Rated(3.3, ".Rated");
+            }
         });
+
     }
 
     $scope.init();
@@ -132,21 +149,6 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice,$uibMo
         $scope.star = 0;
     }
 
-    $scope.init = function () {
-        //kiểm tra tồn tại của phim
-        if (false) {
-            //vào trang không tìm thấy phim
-        }
-        else {
-            
-
-            $scope.Rated(3.3, ".Rated");
-
-        }
-
-    }
-
-    $scope.init();
     $scope.traloi = function (id) {
         $scope.comment = id;
     }

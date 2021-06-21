@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace ESEIM.Utils
+namespace QuanLiRapPhim.SupportJSON
 {
     public class Paging
     {
