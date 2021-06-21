@@ -14,6 +14,21 @@ app.config(function ($routeProvider) {
         })
 });
 
+app.directive('myTicket', function () {
+    return {
+        restrict: 'A',
+        scope: true,
+        templateUrl: ctxfolderurl + '/Ticket.html'
+    };
+});
+app.directive('myBill', function () {
+    return {
+        restrict: 'A',
+        scope: true,
+        templateUrl: ctxfolderurl + '/Bill.html'
+    };
+});
+
 app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnBuilder, $compile) {
     var vm = $scope;
 
@@ -21,10 +36,10 @@ app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnB
         .withOption('ajax', {
             url: "/YourOrder/JtableTestModel"
             , beforeSend: function (jqXHR, settings) {
-                $.blockUI({
-                    boxed: true,
-                    message: 'loading...'
-                });
+                //$.blockUI({
+                //    boxed: true,
+                //    message: 'loading...'
+                //});
             }
             , type: 'GET'
             //, contentType: "application/json; charset=utf-8"
@@ -58,17 +73,20 @@ app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnB
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('id', 'id').withOption('sWidth', '20px').renderWith(function (data, type) {
         return data
     }));
-    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Objects', 'Your Order').withOption('sWidth', '100px').renderWith(function (data, type) {
+    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Objects', 'Your Order').withOption('sWidth', '320px').renderWith(function (data, type) {
         return $scope.render(data);
     }));
-    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Date', 'Date').withOption('sWidth', '60px').renderWith(function (data, type) {
+    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Date', 'Date').withOption('sWidth', '40px').renderWith(function (data, type) {
         return data;
     }));
 
 
     $scope.render = function (data) {
-        var a= JSON.parse(data);
-        return data;
+        var a = JSON.parse(data);
+        if (a.Date != null) {
+            return '<div my-Ticket style="display: flex; justify-content: center;"></div>';
+        }
+        return '<div my-Bill></div>';
     }
 
 
