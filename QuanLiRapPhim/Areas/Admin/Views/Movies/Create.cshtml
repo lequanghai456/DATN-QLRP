@@ -1,0 +1,68 @@
+﻿@model QuanLiRapPhim.Areas.Admin.Models.Movie
+
+<h1>@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")</h1>
+<form asp-action=@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit") method="post" class="row" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @{ if (ViewContext.RouteData.Values["id"] != null)
+        {
+            <input id="idEdit" type="hidden" asp-for="Id" />
+        }
+    }
+    <div class="form-group col-6">
+        <div class="form-group">
+            <label asp-for="Title" class="control-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MacId" class="control-label"></label>
+            <select asp-for="MacId" class="form-control" name="MacId" asp-items="ViewBag.MacId">
+            </select>
+            <span asp-validation-for="MacId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Describe" class="control-label"></label>
+            <input asp-for="Describe" class="form-control" />
+            <span asp-validation-for="Describe" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="control-label"></label>
+            <input asp-for="Status" class="form-control" />
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Time" class="control-label"></label>
+            <input asp-for="Time" class="form-control" />
+            <span asp-validation-for="Time" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Categories</label>
+            <select style="width:100%" class="form-control js-example-basic-single" asp-for="Lstcategories" name="Lstcategories[]" multiple="multiple" asp-items="ViewBag.categories"></select>
+            <span asp-validation-for="Lstcategories" class="text-danger"></span>
+        </div>
+        </div>
+        <div class="form-group col-6">
+            <div class="custom-file">
+                <input accept="video/mp4,video/x-m4v,video/*" type="file" name="video" class="custom-file-input" id="video" />
+                <label class="custom-file-label" for="video" id="mess">@(ViewContext.RouteData.Values["id"] == null ? "Add Trailer" : "Edit Trailer")</label>
+                <span asp-validation-for="Trailer" class="text-danger"></span>
+            </div>
+            <div class="custom-file">
+                <input accept="image/*" type="file" name="ful" class="custom-file-input" id="ful" />
+                <label class="custom-file-label" for="ful">Add Poster</label>
+                <span asp-validation-for="Poster" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <img id="imgPre" src="~/admin/img/Poster/Noimage.png" alt="Alternate Text" style="width:400px; height:400px;" />
+            </div>
+        </div>
+        <div class="form-group col-12 d-flex justify-content-center">
+            <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")" class="btn btn-primary" />
+            @{ if (ViewContext.RouteData.Values["id"] != null)
+                {
+                    <a href="~/admin/Staffs" class="btn btn-warning">Canncel</a>
+                }
+            }
+        </div>
+</form>

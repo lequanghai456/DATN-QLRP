@@ -11,7 +11,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     {
         [Key]
         public int Id{get;set;}
-        public int IsTicket{get;set;}
         public int? SeviceId{get;set;}
         public int Amount{get;set;}
         public Decimal UnitPrice{get;set;}
@@ -20,6 +19,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public virtual Bill Bill { get; set; }
         [ForeignKey("SeviceId")]
         public virtual Sevice Sevice { get; set; }
-        public virtual ICollection<BillDetail> BillDetails { get; set; }
+       
     }
 }

@@ -10,14 +10,15 @@ using System.Threading.Tasks;
 
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
-    public class JTableModelCustom : JTableModel
-    {
-        public string Name { get; set; }
-        public string Number { get; set; }
-    }
+    
     [Area("Admin")]
     public class TestController : Controller
     {
+        public class JTableModelCustom : JTableModel
+        {
+            public string Name { get; set; }
+            public string Number { get; set; }
+        }
         private readonly IdentityContext _context;
 
         public TestController(IdentityContext context)
@@ -65,7 +66,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public string JtableTestModel(JTableModelCustom jTablePara)
+        public String JtableTestModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
             var query = from a in _context.Test

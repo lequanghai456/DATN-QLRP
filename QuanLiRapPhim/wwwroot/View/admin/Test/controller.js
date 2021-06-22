@@ -40,8 +40,8 @@ app.controller('edit', function ($scope) {
 app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice) {
     var vm = $scope;
     
-    //$scope.selected = [];
-    //$scope.selectAll = false;
+    $scope.selected = [];
+    $scope.selectAll = false;
     //$scope.toggleAll = toggleAll;
     //$scope.toggleOne = toggleOne;
 
@@ -58,7 +58,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             }
             , type: 'GET'
             ,data: function (d) {
-                d.Name = 'a';
+                d.Name = '';
                 d.Number = '';
             }
             //, contentType: "application/json; charset=utf-8"
@@ -115,7 +115,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     function callback(json) {
 
     }
-    //$scope.Search = function () { reloadData(true) };
+    $scope.Search = function () { reloadData(true) };
     //function toggleAll(selectAll, selectedItems) {
     //    for (var id in selectedItems) {
     //        if (selectedItems.hasOwnProperty(id)) {

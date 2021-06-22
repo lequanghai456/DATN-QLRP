@@ -18,5 +18,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public virtual User User { get; set; }
         [ForeignKey("MovieId")]
         public virtual Movie Movie { get; set; }
+        public int Parent { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

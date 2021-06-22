@@ -14,8 +14,10 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         [Column(TypeName = "nvarchar(255)")]
         public String FullName { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public String Img { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }
         public virtual ICollection<Rate> Rate { get; set; }
-        
+        public bool IsDelete { get; set; }
+
     }
 }

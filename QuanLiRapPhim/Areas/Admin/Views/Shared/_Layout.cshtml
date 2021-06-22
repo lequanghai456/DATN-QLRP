@@ -4,11 +4,26 @@
     @await Html.PartialAsync("_HeadPartial")
     @RenderSection("css", required: false)
     <style>
-        .form-control{
+        .form-control {
             width: 100% !important;
         }
-        span .selection{
-            display:block;
+
+        span .selection {
+            display: block;
+        }
+        .img-thumbnail{
+            width:100px;
+            height:100px;
+        }
+
+        .Center {
+            text-align: center;
+            vertical-align: middle !important;
+        }
+        table, th, td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 5px;
         }
     </style>
 </head>

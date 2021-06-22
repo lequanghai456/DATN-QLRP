@@ -10,8 +10,10 @@ namespace QuanLiRapPhim.Areas.Admin.Models
 {
     public class Role : IdentityRole<int>
     {
-        
+
        
         public virtual ICollection<Staff> Staffs { get; set; }
+        
+        public bool IsDelete { get; set; }
     }
 }

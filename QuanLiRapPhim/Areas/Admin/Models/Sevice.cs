@@ -9,5 +9,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public int Id{get;set;}
         public String Name{get;set;}
         public Decimal Price{get;set;}
+        public bool IsDelete { get; set; }
     }
 }

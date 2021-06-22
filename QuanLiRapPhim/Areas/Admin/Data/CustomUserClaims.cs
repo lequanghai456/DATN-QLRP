@@ -19,7 +19,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
             var identity = await base.GenerateClaimsAsync(user);
 
             identity.AddClaim(new Claim("FullNameUser", user.FullName));
-
+            identity.AddClaim(new Claim("Id", user.Id.ToString()));
             return identity;
         }
     }

@@ -13,24 +13,93 @@ namespace QuanLiRapPhim.Areas.Admin.Data
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Role>().HasData(
-                 new Role { Id = 1, Name = "admin" },
-                 new Role { Id = 2, Name = "manager movie" },
-                 new Role { Id = 3, Name = "staff" }
-             ); 
-            modelBuilder.Entity<Staff>().HasData(
-                new Staff
+            //modelBuilder.Entity<Role>().HasData(
+            //     new Role { Id = 1, Name = "admin" ,NormalizedName="ADMIN" },
+            //     new Role { Id = 2, Name = "manager movie", NormalizedName="MANAGER MOVIE" },
+            //     new Role { Id = 3, Name = "staff", NormalizedName="STAFF" }
+            // ); 
+            //modelBuilder.Entity<Staff>().HasData(
+            //    new Staff
+            //    {
+            //        Id = 1,
+            //        FullName = "Hồ Gia Bảo",
+            //        UserName = "admin",
+            //        NormalizedUserName="ADMIN",
+            //        PasswordHash = "AQAAAAEAACcQAAAAEF9u1bOqWI0jVx9W90CBKSC4tesC72Ddrk3XnwUMBXBIZ5JdeuqgIPGi0UHCQxIUXQ==",
+            //        Email = "0306181100@caothang.edu.vn",
+            //        RoleId = 1,
+            //        Img = "admin.img"
+            //    }
+            //);
+            modelBuilder.Entity<Mac>().HasData(
+                new Mac
                 {
                     Id = 1,
-                    FullName = "Hồ Gia Bảo",
-                    UserName = "admin",
-                    PasswordHash = "AQAAAAEAACcQAAAAEF9u1bOqWI0jVx9W90CBKSC4tesC72Ddrk3XnwUMBXBIZ5JdeuqgIPGi0UHCQxIUXQ==",
-                    Email = "0306181100@caothang.edu.vn",
-                    RoleId = 1,
-                    Img = "admin.img"
+                    Title = "P",
+                    Age = 0,
+                    Describe = "phim phù hợp với khán giả ở mọi lứa tuổi",
+                },
+                new Mac
+                {
+                    Id = 2,
+                    Title = "C13",
+                    Age = 13,
+                    Describe = "phim cho khán giả từ 13 tuổi trở lên",
+                },
+                new Mac
+                {
+                    Id = 3,
+                    Title = "C16",
+                    Age = 16,
+                    Describe = "phim cho khán giả từ 16 tuổi trở lên",
+                },
+                new Mac
+                {
+                    Id = 4,
+                    Title = "C18",
+                    Age = 18,
+                    Describe = "phim cho khán giả từ 18 tuổi trở lên",
                 }
             );
-           
+            modelBuilder.Entity<Category>().HasData(
+                new Category
+                {
+                    Id = 1,
+                    Title = "Detective",
+                    
+                },
+                new Category
+                {
+                    Id = 2,
+                    Title = "Adventure",
+
+                }
+            );
+            modelBuilder.Entity<Movie>().HasData(
+                new Movie
+                {
+                    Id = 1,
+                    Title = "Lật mặt",
+                    MacId = 1,
+                    Trailer = "",
+                    Poster = "1.jpg",
+                    Describe = "Lý Hải trở lại với dòng phim hành động sở trường của mình. Bối cảnh hoành tráng với sự đầu tư nghiêm túc, siêu phẩm hành động Việt Lật Mặt 48h sẽ kể về một hành trình trốn chạy đầy kịch tính, nghẹt thở đến phút cuối cùng.",
+                    Time = 110
+
+                },
+                new Movie
+                {
+                    Id = 2,
+                    Title = "Biệt đội báo thù",
+                    MacId = 1,
+                    Trailer = "",
+                    Poster = "2.jpg",
+                    Describe = "Sau những sự kiện tàn khốc của Avengers: Infinity War (2018), vũ trụ đang dần tàn lụi. Với sự giúp đỡ của các đồng minh còn lại, các Avengers tập hợp một lần nữa để đảo ngược hành động của Thanos và khôi phục lại sự cân bằng cho vũ trụ.",
+                    Time = 110
+
+                }
+            );
+
         }
     }
 }

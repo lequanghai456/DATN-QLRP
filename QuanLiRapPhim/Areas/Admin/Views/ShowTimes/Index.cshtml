@@ -1,0 +1,58 @@
+﻿@model QuanLiRapPhim.Areas.Admin.Models.ShowTime
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div id='contentMain' ng-app="App" ng-controller="Ctroller">
+    <div ng-show="create">
+        @await Html.PartialAsync("Create")
+    </div>
+    <div>
+        <div class="row">
+            <input style="margin-left:30px;" placeholder="Search....." class="col-3" type="text" ng-model="valueName" />
+            <button class="icon col-1" ng-click="Search()"><i class="fa fa-search"></i></button>
+            <div class="col-lg-4"></div>
+            <button class="btn btn-primary col-1" ng-click="Show()">Input</button>
+            <button class="btn btn-warning col-1" ng-click="deleteShowTimeList()" data-toggle="modal" data-target="#myModal">DeleteList</button>
+        </div>
+        @{
+            if (TempData.Peek("Message") != null)
+            {
+                <h2 class="alert alert-success">@TempData.Peek("Message")</h2>
+            }
+        }
+        <table class="table dataTable table-hover table-striped"
+               datatable
+               dt-options="dtOptions"
+               dt-columns="dtColumns"
+               id="tblData" dt-instance="dtInstance"></table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="row modal-header">
+                    <h4 class="col-3 modal-title">Notification</h4>
+                    <div class="col-5"></div>
+                    <button type="button" class="col-3 close" ng-click="reloadData(true)" data-dismiss="modal">&times;</button>
+
+                </div>
+                <div class="modal-body">
+                    <h2 class="alert alert-success">{{notification}}</h2>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="reloadData(true)" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/View/admin/Showtimes/controller.js"></script>
+}
