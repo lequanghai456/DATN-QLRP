@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLiRapPhim.Areas.Admin.Data;
 
 namespace QuanLiRapPhim.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20210622043735_update_bill_ticked")]
+    partial class update_bill_ticked
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -478,32 +480,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ConcurrencyStamp = "b67d78e1-beef-47a1-b40d-858786de7fef",
-                            IsDelete = false,
-                            Name = "admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ConcurrencyStamp = "d29fee06-3108-4c28-a3d0-e5c9eab66174",
-                            IsDelete = false,
-                            Name = "manager movie",
-                            NormalizedName = "MANAGER MOVIE"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ConcurrencyStamp = "789b60c8-8ebc-4ae2-b0ff-bf0391047531",
-                            IsDelete = false,
-                            Name = "staff",
-                            NormalizedName = "STAFF"
-                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Room", b =>

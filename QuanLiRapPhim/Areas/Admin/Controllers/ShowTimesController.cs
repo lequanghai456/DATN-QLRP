@@ -44,11 +44,11 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
             var query = _context.ShowTimes.Include(a=>a.Room).Include(b=>b.Movie).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.NameRoom) || x.Room.Name.Contains(jTablePara.NameRoom)));
             int count = query.Count();
-            var data = query.AsQueryable().Select(x=> new { x.Id,DateTime = x.DateTime.ToString("MM/dd/yyyy"),NameRoom = x.Room.Name,NameMovie = x.Movie.Title,StartTime = x.startTime.ToString("HH:mm")})
+            var data = query.AsQueryable().Select(x=> new { x.Id,DateTime = x.DateTime.ToString("MM/dd/yyyy"),NameRoom = x.Room.Name,NameMovie = x.Movie.Title,StartTime = x.startTime.ToString("HH:mm"),x.Price})
                 .Skip(intBegin)
                 .Take(jTablePara.Length);
 
-            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "DateTime","NameRoom","NameMovie","StartTime");
+            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Price","DateTime","NameRoom","NameMovie","StartTime");
             return JsonConvert.SerializeObject(jdata);
         }
 

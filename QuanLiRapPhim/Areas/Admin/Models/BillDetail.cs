@@ -19,6 +19,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public virtual Bill Bill { get; set; }
         [ForeignKey("SeviceId")]
         public virtual Sevice Sevice { get; set; }
-        public bool IsDelete { get; set; }
+       
     }
 }

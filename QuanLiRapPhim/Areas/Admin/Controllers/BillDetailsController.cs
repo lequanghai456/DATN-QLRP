@@ -35,7 +35,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         public async Task<String> JtableBillDetailModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
-            var query = _context.BillDetails.Include(a => a.Sevice).Where(x => x.IsDelete == false && (jTablePara.IdBill == 0 || x.BillId == jTablePara.IdBill));
+            var query = _context.BillDetails.Include(a => a.Sevice).Where(x=>(jTablePara.IdBill == 0 || x.BillId == jTablePara.IdBill));
             int count = query.Count();
             var data = query.AsQueryable().Select(x => new { x.Id, x.Amount ,x.UnitPrice , NameSevice = x.Sevice.Name,x.BillId })
                 .Skip(intBegin)
