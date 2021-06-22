@@ -1,5 +1,7 @@
 ﻿using AutomatedInvoiceGenerator.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
 using QuanLiRapPhim.SupportJSON;
 using System;
@@ -13,35 +15,23 @@ namespace QuanLiRapPhim.Controllers
 {
     public class MovieReviewController : Controller
     {
+        private readonly IdentityContext _context;
+
+        public MovieReviewController(IdentityContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
             return View();
-        }
-        List<movie> movies;
-        public MovieReviewController()
-        {
-            movies = new List<movie>();
-            for (int i = 1; i < 9; i++)
-            {
-                movie movie = new movie
-                {
-                    Id = i,
-                    Title = "Maleficient " +i,
-                    Poster = "thumb-" + i + ".jpg",
-                    Describe = "Sed ut perspiciatis unde omnis iste natus error voluptatem doloremque.",
-                    Status = 0,
-                    Time=90,
-                    Date=DateTime.Now
-                };
-                movies.Add(movie);
-            }
         }
 
         [HttpGet]
         public JsonResult GetMovieByName(String Name)
         {
             JMessage jMessage = new JMessage();
-            var movie = movies.Where(x => x.Title == Name).FirstOrDefault();
+            var movie = _context.Movies.Include(x=>x.Lstcategories).Where(x => x.Title == Name).FirstOrDefault();
             jMessage.Error = movie == null;
             if (!jMessage.Error)
             {
@@ -55,11 +45,11 @@ namespace QuanLiRapPhim.Controllers
         }
         public JsonResult GetItem(int id)
         {
-            return Json(movies.FirstOrDefault(movie=>movie.Id==id));
+            return Json(_context.Movies.FirstOrDefault(movie=>movie.Id==id));
         }
         public async Task<JsonResult> GetMovie()
         {            
-            return Json(movies);
+            return Json(_context.Movies.Where(x=>x.IsDelete==false).ToList());
         }
         [HttpGet]
         public JsonResult GetListShowTime()

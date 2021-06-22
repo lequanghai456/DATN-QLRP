@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <figure class="movie-poster" style="display: flex; justify-content: center;">
-                        <img width="100%" src="../../dummy/{{model.poster}}" alt="#">
+                        <img width="100%" src="../admin/img/Poster/{{model.poster}}" alt="#">
                     </figure>
                 </div>
                 <div class="col-md-6">
@@ -23,7 +23,7 @@
                             <span class="fa fa-star"></span>
                             <span class="fa fa-star"></span>
                         </li>
-                        <li><strong>Thời gian chiếuchiếu:</strong>{{model.time}} phút</li>
+                        <li><strong>Thời gian chiếu:</strong>{{model.time}} phút</li>
                         <li><strong>Ngày khởi chiếu:</strong> {{model.date}}</li>
                         <li><strong>Thể loại:</strong> Animation/Adventure/Comedy</li>
                     </ul>
@@ -36,10 +36,7 @@
                                     </button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button type="button" data-toggle="modal"
-                                            data-target="#Rate"
-                                            class="btn btn-success"
-                                            style="width: 150px;" ng-click="Rate(0)">
+                                    <button type="button" class="btn btn-success" ng-click="btnRate()">
                                         Ratting
                                     </button>
                                 </div>
@@ -123,7 +120,7 @@
         </style>
 
         <div class="comment">
-            <span><h1>Comment</h1></span>
+            <span><h1>Bình luận</h1></span>
             <form class="comment-area row">
                 <textarea class="comment-content col-11" placeholder="Comment here!"></textarea>
                 <input type="submit" class="btn btn-success col-1" value="Send" />

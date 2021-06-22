@@ -129,12 +129,26 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibM
         var modalInstance = $uibModal.open({
             scope: $scope,
             animation: true,
-            backdrop:true,
+            backdrop: true,
             templateUrl: ctxfolderurl + "/showTimePopup.html",
             controller: "Popupmodal",
             size: 'lg',
         });
     }
+    $scope.btnRate = function () {
+        var modalInstance = $uibModal.open({
+            scope: $scope,
+            animation: true,
+            backdrop: true,
+            templateUrl: ctxfolderurl + "/ratePopup.html",
+            controller: "Popupmodal",
+            size: 'lg',
+        });
+        $scope.Rate(0);
+    }
+
+
+
 
     $scope.Rate = function (index) {
         Rated(index, ".Rate");

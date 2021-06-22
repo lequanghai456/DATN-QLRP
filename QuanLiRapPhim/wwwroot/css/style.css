@@ -2258,11 +2258,13 @@ ul.arrow {
         display: block;
         width: 100%;
         max-width: 100%;
-        height: auto;
         -webkit-transition: .3s ease;
         transition: .3s ease;
     }
-
+.movie-list .movie p{
+    max-height:32px;
+    overflow:hidden;
+}
 .movie-list .movie:hover img {
     -webkit-transform: scale(1.2);
     -ms-transform: scale(1.2);
