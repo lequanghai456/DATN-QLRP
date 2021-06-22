@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
 
@@ -21,7 +22,26 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             _context = context;
         }
+        public class JTableModelCustom : JTableModel
+        {
+            public string Title { get; set; }
+        }
+        [HttpGet]
+        public async Task<String> JtableMovieModel(JTableModelCustom jTablePara)
+        {
+            
+            int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
+            var query = _context.Movies.Include(a=>a.Mac).Include(a=>a.Lstcategories).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Title) || x.Title.Contains(jTablePara.Title)));
 
+            
+            int count = query.Count();
+            var data = query.AsQueryable().Select(x => new { x.Id, x.Title,category = JsonConvert.SerializeObject(x.Lstcategories.ToList<Category>()),x.Describe, mac=x.Mac.Title,x.Time,x.TotalRating,x.TotalReviewers,x.Trailer, x.Poster })
+                .Skip(intBegin)
+                .Take(jTablePara.Length);
+
+            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Title","category","Describe","mac","Time","Trailer","Poster");
+            return JsonConvert.SerializeObject(jdata);
+        }
         // GET: Admin/Movies
         public async Task<IActionResult> Index(int? id)
         {
@@ -35,7 +55,13 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             ViewBag.categories = new SelectList(_context.Categories.Where(x => x.IsDelete == false), "Id", "Title");
             return View(movie);
         }
-
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    Movie movie = new Movie();
+        //    movie = _context.Movies.Include(a=>a.Mac).Include(a=>a.Lstcategories).Single(x => x.Id == id);
+        //    movie.Lstcategories = _context.Categories.Where(x => x.Id == id).ToList();
+        //    return View(movie);
+        //}
 
         // POST: Admin/Movies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

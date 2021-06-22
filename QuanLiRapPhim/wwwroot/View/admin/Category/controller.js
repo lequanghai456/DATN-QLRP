@@ -106,11 +106,20 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.create = !vm.create;
     };
     $scope.delete = function (idDelete) {
-        dataservice.deleteCategory(idDelete, function (rs) {
-            rs = rs.data;
-            $scope.notification = rs;
-            reloadData(true);
-        });
+        var flag = true;
+        if (id != null) {
+            if (id.value == idDelete) {
+                $scope.notification = "Cannot delete object being edited";
+                flag = false;
+            }
+        }
+        if (flag) {
+            dataservice.deleteCategory(idDelete, function (rs) {
+                rs = rs.data;
+                $scope.notification = rs;
+                reloadData(true);
+            });
+        }
     }
     vm.reloadData = reloadData;
     vm.dtInstance = {};
@@ -130,19 +139,23 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             angular.element($event.currentTarget).removeAttr("checked");
     }
     $scope.deleteCategoryList = function () {
-        $("input:checkbox[name=type]:checked").each(function () {
-            $scope.selected.push($(this).val());
-        });
-        console.log($scope.selected);
-        dataservice.deleteCategoryCheckbox($scope.selected, function (rs) {
-            
-            rs = rs.data;
-            $scope.notification = rs;
-            $scope.selected = [];
-            reloadData(true);
-            
-        });
-        
+        if (id != null) {
+            $scope.notification = "This feature cannot be used while editing";
+        } else {
+            $("input:checkbox[name=type]:checked").each(function () {
+                $scope.selected.push($(this).val());
+            });
+            console.log($scope.selected);
+            dataservice.deleteCategoryCheckbox($scope.selected, function (rs) {
+
+                rs = rs.data;
+                $scope.notification = rs;
+                $scope.selected = [];
+                reloadData(true);
+
+            });
+
+        }
     }
     
     

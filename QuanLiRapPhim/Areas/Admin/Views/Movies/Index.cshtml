@@ -4,56 +4,85 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-<div ng-app="myApp" ng-controller="myCtrl">
-    @await Html.PartialAsync("Create")
-</div>
-<div>
-    <div class="row">
-        <input style="margin-left:30px;" placeholder="Search FullName" class="col-3" type="text" ng-model="valueName" />
-        <button class="icon col-1" ng-click="Search()"><i class="fa fa-search"></i></button>
-        <div class="col-lg-4"></div>
-        <button class="btn btn-primary col-1" ng-click="Show()">Input</button>
-        @{ if (ViewContext.RouteData.Values["id"] != null)
+<div id='contentMain' ng-app="App" ng-controller="Ctroller">
+    <div ng-show="create">
+        @await Html.PartialAsync("Create")
+    </div>
+    <div>
+        <div class="row">
+            <input style="margin-left:30px;" placeholder="Search Title" class="col-3" type="text" ng-model="valueName" />
+            <button class="icon col-1" ng-click="Search()"><i class="fa fa-search"></i></button>
+            <div class="col-lg-4"></div>
+            <button class="btn btn-primary col-1" ng-click="Show()">Input</button>
+            <button class="btn btn-warning col-1" ng-click="deleteMacList()" data-toggle="modal" data-target="#myModal">DeleteList</button>
+        </div>
+        @{
+            if (TempData.Peek("Message") != null)
             {
-                <button class="btn btn-warning col-1" ng-click="deleteStaffList()" data-toggle="modal" data-target="#myModal">DeleteList</button>
+                <h2 class="alert alert-success">@TempData.Peek("Message")</h2>
             }
         }
-        
+        <table class="table dataTable table-hover table-striped"
+               datatable
+               dt-options="dtOptions"
+               dt-columns="dtColumns"
+               id="tblData" dt-instance="dtInstance"></table>
     </div>
-    @{
-        if (TempData.Peek("Message") != null)
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="row modal-header">
+                    <h4 class="col-3 modal-title">Notification</h4>
+                    <div class="col-5"></div>
+                    <button type="button" class="col-3 close" ng-click="reloadData(true)" data-dismiss="modal">&times;</button>
+
+                </div>
+                <div class="modal-body">
+                    <h2 class="alert alert-success">{{notification}}</h2>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="reloadData(true)" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @{ if (ViewContext.RouteData.Values["id"] != null)
         {
-            <h2 class="alert alert-success">@TempData.Peek("Message")</h2>
-        }
-    }
-    <table class="table dataTable table-hover table-striped"
-           datatable
-           dt-options="dtOptions"
-           dt-columns="dtColumns"
-           id="tblData" dt-instance="dtInstance"></table>
-</div>
+        <div class="modal fade" id="ModalDetail" role="dialog">
+            <div class="modal-dialog">
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="row modal-header">
+                            <h4 class="col-3 modal-title">Detail Movie</h4>
+                        <div class="col-5"></div>
+                        <button type="button" class="col-3 close" data-dismiss="modal">&times;</button>
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="row modal-header">
-                <h4 class="col-3 modal-title">Notification</h4>
-                <div class="col-5"></div>
-                <button type="button" class="col-3 close" ng-click="reloadData(true)" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                            <dl class="row">
+                                <dt class="col-sm-2">
 
-            </div>
-            <div class="modal-body">
-                <h2 class="alert alert-success">{{notification}}</h2>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" ng-click="reloadData(true)" data-dismiss="modal">Close</button>
+                                </dt>
+                                <dd class="col-sm-10">
+
+                                </dd>
+                            </dl>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
             </div>
         </div>
-
-    </div>
+        }
+    }
 </div>
 @section Scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }

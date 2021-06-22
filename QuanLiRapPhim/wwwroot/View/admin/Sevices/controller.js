@@ -110,11 +110,20 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.create = !vm.create;
     };
     $scope.delete = function (idDelete) {
-        dataservice.deleteSevice(idDelete, function (rs) {
-            rs = rs.data;
-            $scope.notification = rs;
-            reloadData(true);
-        });
+        var flag = true;
+        if (id != null) {
+            if (id.value == idDelete) {
+                $scope.notification = "Cannot delete object being edited";
+                flag = false;
+            }
+        }
+        if (flag) {
+            dataservice.deleteSevice(idDelete, function (rs) {
+                rs = rs.data;
+                $scope.notification = rs;
+                reloadData(true);
+            });
+        }
     }
     vm.reloadData = reloadData;
     vm.dtInstance = {};
@@ -134,18 +143,22 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             angular.element($event.currentTarget).removeAttr("checked");
     }
     $scope.deleteSeviceList = function () {
-        $("input:checkbox[name=type]:checked").each(function () {
-            $scope.selected.push($(this).val());
-        });
-        console.log($scope.selected);
-        dataservice.deleteSeviceCheckbox($scope.selected, function (rs) {
-            
-            rs = rs.data;
-            $scope.notification = rs;
-            $scope.selected = [];
-            reloadData(true);
-            
-        });
+        if (id != null) {
+            $scope.notification = "This feature cannot be used while editing";
+        } else {
+            $("input:checkbox[name=type]:checked").each(function () {
+                $scope.selected.push($(this).val());
+            });
+            console.log($scope.selected);
+            dataservice.deleteSeviceCheckbox($scope.selected, function (rs) {
+
+                rs = rs.data;
+                $scope.notification = rs;
+                $scope.selected = [];
+                reloadData(true);
+
+            });
+        }
         
     }
     
