@@ -1,13 +1,10 @@
 ﻿<div class="row">
-    <div class="col">
+    <div class="col-9">
         <ul>
-            <li>Food 1</li>
-            <li>Food 2</li>
-            <li>Food 3</li>
-            <li>Food 4</li>
+            <li ng-repeat="x in data.BillDetails">Food {{x.Id}}</li>
         </ul>
     </div>
-    <div class="col">
-        <spa>Total:90000VND</spa>
+    <div class="col-3">
+        <spa>Total:{{data.TotalPrice}}</spa>
     </div>
 </div>

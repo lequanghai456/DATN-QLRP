@@ -117,7 +117,8 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibM
                 dataservice.GetListShowTime(function (rs) {
                     $scope.List = rs.data;
                 });
-                $scope.Rated(3.3, ".Rated");
+                var total = $scope.model.totalRating == 0 ? 0 : $scope.model.totalRating / $scope.model.totalReviewers;
+                $scope.Rated(total, ".Rated");
             }
         });
 

@@ -27,14 +27,26 @@ namespace QuanLiRapPhim.Controllers
         {
             Bills = new List<Bill>();
             Tickets = new List<Ticket>();
-
-            for(int i = 0; i < 5; i++)
+            List<BillDetail> bills = new List<BillDetail>();
+            for(int i = 0; i < 4; i++)
+            {
+                bills.Add(new BillDetail
+                {
+                    Id = i,
+                    Sevice = new Sevice { Name = "abc " + i , Price=1000},
+                    Amount = 1,
+                    UnitPrice = 1000,                    
+                });
+            }
+            for (int i = 0; i < 5; i++)
             {
                 var bill = new Bill()
                 {
                     Id = i,
                     Date = DateTime.Now.AddDays(i),
-                    TotalPrice = i * 1000
+                    TotalPrice = i * 1000,
+                    BillDetails=bills,
+                    
                 };
                 var ticket = new Ticket()
                 {
@@ -50,25 +62,26 @@ namespace QuanLiRapPhim.Controllers
             yourOrders.AddRange((from x in Bills
                                  select new yourOrder
                                  {
-                                     id = x.Id,
-                                     Objects = JsonConvert.SerializeObject(x),
+                                     id = "HD" +x.Id,
+                                     Objects = x,
                                      Date = x.Date
                                  }).ToList());
 
             yourOrders.AddRange((from x in Tickets
                                  select new yourOrder
                                  {
-                                     id = x.Id,
-                                     Objects = JsonConvert.SerializeObject(x),
+                                     id = "V"+x.Id,
+                                     Objects = x,
                                      Date = x.PurchaseDate
                                  }).ToList());
             yourOrders = yourOrders.OrderBy(x => x.Date).ToList();
         }
 
-        public JsonResult GetItem(int id)
+        public JsonResult GetAll()
         {
             return Json(yourOrders);
         }
+
 
 
         [HttpGet]
@@ -77,7 +90,11 @@ namespace QuanLiRapPhim.Controllers
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
 
             var query = from a in yourOrders
-                        select a;
+                        select new{
+                a.id,
+                Objects=JsonConvert.SerializeObject(a.Objects),
+                Date=a.Date.ToShortDateString()
+            };
 
             int count = query.Count();
 
@@ -92,11 +109,12 @@ namespace QuanLiRapPhim.Controllers
     }
     public class yourOrder
     {
-        public int id { get; set; }
-        public string Objects { get; set; }
+        public String id { get; set; }
+        public object Objects { get; set; }
         [DataType(DataType.Date)]
         [JsonConverter(typeof(JsonDateConverter))]
         public DateTime Date { get; set; }
+        public bool IsTicket { get; set; }
 
     }
 }
