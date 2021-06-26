@@ -6,6 +6,9 @@
     @{ if (ViewContext.RouteData.Values["id"] != null)
         {
             <input id="idEdit" type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Trailer" />
+            <input type="hidden" asp-for="Poster" />
+
         }
     }
     <div class="form-group col-6">
@@ -23,14 +26,10 @@
 
         <div class="form-group">
             <label asp-for="Describe" class="control-label"></label>
-            <input asp-for="Describe" class="form-control" />
+            <textarea asp-for="Describe" class="form-control"> </textarea>
             <span asp-validation-for="Describe" class="text-danger"></span>
         </div>
-        <div class="form-group">
-            <label asp-for="Status" class="control-label"></label>
-            <input asp-for="Status" class="form-control" />
-            <span asp-validation-for="Status" class="text-danger"></span>
-        </div>
+
         <div class="form-group">
             <label asp-for="Time" class="control-label"></label>
             <input asp-for="Time" class="form-control" />
@@ -38,31 +37,44 @@
         </div>
         <div class="form-group">
             <label class="control-label">Categories</label>
-            <select style="width:100%" class="form-control js-example-basic-single" asp-for="Lstcategories" name="Lstcategories[]" multiple="multiple" asp-items="ViewBag.categories"></select>
+            <select id="#mySelect2" style="width:100%" class="form-control js-example-basic-single" name="Lstcategories[]" multiple="multiple" asp-items="ViewBag.categories">
+                @{ if (ViewContext.RouteData.Values["id"] != null)
+                    {
+                        foreach (var (index, value) in @Model.Lstcategories.Select((value, i) => (i, value)))
+                        {
+
+                            <option selected value="@value.Id">@value.Title</option>
+                        }
+                    }
+                }
+            </select>
+
             <span asp-validation-for="Lstcategories" class="text-danger"></span>
         </div>
+    </div>
+    <div class="form-group col-6">
+        <div class="custom-file">
+            <input asp-for="Trailer" accept="video/mp4,video/x-m4v,video/*" type="file" name="video" class="custom-file-input" id="video" />
+            <label class="custom-file-label" for="video" id="mess">@(ViewContext.RouteData.Values["id"] == null ? "Add Trailer" : "Edit Trailer")</label>
+            <span id="Trailer" asp-validation-for="Trailer" class="text-danger">@TempData.Peek("MessageTrailer")</span>
+            <video id="Prevideo" width="400" height="300" controls="controls" src="~/admin/img/Trailer/@(ViewContext.RouteData.Values["id"] == null ? "" : ViewData["Trailer"])"></video>
         </div>
-        <div class="form-group col-6">
-            <div class="custom-file">
-                <input accept="video/mp4,video/x-m4v,video/*" type="file" name="video" class="custom-file-input" id="video" />
-                <label class="custom-file-label" for="video" id="mess">@(ViewContext.RouteData.Values["id"] == null ? "Add Trailer" : "Edit Trailer")</label>
-                <span asp-validation-for="Trailer" class="text-danger"></span>
-            </div>
-            <div class="custom-file">
-                <input accept="image/*" type="file" name="ful" class="custom-file-input" id="ful" />
-                <label class="custom-file-label" for="ful">Add Poster</label>
-                <span asp-validation-for="Poster" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <img id="imgPre" src="~/admin/img/Poster/Noimage.png" alt="Alternate Text" style="width:400px; height:400px;" />
-            </div>
+        <div class="custom-file">
+            <input asp-for="Poster" accept="image/*" type="file" name="ful" class="custom-file-input" id="ful" />
+            <label class="custom-file-label" for="ful">Add Poster</label>
+            <span asp-validation-for="Poster" class="text-danger">@TempData.Peek("MessagePoster")</span>
         </div>
-        <div class="form-group col-12 d-flex justify-content-center">
-            <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")" class="btn btn-primary" />
-            @{ if (ViewContext.RouteData.Values["id"] != null)
-                {
-                    <a href="~/admin/Staffs" class="btn btn-warning">Canncel</a>
-                }
+        <div class="form-group">
+            <img id="imgPre" src="~/admin/img/Poster/@(ViewContext.RouteData.Values["id"] == null ? "Noimage.png" : ViewData["Poster"])" alt="Alternate Text" width="400" height="300" />
+        </div>
+    </div>
+    <div class="form-group col-12 d-flex justify-content-center">
+        <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")" class="btn btn-primary" />
+        @{ if (ViewContext.RouteData.Values["id"] != null)
+            {
+                <a href="~/admin/Staffs" class="btn btn-warning">Canncel</a>
             }
-        </div>
+        }
+    </div>
+
 </form>

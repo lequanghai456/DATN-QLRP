@@ -365,7 +365,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Poster")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -385,7 +384,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Trailer")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -478,32 +476,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ConcurrencyStamp = "b67d78e1-beef-47a1-b40d-858786de7fef",
-                            IsDelete = false,
-                            Name = "admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ConcurrencyStamp = "d29fee06-3108-4c28-a3d0-e5c9eab66174",
-                            IsDelete = false,
-                            Name = "manager movie",
-                            NormalizedName = "MANAGER MOVIE"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ConcurrencyStamp = "789b60c8-8ebc-4ae2-b0ff-bf0391047531",
-                            IsDelete = false,
-                            Name = "staff",
-                            NormalizedName = "STAFF"
-                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Room", b =>

@@ -98,10 +98,10 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Poster', 'Poster').withClass('Center').renderWith(function (data, type) {
-            return '<img id="imgPre" src="/admin/img/Poster/' + data + '" alt="Alternate Text" />';
+            return '<img id="imgPre" src="/admin/img/Poster/' + data + '" alt="Alternate Text" style="width:240px; height:250px;"/>';
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Categories/Index/' + data + '#! > Edit</a ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete(' + data + ')">Delete</button>';
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Movies/Index/' + data + '#! > Edit</a ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete(' + data + ')">Delete</button>';
         }));
 
 
@@ -171,5 +171,16 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
         }
     }
+    //$scope.btnThemCategory = function () {
+    //    var modalInstance = $uibModal.open({
+    //        scope: $scope,
+    //        animation: true,
+    //        backdrop: true,
+    //        templateUrl:  + "/ratePopup.html",
+    //        controller: "Popupmodal",
+    //        size: 'lg',
+    //    });
+    //    $scope.Rate(0);
+    //}
     
 });
