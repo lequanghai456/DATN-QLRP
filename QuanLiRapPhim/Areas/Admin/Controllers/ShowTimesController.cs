@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
     public class ShowTimesController : Controller
     {
         private readonly IdentityContext _context;
+        private ShowTimes show;
 
         public ShowTimesController(IdentityContext context)
         {
@@ -27,8 +30,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             ShowTime showTime = null;
             if (id != null)
             {
-                showTime = _context.ShowTimes.FirstOrDefault(s => s.Id == id);
-               
+                showTime = _context.ShowTimes.FirstOrDefault(s => s.Id == id);               
             }
             ViewBag.ListRooms = _context.Rooms.Where(x => x.IsDelete == false).ToList();
             ViewBag.ListMovies = _context.Movies.Where(x => x.IsDelete == false).ToList();
@@ -158,5 +160,77 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             return _context.ShowTimes.Any(e => e.Id == id);
         }
+
+        public JsonResult ListMovie()
+        {
+            return Json(_context.Movies.ToList());
+        }
+
+
+        public IActionResult CreateTimes()
+        {
+            ShowTimes showTimes = new ShowTimes()
+            {
+                Date = DateTime.Now,
+                TimeStart = DateTime.Parse("8:00:00 AM")
+            };
+            ViewBag.ListMovie = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
+
+            return View(showTimes);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateTimes([Bind("TimeStart,Date,ListMivie")] ShowTimes showTimes)
+        {
+            ShowTimes s = showTimes;
+            List<Movie> movies = new List<Movie>();
+            showTimes.showTimes = new List<ShowTime>();
+            DateTime startTime = showTimes.TimeStart;
+            foreach (int i in showTimes.ListMivie)
+            {
+                var movie = _context.Movies.FirstOrDefault(x => x.Id == i);
+                movies.Add(movie);
+                showTimes.showTimes.Add(new ShowTime
+                {
+                    Movie = movie, 
+                    DateTime = showTimes.Date,
+                    Price = 10000,
+                    RoomId = 1,                   
+                    startTime = startTime
+                });
+                startTime = startTime.AddMinutes(movie.Time+30);
+                showTimes.TotalTime += movie.Time + 30;
+            }
+
+            if (ModelState.IsValid)
+            {
+
+                ViewBag.ListMovie = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
+
+                showTimes.TimeStart = startTime;
+                ViewBag.TimeStart = startTime;
+                return View(showTimes);
+            }
+            return View(s);
+        }
+    }
+    public class ShowTimes
+    {
+        public int[] ListMivie { get; set; }
+        public int RoomID { get; set; }
+        [DisplayName("Chọn phim")]
+        public Movie movie1 { get; set; }
+        public List<ShowTime> showTimes { get; set; }
+        [Range(0, 960, ErrorMessage = "Quá giờ")]
+        public int TotalTime{ get; set; }
+        [DisplayName("Giờ bắt đầu")]
+        [DataType(DataType.Time)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}")]
+        public DateTime TimeStart { get; set; }
+        [DisplayName("Chọn ngày")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime Date { get; set; }
     }
 }
