@@ -17,6 +17,7 @@ app.config(function ($routeProvider) {
 app.directive('myTicket', function () {
     function link($scope, element, attributes) {
         $scope.data = JSON.parse($scope.model.Objects);
+        console.log($scope.data);
     }
 
     return {
@@ -24,13 +25,14 @@ app.directive('myTicket', function () {
         scope: {
             model:'='
         },
-        templateUrl: ctxfolderurl + '/Ticket.html',
+        templateUrl: ctxfolderurl + '/Tickets.html',
         link:link
     };
 });
-app.directive('myBill', function () {
-    function link($scope, element, attributes) {
+app.directive('myBill', function (DTColumnDefBuilder, DTOptionsBuilder) {
+    function link($scope, element, attributes, DTColumnDefBuilder, DTOptionsBuilder) {
         $scope.data = JSON.parse($scope.model.Objects);
+        
     }
 
     return {
@@ -39,7 +41,7 @@ app.directive('myBill', function () {
             model: "=",
             
         },
-        templateUrl: ctxfolderurl + '/Bill.html',
+        templateUrl: ctxfolderurl + '/Bill.htm',
         link: link
     };
 });
@@ -86,18 +88,17 @@ app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnB
     vm.dtOrderColumns = [];
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('id', 'id').withOption('sWidth', '20px').renderWith(function (data, type) {
         return data
-    }));
-    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Objects', 'Your Order').withOption('sWidth', '320px').renderWith(function (data, type,full,meta) {
+    }).notSortable());
+    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Objects', 'Đơn hàng của bạn').withOption('sWidth', '320px').renderWith(function (data, type,full,meta) {
         data = JSON.parse(data);
-        console.log(meta.row);
         if (data.Date)
             return '<div my-Bill model="All[' + meta.row + ']" ></div > ';
         return '<div my-Ticket model="All[' + meta.row + ']" ></div > ';
-    }));
+    }).notSortable());
 
-    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Date', 'Date').withOption('sWidth', '40px').renderWith(function (data, type) {
+    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Date', 'Ngày đặt').withOption('sWidth', '40px').renderWith(function (data, type) {
         return data;
-    }));
+    }).notSortable());
 
     $scope.modelrt = function (id) {
         $scope.TotalPrice = $scope.List.find(x => x.Id == a.Id).TotalPrice;

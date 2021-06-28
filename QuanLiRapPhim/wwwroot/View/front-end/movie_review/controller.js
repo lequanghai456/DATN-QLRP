@@ -176,52 +176,65 @@ app.controller('bookticket', function ($scope, $routeParams,$uibModal,$rootScope
     $scope.NameMovie = $routeParams.NameMovie;
 
     var socket = io.connect('https://my-cinema-qlrp.herokuapp.com/bookticket');
-    //var socket = io.connect('localhost:3000/bookticket');
 
     socket.on('connect', function () {
         socket.emit('Join room', { idLichChieu: $routeParams.id });
     });
+    //var socket = io.connect('localhost:3000/bookticket');
+    $scope.init = function () {
+        
 
-    //api lấy ghế đã thanh toán
-    var dsGheDaThanhToan = [1, 2, 5, 3];
+        //api lấy ghế đã thanh toán
+        var dsGheDaThanhToan = [1, 2, 5, 3];
 
-    //load những ghế đang được người khác chọn
-    socket.on('load_ghe_da_chon', function (data) {
-        $scope.dsghedachon = [];
-        if (data != null) {
-            data.forEach(function (seat, ind) {
-                if (seat.idGhe != -1) {
-                    $scope.dsghedachon.push(seat.idGhe);
-                    if ($scope.seat!=null && $scope.seat == seat.idGhe) $scope.seat = null;
-                }
-                    
+        //load những ghế đang được người khác chọn
+        socket.on('load_ghe_da_chon', function (data) {
+            
+            $scope.dsghedachon = [];
+            if (data != null) {
+                data.forEach(function (seat, ind) {
+                    if (seat.idGhe != -1) {
+                        $scope.dsghedachon.push(seat.idGhe);
+                        if ($scope.seat != null && $scope.seat == seat.idGhe) $scope.seat = null;
+                    }
+
+                });
+            }
+            $scope.dsghedachon = $scope.dsghedachon.concat(dsGheDaThanhToan);
+            $scope.$apply(function () {
+
+                $.unblockUI();
             });
+        });
+
+        $scope.room = {
+            row: 8,
+            col: 9,
         }
-        $scope.dsghedachon = $scope.dsghedachon.concat(dsGheDaThanhToan);
-        $scope.$apply();
-    });
 
-    $scope.room = {
-        row: 8,
-        col: 9,
-    }
+        //khởi tạo ghế cho phòng
+        $scope.seats = [];
+        $.blockUI({
+            boxed: true,
+            message: 'loading...'
+        });
+        for (var i = 0; i < $scope.room.col; i++) {
+            $scope.seats[i] = [];
+            $scope.seats[i].name = String.fromCharCode(65 + i);
+            for (var j = 0; j < $scope.room.row; j++) {
+                $scope.seats[i][j] = {
+                    id: i * 10 + j,
+                    status: true
+                };
+            }
 
-    //khởi tạo ghế cho phòng
-    $scope.seats = [];
-    for (var i = 0; i < $scope.room.col; i++) {
-        $scope.seats[i] = [];
-        $scope.seats[i].name = String.fromCharCode(65+i);
-        for (var j = 0; j < $scope.room.row; j++) {
-            $scope.seats[i][j] = {
-                id: i * 10 + j,
-                status: true
-            };
         }
+
+        //khởi tạo ghế hỏng
+        $scope.seats[0][0].status = false;
+
     }
-
-    //khởi tạo ghế hỏng
-    $scope.seats[0][0].status = false;
-
+    $scope.init();
     //khi chon 1 ghe
     $scope.Click = function (seat) {
         if (seat.status) {

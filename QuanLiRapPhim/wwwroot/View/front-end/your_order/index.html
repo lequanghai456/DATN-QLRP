@@ -2,13 +2,19 @@
     <a href="../">Home</a>
     <span>Your Order</span>
 </div>
-
+<style>
+    .order td, .order th{
+        border:0.5px solid;
+        border-collapse: collapse;
+        background:white;
+    }
+</style>
 <div class="row">
     <button class="btn btn-success float-right" ng-click="choseService()">Đặt dịch vụ</button>
     <div class="col-sm-12">
         <h1 class="text-center" style="color: #000000;">Your order</h1>
         
-            <table class="table dataTable table-hover table-striped"
+            <table class="order table dataTable table-hover table-striped" style="border:solid; background:white"
                    datatable
                    dt-options="dtOrderhOptions"
                    dt-columns="dtOrderColumns"

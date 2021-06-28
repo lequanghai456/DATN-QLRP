@@ -99,7 +99,29 @@ namespace QuanLiRapPhim.Areas.Admin.Data
 
                 }
             );
-
+            modelBuilder.Entity<Sevice>().HasData(
+                new Sevice
+                {
+                    Id = 1,
+                    Name = "Bắp rang",
+                    IsDelete = false,
+                    Price=10000
+                },
+                new Sevice
+                {
+                    Id = 2,
+                    Name = "CoCa",
+                    IsDelete = false,
+                    Price = 10000
+                }, 
+                new Sevice
+                {
+                    Id = 3,
+                    Name = "Pepsi",
+                    IsDelete = false,
+                    Price = 10000
+                }
+                );
         }
     }
 }

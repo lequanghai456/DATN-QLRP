@@ -1,49 +1,47 @@
-﻿<div style="height: 200px; width: fit-content;">
-    <div class="row">
-        <div class="col-sm-8"
-             style="height: 190px; width: 400px; padding-right: 0px; background: linear-gradient(to bottom, #e84c3d 0%, #e84c3d 26%, #ecedef 26%, #ecedef 100%); border-radius: 8px; ">
+﻿<div style="height: 200px; width: fit-content; display:flex">
+        <div style="height: 190px; width: 400px; background: linear-gradient(to bottom, #e84c3d 0%, #e84c3d 26%, #ecedef 26%, #ecedef 100%); border-radius: 8px; ">
             <div class="row">
                 <div class="col-sm-12">
                     <p style="display: flex; align-items: center; height: 100%; margin-left: 15px; color: #ffffff; font-size: 20px;">
-                        My Cinema
+                        Gia Bảo
                     </p>
                 </div>
             </div>
             <div class="row" style="height: fit-content; margin-top: 10px;">
                 <div class="col-sm-12" style="height: 40px;">
                     <p style=" text-transform: uppercase;margin-bottom: 0px; height: fit-content; font-size: 15px; color: #000000; font-weight: bold; margin-left: 15px; margin-top: 8px;">
-                        Cô gái đến từ hôm qua
+                        {{data.Title}}
                     </p>
                     <p style="margin-left: 15px; text-transform: uppercase; font-size: 13px;">
-                        MOVIE
+                        PHIM
                     </p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
                     <p style="text-transform: uppercase; margin-bottom: 0px; height: fit-content; font-size: 15px; color: #000000; font-weight: bold; margin-left: 15px; margin-top: 8px;">
-                        Ngô Lâm Quang Tín
+                        {{data.Name}}
                     </p>
                     <p style="margin-left: 15px; text-transform: uppercase; font-size: 13px;">
-                        Name
+                        Người mua
                     </p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-2">
+                <div class="col-2">
                     <p style="font-size: 13px; margin-left: 15px; color: #000000; font-weight: bold; margin-bottom: 0px; ">
-                        {{data.SeatId}}
+                        {{data.SeatId}}&amp;{{data.SeatId}}
                     </p>
                     <p style="font-size: 13px; margin-left: 15px;  text-transform: uppercase; ">
-                        Seat
+                        Ghế
                     </p>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-5">
                     <p style="font-size: 13px; margin-left: 15px; color: #000000; font-weight: bold; margin-bottom: 0px; ">
-                        12:00
+                        {{data.startTime}}
                     </p>
                     <p style="font-size: 13px; margin-left: 15px;  text-transform: uppercase; ">
-                        TIME
+                        Giờ chiếu
                     </p>
                 </div>
             </div>
@@ -59,10 +57,9 @@
                     </p>
                     <p class="text-center"
                        style="font-size: 20px;   text-transform: uppercase; ">
-                        Seat
+                        Số ghế
                     </p>
                 </div>
             </div>
         </div>
-    </div>
 </div>
