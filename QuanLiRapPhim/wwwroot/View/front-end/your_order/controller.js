@@ -15,17 +15,34 @@ app.config(function ($routeProvider) {
 });
 
 app.directive('myTicket', function () {
+    function link($scope, element, attributes) {
+        $scope.data = JSON.parse($scope.model.Objects);
+        console.log($scope.data);
+    }
+
     return {
         restrict: 'A',
-        scope: true,
-        templateUrl: ctxfolderurl + '/Ticket.html'
+        scope: {
+            model:'='
+        },
+        templateUrl: ctxfolderurl + '/Tickets.html',
+        link:link
     };
 });
-app.directive('myBill', function () {
+app.directive('myBill', function (DTColumnDefBuilder, DTOptionsBuilder) {
+    function link($scope, element, attributes, DTColumnDefBuilder, DTOptionsBuilder) {
+        $scope.data = JSON.parse($scope.model.Objects);
+        
+    }
+
     return {
         restrict: 'A',
-        scope: true,
-        templateUrl: ctxfolderurl + '/Bill.html'
+        scope: {
+            model: "=",
+            
+        },
+        templateUrl: ctxfolderurl + '/Bill.htm',
+        link: link
     };
 });
 
@@ -36,13 +53,12 @@ app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnB
         .withOption('ajax', {
             url: "/YourOrder/JtableTestModel"
             , beforeSend: function (jqXHR, settings) {
-                //$.blockUI({
-                //    boxed: true,
-                //    message: 'loading...'
-                //});
+                $.blockUI({
+                    boxed: true,
+                    message: 'loading...'
+                });
             }
             , type: 'GET'
-            //, contentType: "application/json; charset=utf-8"
             , dataType: "json"
             , complete: function (rs) {
                 $.unblockUI();
@@ -50,11 +66,11 @@ app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnB
                 if (rs && rs.responseJSON && rs.responseJSON.Error) {
                     App.toastrError(rs.responseJSON.Title);
                 }
+                else $scope.All = rs.responseJSON.data;
             }
         })
         .withPaginationType('full_numbers').withDOM("<'table-scrollable't>ip")
         .withDataProp('data').withDisplayLength(3)
-        .withOption('order', [1, 'desc'])
         .withOption('serverSide', true)
         .withOption('headerCallback', function (header) {
             if (!$scope.headerCompiled) {
@@ -72,24 +88,22 @@ app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnB
     vm.dtOrderColumns = [];
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('id', 'id').withOption('sWidth', '20px').renderWith(function (data, type) {
         return data
-    }));
-    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Objects', 'Your Order').withOption('sWidth', '320px').renderWith(function (data, type) {
-        return $scope.render(data);
-    }));
-    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Date', 'Date').withOption('sWidth', '40px').renderWith(function (data, type) {
+    }).notSortable());
+    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Objects', 'Đơn hàng của bạn').withOption('sWidth', '320px').renderWith(function (data, type,full,meta) {
+        data = JSON.parse(data);
+        if (data.Date)
+            return '<div my-Bill model="All[' + meta.row + ']" ></div > ';
+        return '<div my-Ticket model="All[' + meta.row + ']" ></div > ';
+    }).notSortable());
+
+    vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Date', 'Ngày đặt').withOption('sWidth', '40px').renderWith(function (data, type) {
         return data;
-    }));
+    }).notSortable());
 
-
-    $scope.render = function (data) {
-        var a = JSON.parse(data);
-        if (a.Date != null) {
-            return '<div my-Ticket style="display: flex; justify-content: center;"></div>';
-        }
-        return '<div my-Bill></div>';
+    $scope.modelrt = function (id) {
+        $scope.TotalPrice = $scope.List.find(x => x.Id == a.Id).TotalPrice;
     }
-
-
+    //;
     $scope.init = function () {
         $("#my_order").addClass("current-menu-item");
     }

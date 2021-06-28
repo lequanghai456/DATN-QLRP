@@ -31,7 +31,20 @@ namespace QuanLiRapPhim.Controllers
         public JsonResult GetMovieByName(String Name)
         {
             JMessage jMessage = new JMessage();
-            var movie = _context.Movies.Include(x=>x.Lstcategories).Where(x => x.Title == Name).FirstOrDefault();
+            var movie = (from m in  _context.Movies 
+                         where (m.Title == Name)
+                         select new {
+                            m.Id,
+                            m.Title,
+                            m.Time,
+                            Lstcategories=from c in m.Lstcategories select c.Title ,
+                            m.Describe,
+                            m.Mac,
+                            m.Poster,
+                            m.Trailer,
+                            m.TotalRating,
+                            m.TotalReviewers
+                         }).FirstOrDefault();
             jMessage.Error = movie == null;
             if (!jMessage.Error)
             {
@@ -47,8 +60,9 @@ namespace QuanLiRapPhim.Controllers
         {
             return Json(_context.Movies.FirstOrDefault(movie=>movie.Id==id));
         }
-        public async Task<JsonResult> GetMovie()
-        {            
+        public async Task<JsonResult> GetMovie(int year, int idCate)
+        {
+
             return Json(_context.Movies.Where(x=>x.IsDelete==false).ToList());
         }
         [HttpGet]
