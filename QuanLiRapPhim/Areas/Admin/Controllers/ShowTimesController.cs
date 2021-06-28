@@ -27,24 +27,33 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // GET: Admin/ShowTimes
         public async Task<IActionResult> Index(int? id)
         {
-            ShowTime showTime = null;
-            if (id != null)
+            //ShowTime showTime = null;
+            //if (id != null)
+            //{
+            //    showTime = _context.ShowTimes.FirstOrDefault(s => s.Id == id);               
+            //}
+            //ViewBag.ListRooms = _context.Rooms.Where(x => x.IsDelete == false).ToList();
+            //ViewBag.ListMovies = _context.Movies.Where(x => x.IsDelete == false).ToList();
+            //return View(showTime);
+            ShowTimes showTimes = new ShowTimes()
             {
-                showTime = _context.ShowTimes.FirstOrDefault(s => s.Id == id);               
-            }
+                Date = DateTime.Now,
+                TimeStart = DateTime.Parse("8:00:00 AM")
+            };
             ViewBag.ListRooms = _context.Rooms.Where(x => x.IsDelete == false).ToList();
-            ViewBag.ListMovies = _context.Movies.Where(x => x.IsDelete == false).ToList();
-            return View(showTime);
+            ViewBag.ListMovies = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
+
+            return View(showTimes);
         }
         public class JTableModelCustom : JTableModel
         {
-            public string NameRoom { get; set; }
-            public string NameMovie { get; set; }
+            public String date { get; set; }
+           
         }
         public async Task<String> JtableShowTimeModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
-            var query = _context.ShowTimes.Include(a=>a.Room).Include(b=>b.Movie).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.NameRoom) || x.Room.Name.Contains(jTablePara.NameRoom)));
+            var query = _context.ShowTimes.Include(a=>a.Room).Include(b=>b.Movie).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.date) ||x.DateTime.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0));
             int count = query.Count();
             var data = query.AsQueryable().Select(x=> new { x.Id,DateTime = x.DateTime.ToString("MM/dd/yyyy"),NameRoom = x.Room.Name,NameMovie = x.Movie.Title,StartTime = x.startTime.ToString("HH:mm"),x.Price})
                 .Skip(intBegin)
@@ -167,18 +176,24 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
 
 
-        public IActionResult CreateTimes()
+        public async Task<IActionResult> CreateTimes()
         {
             ShowTimes showTimes = new ShowTimes()
             {
                 Date = DateTime.Now,
                 TimeStart = DateTime.Parse("8:00:00 AM")
             };
-            ViewBag.ListMovie = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
+            ViewBag.ListMovies = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
 
             return View(showTimes);
         }
-
+        
+        //public IActionResult listshowTime(DateTime date)
+        //{
+        //    ShowTimes showTimes = new ShowTimes();
+        //    var query = _context.ShowTimes.Include(x => x.Movie).Where(x => x.IsDelete == false && x.DateTime.Date.CompareTo(date.Date) == 0).Select(x=> new { DateTime = x.DateTime.ToString("MM/dd/yyyy"), x.Movie.Title, startTime = x.startTime.ToString("HH:mm"),endTime = x.startTime.AddMinutes(x.Movie.Time).ToString("HH:mm") });
+        //    return Json(query);
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateTimes([Bind("TimeStart,Date,ListMivie")] ShowTimes showTimes)
@@ -210,9 +225,9 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
                 showTimes.TimeStart = startTime;
                 ViewBag.TimeStart = startTime;
-                return View(showTimes);
+                return View("Index",showTimes);
             }
-            return View(s);
+            return View("Index",s);
         }
     }
     public class ShowTimes

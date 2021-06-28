@@ -14,7 +14,7 @@ app.controller('Ctroller', function ($scope, dataservice) {
         dataservice.getListMovie(function (rs) {
             rs = rs.data;
             $scope.List = rs;
-            console.log(rs);           
+                    
         });
     }
 

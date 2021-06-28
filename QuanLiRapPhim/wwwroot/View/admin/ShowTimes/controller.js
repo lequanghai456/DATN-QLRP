@@ -4,7 +4,6 @@ var app = angular.module('App', ['datatables', 'ngRoute', 'checklist-model']);
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            
             controller: 'Ctroller'
         })
       
@@ -17,21 +16,23 @@ app.factory('dataservice', function ($http) {
         deleteShowTimeCheckbox: function (data, callback) {
             $http.post('/Admin/ShowTimes/DeleteShowTimeList?Listid=' + data).then(callback);
         },
+        getListMovie: function (callback) {
+            $http.get('/Admin/ShowTimes/ListMovie').then(callback);
+        },
     }
 });
 
-app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice) {
+app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice, $filter) {
     var vm = $scope;
     var id = document.getElementById('idEdit');
-    $scope.selected = [];
     $scope.items = [];
     $scope.selectAll = false;
     var LengthPage = 3;
     var itam = LengthPage;
     $scope.toggleOne = toggleOne;
+    $scope.ListMovie = [];
+    $scope.listShowTime = [];
    
-    
-    
     $scope.init = function () {
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withOption('ajax', {
@@ -44,7 +45,8 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 }
                 , type: 'GET'
                 , data: function (d) {
-                    d.NameRoom = $scope.valueName;
+                    d.date = !$scope.Date?"":$filter('date')($scope.Date, 'yyyy-MM-dd');
+                    console.log(d);
                    
                 }
                
@@ -111,7 +113,13 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         else {
             vm.create = false;
         }
-        
+        //more screenings
+        dataservice.getListMovie(function (rs) {
+            rs = rs.data;
+            $scope.List = rs;
+            console.log(rs);
+        });
+
     }
     $scope.init();
     
@@ -169,6 +177,34 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             });
         }
     }
+    //more screenings
+    $scope.del = function (index) {
+        $scope.ListMovie.splice(index, 1);
+        $scope.$apply;
+    }
+    $scope.showTimes = false;
+    var item = $scope.selected;
+
+    $scope.init();
+    $scope.total = $scope.ListMovie.length;
     
+    $scope.add = function () {
+        if ($scope.selected > 0) {
+            $scope.ListMovie.push({
+                id: $scope.total,
+                data: $scope.selected,
+                title: $scope.List.find(x => x.id == $scope.selected).title
+            });
+            $scope.total += 1;
+            if ($scope.time == null) {
+                $scope.time = 0;
+            }
+            $scope.selected = "-1";
+            $scope.$apply;
+        }
+    }
+    $scope.StartTime = "";
+    $scope.EndTime = "";
+    $scope.showTimes = true;
     
 });

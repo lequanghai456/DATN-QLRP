@@ -1,21 +1,25 @@
-﻿@model QuanLiRapPhim.Areas.Admin.Models.ShowTime
+﻿@*@model QuanLiRapPhim.Areas.Admin.Models.ShowTime*@
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 <div id='contentMain' ng-app="App" ng-controller="Ctroller">
+    <div class="row">
+        <div class="col-6">
+            <h4>Search and create new showtimes</h4>
+            <input type="date" class="form-control" ng-model="Date"/>
+            <div>{{Date | date:'MM-dd-yyyy'}}</div>
+                    <span class="text-danger"></span>
+                </div>
+                <button class="icon col-1" ng-click="Search()"><i class="fa fa-search"></i></button>
+            </div>
     <div ng-show="create">
-        @await Html.PartialAsync("Create")
+        @await Html.PartialAsync("CreateTimes")
     </div>
-    <div>
-        <div class="row">
-            <input style="margin-left:30px;" placeholder="Search....." class="col-3" type="text" ng-model="valueName" />
-            <button class="icon col-1" ng-click="Search()"><i class="fa fa-search"></i></button>
-            <div class="col-lg-4"></div>
             <button class="btn btn-primary col-1" ng-click="Show()">Input</button>
             <button class="btn btn-warning col-1" ng-click="deleteShowTimeList()" data-toggle="modal" data-target="#myModal">DeleteList</button>
-        </div>
+       
         @{
             if (TempData.Peek("Message") != null)
             {
@@ -27,7 +31,6 @@
                dt-options="dtOptions"
                dt-columns="dtColumns"
                id="tblData" dt-instance="dtInstance"></table>
-    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
@@ -51,7 +54,7 @@
 
         </div>
     </div>
-</div>
+    </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/View/admin/Showtimes/controller.js"></script>

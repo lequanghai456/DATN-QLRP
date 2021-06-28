@@ -1,38 +1,41 @@
 ﻿@model QuanLiRapPhim.Areas.Admin.Controllers.ShowTimes
-<div ng-app="App" ng-controller="Ctroller" class="row">
-    <form asp-action="CreateTimes" method="post" class="row col-6" asp-fragment="">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group col">
-            <label asp-for="Date" class="control-label"></label>
-            <input asp-for="Date" class="form-control" />
-            <span asp-validation-for="Date" class="text-danger"></span>
+@using Microsoft.AspNetCore.Identity
+@using QuanLiRapPhim.Areas.Admin.Models
+@inject SignInManager<Staff> SignInManager
+@*<div ng-app="App" ng-controller="Ctroller" class="row">
+        <div class="col-6">
+            <h4>Search and create new showtimes</h4>
+            <input type="date" class="form-control" ng-model="Date" ng-change="changDate(Date | date:'MM-dd-yyyy')" />
+            <span class="text-danger"></span>
         </div>
-        <div class="form-group col">
-            <label asp-for="TimeStart" class="control-label"></label>
-            <input asp-for="TimeStart" class="form-control" value="@Model.TimeStart.TimeOfDay"/>
-            <span asp-validation-for="TimeStart" class="text-danger"></span>
-        </div>
+        <div class="col-6" ng-show="showTimes">
+            <div style="border:solid 1px; margin-top: 25px;" id="Date">
+                <div class=""><h1>Lịch chiếu trong ngày {{Date | date:'MM-dd-yyyy'}}</h1></div>
+                <div class="row" ng-repeat="x in listShowTime">
+                    <div class="col-3">{{x.title}}:</div>
+                    <div class="col-5">{{x.startTime}} - {{x.endTime}}</div>
+                </div>
 
-        <div class="form-group col-12">
-            <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
         </div>
-        <input type="number" ng-repeat="x in ListMovie" name="ListMivie[{{$index}}]" value="{{x.data}}"  />
-    </form>
+    </div>*@
+<form asp-action="CreateTimes" method="post" class="row" asp-fragment="">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="Date" hidden class="form-control"  />
+    <div class="form-group col-3">
+        <label asp-for="TimeStart" class="control-label"></label>
+        <input asp-for="TimeStart" class="form-control" value="@Model.TimeStart.TimeOfDay" />
+        <span asp-validation-for="TimeStart" class="text-danger"></span>
+    </div>
+    @{if (User.IsInRole("Admin"))
+        {
+            <div class="form-group col-3">
+                <label asp-for="RoomID" class="control-label"></label>
+                <select asp-for="RoomID" class="form-control" asp-items="@(new SelectList(ViewBag.ListRooms, "Id", "Name"))"></select>
+            </div>
+        }
+    }
     <div class="col-6">
-        <div style="border:solid 1px" class="row">
-            <div class="col-12"><h1>Lịch chiếu trong ngày @Model.Date.ToShortDateString()</h1></div>
-            @{ if (Model.showTimes != null)
-                {
-                    foreach (var (index, member) in @Model.showTimes.Select((member, i) => (i, member)))
-                    {
-                        <div class="col-7">@member.Movie.Title</div>
-                        <div class="col-5">@member.startTime.ToShortTimeString() - @member.startTime.AddMinutes(member.Movie.Time).ToShortTimeString()</div>
-                    }
-                }
-
-            }
-        </div>
-        
 
         <span asp-validation-for="TotalTime" class="text-danger"></span>
         <div style="border:solid 1px">
@@ -41,17 +44,36 @@
 
             <div class="form-group">
                 <label asp-for="movie1" class="control-label"></label>
-                <select class="form-control" 
-                        id="ListPhim" ng-change="add()" 
-                        ng-model="selected" 
-                        asp-items="ViewBag.ListMovie" >
+                <select class="form-control"
+                        id="ListPhim" ng-change="add()"
+                        ng-model="selected"
+                        asp-items="ViewBag.ListMovies">
                     <option value="-1" selected>--Chọn phim--</option>
                 </select>
             </div>
         </div>
     </div>
-    
-</div>
-@section Scripts {
-    <script src="~/View/admin/ShowTimes/createView.js"></script>
-}
+    <div class="form-group col-12">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+    <input hidden type="number" ng-repeat="x in ListMovie" name="ListMivie[{{$index}}]" value="{{x.data}}" />
+</form>
+@*<div class="col-6">
+
+        <span asp-validation-for="TotalTime" class="text-danger"></span>
+        <div style="border:solid 1px">
+            <h1>Danh sánh phim đang chọn</h1>
+            <div ng-repeat="x in ListMovie" ng-click="del($index)">{{x.title}}</div>
+
+            <div class="form-group">
+                <label asp-for="movie1" class="control-label"></label>
+                <select class="form-control"
+                        id="ListPhim" ng-change="add()"
+                        ng-model="selected"
+                        asp-items="ViewBag.ListMovies" >
+                    <option value="-1" selected>--Chọn phim--</option>
+                </select>
+            </div>
+        </div>
+    </div>*@
+
