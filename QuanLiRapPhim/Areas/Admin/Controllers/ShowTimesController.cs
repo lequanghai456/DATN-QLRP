@@ -19,37 +19,27 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         private readonly IdentityContext _context;
         private ShowTimes show;
 
+        [TempData]
+        public string Message { get; set; }
+
+
         public ShowTimesController(IdentityContext context)
         {
             _context = context;
         }
 
         // GET: Admin/ShowTimes
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index()
         {
-            //ShowTime showTime = null;
-            //if (id != null)
-            //{
-            //    showTime = _context.ShowTimes.FirstOrDefault(s => s.Id == id);               
-            //}
-            //ViewBag.ListRooms = _context.Rooms.Where(x => x.IsDelete == false).ToList();
-            //ViewBag.ListMovies = _context.Movies.Where(x => x.IsDelete == false).ToList();
-            //return View(showTime);
-            ShowTimes showTimes = new ShowTimes()
-            {
-                Date = DateTime.Now,
-                TimeStart = DateTime.Parse("8:00:00 AM")
-            };
-            ViewBag.ListRooms = _context.Rooms.Where(x => x.IsDelete == false).ToList();
-            ViewBag.ListMovies = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
-
-            return View(showTimes);
+            
+            return View();
         }
+
         public class JTableModelCustom : JTableModel
         {
             public String date { get; set; }
-           
         }
+
         public async Task<String> JtableShowTimeModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
@@ -119,6 +109,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             ViewData["ShowTimeId"] = new SelectList(_context.ShowTimes, "Id", "Id");
             return View(showTime);
         }
+        
         public JsonResult DeleteShowTime(int? id)
         {
             ShowTime showtime = new ShowTime();
@@ -134,8 +125,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             _context.SaveChangesAsync();
             return Json("Success");
         }
-        [TempData]
-        public string Message { get; set; }
+        
         public JsonResult DeleteShowTimeList(String Listid)
         {
             int itam = 0;
@@ -161,8 +151,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             Message = "Successfully deleted " + itam + " showtimes";
             _context.SaveChangesAsync();
             return Json("Successfully deleted " + itam + " showtimes");
-
-
         }
 
         private bool ShowTimeExists(int id)
@@ -176,16 +164,26 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
 
 
-        public async Task<IActionResult> CreateTimes()
+        public async Task<IActionResult> CreateTimes(DateTime? Date)
         {
-            ShowTimes showTimes = new ShowTimes()
+            if (Date != null)
             {
-                Date = DateTime.Now,
-                TimeStart = DateTime.Parse("8:00:00 AM")
-            };
-            ViewBag.ListMovies = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
+                ShowTimes showTimes = new ShowTimes();
+                var List = _context.ShowTimes.Include(x=>x.Movie).Where(x => x.DateTime.CompareTo((DateTime)Date)==0).OrderBy(x => x.startTime);
 
-            return View(showTimes);
+                showTimes.Date = (DateTime)Date;
+
+                if (List.ToList().Count() != 0)
+                {
+                    showTimes.TotalTime =(int) (List.First().startTime - List.Last().startTime.AddMinutes(List.Last().Movie.Time)).TotalSeconds;
+                }
+
+                ViewBag.ListMovies = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
+                ViewBag.ListRooms = _context.Rooms.Where(x => x.IsDelete == false).ToList();
+
+                return View("Index", showTimes);
+            }
+            return View("Index");
         }
         
         //public IActionResult listshowTime(DateTime date)
@@ -194,50 +192,61 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         //    var query = _context.ShowTimes.Include(x => x.Movie).Where(x => x.IsDelete == false && x.DateTime.Date.CompareTo(date.Date) == 0).Select(x=> new { DateTime = x.DateTime.ToString("MM/dd/yyyy"), x.Movie.Title, startTime = x.startTime.ToString("HH:mm"),endTime = x.startTime.AddMinutes(x.Movie.Time).ToString("HH:mm") });
         //    return Json(query);
         //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateTimes([Bind("TimeStart,Date,ListMivie")] ShowTimes showTimes)
+        public async Task<IActionResult> CreateTimes([Bind("TimeStart,Date,TotalTime,ListMivie")] ShowTimes showTimes)
         {
-            ShowTimes s = showTimes;
-            List<Movie> movies = new List<Movie>();
-            showTimes.showTimes = new List<ShowTime>();
-            DateTime startTime = showTimes.TimeStart;
-            foreach (int i in showTimes.ListMivie)
+            var a = showTimes.TimeStart.AddMinutes(showTimes.TotalTime);
+            bool b = a.Date > showTimes.TimeStart.Date;
+            if (b)
             {
-                var movie = _context.Movies.FirstOrDefault(x => x.Id == i);
-                movies.Add(movie);
-                showTimes.showTimes.Add(new ShowTime
-                {
-                    Movie = movie, 
-                    DateTime = showTimes.Date,
-                    Price = 10000,
-                    RoomId = 1,                   
-                    startTime = startTime
-                });
-                startTime = startTime.AddMinutes(movie.Time+30);
-                showTimes.TotalTime += movie.Time + 30;
+                ModelState.AddModelError(showTimes.TimeStart.ToString(), "Quá 12 giờ");
             }
-
             if (ModelState.IsValid)
             {
-
-                ViewBag.ListMovie = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
-
-                showTimes.TimeStart = startTime;
-                ViewBag.TimeStart = startTime;
-                return View("Index",showTimes);
+                ShowTimes s = showTimes;
+                List<Movie> movies = new List<Movie>();
+                showTimes.showTimes = new List<ShowTime>();
+                DateTime startTime = showTimes.TimeStart;
+                foreach (int i in showTimes.ListMivie)
+                {
+                    var movie = _context.Movies.FirstOrDefault(x => x.Id == i);
+                    movies.Add(movie);
+                    showTimes.showTimes.Add(new ShowTime
+                    {
+                        Movie = movie, 
+                        DateTime = showTimes.Date,
+                        Price = 10000,
+                        RoomId = 1,                   
+                        startTime = startTime
+                    });
+                    startTime = startTime.AddMinutes(movie.Time+30);
+                }
+                return View("Index");
             }
-            return View("Index",s);
+            ViewBag.ListMovies = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
+            ViewBag.ListRooms = _context.Rooms.Where(x => x.IsDelete == false).ToList();
+
+            return View("Index", showTimes);
+        }
+        public JsonResult GetMovieTitle(int id) {
+            return Json(_context.Movies.Find(id).Title);
         }
     }
     public class ShowTimes
     {
-        public int[] ListMivie { get; set; }
+        public ShowTimes()
+        {
+            TimeStart = DateTime.Parse("8:00:00 AM");
+            ListMivie = new List<int>();
+        }
+        public List<int> ListMivie { get; set; }
         public int RoomID { get; set; }
         [DisplayName("Chọn phim")]
         public Movie movie1 { get; set; }
         public List<ShowTime> showTimes { get; set; }
-        [Range(0, 960, ErrorMessage = "Quá giờ")]
+        //[Range(0, 960, ErrorMessage = "Quá giờ")]
         public int TotalTime{ get; set; }
         [DisplayName("Giờ bắt đầu")]
         [DataType(DataType.Time)]
@@ -247,5 +256,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Date { get; set; }
+        public String Json() {
+            return JsonConvert.SerializeObject(ListMivie);
+        }
     }
 }

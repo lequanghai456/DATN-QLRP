@@ -1,13 +1,7 @@
 ﻿var ctxfolderurl = "https://localhost:44350";
 
 var app = angular.module('App', ['datatables', 'ngRoute', 'checklist-model']);
-app.config(function ($routeProvider) {
-    $routeProvider
-        .when('/', {
-            controller: 'Ctroller'
-        })
-      
-});
+
 app.factory('dataservice', function ($http) {
     return {
         deleteShowTime: function (data, callback) {
@@ -18,6 +12,9 @@ app.factory('dataservice', function ($http) {
         },
         getListMovie: function (callback) {
             $http.get('/Admin/ShowTimes/ListMovie').then(callback);
+        },
+        GetMovieTitle: function (data,callback) {
+            $http.get('/Admin/ShowTimes/GetMovieTitle/'+data).then(callback);
         },
     }
 });
@@ -34,6 +31,12 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     $scope.listShowTime = [];
    
     $scope.init = function () {
+
+        dataservice.getListMovie(function (rs) {
+            rs = rs.data;
+            $scope.List = rs;
+            console.log(rs);
+        });
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withOption('ajax', {
                 url: "/Admin/ShowTimes/JtableShowTimeModel"
@@ -113,12 +116,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         else {
             vm.create = false;
         }
-        //more screenings
-        dataservice.getListMovie(function (rs) {
-            rs = rs.data;
-            $scope.List = rs;
-            console.log(rs);
-        });
+        
 
     }
     $scope.init();
@@ -126,6 +124,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     vm.Show = function () {
         vm.create = !vm.create;
     };
+
     $scope.delete = function (idDelete) {
         var flag = true;
         if (id != null) {
@@ -142,8 +141,11 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             });
         }
     }
+
     vm.reloadData = reloadData;
+
     vm.dtInstance = {};
+
     function reloadData(resetPaging) {
         vm.dtInstance.reloadData(callback, resetPaging);
     }
@@ -168,34 +170,29 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             });
             console.log($scope.selected);
             dataservice.deleteShowTimeCheckbox($scope.selected, function (rs) {
-
                 rs = rs.data;
                 $scope.notification = rs;
                 $scope.selected = [];
                 reloadData(true);
-
+                //more screenings
+                
             });
+
         }
     }
     //more screenings
-    $scope.del = function (index) {
-        $scope.ListMovie.splice(index, 1);
-        $scope.$apply;
-    }
+      
     $scope.showTimes = false;
-    var item = $scope.selected;
 
     $scope.init();
     $scope.total = $scope.ListMovie.length;
-    
+
     $scope.add = function () {
         if ($scope.selected > 0) {
             $scope.ListMovie.push({
                 id: $scope.total,
                 data: $scope.selected,
-                title: $scope.List.find(x => x.id == $scope.selected).title
             });
-            $scope.total += 1;
             if ($scope.time == null) {
                 $scope.time = 0;
             }
@@ -203,8 +200,99 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             $scope.$apply;
         }
     }
+
     $scope.StartTime = "";
     $scope.EndTime = "";
     $scope.showTimes = true;
-    
+
+    $scope.action = {
+        del:function(index) {
+            $scope.LitIdMovie.splice(index, 1);
+            $scope.$apply;
+            console.log($scope.LitIdMovie);
+        },
+        
+        add: function () {
+            if ($scope.selected > 0) {
+                $scope.LitIdMovie.push($scope.selected);
+                $scope.selected = '-1';
+                $scope.$apply;
+            }
+        },
+
+        getTimeEnd: function (data) {
+            var time = $(".TimeStart").val();
+            var dt = new Date();
+            dt.setHours(time.split(':')[0]);
+            dt.setMinutes(time.split(':')[1]);
+            dt.setSeconds(time.split(':')[2]);
+            dt.setMinutes(dt.getMinutes() + $scope.action.getTotalTime(data));
+            return dt.getHours() + ":" + dt.getMinutes();
+        },
+
+        getMovie: function (id) {
+            if ($scope.List != null)
+                return $scope.List.find(x => x.id == id);
+        },
+        getTotalTime: function (data) {
+            var init = 0;
+            data.forEach(function (item, index) {
+                if ($scope.List != null)
+                init += $scope.List.find(x => x.id == item).time+30;
+            });
+            return init;
+        },
+        ShowTime: function (index) {
+            if ($scope.List != null) {
+                $scope.LitIdMovie;
+            }
+        }
+    }
+});
+
+app.directive('listMovie', function () {
+    return {
+        restrict: 'E',
+        template: '<input type="number" hidden ng-repeat="x in data track by $index" name="ListMivie[{{$index}}]" value="{{x}}"/>',
+        scope: {
+            data: "="
+        },
+        link: function (scope) {
+            scope.init = function () {
+                console.log(scope.data);
+                var total = 0;
+                scope.list = [];
+                scope.data.forEach(function (item, index) {
+                    scope.list.push({ id: total, data: item });
+                    total += 1;
+                    scope.$apply;
+                });
+            }
+            scope.init();
+        }
+    }
+});
+
+
+app.directive('listTitleMovie', function (dataservice) {
+    return {
+        restrict: 'E',
+        template:
+            '<div class="Movie" ng-repeat="x in data track by $index">'
+                + '<div>'
+                    + '<span>Tên phim: {{action.getMovie(x).title}}</span>'
+                    + '<br><span>Thời lượng: {{action.getMovie(x).time}} phút </span>'
+                + '</div>'
+                + '<div>{{action.ShowTime($index)}} </div>'
+                + '<a class="btn btn-danger" ng-click="action.del($index)"> delete </a>'
+            + '</div>',
+        scope: {
+            data: "=",
+            action: "="
+        },
+        link: function ($scope) {
+            $scope.total = 0;
+            $scope.list = [];
+        }
+    }
 });
