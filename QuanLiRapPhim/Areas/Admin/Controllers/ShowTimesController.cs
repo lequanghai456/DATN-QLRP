@@ -31,7 +31,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // GET: Admin/ShowTimes
         public async Task<IActionResult> Index()
         {
-            
+
             return View();
         }
 
@@ -43,13 +43,13 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         public async Task<String> JtableShowTimeModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
-            var query = _context.ShowTimes.Include(a=>a.Room).Include(b=>b.Movie).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.date) ||x.DateTime.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0));
+            var query = _context.ShowTimes.Include(a => a.Room).Include(b => b.Movie).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.date) || x.DateTime.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0));
             int count = query.Count();
-            var data = query.AsQueryable().Select(x=> new { x.Id,DateTime = x.DateTime.ToString("MM/dd/yyyy"),NameRoom = x.Room.Name,NameMovie = x.Movie.Title,StartTime = x.startTime.ToString("HH:mm"),x.Price})
+            var data = query.AsQueryable().Select(x => new { x.Id, DateTime = x.DateTime.ToString("MM/dd/yyyy"), NameRoom = x.Room.Name, NameMovie = x.Movie.Title, StartTime = x.startTime.ToString("HH:mm"), x.Price })
                 .Skip(intBegin)
                 .Take(jTablePara.Length);
 
-            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Price","DateTime","NameRoom","NameMovie","StartTime");
+            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Price", "DateTime", "NameRoom", "NameMovie", "StartTime");
             return JsonConvert.SerializeObject(jdata);
         }
 
@@ -71,7 +71,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             return View(showTime);
         }
 
-      
+
 
         // POST: Admin/ShowTimes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -109,11 +109,11 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             ViewData["ShowTimeId"] = new SelectList(_context.ShowTimes, "Id", "Id");
             return View(showTime);
         }
-        
+
         public JsonResult DeleteShowTime(int? id)
         {
             ShowTime showtime = new ShowTime();
-            
+
             showtime = _context.ShowTimes.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
             if (showtime == null)
             {
@@ -125,7 +125,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             _context.SaveChangesAsync();
             return Json("Success");
         }
-        
+
         public JsonResult DeleteShowTimeList(String Listid)
         {
             int itam = 0;
@@ -133,7 +133,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 String[] List = Listid.Split(',');
                 ShowTime showtime = new ShowTime();
-              
+
                 foreach (String id in List)
                 {
                     showtime = _context.ShowTimes.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
@@ -169,23 +169,24 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             if (Date != null)
             {
                 ShowTimes showTimes = new ShowTimes();
-                var List = _context.ShowTimes.Include(x=>x.Movie).Where(x => x.DateTime.CompareTo((DateTime)Date)==0).OrderBy(x => x.startTime);
+
+                showTimes.showTimes = _context.ShowTimes.Include(x => x.Movie)
+                    .Where(x => x.DateTime.CompareTo((DateTime)Date) == 0)
+                    .Where(x=>!x.IsDelete)
+                    .OrderBy(x => x.startTime).ToList();
+
+                showTimes.ListMivie = showTimes.showTimes.Select(s => s.Movie.Id).ToList();
 
                 showTimes.Date = (DateTime)Date;
 
-                if (List.ToList().Count() != 0)
-                {
-                    showTimes.TotalTime =(int) (List.First().startTime - List.Last().startTime.AddMinutes(List.Last().Movie.Time)).TotalSeconds;
-                }
-
-                ViewBag.ListMovies = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
+                ViewBag.ListMovies = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title");
                 ViewBag.ListRooms = _context.Rooms.Where(x => x.IsDelete == false).ToList();
 
                 return View("Index", showTimes);
             }
             return View("Index");
         }
-        
+
         //public IActionResult listshowTime(DateTime date)
         //{
         //    ShowTimes showTimes = new ShowTimes();
@@ -203,34 +204,59 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 ModelState.AddModelError(showTimes.TimeStart.ToString(), "Quá 12 giờ");
             }
             //showTimes.showTimes = _context.ShowTimes.Where(s => s.DateTime == showTimes.Date).ToList();
-           
+
             if (ModelState.IsValid)
             {
-                ShowTimes s = showTimes;
-                List<Movie> movies = new List<Movie>();
-                showTimes.showTimes = new List<ShowTime>();
-                DateTime startTime = showTimes.TimeStart;
-                foreach (int i in showTimes.ListMivie)
-                {
-                    var movie = _context.Movies.FirstOrDefault(x => x.Id == i);
-                    movies.Add(movie);
-                    showTimes.showTimes.Add(new ShowTime
-                    {
-                        Movie = movie, 
-                        DateTime = showTimes.Date,
-                        Price = 10000,
-                        RoomId = 1,
-                        startTime = startTime
-                    });
-                    
-                    startTime = startTime.AddMinutes(movie.Time+30);
-                }
                 try
                 {
-                    foreach(var item in showTimes.showTimes)
+                    List<Movie> movies = new List<Movie>();
+                    showTimes.showTimes = _context.ShowTimes
+                        .Where(x => x.DateTime == showTimes.Date)
+                        .Where(x=>x.IsDelete==false)
+                        .OrderBy(x => x.startTime).ToList();
+
+                    DateTime startTime = showTimes.TimeStart;
+                    if (showTimes.showTimes.Count > showTimes.ListMivie.Count)
                     {
-                        _context.Add(item);
-                    }    
+
+                    }
+                    foreach (var item in showTimes.ListMivie.Select((value, index) => (index, value)))
+                    {
+                        var movie = _context.Movies.FirstOrDefault(x => x.Id == item.value);
+                        movies.Add(movie);
+                        var s = new ShowTime();
+                        if (showTimes.showTimes.Count > item.index)
+                        {
+                            s = _context.ShowTimes.Find(showTimes.showTimes[item.index].Id);
+                            s.Movie = movie;
+                            s.DateTime = showTimes.Date;
+                            s.Price = 10000;
+                            s.RoomId = 1;
+                            s.startTime = startTime;
+                            startTime = startTime.AddMinutes(movie.Time + 30);
+                            _context.Update(s);
+                        }
+                        else
+                        {
+                            s = new ShowTime();
+                            s.Movie = movie;
+                            s.DateTime = showTimes.Date;
+                            s.Price = 10000;
+                            s.RoomId = 1;
+                            s.startTime = startTime;
+                            startTime = startTime.AddMinutes(movie.Time + 30);
+
+                            _context.Add(s);
+                        }
+
+                    }
+                    for (int i = showTimes.ListMivie.Count; i < showTimes.showTimes.Count; i++)
+                    {
+                        var del = _context.ShowTimes.Find(showTimes.showTimes[i].Id);
+                        del.IsDelete = true;
+                        _context.Update(del);
+                    }
+
                     _context.SaveChanges();
                     Message = "Lưu thành công";
                     return View("Index");
@@ -245,7 +271,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
             return View("Index", showTimes);
         }
-        public JsonResult GetMovieTitle(int id) {
+        public JsonResult GetMovieTitle(int id)
+        {
             return Json(_context.Movies.Find(id).Title);
         }
     }
@@ -256,13 +283,15 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             TimeStart = DateTime.Parse("8:00:00 AM");
             ListMivie = new List<int>();
         }
+        public List<ShowTime> showTimesCreated { get; set; }
+
         public List<int> ListMivie { get; set; }
         public int RoomID { get; set; }
         [DisplayName("Chọn phim")]
         public Movie movie1 { get; set; }
         public List<ShowTime> showTimes { get; set; }
         //[Range(0, 960, ErrorMessage = "Quá giờ")]
-        public int TotalTime{ get; set; }
+        public int TotalTime { get; set; }
         [DisplayName("Giờ bắt đầu")]
         [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:HH:mm}")]
@@ -271,7 +300,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Date { get; set; }
-        public String Json() {
+        public String Json()
+        {
             return JsonConvert.SerializeObject(ListMivie);
         }
     }
