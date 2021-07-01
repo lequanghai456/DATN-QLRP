@@ -19,45 +19,75 @@
             </div>
         </div>
     </div>*@
-<form asp-action="CreateTimes" method="post" class="row" asp-fragment="">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input asp-for="Date" hidden class="form-control"  />
-    <div class="form-group col-3">
-        <label asp-for="TimeStart" class="control-label"></label>
-        <input asp-for="TimeStart" class="form-control" value="@Model.TimeStart.TimeOfDay" />
-        <span asp-validation-for="TimeStart" class="text-danger"></span>
-    </div>
-    @{if (User.IsInRole("Admin"))
-        {
-            <div class="form-group col-3">
-                <label asp-for="RoomID" class="control-label"></label>
-                <select asp-for="RoomID" class="form-control" asp-items="@(new SelectList(ViewBag.ListRooms, "Id", "Name"))"></select>
-            </div>
-        }
+<style>
+    .Movie {
+        margin: 2px;
+        padding: 5px;
+        display: flex;
+        background-color: green;
+        border-radius:5px;
+        justify-content: space-between;
     }
-    <div class="col-6">
+        .Movie .btn {
+            display: inline;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    .list-Title-Movie {
+        background-color: #eee;
+        height: 350px;
+        border: 1px dotted black;
+        overflow: scroll;
+       color:white;
+    }
+</style>
+<div class="row" ng-init="LitIdMovie=@Model.Json()">
+    <form asp-action="CreateTimes" method="post" class="row col-6">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input asp-for="Date" hidden class="form-control" />
 
-        <span asp-validation-for="TotalTime" class="text-danger"></span>
-        <div style="border:solid 1px">
+        
+        <div class="form-group col">
+            <label asp-for="TimeStart" class="control-label"></label>
+            <input asp-for="TimeStart" class="TimeStart form-control" value="@Model.TimeStart.TimeOfDay" />
+            <h3>Thời gian kết thúc: {{action.getTimeEnd(LitIdMovie)}}</h3>
+            <div class="text-danger">
+                @Html.ValidationSummary()
+            </div>
+        </div>
+        @{if (User.IsInRole("Admin"))
+            {
+                <div class="form-group col-3">
+                    <label asp-for="RoomID" class="control-label"></label>
+                    <select asp-for="RoomID" class="form-control" asp-items="@(new SelectList(ViewBag.ListRooms, "Id", "Name"))"></select>
+                </div>
+            }
+        }
+        <div class="form-group col-12">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+
+        <list-Movie data="LitIdMovie"></list-Movie>
+        <input asp-for="TotalTime" hidden type="number" ng-model="action.getTotalTime(LitIdMovie)" />
+    </form>
+    <div class="col-6" style="padding:10px;">
+        <div style="border: inset 1px; background-color:white;padding:10px">
             <h1>Danh sánh phim đang chọn</h1>
-            <div ng-repeat="x in ListMovie" ng-click="del($index)">{{x.title}}</div>
-
+            <div class="list-Title-Movie">
+                <list-Title-Movie data="LitIdMovie"  action="action"></list-Title-Movie>
+            </div>
             <div class="form-group">
                 <label asp-for="movie1" class="control-label"></label>
                 <select class="form-control"
-                        id="ListPhim" ng-change="add()"
-                        ng-model="selected"
+                        id="ListPhim" ng-change="action.add()"
+                        ng-model="selected" ng-init="selected='-1'"
                         asp-items="ViewBag.ListMovies">
-                    <option value="-1" selected>--Chọn phim--</option>
+                    <option value="-1">--Chọn phim--</option>
                 </select>
             </div>
         </div>
     </div>
-    <div class="form-group col-12">
-        <input type="submit" value="Create" class="btn btn-primary" />
-    </div>
-    <input hidden type="number" ng-repeat="x in ListMovie" name="ListMivie[{{$index}}]" value="{{x.data}}" />
-</form>
+</div>
 @*<div class="col-6">
 
         <span asp-validation-for="TotalTime" class="text-danger"></span>
