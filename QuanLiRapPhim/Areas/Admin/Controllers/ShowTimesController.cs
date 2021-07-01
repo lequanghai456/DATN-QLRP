@@ -198,11 +198,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         public async Task<IActionResult> CreateTimes([Bind("TimeStart,Date,TotalTime,ListMivie")] ShowTimes showTimes)
         {
             var a = showTimes.TimeStart.AddMinutes(showTimes.TotalTime);
-            bool b = a.Date > showTimes.TimeStart.Date;
-            if (b)
+            if (a.Date > showTimes.TimeStart.Date)
             {
                 ModelState.AddModelError(showTimes.TimeStart.ToString(), "Quá 12 giờ");
             }
+            //showTimes.showTimes = _context.ShowTimes.Where(s => s.DateTime == showTimes.Date).ToList();
+           
             if (ModelState.IsValid)
             {
                 ShowTimes s = showTimes;
@@ -218,12 +219,26 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                         Movie = movie, 
                         DateTime = showTimes.Date,
                         Price = 10000,
-                        RoomId = 1,                   
+                        RoomId = 1,
                         startTime = startTime
                     });
+                    
                     startTime = startTime.AddMinutes(movie.Time+30);
                 }
-                return View("Index");
+                try
+                {
+                    foreach(var item in showTimes.showTimes)
+                    {
+                        _context.Add(item);
+                    }    
+                    _context.SaveChanges();
+                    Message = "Lưu thành công";
+                    return View("Index");
+                }
+                catch (Exception e)
+                {
+                    Message = e.ToString();
+                }
             }
             ViewBag.ListMovies = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
             ViewBag.ListRooms = _context.Rooms.Where(x => x.IsDelete == false).ToList();
