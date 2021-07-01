@@ -27,33 +27,35 @@ namespace QuanLiRapPhim.Controllers
         {
             return View();
         }
-        //public async Task<JsonResult> Register()
-        //{
-        //    var Message = "Fail";
-        //    try
-        //    {
-        //        ViewBag.Message = "Admin already registered";
-        //        User user = await StaffMgr.FindByNameAsync("User1");
-        //        if (user == null)
-        //        {
-        //            user = new User();
-        //            user.UserName = "User1";
-        //            user.FullName = "Hồ Gia Bảo";
-        //            user.PasswordHash = "abc1234";
-        //            IdentityResult result =  await StaffMgr.CreateAsync(user, user.PasswordHash);
-        //            if (result.Succeeded)
-        //            {
-        //                return Json(Message="Succeeded");
-        //            }
-        //        }
-        //        return Json(Message);
+        public async Task<JsonResult> Register()
+        {
+            var Message = "Fail";
+            try
+            {
+                //ViewBag.Message = "Admin already registered";
+                //User user = await StaffMgr.FindByNameAsync("User1");
+                //if (user == null)
+                //{
+                //    user = new User();
+                //    user.UserName = "User1";
+                //    user.FullName = "Hồ Gia Bảo";
+                //    user.PasswordHash = "abc1234";
+                //    IdentityResult result = await StaffMgr.CreateAsync(user, user.PasswordHash);
+                //    if (result.Succeeded)
+                //    {
+                //        return Json(Message = "Succeeded");
+                //    }
+                //}
+                User user = await StaffMgr.FindByNameAsync("haile123");
+                IdentityResult result = await StaffMgr.ChangePasswordAsync(user, "abc123", "abc1234");
+                return Json(Message);
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(Message);
-        //    }
-        //}
+            }
+            catch (Exception ex)
+            {
+                return Json(Message);
+            }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
