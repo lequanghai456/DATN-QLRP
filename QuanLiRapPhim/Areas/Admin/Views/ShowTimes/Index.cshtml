@@ -6,7 +6,8 @@
 }
 <div id='contentMain' ng-app="App" ng-controller="Ctroller">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12" ng-init="tempdata=@TempData.Peek("Message")">
+            
             @{
                 if (TempData.Peek("Message") != null)
                 {
@@ -18,20 +19,23 @@
                 }
             }
 
-            <h4>Search and create new showtimes</h4>
-            <form asp-action="CreateTimes" method="get" style="display: flex; justify-content: space-between;">
-                <div style="display:inline-flex">
-                    <input type="date" ng-change="Search()" name="Date" class="form-control" ng-model="Date" />
-                    <button class="icon" ><i class="fa fa-search"></i></button>
-                </div>
-                <div>
-                    <button class="btn btn-primary">Input</button>
+            <h4>Tìm kiếm hoặc chọn ngày để tạo lịch chiếu</h4>
+            <div style="display: flex; justify-content: space-between;">
+                <form id="form" asp-action="CreateTimes" method="get" style="display: flex; justify-content: space-between;">
+                    <div style="display:inline-flex">
+                        <input type="date" ng-change="Search()" name="Date" class="form-control" ng-model="Date" />
+                    </div>
+                </form>
+                <div class="d-flex">
+                    <button class="btn btn-primary" ng-click="formSubmit('#form')">Tạo lịch chiếu</button>
+                    <button class="btn btn-primary" ng-click="resetform()">Làm mới</button>
+                    <button class="btn btn-primary" ng-click="Copy()">Sao chép lịch chiếu</button>
                     <button class="btn btn-warning" ng-click="deleteShowTimeList()"
                             data-toggle="modal" data-target="#myModal">
-                        DeleteList
+                        Xóa lịch chiếu dã chọn
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
     <table class="table dataTable table-hover table-striped"
@@ -49,14 +53,45 @@
                 <div class="row modal-header">
                     <h4 class="col-3 modal-title">Notification</h4>
                     <div class="col-5"></div>
-                    <button type="button" class="col-3 close" ng-click="reloadData(true)" 
-                            data-dismiss="modal">&times;</button>
+                    <button type="button" class="col-3 close" ng-click="reloadData(true)"
+                            data-dismiss="modal">
+                        &times;
+                    </button>
                 </div>
                 <div class="modal-body">
                     <h2 class="alert alert-success">{{notification}}</h2>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" ng-click="reloadData(true)" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModalCopyform" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="row modal-header">
+                    <h4 class="col-3 modal-title">Nhập ngày bạn muôn sao chép tới</h4>
+                    <div class="col-5"></div>
+                    <button type="button" class="col-3 close"
+                            data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="CoppyShowTimes" id="CopyShowTimes">
+                        <input type="date" ng-model="Date" name="from" />
+                        <input type="date" ng-model="to" name="to" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-success" ng-click="sussesCopy()" >Lưu</button>
+                    <button type="button" class="btn btn-default" ng-click="reloadData(true)" data-dismiss="modal">Đóng</button>
+
                 </div>
             </div>
         </div>

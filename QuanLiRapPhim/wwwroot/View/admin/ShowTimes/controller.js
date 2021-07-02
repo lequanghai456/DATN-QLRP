@@ -106,17 +106,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
             return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/ShowTimes/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
-        }));
-        
-       
-        if (id != null) {
-            vm.create = true;
-            
-        }
-        else {
-            vm.create = false;
-        }
-        
+        }));      
 
     }
     $scope.init();
@@ -205,6 +195,33 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     $scope.EndTime = "";
     $scope.showTimes = true;
 
+    $scope.formSubmit = function (formid) {
+        if ($scope.Date == null) {
+            alert('Bạn chưa chọn ngày');
+        }
+        else
+        $(formid).submit();
+    }
+    $scope.resetform = function () {
+        $scope.Date = null;
+        reloadData(true);
+    }
+
+    $scope.Copy = function () {
+        if ($scope.Date == null) {
+            alert('Bạn chưa chọn ngày');
+        }
+        else {
+            $('#myModalCopyform').modal('show');
+        }
+    }
+    $scope.sussesCopy = function () {
+        if ($scope.to == null) {
+            alert('Bạn chưa chọn ngày copy đến');
+        } else {
+            $scope.formSubmit("#CopyShowTimes");
+        }
+    }
     $scope.action = {
         del:function(index) {
             $scope.LitIdMovie.splice(index, 1);

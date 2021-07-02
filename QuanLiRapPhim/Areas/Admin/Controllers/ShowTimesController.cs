@@ -275,6 +275,33 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             return Json(_context.Movies.Find(id).Title);
         }
+
+        public IActionResult CoppyShowTimes(DateTime from, DateTime to)
+        {
+            try
+            {
+                var showtimefrom = _context.ShowTimes.Where(x => x.DateTime.Date == from.Date).OrderBy(x => x.startTime).ToList();
+                var showtimeto = _context.ShowTimes.Where(x => x.DateTime.Date == to.Date).OrderBy(x => x.startTime).ToList();
+                foreach(var item in showtimeto)
+                {
+                    item.IsDelete = true;
+                    _context.Update(item);
+                }
+                foreach (var item in showtimefrom)
+                {
+                    item.DateTime = to.Date;
+                    item.Id = 0;
+                    _context.Add(item);
+                }
+                _context.SaveChanges();
+                Message = "Coppy thành công ngày "+from.ToShortDateString()+" đên ngày "+ to.ToShortDateString();
+            }
+            catch (Exception e)
+            {
+                Message = e.ToString();
+            }
+            return View("Index");
+        }
     }
     public class ShowTimes
     {
