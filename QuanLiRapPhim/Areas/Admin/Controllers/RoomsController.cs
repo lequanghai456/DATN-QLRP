@@ -132,6 +132,18 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 await RoleMgr.CreateAsync(role);
                 room.RoleId = role.Id;
                 _context.Add(room);
+                var seats = new List<Seat>();
+                for (int j = 0; j < room.Row; j++)
+                {
+                    for (int i = 0; i < room.Col; i++)
+                    {
+                        Seat seat = new Seat();
+                        seat.X = char.ConvertFromUtf32(65 + j);
+                        seat.Y = i;
+                        seat.Room = room;
+                        _context.Add(seat);
+                    }
+                }
                 await _context.SaveChangesAsync();
                 Message = "Successfully create rooms";
                 return RedirectToAction(nameof(Index));
@@ -140,7 +152,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             return View(room);
         }
 
-       
+        
 
         // POST: Admin/Rooms/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.

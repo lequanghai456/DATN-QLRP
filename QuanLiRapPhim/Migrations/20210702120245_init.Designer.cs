@@ -10,8 +10,8 @@ using QuanLiRapPhim.Areas.Admin.Data;
 namespace QuanLiRapPhim.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20210628051208_create-sevice")]
-    partial class createsevice
+    [Migration("20210702120245_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -267,20 +267,16 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoomId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Staus")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -288,8 +284,6 @@ namespace QuanLiRapPhim.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("Devices");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Device");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Mac", b =>
@@ -367,7 +361,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Poster")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -387,7 +380,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Trailer")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -409,7 +401,7 @@ namespace QuanLiRapPhim.Migrations
                             Title = "Lật mặt",
                             TotalRating = 0,
                             TotalReviewers = 0,
-                            Trailer = ""
+                            Trailer = "1.mp4"
                         },
                         new
                         {
@@ -423,7 +415,21 @@ namespace QuanLiRapPhim.Migrations
                             Title = "Biệt đội báo thù",
                             TotalRating = 0,
                             TotalReviewers = 0,
-                            Trailer = ""
+                            Trailer = "2.mp4"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Describe = "Đây là phần tiếp theo của bom tấn vô cùng ăn khách – “G.I. Joe: The Rise of Cobra”. Nội dung phần 2 của “G.I. Joe” bắt đầu khi những người lãnh đạo nước Mỹ bị tổ chức Cobra (kẻ thù không đội trời chung của đội đặc nhiệm G.I.Joe) kiểm soát và ra lệnh loại bỏ G.I.Joe. Toàn bộ nhóm đặc vụ bị gài bẫy và gần như bị xóa sổ. Những người còn sống của đội đặc nhiệm tìm đến sự giúp đỡ của người lãnh đạo G.I. Joe năm xưa – tướng Joe Colton để cùng nhau tìm nguyên nhân thực sự của mọi chuyện và tìm cách giải cứu nước Mỹ.",
+                            IsDelete = false,
+                            MacId = 1,
+                            Poster = "3.jpg",
+                            Status = 0,
+                            Time = 110,
+                            Title = "BIỆT ĐỘI G.I. JOE: BÁO THÙ",
+                            TotalRating = 0,
+                            TotalReviewers = 0,
+                            Trailer = "3.mp4"
                         });
                 });
 
@@ -509,6 +515,35 @@ namespace QuanLiRapPhim.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Seat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("ExtraPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("X")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Y")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("Seats");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Sevice", b =>
@@ -741,6 +776,9 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("ConfirmEmail")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -792,22 +830,6 @@ namespace QuanLiRapPhim.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Seat", b =>
-                {
-                    b.HasBaseType("QuanLiRapPhim.Areas.Admin.Models.Device");
-
-                    b.Property<decimal>("ExtraPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("X")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Y")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("Seat");
                 });
 
             modelBuilder.Entity("CategoryMovie", b =>
@@ -921,7 +943,9 @@ namespace QuanLiRapPhim.Migrations
                 {
                     b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Room", "Room")
                         .WithMany("Devices")
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Room");
                 });
@@ -949,6 +973,17 @@ namespace QuanLiRapPhim.Migrations
                         .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Seat", b =>
+                {
+                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Room", "Room")
+                        .WithMany("Seats")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.ShowTime", b =>
@@ -1012,6 +1047,13 @@ namespace QuanLiRapPhim.Migrations
                     b.Navigation("Devices");
 
                     b.Navigation("LstShowTime");
+
+                    b.Navigation("Seats");
+                });
+
+            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Seat", b =>
+                {
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.ShowTime", b =>
@@ -1024,11 +1066,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Navigation("Comment");
 
                     b.Navigation("Rate");
-                });
-
-            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Seat", b =>
-                {
-                    b.Navigation("Ticket");
                 });
 #pragma warning restore 612, 618
         }

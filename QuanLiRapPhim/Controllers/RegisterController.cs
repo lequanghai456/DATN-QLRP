@@ -51,7 +51,7 @@ namespace QuanLiRapPhim.Controllers
        
         public bool SendEmailForgotPassword(string email,string username, string SecurityStamp)
         {
-            return Email.SendMailGoogleSmtp("giabao158357@gmail.com", email, "Xác nhận Email cho tài khoản", "Vui lòng bấm vào link để đến bước kế https://localhost:44350/Register/ChangePassword?username=" + username+ "&SecurityStamp="+ SecurityStamp).Result
+            return Email.SendMailGoogleSmtp("giabao158357@gmail.com", email, "Quên mật khẩu", "Vui lòng bấm vào link để đến bước kế https://localhost:44350/Register/ChangePassword?username=" + username+ "&SecurityStamp="+ SecurityStamp).Result
                 ? true
                 : false;
         }
@@ -134,7 +134,7 @@ namespace QuanLiRapPhim.Controllers
                     {
                         
                         Mess = "Đăng kí thành công";
-                        return View("Register");
+                        return RedirectToAction("Index");
                     }
                 }
                 return View();
