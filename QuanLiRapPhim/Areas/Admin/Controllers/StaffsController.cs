@@ -49,18 +49,25 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
         public JsonResult DeleteStaff(int? id)
         {
-            Staff staff = new Staff();
-            staff = _context.Staffs.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
-            if (staff == null)
+            try
             {
+                Staff staff = new Staff();
+                staff = _context.Staffs.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
+                if (staff == null)
+                {
 
-                return Json("Fail");
+                    return Json("Fail");
+                }
+                staff.IsDelete = true;
+                _context.Update(staff);
+                _context.SaveChangesAsync();
+                Message = "Successfully deleted Staff";
+                return Json("Success");
+            }catch(Exception err)
+            {
+                Message = "Delete Fail Staff";
+                return Json("");
             }
-            staff.IsDelete = true;
-            _context.Update(staff);
-            _context.SaveChangesAsync();
-            Message = "Successfully deleted Staff";
-            return Json("Success");
         }
         [TempData]
         public string Message { get; set; }
@@ -80,16 +87,16 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     itam++;
 
                 }
+                Message = "Successfully deleted " + itam + " Staff";
+                _context.SaveChangesAsync();
+                return Json("");
             }
             catch (Exception er)
             {
-                Message = "Successfully deleted " + itam + " Staff";
-                _context.SaveChangesAsync();
-                return Json("Successfully deleted " + itam + " Staff");
+                Message = "Deleted fail Staff";
+                return Json("");
             }
-            Message = "Successfully deleted " + itam + " Staff";
-            _context.SaveChangesAsync();
-            return Json("Successfully deleted " + itam + " Staff");
+           
 
 
         }

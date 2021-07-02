@@ -66,18 +66,25 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
         public JsonResult DeleteSevice(int? id)
         {
-            Sevice sevice = new Sevice();
-            sevice = _context.Sevices.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
-            if (sevice == null)
+            try
             {
+                Sevice sevice = new Sevice();
+                sevice = _context.Sevices.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
+                if (sevice == null)
+                {
 
-                return Json("Fail");
+                    return Json("Fail");
+                }
+                sevice.IsDelete = true;
+                _context.Update(sevice);
+                _context.SaveChangesAsync();
+                Message = "Successfully deleted sevice";
+                return Json("");
+            }catch(Exception err)
+            {
+                Message = "Deleted fail sevice";
+                return Json("");
             }
-            sevice.IsDelete = true;
-            _context.Update(sevice);
-            _context.SaveChangesAsync();
-            Message = "Successfully deleted sevice";
-            return Json("Success");
         }
         [TempData]
         public string Message { get; set; }
@@ -97,16 +104,16 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     itam++;
 
                 }
+                Message = "Successfully deleted " + itam + " sevice";
+                _context.SaveChangesAsync();
+                return Json("");
             }
             catch (Exception er)
             {
-                Message = "Successfully deleted " + itam + " sevice";
-                _context.SaveChangesAsync();
-                return Json("Successfully deleted " + itam + " sevice");
+                Message = "Deleted fail sevice";
+                return Json("");
             }
-            Message = "Successfully deleted " + itam + " sevice";
-            _context.SaveChangesAsync();
-            return Json("Successfully deleted " + itam + " sevice");
+            
 
 
         }

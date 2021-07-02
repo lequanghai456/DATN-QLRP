@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using QuanLiRapPhim.Areas.Admin.Models;
 using System;
@@ -12,12 +14,11 @@ namespace QuanLiRapPhim.Areas.Admin.Data
     {
         public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
-
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Seed();            
+            modelBuilder.Seed();       
         }
 
         public DbSet<Bill> Bills { get; set; }

@@ -68,21 +68,27 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
         public JsonResult DeleteRoom(int? id)
         {
-            Room room = new Room();
-            Role role = new Role();
-            room = _context.Rooms.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
-            if (room == null)
+            try
             {
-
+                Room room = new Room();
+                Role role = new Role();
+                room = _context.Rooms.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
+                if (room == null)
+                {
+                    return Json("Fail");
+                }
+                room.IsDelete = true;
+                role = _context.Roles.FirstOrDefault(x => x.Id == room.RoleId);
+                role.IsDelete = true;
+                _context.Update(role);
+                _context.Update(room);
+                _context.SaveChangesAsync();
+                return Json("Success");
+            }
+            catch(Exception err)
+            {
                 return Json("Fail");
             }
-            room.IsDelete = true;
-            role = _context.Roles.FirstOrDefault(x => x.Id == room.RoleId);
-            role.IsDelete = true;
-            _context.Update(role);
-            _context.Update(room);
-            _context.SaveChangesAsync();
-            return Json("Success");
         }
         public JsonResult DeleteRoomList(String Listid)
         {
@@ -102,16 +108,16 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     _context.Update(room);
                     itam++;
                 }
+                Message = "Successfully deleted " + itam + " rooms";
+                _context.SaveChangesAsync();
+                return Json("");
             }
             catch (Exception er)
             {
-                Message = "Successfully deleted " + itam + " rooms";
-                _context.SaveChangesAsync();
-                return Json("Successfully deleted " + itam + " rooms");
+                Message = "Deleted fail " + itam + " rooms";
+                return Json("");
             }
-            Message = "Successfully deleted " + itam + " rooms";
-            _context.SaveChangesAsync();
-            return Json("Successfully deleted " + itam + " rooms");
+           
 
 
         }
