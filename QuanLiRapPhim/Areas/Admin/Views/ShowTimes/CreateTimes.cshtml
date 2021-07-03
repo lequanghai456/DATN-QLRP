@@ -58,8 +58,8 @@
         @{if (User.IsInRole("Admin"))
             {
                 <div class="form-group col-3">
-                    <label asp-for="RoomID" class="control-label"></label>
-                    <select asp-for="RoomID" class="form-control" asp-items="@(new SelectList(ViewBag.ListRooms, "Id", "Name"))"></select>
+                    <label asp-for="RoomId" class="control-label"></label>
+                    <select asp-for="RoomId" class="form-control" asp-items="@(new SelectList(ViewBag.ListRooms, "Id", "Name"))"></select>
                 </div>
             }
         }

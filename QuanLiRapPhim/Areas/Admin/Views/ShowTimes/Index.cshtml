@@ -4,6 +4,16 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+
+<style>
+    .btn{
+        border-radius:5px;
+        margin:1px;
+    }
+    .listbtn{
+        margin-bottom:1px;
+    }
+</style>
 <div id='contentMain' ng-app="App" ng-controller="Ctroller">
     <div class="row">
         <div class="col-12" ng-init="tempdata=@TempData.Peek("Message")">
@@ -19,18 +29,27 @@
                 }
             }
 
-            <h4>Tìm kiếm hoặc chọn ngày để tạo lịch chiếu</h4>
-            <div style="display: flex; justify-content: space-between;">
-                <form id="form" asp-action="CreateTimes" method="get" style="display: flex; justify-content: space-between;">
-                    <div style="display:inline-flex">
+            
+            <div class="row p-2">
+                <form class="col-md-5" id="form" asp-action="CreateTimes" method="get">
+                    <div>
+                        <h4>Tìm kiếm hoặc chọn ngày để tạo lịch chiếu:</h4>
                         <input type="date" ng-change="Search()" name="Date" class="form-control" ng-model="Date" />
                     </div>
+                    <div>
+                        <h4>Phòng: </h4>
+                        <select ng-change="Search()" ng-init="RoomId='-1'" name="Roomid" class="form-control" ng-model="RoomId" 
+                                asp-items="@ViewBag.ListRooms">
+                            <option value="-1" selected>--All--</option>
+                        </select>
+                    </div>
                 </form>
-                <div class="d-flex">
-                    <button class="btn btn-primary" ng-click="formSubmit('#form')">Tạo lịch chiếu</button>
-                    <button class="btn btn-primary" ng-click="resetform()">Làm mới</button>
-                    <button class="btn btn-primary" ng-click="Copy()">Sao chép lịch chiếu</button>
-                    <button class="btn btn-warning" ng-click="deleteShowTimeList()"
+
+                <div class="d-flex justify-content-around h-100 listbtn col-md-7">
+                    <button class="btn btn-outline-primary" ng-click="formSubmit('#form')">Tạo lịch chiếu</button>
+                    <button class="btn btn-outline-secondary" ng-click="resetform()">Làm mới</button>
+                    <button class="btn btn-outline-info" ng-click="Copy()">Sao chép lịch chiếu</button>
+                    <button class="btn btn-danger" ng-click="deleteShowTimeList()"
                             data-toggle="modal" data-target="#myModal">
                         Xóa lịch chiếu dã chọn
                     </button>
@@ -50,16 +69,15 @@
 
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="row modal-header">
-                    <h4 class="col-3 modal-title">Notification</h4>
-                    <div class="col-5"></div>
-                    <button type="button" class="col-3 close" ng-click="reloadData(true)"
+                <div class="modal-header d-flex justify-content-between">
+                    <h4>Thông báo</h4>
+                    <button type="button" class="d-inline close"
                             data-dismiss="modal">
                         &times;
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h2 class="alert alert-success">{{notification}}</h2>
+                    <h2 class="{{notification.error?'alert alert-danger':'alert alert-success'}}">{{notification.title}}</h2>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" ng-click="reloadData(true)" data-dismiss="modal">Close</button>
@@ -73,18 +91,31 @@
 
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="row modal-header">
-                    <h4 class="col-3 modal-title">Nhập ngày bạn muôn sao chép tới</h4>
-                    <div class="col-5"></div>
-                    <button type="button" class="col-3 close"
+                <div class="modal-header d-flex justify-content-between">
+                    <h4 >Nhập ngày bạn muôn sao chép tới</h4>
+                    <button type="button" class="d-inline close"
                             data-dismiss="modal">
                         &times;
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form asp-action="CoppyShowTimes" id="CopyShowTimes">
-                        <input type="date" ng-model="Date" name="from" />
-                        <input type="date" ng-model="to" name="to" />
+                    <form asp-action="CoppyShowTimes" class="row" id="CopyShowTimes">
+                        <div class="form-group col-6">
+                            <label>Ngày copy:</label>
+                            <input type="date" class="form-control" ng-model="Date" name="from" />
+                            <select name="idFrom" class="form-control" ng-model="RoomId"
+                                    asp-items="@ViewBag.ListRooms">
+                            </select>
+
+                        </div>
+                        <div class="form-group col-6">
+                            <label>Ngày đến:</label>
+                            <input type="date" class="form-control" ng-model="to" name="to" />
+                            <select name="idTo" ng-model="idTo" class="form-control"
+                                    asp-items="@ViewBag.ListRooms">
+                            </select>
+                        </div>
+                        
                     </form>
                 </div>
                 <div class="modal-footer">
