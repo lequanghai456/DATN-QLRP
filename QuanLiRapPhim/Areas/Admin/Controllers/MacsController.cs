@@ -47,7 +47,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 _context.Add(mac);
                 await _context.SaveChangesAsync();
-                Message = "Successfully create mac";
+                Message = "Tạo mac thành công";
                 return RedirectToAction(nameof(Index));
             }
             return View(mac);
@@ -71,7 +71,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 {
                     _context.Update(mac);
                     await _context.SaveChangesAsync();
-                    Message = "Successfully update mac";
+                    Message = "Cập nhật mac thành công";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -115,19 +115,17 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 mac.IsDelete = true;
                 _context.Update(mac);
                 _context.SaveChangesAsync();
-                Message = "Successfully deleted mac";
-                return Json("Success");
+                return Json("Xóa mac thành công");
             }catch(Exception err)
             {
-                Message = "Deleted fail mac";
-                return Json("");
+                
+                return Json("Xóa mac thất bại");
             }
         }
         [TempData]
         public string Message { get; set; }
         public JsonResult DeleteMacList(String Listid)
         {
-            int itam = 0;
             try
             {
                 String[] List = Listid.Split(',');
@@ -137,17 +135,16 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     mac = _context.Macs.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
                     mac.IsDelete = true;
                     _context.Update(mac);
-                    itam++;
 
                 }
-                Message = "Successfully deleted " + itam + " mac";
+               
                 _context.SaveChangesAsync();
-                return Json("");
+                return Json("Xóa mac thành công");
             }
             catch (Exception er)
             {
-                Message = "Delete fail mac";
-                return Json("");
+
+                return Json("Xóa mac thất bại");
             }
            
 

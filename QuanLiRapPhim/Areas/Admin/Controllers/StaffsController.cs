@@ -61,19 +61,17 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 staff.IsDelete = true;
                 _context.Update(staff);
                 _context.SaveChangesAsync();
-                Message = "Successfully deleted Staff";
-                return Json("Success");
+                return Json("Xóa nhân viên thành công");
             }catch(Exception err)
             {
-                Message = "Delete Fail Staff";
-                return Json("");
+                
+                return Json("Xóa nhân viên thất bại");
             }
         }
         [TempData]
         public string Message { get; set; }
         public JsonResult DeleteStaffList(String Listid)
         {
-            int itam = 0;
             try
             {
 
@@ -84,17 +82,16 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     staff = _context.Staffs.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
                     staff.IsDelete = true;
                     _context.Update(staff);
-                    itam++;
+                
 
                 }
-                Message = "Successfully deleted " + itam + " Staff";
                 _context.SaveChangesAsync();
-                return Json("");
+                return Json("Xóa nhân viên thành công");
             }
-            catch (Exception er)
+            catch (Exception err)
             {
-                Message = "Deleted fail Staff";
-                return Json("");
+         
+                return Json("Xóa nhân viên thất bại");
             }
            
 
