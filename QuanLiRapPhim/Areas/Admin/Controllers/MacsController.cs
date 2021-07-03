@@ -103,18 +103,25 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
         public JsonResult DeleteMac(int? id)
         {
-            Mac mac = new Mac();
-            mac = _context.Macs.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
-            if (mac == null)
+            try
             {
+                Mac mac = new Mac();
+                mac = _context.Macs.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
+                if (mac == null)
+                {
 
-                return Json("Fail");
+                    return Json("Fail");
+                }
+                mac.IsDelete = true;
+                _context.Update(mac);
+                _context.SaveChangesAsync();
+                Message = "Successfully deleted mac";
+                return Json("Success");
+            }catch(Exception err)
+            {
+                Message = "Deleted fail mac";
+                return Json("");
             }
-            mac.IsDelete = true;
-            _context.Update(mac);
-            _context.SaveChangesAsync();
-            Message = "Successfully deleted mac";
-            return Json("Success");
         }
         [TempData]
         public string Message { get; set; }
@@ -123,7 +130,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             int itam = 0;
             try
             {
-
                 String[] List = Listid.Split(',');
                 Mac mac = new Mac();
                 foreach (String id in List)
@@ -134,16 +140,16 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     itam++;
 
                 }
+                Message = "Successfully deleted " + itam + " mac";
+                _context.SaveChangesAsync();
+                return Json("");
             }
             catch (Exception er)
             {
-                Message = "Successfully deleted " + itam + " mac";
-                _context.SaveChangesAsync();
-                return Json("Successfully deleted " + itam + " mac");
+                Message = "Delete fail mac";
+                return Json("");
             }
-            Message = "Successfully deleted " + itam + " mac";
-            _context.SaveChangesAsync();
-            return Json("Successfully deleted " + itam + " mac");
+           
 
 
         }

@@ -32,20 +32,22 @@ namespace QuanLiRapPhim.Controllers
             var Message = "Fail";
             try
             {
-                ViewBag.Message = "Admin already registered";
-                User user = await StaffMgr.FindByNameAsync("User1");
-                if (user == null)
-                {
-                    user = new User();
-                    user.UserName = "User1";
-                    user.FullName = "Hồ Gia Bảo";
-                    user.PasswordHash = "abc1234";
-                    IdentityResult result =  await StaffMgr.CreateAsync(user, user.PasswordHash);
-                    if (result.Succeeded)
-                    {
-                        return Json(Message="Succeeded");
-                    }
-                }
+                //ViewBag.Message = "Admin already registered";
+                //User user = await StaffMgr.FindByNameAsync("User1");
+                //if (user == null)
+                //{
+                //    user = new User();
+                //    user.UserName = "User1";
+                //    user.FullName = "Hồ Gia Bảo";
+                //    user.PasswordHash = "abc1234";
+                //    IdentityResult result = await StaffMgr.CreateAsync(user, user.PasswordHash);
+                //    if (result.Succeeded)
+                //    {
+                //        return Json(Message = "Succeeded");
+                //    }
+                //}
+                User user = await StaffMgr.FindByNameAsync("haile123");
+                IdentityResult result = await StaffMgr.ChangePasswordAsync(user, "abc123", "abc1234");
                 return Json(Message);
 
             }
@@ -59,10 +61,15 @@ namespace QuanLiRapPhim.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(User obj)
         {
-            var result = await SignInMgr.PasswordSignInAsync(obj.UserName, obj.PasswordHash, false, false);
-            if (result.Succeeded)
+            User user = new User();
+            user = await StaffMgr.FindByNameAsync(obj.UserName);
+            if (user != null && user.ConfirmEmail)
             {
-                return RedirectToAction("Index","home");
+                var result = await SignInMgr.PasswordSignInAsync(obj.UserName, obj.PasswordHash, false, false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "home");
+                }
             }
             return RedirectToAction("Index", "home");
         }
@@ -72,6 +79,6 @@ namespace QuanLiRapPhim.Controllers
             await SignInMgr.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-
+        
     }
 }

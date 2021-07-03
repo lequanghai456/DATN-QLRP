@@ -102,18 +102,25 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
         public JsonResult DeleteCategories(int? id)
         {
-            Category category = new Category();
-            category = _context.Categories.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
-            if (category == null)
+            try
             {
+                Category category = new Category();
+                category = _context.Categories.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
+                if (category == null)
+                {
 
-                return Json("Fail");
+                    return Json("Fail");
+                }
+                category.IsDelete = true;
+                _context.Update(category);
+                _context.SaveChangesAsync();
+                Message = "Successfully deleted Categories";
+                return Json("");
+            }catch(Exception err)
+            {
+                Message = "Delete fail Categories";
+                return Json("");
             }
-            category.IsDelete = true;
-            _context.Update(category);
-            _context.SaveChangesAsync();
-            Message = "Successfully deleted Categories";
-            return Json("Success");
         }
         [TempData]
         public string Message { get; set; }
@@ -131,18 +138,17 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     category.IsDelete = true;
                     _context.Update(category);
                     itam++;
-
                 }
+                Message = "Successfully deleted " + itam + " Categories";
+                _context.SaveChangesAsync();
+                return Json("");
             }
             catch (Exception er)
             {
-                Message = "Successfully deleted " + itam + " Categories";
-                _context.SaveChangesAsync();
-                return Json("Successfully deleted " + itam + " Categories");
+                Message = "Delete failed Categories";
+                return Json("");
             }
-            Message = "Successfully deleted " + itam + " Categories";
-            _context.SaveChangesAsync();
-            return Json("Successfully deleted " + itam + " Categories");
+           
 
 
         }

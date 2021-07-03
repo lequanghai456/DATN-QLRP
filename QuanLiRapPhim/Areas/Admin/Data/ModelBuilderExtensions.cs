@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using QuanLiRapPhim.Areas.Admin.Models;
@@ -13,24 +14,27 @@ namespace QuanLiRapPhim.Areas.Admin.Data
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Role>().HasData(
-            //     new Role { Id = 1, Name = "admin" ,NormalizedName="ADMIN" },
-            //     new Role { Id = 2, Name = "manager movie", NormalizedName="MANAGER MOVIE" },
-            //     new Role { Id = 3, Name = "staff", NormalizedName="STAFF" }
-            // ); 
-            //modelBuilder.Entity<Staff>().HasData(
-            //    new Staff
-            //    {
-            //        Id = 1,
-            //        FullName = "Hồ Gia Bảo",
-            //        UserName = "admin",
-            //        NormalizedUserName="ADMIN",
-            //        PasswordHash = "AQAAAAEAACcQAAAAEF9u1bOqWI0jVx9W90CBKSC4tesC72Ddrk3XnwUMBXBIZ5JdeuqgIPGi0UHCQxIUXQ==",
-            //        Email = "0306181100@caothang.edu.vn",
-            //        RoleId = 1,
-            //        Img = "admin.img"
-            //    }
-            //);
+            var passwordHasher = new PasswordHasher();
+            modelBuilder.Entity<Role>().HasData(
+                 new Role { Id = 1, Name = "admin", NormalizedName = "ADMIN" },
+                 new Role { Id = 2, Name = "manager movie", NormalizedName = "MANAGER MOVIE" },
+                 new Role { Id = 3, Name = "staff", NormalizedName = "STAFF" }
+             );
+            modelBuilder.Entity<Staff>().HasData(
+                 
+                new Staff
+                {
+                    Id = 1,
+                    FullName = "Hồ Gia Bảo",
+                    UserName = "admin",
+                    NormalizedUserName = "admin",
+                    PasswordHash = passwordHasher.HashPassword("abc123"),
+                    Email = "0306181100@caothang.edu.vn",
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    RoleId = 1,
+                    Img = "admin.img"
+                }
+            );
             modelBuilder.Entity<Mac>().HasData(
                 new Mac
                 {

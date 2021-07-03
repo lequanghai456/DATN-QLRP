@@ -19,6 +19,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public virtual Role Role { get; set; }
         public virtual ICollection<ShowTime> LstShowTime { get; set; }
         public virtual ICollection<Device> Devices { get; set; }
+        public virtual ICollection<Seat> Seats { get; set; }
         public bool IsDelete { get; set; }
 
     }
