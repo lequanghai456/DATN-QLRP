@@ -82,7 +82,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 role.IsDelete = true;
                 _context.Update(role);
                 _context.Update(room);
-                room.Seats.Clear();
+                room.Seats.All(x => x.IsDelete = true);
                 _context.SaveChangesAsync();
                 return Json("Xóa phòng thành công");
             }
@@ -105,7 +105,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     room.IsDelete = true;
                     role = _context.Roles.FirstOrDefault(x => x.Id == room.RoleId);
                     role.IsDelete = true;
-                    room.Seats.Clear();
+                    room.Seats.All(x => x.IsDelete = true);
                     _context.Update(role);
                     _context.Update(room);
 
@@ -177,12 +177,11 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 try
                 {
-                    
-                    
                     _context.Update(room);
                     room = _context.Rooms.Include(x => x.Seats).FirstOrDefault(x => x.Id == id);
-                    room.Seats.Clear();
+                    //room.Seats.Clear();
                     var seats = new List<Seat>();
+                    room.Seats.All(x => x.IsDelete = true);
                     for (int j = 0; j < room.Row; j++)
                     {
                         for (int i = 0; i < room.Col; i++)
@@ -190,8 +189,17 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                             Seat seat = new Seat();
                             seat.X = char.ConvertFromUtf32(65 + j);
                             seat.Y = i;
-                            seat.Room = room;
-                            _context.Add(seat);
+                            Seat seat1 = _context.Seats.Include(a => a.Room).FirstOrDefault(x => x.RoomId == id && x.X == seat.X && x.Y == seat.Y);
+                            if (seat1 == null)
+                            {
+                                seat.Room = room;
+                                _context.Add(seat);
+                            }
+                            else
+                            {
+                                seat1.IsDelete = false;
+                                _context.Update(seat1);
+                            }
                         }
                     }
                     await _context.SaveChangesAsync();
