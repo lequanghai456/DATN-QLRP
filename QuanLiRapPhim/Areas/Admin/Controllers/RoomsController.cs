@@ -72,27 +72,28 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 Room room = new Room();
                 Role role = new Role();
-                room = _context.Rooms.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
+                room = _context.Rooms.Include(x => x.Seats).FirstOrDefault(x => x.Id == id && x.IsDelete == false);
                 if (room == null)
                 {
-                    return Json("Fail");
+                    return Json("Xóa phòng thất bại");
                 }
                 room.IsDelete = true;
                 role = _context.Roles.FirstOrDefault(x => x.Id == room.RoleId);
                 role.IsDelete = true;
                 _context.Update(role);
                 _context.Update(room);
+                room.Seats.All(x => x.IsDelete = true);
                 _context.SaveChangesAsync();
-                return Json("Success");
+                return Json("Xóa phòng thành công");
             }
             catch(Exception err)
             {
-                return Json("Fail");
+                
+                return Json("Xóa phòng thất bại");
             }
         }
         public JsonResult DeleteRoomList(String Listid)
         {
-            int itam = 0;
             try
             {
                 String[] List = Listid.Split(',');
@@ -100,22 +101,22 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 Role role = new Role();
                 foreach (String id in List)
                 {
-                    room = _context.Rooms.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
+                    room = _context.Rooms.Include(x=>x.Seats).FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
                     room.IsDelete = true;
                     role = _context.Roles.FirstOrDefault(x => x.Id == room.RoleId);
                     role.IsDelete = true;
+                    room.Seats.All(x => x.IsDelete = true);
                     _context.Update(role);
                     _context.Update(room);
-                    itam++;
+
+                    
                 }
-                Message = "Successfully deleted " + itam + " rooms";
                 _context.SaveChangesAsync();
-                return Json("");
+                return Json("Xóa phòng thành công");
             }
-            catch (Exception er)
+            catch (Exception err)
             {
-                Message = "Deleted fail " + itam + " rooms";
-                return Json("");
+                return Json("Xóa thất bại");
             }
            
 
@@ -151,7 +152,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     }
                 }
                 await _context.SaveChangesAsync();
-                Message = "Successfully create rooms";
+                Message = "Tạo phòng thành công";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RoleId"] = new SelectList(_context.Staffs, "Id", "RoleId", room.Role.Name);
@@ -176,9 +177,34 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 try
                 {
-                   
                     _context.Update(room);
+                    room = _context.Rooms.Include(x => x.Seats).FirstOrDefault(x => x.Id == id);
+                    //room.Seats.Clear();
+                    var seats = new List<Seat>();
+                    room.Seats.All(x => x.IsDelete = true);
+                    for (int j = 0; j < room.Row; j++)
+                    {
+                        for (int i = 0; i < room.Col; i++)
+                        {
+                            Seat seat = new Seat();
+                            seat.X = char.ConvertFromUtf32(65 + j);
+                            seat.Y = i;
+                            Seat seat1 = _context.Seats.Include(a => a.Room).FirstOrDefault(x => x.RoomId == id && x.X == seat.X && x.Y == seat.Y);
+                            if (seat1 == null)
+                            {
+                                seat.Room = room;
+                                _context.Add(seat);
+                            }
+                            else
+                            {
+                                seat1.IsDelete = false;
+                                _context.Update(seat1);
+                            }
+                        }
+                    }
                     await _context.SaveChangesAsync();
+                    
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -191,7 +217,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                Message = "Successfully update rooms";
+                Message = "Cập nhật phòng thành công";
                 return RedirectToAction(nameof(Index));
             }
             

@@ -46,7 +46,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 _context.Add(sevice);
                 await _context.SaveChangesAsync();
-                Message = "Successfully create sevice";
+                Message = "Tạo dịch vụ thành công";
                 return RedirectToAction(nameof(Index));
             }
             return View(sevice);
@@ -78,12 +78,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 sevice.IsDelete = true;
                 _context.Update(sevice);
                 _context.SaveChangesAsync();
-                Message = "Successfully deleted sevice";
-                return Json("");
+                
+                return Json("Xóa dịch vụ thành công");
             }catch(Exception err)
             {
-                Message = "Deleted fail sevice";
-                return Json("");
+                
+                return Json("Xóa dịch vụ thất bại");
             }
         }
         [TempData]
@@ -104,34 +104,20 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     itam++;
 
                 }
-                Message = "Successfully deleted " + itam + " sevice";
+               
                 _context.SaveChangesAsync();
-                return Json("");
+                return Json("Xóa dịch vụ thành công");
             }
             catch (Exception er)
             {
-                Message = "Deleted fail sevice";
-                return Json("");
+                
+                return Json("Xóa dịch vụ thất bại");
             }
             
 
 
         }
-        // GET: Admin/Sevices/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var sevice = await _context.Sevices.FindAsync(id);
-            if (sevice == null)
-            {
-                return NotFound();
-            }
-            return View(sevice);
-        }
+      
 
         // POST: Admin/Sevices/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -149,6 +135,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 try
                 {
+                    Message = "Cập nhật dịch vụ thành công";
                     _context.Update(sevice);
                     await _context.SaveChangesAsync();
                 }

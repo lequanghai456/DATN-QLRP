@@ -58,7 +58,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
-                Message = "Successfully create rooms";
+                Message = "Tạo thể loại thành công";
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -95,7 +95,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                Message = "Successfully update rooms";
+                Message = "Cập nhật thể loại thành công ";
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -113,20 +113,19 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 }
                 category.IsDelete = true;
                 _context.Update(category);
-                _context.SaveChangesAsync();
-                Message = "Successfully deleted Categories";
-                return Json("");
+                _context.SaveChangesAsync();        
+                return Json("Xóa thể loại thành công");
             }catch(Exception err)
             {
-                Message = "Delete fail Categories";
-                return Json("");
+               
+                return Json("Xóa thể loại thất bại");
             }
         }
         [TempData]
         public string Message { get; set; }
         public JsonResult DeleteCategoriesAll(String Listid)
         {
-            int itam = 0;
+            
             try
             {
 
@@ -137,16 +136,15 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     category = _context.Categories.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
                     category.IsDelete = true;
                     _context.Update(category);
-                    itam++;
                 }
-                Message = "Successfully deleted " + itam + " Categories";
+                
                 _context.SaveChangesAsync();
-                return Json("");
+                return Json("Xóa thành công thể loại");
             }
             catch (Exception er)
             {
-                Message = "Delete failed Categories";
-                return Json("");
+                
+                return Json("Xóa thể loại thất bại");
             }
            
 
