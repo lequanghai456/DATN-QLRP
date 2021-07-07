@@ -11,13 +11,18 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Display(Name = "Tên phim")]
+        [Required(ErrorMessage = "Không được phép bỏ trống")]
         public string Title { get; set; }
         public int? MacId { get; set; }
+        [Display(Name = "Giới thiệu")]
         public String Trailer { get; set; }
+        [Display(Name = "Ảnh phim")]
         public String Poster { get; set; }
+        [Display(Name = "Mô tả")]
         public String Describe { get; set; }
         public int Status { get; set; }
+        [Display(Name = "Thời lượng")]
         public int Time { get; set; }
         public int TotalRating { get; set; }
         public int TotalReviewers { get; set; }

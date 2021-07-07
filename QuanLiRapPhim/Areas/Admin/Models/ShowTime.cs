@@ -11,12 +11,15 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Ngày chiếu")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateTime { get; set; }
+        [Display(Name = "Giá")]
         public Decimal Price { get; set; }
         [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:HH:mm}")]
+        [Display(Name = "Thời gian bắt đầu")]
         public DateTime startTime { get; set; }
         public int? MovieId { get; set; }
         public int? RoomId { get; set; }

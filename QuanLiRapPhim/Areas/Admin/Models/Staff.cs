@@ -11,11 +11,16 @@ namespace QuanLiRapPhim.Areas.Admin.Models
 {
     public class Staff : IdentityUser<int>
     {
+        [Display(Name = "Tên đầy đủ")]
         [Column(TypeName = "nvarchar(255)")]
+        [Required(ErrorMessage = "Không được phép bỏ trống")]
         public String FullName { get; set; }
+        [Display(Name = "Ngày sinh")]
         [DataType(DataType.Date)]
+        [Required(ErrorMessage = "Không được phép bỏ trống")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateOfBirth { get; set; }
+        [Display(Name = "Ảnh")]
         [Column(TypeName = "nvarchar(255)")]
         public String Img { get; set; }
         public  int? RoleId { get; set; }

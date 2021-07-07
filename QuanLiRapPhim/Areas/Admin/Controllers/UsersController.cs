@@ -28,6 +28,7 @@ namespace QuanLiRapPhim.Areas.Admin.Views
         public class JTableModelCustom : JTableModel
         {
             public string FullName { get; set; }
+            public string Email { get; set; }
         }
         // GET: Admin/Users
         public async Task<IActionResult> Index(int? id)
@@ -45,7 +46,7 @@ namespace QuanLiRapPhim.Areas.Admin.Views
         public async Task<String> JtableUserModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
-            var query = _context.Users.Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.FullName) || x.FullName.Contains(jTablePara.FullName)));
+            var query = _context.Users.Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.FullName) || x.FullName.Contains(jTablePara.FullName)) && (String.IsNullOrEmpty(jTablePara.Email) || x.Email.Contains(jTablePara.Email)));
             int count = query.Count();
             var data = query.AsQueryable()
                 .Skip(intBegin)

@@ -10,7 +10,9 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Ngày lập")]
         public DateTime Date { get; set; }
+        [Display(Name = "Tổng giá")]
         public Decimal TotalPrice { get; set; }
         public int UserId { get; set; }
         [ForeignKey("UserId")]

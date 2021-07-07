@@ -60,13 +60,13 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('FullName', 'FullName').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('FullName', 'Tên đầy dủ').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('UserName', 'UserName').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('UserName', 'Tài khoản').withClass('Center').renderWith(function (data, type) {
             return data;
         })); 
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Img', 'Img').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Img', 'Ảnh').withClass('Center').renderWith(function (data, type) {
             
             return '<img id="imgPre" src="../admin/img/' + data + '" alt="Alternate Text" class="img-thumbnail" />';
         }));

@@ -5,7 +5,12 @@ var app = angular.module('App', ['datatables', 'ngRoute']);
 
 app.factory('dataservice', function ($http) {
     return {
-       
+        deleteMovie: function (data, callback) {
+            $http.post('/Admin/Movies/DeleteMovie?id=' + data).then(callback);
+        },
+        deleteMovieCheckbox: function (data, callback) {
+            $http.post('/Admin/Movies/DeleteMovieList?Listid=' + data).then(callback);
+        },
     }
 });
 
@@ -74,10 +79,10 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Title', 'Title').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Title', 'Tên phim').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('category', 'Category').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('category', 'Thể loại').withClass('Center').renderWith(function (data, type) {
             var category = "";
             angular.forEach(JSON.parse(data), function (value, key) {
                 category += value.Title + "/";
@@ -87,10 +92,10 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('mac', 'Mac').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Describe', 'Describe').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Describe', 'Mô tả').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Poster', 'Poster').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Poster', 'Ảnh').withClass('Center').renderWith(function (data, type) {
             return '<img id="imgPre" src="/admin/img/Poster/' + data + '" alt="Alternate Text" style="width:240px; height:250px;"/>';
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
@@ -116,12 +121,12 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         var flag = true;
         if (id != null) {
             if (id.value == idDelete) {
-                $scope.notification = "Cannot delete object being edited";
+                $scope.notification = "Không thể xóa khi đang cập nhật";
                 flag = false;
             }
         }
         if (flag) {
-            dataservice.deleteCategory(idDelete, function (rs) {
+            dataservice.deleteMovie(idDelete, function (rs) {
                 rs = rs.data;
                 $scope.notification = rs;
                 reloadData(true);
@@ -145,15 +150,15 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
             angular.element($event.currentTarget).removeAttr("checked");
     }
-    $scope.deleteCategoryList = function () {
+    $scope.deleteMovieList = function () {
         if (id != null) {
-            $scope.notification = "This feature cannot be used while editing";
+            $scope.notification = "Không thể xóa khi đang cập nhật";
         } else {
             $("input:checkbox[name=type]:checked").each(function () {
                 $scope.selected.push($(this).val());
             });
             console.log($scope.selected);
-            dataservice.deleteCategoryCheckbox($scope.selected, function (rs) {
+            dataservice.deleteMovieCheckbox($scope.selected, function (rs) {
 
                 rs = rs.data;
                 $scope.notification = rs;

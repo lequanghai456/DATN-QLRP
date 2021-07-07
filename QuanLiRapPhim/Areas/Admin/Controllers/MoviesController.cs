@@ -73,53 +73,57 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // POST: Admin/Movies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [TempData]
-        public string MessageTrailer { get; set; }
-        [TempData]
-        public string MessagePoster { get; set; }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Movie movie, int[] Lstcategories, IFormFile ful,IFormFile video)
+        public async Task<IActionResult> Create(Movie movie, int[] Lstcategories, IFormFile ful, IFormFile video)
         {
-            if (ModelState.IsValid)
+            try
             {
-                movie.Poster = "Noimage.png";
-                foreach (int category in Lstcategories)
+                if (ModelState.IsValid)
                 {
-                    movie.Lstcategories.Add(_context.Categories.FirstOrDefault(x => x.Id == category));
-                }
-                 _context.Add(movie);
-                await _context.SaveChangesAsync();
-                if (ful != null)
-                {
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Poster",
-                       movie.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
-                    using (var stream = new FileStream(path, FileMode.Create))
+                    movie.Poster = "Noimage.png";
+                    foreach (int category in Lstcategories)
                     {
-                        await ful.CopyToAsync(stream);
-
+                        movie.Lstcategories.Add(_context.Categories.FirstOrDefault(x => x.Id == category));
                     }
-                    movie.Poster = movie.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                }
-                if (video != null)
-                {
-                    var pathVideo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Trailer",
-                       movie.Id + "." + video.FileName.Split(".")[video.FileName.Split(".").Length - 1]);
-
-                    using (var stream = new FileStream(pathVideo, FileMode.Create))
+                    _context.Add(movie);
+                    await _context.SaveChangesAsync();
+                    if (ful != null)
                     {
-                        await video.CopyToAsync(stream);
-                    }
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Poster",
+                           movie.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await ful.CopyToAsync(stream);
 
-                    movie.Trailer = movie.Id + "." + video.FileName.Split(".")[video.FileName.Split(".").Length - 1];
+                        }
+                        movie.Poster = movie.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
+                    }
+                    if (video != null)
+                    {
+                        var pathVideo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Trailer",
+                           movie.Id + "." + video.FileName.Split(".")[video.FileName.Split(".").Length - 1]);
+
+                        using (var stream = new FileStream(pathVideo, FileMode.Create))
+                        {
+                            await video.CopyToAsync(stream);
+                        }
+
+                        movie.Trailer = movie.Id + "." + video.FileName.Split(".")[video.FileName.Split(".").Length - 1];
+                    }
+                    _context.Update(movie);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                _context.Update(movie);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                ViewData["MacId"] = new SelectList(_context.Macs, "Id", "Id", movie.MacId);
+                return View(movie);
             }
-           
-            ViewData["MacId"] = new SelectList(_context.Macs, "Id", "Id", movie.MacId);
-            return View(movie);
+            catch (Exception err)
+            {
+                return View(movie);
+            }
         }
 
 
@@ -192,8 +196,61 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             ViewData["MacId"] = new SelectList(_context.Macs, "Id", "Id", movie.MacId);
             return View(movie);
         }
-        
-        
+
+        public JsonResult DeleteMovie(int? id)
+        {
+            try
+            {
+                Movie movie = new Movie();
+                movie = _context.Movies.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
+                if (movie == null)
+                {
+
+                    return Json("Fail");
+                }
+                movie.IsDelete = true;
+                _context.Update(movie);
+                if(_context.ShowTimes.FirstOrDefault(x=>x.MovieId == id && x.DateTime.Date.CompareTo(DateTime.Now.Date) > 0) != null)
+                {
+                    return Json("Phim này vẫn còn lịch chiếu");
+                }
+                _context.SaveChangesAsync();
+                return Json("Xóa phim thành công");
+            }
+            catch (Exception err)
+            {
+
+                return Json("Xóa phim thất bại");
+            }
+        }
+        [TempData]
+        public string Message { get; set; }
+        public JsonResult DeleteMovieList(String Listid)
+        {
+            try
+            {
+                String[] List = Listid.Split(',');
+                Movie movie = new Movie();
+                foreach (String id in List)
+                {
+                    movie = _context.Movies.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
+                    movie.IsDelete = true;
+                    _context.Update(movie);
+
+                }
+
+                _context.SaveChangesAsync();
+                return Json("Xóa phim thành công");
+            }
+            catch (Exception er)
+            {
+
+                return Json("Xóa phim thất bại");
+            }
+
+
+
+        }
         private bool MovieExists(int id)
         {
             return _context.Movies.Any(e => e.Id == id);

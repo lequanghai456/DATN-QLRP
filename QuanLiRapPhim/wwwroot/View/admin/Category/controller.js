@@ -37,7 +37,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 }
                 , type: 'GET'
                 , data: function (d) {
-                    d.Title = $scope.valueName;
+                    d.Title = $scope.valueTitle;
                 }
                
                 , dataType: "json"
@@ -76,7 +76,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Title', 'Title').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Title', 'Tên thể loại').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
@@ -102,7 +102,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         var flag = true;
         if (id != null) {
             if (id.value == idDelete) {
-                $scope.notification = "Cannot delete object being edited";
+                $scope.notification = "Không thể xóa khi đang sử dụng chức năng edit";
                 flag = false;
             }
         }

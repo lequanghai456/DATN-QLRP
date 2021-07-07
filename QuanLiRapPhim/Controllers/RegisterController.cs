@@ -45,6 +45,7 @@ namespace QuanLiRapPhim.Controllers
             {
                 return View(users);
             }
+            ViewData["MessChangePassword"] = "Liên kết đã hết hiệu lực";
             MessChangePassword = "Liên kết đã hết hiệu lực";
             return View(users);
         }
@@ -104,16 +105,20 @@ namespace QuanLiRapPhim.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(string Email)
         {
-            
-            if (ModelState.IsValid)
+            User user = new User();
+            user = await StaffMgr.FindByEmailAsync(Email);
+            if (user != null)
             {
-                User user = new User();
-                user = await StaffMgr.FindByEmailAsync(Email);
-                SendEmailForgotPassword(Email, user.UserName, user.SecurityStamp);
-                ViewData["MessForgotPassword"] = "Vui lòng vào Email để thực hiện bước kế tiếp";
-                return View("ForgotPassword");
+                if (SendEmailForgotPassword(Email, user.UserName, user.SecurityStamp))
+                {
+
+
+                    ViewData["MessForgotPassword"] = "Vui lòng vào Email để thực hiện bước kế tiếp";
+                    return View("ForgotPassword");
+                }
             }
-                return View();
+            ViewData["MessForgotPassword"] = "Có lỗi xảy ra trong quá trình gửi email";
+            return View();
         }
         public async Task<IActionResult> Register(Users users)
         {
@@ -130,20 +135,19 @@ namespace QuanLiRapPhim.Controllers
                     user.UserName = users.UserName;
                     user.PasswordHash = users.PasswordHash;
                     IdentityResult result = await StaffMgr.CreateAsync(user, user.PasswordHash);
-                    if (result.Succeeded && SendEmail(user.Email, user.UserName))
+                    if (result.Succeeded && SendEmail(users.Email, users.UserName))
                     {
-                        
-                        Mess = "Đăng kí thành công";
-                        return RedirectToAction("Index");
+                        ViewData["Mess"] = "Tài khoản của bạn đã tạo thành công vui lòng vào Email của bạn để xác nhận tài khoản ";
+                        return View("Index");
                     }
                 }
-                return View();
+                return View("Index");
                 
 
             }
             catch (Exception ex)
             {
-                return View();
+                return View("Index");
             }
             
         }
@@ -180,7 +184,7 @@ namespace QuanLiRapPhim.Controllers
 
         }
         //public JsonResult 
-        public bool SendEmail(String email, string username)
+        public bool SendEmail(string email, string username)
         {
             return Email.SendMailGoogleSmtp("giabao158357@gmail.com", email, "Xác nhận Email cho tài khoản", "Vui lòng bấm vào link để xác nhận Email cho tài khoản https://localhost:44350/Register/confirmEmail?username=" + username).Result
                 ? true
@@ -190,7 +194,7 @@ namespace QuanLiRapPhim.Controllers
         {
             public string FullName { get; set; }
             [Required(ErrorMessage = "Vui lòng nhập Email")]
-            [EmailAddress(ErrorMessage = "Trường Email không phải là một địa chỉ e-mail hợp lệ")]
+            [EmailAddress(ErrorMessage = "Địa chỉ e-mail hợp lệ")]
             [Remote(action: "Verifyemail", controller: "Register", ErrorMessage = "Email đã được sử dụng")]
             public string Email { get; set; }
             [Required(ErrorMessage = "Vui lòng nhập tài khoản")]

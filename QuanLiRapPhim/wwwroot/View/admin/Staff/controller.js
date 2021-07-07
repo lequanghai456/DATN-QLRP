@@ -1,4 +1,5 @@
-﻿var ctxfolderurl = "https://localhost:44350";
+﻿
+var ctxfolderurl = "https://localhost:44350";
 
 var app = angular.module('App', ['datatables', 'ngRoute', 'checklist-model']);
 
@@ -10,10 +11,13 @@ app.factory('dataservice', function ($http) {
         deleteStaffCheckbox: function (data, callback) {
             $http.post('/Admin/Staffs/DeleteStaffList?Listid=' + data).then(callback);
         },
+        getRole: function (callback) {
+            $http.post('/Admin/Staffs/Role').then(callback);
+        },
     }
 });
 
-app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice) {
+app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice,dataservice,) {
     var vm = $scope;
     var id = document.getElementById('idEdit');
     $scope.selected = [];
@@ -22,7 +26,6 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     var LengthPage = 3;
     var itam = LengthPage;
     $scope.toggleOne = toggleOne;
-
     console.log(id);
     $scope.init = function () {
         vm.dtOptions = DTOptionsBuilder.newOptions()
@@ -37,6 +40,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 , type: 'GET'
                 , data: function (d) {
                     d.FullName = $scope.valueName;
+                    d.Role = $scope.valueRole;
                 }
 
                 , dataType: "json"
@@ -75,19 +79,19 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('FullName', 'FullName').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('FullName', 'Tên đầy đủ').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('date', 'DateOfBirth').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('date', 'Ngày sinh').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('UserName', 'UserName').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('UserName', 'Tài khoản').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('RoleName', 'RoleName').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('RoleName', 'Chức vụ').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Img', 'Img').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Img', 'Ảnh').withClass('Center').renderWith(function (data, type) {
 
             return '<img id="imgPre" src="/admin/img/' + data + '" alt="Alternate Text" class="img-thumbnail" />';
         }));
@@ -103,7 +107,18 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         else {
             vm.create = false;
         }
-
+        dataservice.getRole(function (rs) {
+            rs = rs.data;
+            rs.unshift({
+                'id': 0,
+                'name': 'All'
+            }
+            );
+            $scope.dataRole = rs;
+            $scope.valueRole = rs[0].id;
+            console.log($scope.valueRole);
+            
+        });
     }
     $scope.init();
 
@@ -114,7 +129,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         var flag = true;
         if (id != null) {
             if (id.value == idDelete) {
-                $scope.notification = "Cannot delete object being edited";
+                $scope.notification = "Không thể xóa khi đang cập nhật";
                 flag = false;
             }
         }
@@ -145,7 +160,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     }
     $scope.deleteStaffList = function () {
         if (id != null) {
-            $scope.notification = "This feature cannot be used while editing";
+            $scope.notification = "Không thể xóa khi đang cập nhật";
         } else {
             $("input:checkbox[name=type]:checked").each(function () {
                 $scope.selected.push($(this).val());
@@ -162,6 +177,6 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         }
 
     }
-
+    
 
 });

@@ -12,7 +12,9 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         [Key]
         public int Id{get;set;}
         public int? SeviceId{get;set;}
+        [Display(Name = "Số lượng")]
         public int Amount{get;set;}
+        [Display(Name = "Giá")]
         public Decimal UnitPrice{get;set;}
         public int? BillId{get;set;}
         [ForeignKey("BillId")]

@@ -194,6 +194,10 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Views\Shared\Components\" />
+    <Folder Include="Areas\Staff\Controllers\" />
+    <Folder Include="Areas\Staff\Data\" />
+    <Folder Include="Areas\Staff\Models\" />
+    <Folder Include="Areas\Staff\Views\" />
     <Folder Include="wwwroot\admin\img\Trailer\" />
   </ItemGroup>
 

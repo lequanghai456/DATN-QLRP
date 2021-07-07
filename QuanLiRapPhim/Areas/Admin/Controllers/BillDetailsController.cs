@@ -17,7 +17,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         private readonly IdentityContext _context;
         public class JTableModelCustom : JTableModel
         {
-            public Decimal IdBill { get; set; }
+            public int IdBill { get; set; }
            
         }
         public BillDetailsController(IdentityContext context)

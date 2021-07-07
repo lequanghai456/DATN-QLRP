@@ -38,7 +38,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         public async Task<String> JtableCategoryModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
-            var query = _context.Categories.Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Title) || x.Title.Contains(jTablePara.Title)));
+            var query = _context.Categories.Include(x=>x.lstMovie).Where(x => x.IsDelete == false && /*x.lstMovie.All(x=>x.IsDelete == false) && */(String.IsNullOrEmpty(jTablePara.Title) || x.Title.Contains(jTablePara.Title)));
             int count = query.Count();
             var data = query.AsQueryable()
                 .Skip(intBegin)
@@ -105,7 +105,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             try
             {
                 Category category = new Category();
-                category = _context.Categories.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
+                category = _context.Categories.Include(x=>x.lstMovie).FirstOrDefault(x => x.Id == id && x.IsDelete == false);
                 if (category == null)
                 {
 
@@ -113,6 +113,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 }
                 category.IsDelete = true;
                 _context.Update(category);
+                category.lstMovie.All(a => a.Lstcategories.Remove(category));
                 _context.SaveChangesAsync();        
                 return Json("Xóa thể loại thành công");
             }catch(Exception err)
@@ -135,6 +136,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 {
                     category = _context.Categories.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
                     category.IsDelete = true;
+                    category.lstMovie.All(a => a.Lstcategories.Remove(category));
                     _context.Update(category);
                 }
                 

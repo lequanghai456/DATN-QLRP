@@ -11,8 +11,13 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Tên phòng")]
         public String Name{get; set;}
+        [Display(Name = "Số lượng ghế ngang")]
+        [Range(0,15, ErrorMessage = "Số lượng tối thiểu là 0, lớn nhất là 15")]
         public int Row{get; set;}
+        [Display(Name = "Số lượng ghế dọc")]
+        [Range(0, 15, ErrorMessage = "Số lượng tối thiểu là 0, lớn nhất là 15")]
         public int Col{get; set;}
         public int? RoleId { get; set; }
         [ForeignKey("RoleId")]

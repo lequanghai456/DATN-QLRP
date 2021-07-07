@@ -41,10 +41,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
             }
             //Danh sách phòng đã có người quản lí
-            var ListRoom = from a in _context.Staffs
-                         join room in _context.Rooms on a.RoleId equals room.RoleId
-                         select a.RoleId;
-            ViewBag.Role =  _context.Roles.Where(x => x.IsDelete == false && !x.Name.Contains("Admin") && !ListRoom.Contains(x.Id)).ToList();
+            //var ListRoom = from a in _context.Staffs
+            //             join room in _context.Rooms on a.RoleId equals room.RoleId
+            //             select a.RoleId;
+            ViewBag.Role = _context.Roles.Where(x => x.IsDelete == false && !x.Name.Contains("Admin")); /*&& !ListRoom.Contains(x.Id)).ToList();*/
             return View(staff);
         }
         public JsonResult DeleteStaff(int? id)
@@ -100,13 +100,17 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         public class JTableModelCustom : JTableModel
         {
             public string FullName { get; set; }
+            public int Role { get; set; }
         }
-
+        public JsonResult Role()
+        {
+            return Json(_context.Roles.Include(x=>x.Staffs).Where(x=>x.IsDelete==false && x.Id != 1).Select(x=>new {x.Id,x.Name}).ToList());
+        }
         [HttpGet]
         public async Task<String> JtableStaffModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
-            var query = _context.Staffs.Where(x => x.IsDelete == false && x.Id != 1 && x.UserName != User.Identity.Name &&   (String.IsNullOrEmpty(jTablePara.FullName) || x.FullName.Contains(jTablePara.FullName)));
+            var query = _context.Staffs.Where(x => x.IsDelete == false && x.Id != 1 && x.UserName != User.Identity.Name &&   (String.IsNullOrEmpty(jTablePara.FullName) || x.FullName.Contains(jTablePara.FullName)) && (jTablePara.Role ==0 || jTablePara.Role == x.RoleId ));
             int count = query.Count();
             var data = query.AsQueryable().Select(x => new { x.Id, x.Img, x.FullName, x.UserName, date = x.DateOfBirth.ToString("MM/dd/yyyy"), RoleName = x.Role.Name})
                 .Skip(intBegin)

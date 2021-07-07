@@ -112,10 +112,17 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
                     return Json("Fail");
                 }
-                mac.IsDelete = true;
-                _context.Update(mac);
-                _context.SaveChangesAsync();
-                return Json("Xóa mac thành công");
+                if (_context.Movies.FirstOrDefault(x => x.IsDelete == false && x.MacId == mac.Id) == null)
+                {
+                    mac.IsDelete = true;
+                    _context.Update(mac);
+                    _context.SaveChangesAsync();
+                    return Json("Xóa mac thành công");
+                }
+                else
+                {
+                    return Json("Xóa mac thất bại vui lòng xóa phim có chứa mac này");
+                }
             }catch(Exception err)
             {
                 
@@ -128,18 +135,27 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             try
             {
+                bool flag = true;
                 String[] List = Listid.Split(',');
                 Mac mac = new Mac();
                 foreach (String id in List)
                 {
                     mac = _context.Macs.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
+                    if (_context.Movies.FirstOrDefault(x => x.IsDelete == false && x.MacId == mac.Id) != null)
+                    {
+                        flag = false;
+                        break;
+                    }
                     mac.IsDelete = true;
                     _context.Update(mac);
 
                 }
-               
-                _context.SaveChangesAsync();
-                return Json("Xóa mac thành công");
+                if (flag)
+                {
+                    _context.SaveChangesAsync();
+                    return Json("Xóa mac thành công");
+                }
+                return Json("Xóa mac thất bại do vướng khóa ngoại");
             }
             catch (Exception er)
             {
