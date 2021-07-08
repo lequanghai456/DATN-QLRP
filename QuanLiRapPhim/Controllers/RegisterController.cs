@@ -204,7 +204,7 @@ namespace QuanLiRapPhim.Controllers
             public string PasswordHash { get; set; }
             [Compare(otherProperty: "PasswordHash", ErrorMessage = "Mật khẩu không trùng khớp")]
             public string confirmPasswordHash { get; set; }
-            [DisplayName("Chọn ngày")]
+            [DisplayName("Ngày sinh")]
             [DataType(DataType.Date)]
             [Required]
             [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]

@@ -11,33 +11,34 @@
     <form asp-action="" method="post" class="row" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input id="idEdit" type="hidden" />
-        <div class="form-group col-6">
-            <div class="custom-file" style="margin-top: 30px;">
-                <input accept="*.png|*.jpg|*.jpep" type="file" name="ful" class="custom-file-input" id="ful" />
-                <label class="custom-file-label" for="ful">Add Images</label>
+        <div class="form-group col-6" style="text-align:center;">
+            <div class="custom-file" style="margin-top: 30px; width:300px;">
+            <input accept="*.png|*.jpg|*.jpep" type="file" name="ful" class="custom-file-input" id="ful" />
+            <label class="custom-file-label" for="ful" style="text-align:left;"><span><i class="fa fa-camera"></i> Đổi avatar</span></label>
             </div>
-            <img id="imgPre" src="~/images/pro/avatar.png" alt="Alternate Text" style="width:300px; height:300px;" />
+        <img id="imgPre" src="~/images/pro/@(ViewContext.RouteData.Values["id"] == null ? "avatar.png" : ViewData["Img"])" alt="Alternate Text" style="width:300px; height:300px;" />
+           
 
         </div>
         <div class="col-6">
             <div class="form-group">
                 <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" name="FullName" class="form-control" />
+                <input asp-for="FullName" name="FullName" class="form-control" value="@Model.FullName"/>
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control" />
+                <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control"  value="@Model.DateOfBirth.ToString("yyyy-dd-MM")"/>
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" disabled />
+                <input asp-for="UserName" value="@Model.UserName" class="form-control" disabled />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PasswordHash" class="control-label"></label>
-                <input asp-for="PasswordHash" class="form-control" disabled />
+                @*<label asp-for="PasswordHash" class="control-label"></label>
+                <input asp-for="PasswordHash" class="form-control" disabled />*@
                 <button type="button" ng-click="EditPass()">ĐỔI MẬT KHẨU</button>
             </div>
             <div ng-show="EditPassword">
