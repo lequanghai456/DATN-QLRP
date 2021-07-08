@@ -19,12 +19,20 @@ app.factory('dataservice', function ($http) {
         GetMovie: function (callback) {
             $http.get('/moviereview/getmovie').then(callback);
        },
-        GetListShowTime: function (callback) {
-            $http.get('/moviereview/GetListShowTime').then(callback);
+        GetListShowTime: function (id, Date, callback) {
+            $http.get('/moviereview/GetListShowTime?idmovie=' + id + '&date=' + Date).then(callback);
         },
-        GetMovieByName: function (name,callback) {
-            $http.get('/moviereview/GetMovieByName?Name='+name).then(callback);
+        GetMovieByName: function (name, callback) {
+            $http.get('/moviereview/GetMovieByName?Name=' + name).then(callback);
         },
+        GetListShowTimeByMovieAndDay: function (data,callback) {
+            $.ajax({
+                method: Get,
+                url: '/moviereview/GetListShowTimeByMovieAndDay',
+                data: data,
+                success: callback
+            })
+        }
     }
 });
 
@@ -105,6 +113,7 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibM
         }
     }
     $scope.init = function () {
+        $scope.date = "";
         dataservice.GetMovieByName($scope.NameMovie, function (rs) {
             rs= rs.data;
             $scope.model = rs.object;
@@ -114,14 +123,20 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibM
                     return $sce.trustAsHtml(html_code);
                 };
             } else {
-                dataservice.GetListShowTime(function (rs) {
-                    $scope.List = rs.data;
-                });
+                $scope.GetListShowTime("");
                 var total = $scope.model.totalRating == 0 ? 0 : $scope.model.totalRating / $scope.model.totalReviewers;
                 $scope.Rated(total, ".Rated");
             }
         });
 
+    }
+
+    $scope.GetListShowTime = function (date) {
+        dataservice.GetListShowTime($scope.model.id, date, function (rs) {
+            $scope.List = rs.data;
+            console.log(rs.data);
+            $scope.$apply;
+        });
     }
 
     $scope.init();
@@ -131,7 +146,7 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibM
             scope: $scope,
             animation: true,
             backdrop: true,
-            templateUrl: ctxfolderurl + "/showTimePopup.html",
+            templateUrl: ctxfolderurl + "/showTimePopup.htm",
             controller: "Popupmodal",
             size: 'lg',
         });
@@ -169,155 +184,6 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibM
     }
 });
 
-
-app.controller('bookticket', function ($scope, $routeParams,$uibModal,$rootScope) {
-    $scope.seat;
-    $scope.dsghedachon = [];
-    $scope.NameMovie = $routeParams.NameMovie;
-
-    var socket = io.connect('https://my-cinema-qlrp.herokuapp.com/bookticket');
-
-    socket.on('connect', function () {
-        socket.emit('Join room', { idLichChieu: $routeParams.id });
-    });
-    //var socket = io.connect('localhost:3000/bookticket');
-    $scope.init = function () {
-        
-
-        //api lấy ghế đã thanh toán
-        var dsGheDaThanhToan = [1, 2, 5, 3];
-
-        //load những ghế đang được người khác chọn
-        socket.on('load_ghe_da_chon', function (data) {
-            
-            $scope.dsghedachon = [];
-            if (data != null) {
-                data.forEach(function (seat, ind) {
-                    if (seat.idGhe != -1) {
-                        $scope.dsghedachon.push(seat.idGhe);
-                        if ($scope.seat != null && $scope.seat == seat.idGhe) $scope.seat = null;
-                    }
-
-                });
-            }
-            $scope.dsghedachon = $scope.dsghedachon.concat(dsGheDaThanhToan);
-            $scope.$apply(function () {
-
-                $.unblockUI();
-            });
-        });
-
-        $scope.room = {
-            row: 8,
-            col: 9,
-        }
-
-        //khởi tạo ghế cho phòng
-        $scope.seats = [];
-        $.blockUI({
-            boxed: true,
-            message: 'loading...'
-        });
-        for (var i = 0; i < $scope.room.col; i++) {
-            $scope.seats[i] = [];
-            $scope.seats[i].name = String.fromCharCode(65 + i);
-            for (var j = 0; j < $scope.room.row; j++) {
-                $scope.seats[i][j] = {
-                    id: i * 10 + j,
-                    status: true
-                };
-            }
-
-        }
-
-        //khởi tạo ghế hỏng
-        $scope.seats[0][0].status = false;
-
-    }
-    $scope.init();
-    //khi chon 1 ghe
-    $scope.Click = function (seat) {
-        if (seat.status) {
-            if ($scope.dsghedachon.indexOf(seat.id) === -1) {
-                //đổi thuộc tính ghế đã chọn
-                $scope.seat = seat.id;
-            }
-            else {
-                alert('ghế đã có người chọn');
-            }
-        }
-    }
-
-    $scope.open = function () {
-        if ($scope.seat != null) {
-            var data = {
-                key: 'chon-ghe',
-                idGhe: $scope.seat,
-                idLichChieu: $routeParams.id
-            };
-
-            //gửi socket lên sever
-            socket.emit('Client-to-server-to-all', data);
-
-            var modalInstance = $uibModal.open({
-                scope: $scope,
-                animation: true,
-                templateUrl: ctxfolderurl + "/payment.html",
-                controller: "payment",
-                size: 'lg',
-            });
-
-            modalInstance.result.then(function (response) {
-                if (response == 'cancel') {
-                    data.key = 'huy-ghe-da-chon';
-                    socket.emit('Client-to-server-to-all', data);
-                    $scope.seat = data.idGhe;
-                }
-            }, function () {
-                    data.key = 'huy-ghe-da-chon';
-                    socket.emit('Client-to-server-to-all', data);
-            });
-        }
-        else {
-            alert('Ban chưa chon ghe');
-        }
-
-        
-
-    };
-
-});
-app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
-    $scope.init = function () {
-        $scope.minuted = 1;
-        $scope.second = 10;
-        $scope.timeID = setInterval(function () {
-            $scope.second -= 1;
-            if ($scope.second == 0) {
-                if ($scope.minuted == 0) {
-                    $scope.back();
-                } else
-                    $scope.minuted -= 1;
-                $scope.second = 60;
-            }
-            $scope.$apply();
-        }, 1000);
-        console.log($scope);
-    }
-
-    $scope.init();
-
-    $scope.back = function () {
-        clearInterval($scope.timeID);
-        $uibModalInstance.close('cancel');
-    }
-
-    $scope.payment = function () {
-        clearInterval($scope.timeID);
-        $uibModalInstance.close('ok');
-    }
-
-});
 app.controller('Popupmodal', function ($scope, $uibModalInstance, $uibModal, dataservice) {
    
 

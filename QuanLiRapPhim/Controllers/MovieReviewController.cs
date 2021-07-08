@@ -66,16 +66,39 @@ namespace QuanLiRapPhim.Controllers
             return Json(_context.Movies.Where(x=>x.IsDelete==false).ToList());
         }
         [HttpGet]
-        public JsonResult GetListShowTime()
+        public JsonResult GetListShowTime(int? idmovie,String date)
         {
-            List<ShowTime> data = new List<ShowTime>();
-            for (int i = 0; i < 3; i++) {
-                ShowTime item = new ShowTime();
-                item.DateTime = DateTime.Now;
-                item.Id = i;
-                data.Add(item);
+            JMessage jMessage = new JMessage();
+            jMessage.ID = (int)idmovie;
+            try
+            {
+                var list = (from sh in _context.ShowTimes
+                            where sh.MovieId == (int)idmovie
+                            && (String.IsNullOrEmpty(date)? sh.DateTime.Date.CompareTo(DateTime.Now) == 0 : sh.DateTime.Date.CompareTo(DateTime.Parse(date).Date) == 0)
+                            && !sh.IsDelete
+                            select new
+                            {
+                                sh.Id,
+                                Time=sh.startTime.ToShortTimeString()+ " - " +sh.startTime.AddMinutes(sh.Movie.Time).ToShortTimeString()
+                            }
+                           ).ToList();
+
+                jMessage.Error = list.Count() <= 0;
+                if (!jMessage.Error)
+                {
+                    jMessage.Object = list;
+                }
+                else
+                {
+                    jMessage.Title = "Không có lịch chiếu";
+                }
             }
-            return Json(data);
+            catch(Exception er)
+            {
+                jMessage.Error = true;
+                jMessage.Title = "Có lỗi xảy ra";
+            }
+            return Json(jMessage);
         }
     }
     class movie
