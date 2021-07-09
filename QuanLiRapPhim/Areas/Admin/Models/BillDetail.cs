@@ -11,16 +11,14 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     {
         [Key]
         public int Id{get;set;}
-        public int? SeviceId{get;set;}
-        [Display(Name = "Số lượng")]
+        public int? SeviceCatId{get;set;}
+        public String Name { get; set; }
         public int Amount{get;set;}
-        [Display(Name = "Giá")]
         public Decimal UnitPrice{get;set;}
         public int? BillId{get;set;}
         [ForeignKey("BillId")]
         public virtual Bill Bill { get; set; }
-        [ForeignKey("SeviceId")]
-        public virtual Sevice Sevice { get; set; }
-       
+        [ForeignKey("SeviceCatId")]
+        public virtual SeviceCategory Sevice { get; set; }
     }
 }

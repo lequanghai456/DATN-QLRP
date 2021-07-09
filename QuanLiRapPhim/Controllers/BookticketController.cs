@@ -12,17 +12,17 @@ namespace QuanLiRapPhim.Controllers
     public class BookticketController : Controller
     {
         private readonly IdentityContext _context;
-
+        
         public BookticketController(IdentityContext context)
         {
             _context = context;
         }
         //[Route("/{id}")]
-        public IActionResult Index(int? id)
+        public IActionResult Index(int id)
         {
-            if (id == null || _context.ShowTimes.Where(x => x.IsDelete == true).Any(x => x.Id == id))
+            if (id <= 0 || _context.ShowTimes.Where(x => x.IsDelete == true).Any(x => x.Id == id))
             {
-                return NotFound();
+                return RedirectToAction("Index","Home");
             }
             var St = _context.ShowTimes.Find(id);
 
@@ -83,6 +83,7 @@ namespace QuanLiRapPhim.Controllers
             }
             return Json(jMessage);
         }
+
 
     }
 }

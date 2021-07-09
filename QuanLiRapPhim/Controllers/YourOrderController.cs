@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
+using QuanLiRapPhim.SupportJSON;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,6 +24,21 @@ namespace QuanLiRapPhim.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public JsonResult GetAllServices() {
+            JMessage jMessage = new JMessage();
+            var Object= _context.Sevices.Where(s => !s.IsDelete).ToList();
+            jMessage.Error = Object.Count==0;
+            if (jMessage.Error)
+            {
+                jMessage.Title = "Không tìm thấy dịch vụ";
+            }
+            else
+            {
+                jMessage.Object = Object;
+            }
+            return Json(jMessage);
         }
 
         public  List<Bill> Bills { get; set; }
@@ -48,7 +64,7 @@ namespace QuanLiRapPhim.Controllers
                 bills.Add(new BillDetail
                 {
                     Id = i,
-                    Sevice = _context.Sevices.Find(i),
+                    Sevice = _context.SeviceCategories.Find(i),
                     Amount = 1,
                     UnitPrice = 1000,
                 });

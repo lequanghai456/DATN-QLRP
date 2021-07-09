@@ -35,20 +35,6 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Img = "admin.img"
                 }
             );
-            modelBuilder.Entity<User>().HasData(
-
-                new User
-                {
-                    Id = 1,
-                    FullName = "Hồ Gia Bảo",
-                    UserName = "HoBao",
-                    NormalizedUserName = "HoBao",
-                    PasswordHash = passwordHasher.HashPassword("abc123"),
-                    Email = "0306181100@caothang.edu.vn",
-                    SecurityStamp = Guid.NewGuid().ToString(),
-                    Img = "avatar.png"
-                }
-            );
             modelBuilder.Entity<Mac>().HasData(
                 new Mac
                 {
@@ -93,75 +79,6 @@ namespace QuanLiRapPhim.Areas.Admin.Data
 
                 }
             );
-            modelBuilder.Entity<Sevice>().HasData(
-                new Sevice
-                {
-                    Id = 1,
-                    Name = "Bắp rang bơ",
-                    Price = 30000,
-                    
-
-                },
-                new Sevice
-                {
-                    Id = 2,
-                    Name = "Coca",
-                    Price = 15000,
-
-                },
-                new Sevice
-                {
-                    Id = 3,
-                    Name = "PepSi",
-                    Price = 15000,
-
-                },
-                new Sevice
-                {
-                    Id = 4,
-                    Name = "Bắp",
-                    Price = 15000,
-
-                }
-            );
-            modelBuilder.Entity<Bill>().HasData(
-                new Bill
-                {
-                    Id = 1,
-                    Date = DateTime.Parse("7/6/2020"),
-                    TotalPrice = 30000,
-                    UserId = 1,
-                    Status = true
-
-                },
-                new Bill
-                {
-                    Id = 2,
-                    Date = DateTime.Parse("7/7/2022"),
-                    TotalPrice = 30000,
-                    UserId = 1,
-                    Status = false
-                }
-            );
-            modelBuilder.Entity<BillDetail>().HasData(
-               new BillDetail
-               {
-                   Id = 1,
-                   BillId = 1,
-                   SeviceId = 2,
-                   Amount = 3,
-                   UnitPrice = 4000,
-               },
-               new BillDetail
-               {
-                   Id = 2,
-                   BillId = 2,
-                   SeviceId = 1,
-                   Amount = 3,
-                   UnitPrice = 4000,
-               }
-           );
-            
             modelBuilder.Entity<Movie>().HasData(
                 new Movie
                 {
@@ -171,9 +88,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Trailer = "1.mp4",
                     Poster = "1.jpg",
                     Describe = "Lý Hải trở lại với dòng phim hành động sở trường của mình. Bối cảnh hoành tráng với sự đầu tư nghiêm túc, siêu phẩm hành động Việt Lật Mặt 48h sẽ kể về một hành trình trốn chạy đầy kịch tính, nghẹt thở đến phút cuối cùng.",
-                    Time = 110,
-                    
-                    
+                    Time = 110
                     
                 },
                 new Movie
@@ -199,7 +114,105 @@ namespace QuanLiRapPhim.Areas.Admin.Data
 
                  }
             );
-           
+            
+           modelBuilder.Entity<Sevice>().HasData(
+                new Sevice
+                {
+                    Id = 1,
+                    Name = "Bắp rang",
+                    IsFood=true,
+                    IsDelete = false
+                },
+                new Sevice
+                {
+                    Id = 2,
+                    Name = "CoCa",
+                    IsFood=false,
+                    IsDelete = false
+                }, 
+                new Sevice
+                {
+                    Id = 3,
+                    Name = "Pepsi",
+                    IsFood=false,
+                    IsDelete = false
+                }
+                );
+
+            modelBuilder.Entity<SeviceCategory>().HasData(
+                new SeviceCategory
+                {
+                    Id = 1,
+                    Name="Big",
+                    IdSevice=1,
+                    price=10000,
+                    IsDeleted = false
+                }, 
+                new SeviceCategory
+                {
+                    Id = 2,
+                    Name = "Small",
+                    IdSevice = 1,
+                    price = 5000,
+                    IsDeleted = false
+                }, 
+                new SeviceCategory
+                {
+                    Id = 3,
+                    Name = "Medium",
+                    IdSevice = 1,
+                    price = 7000,
+                    IsDeleted = false
+                },
+                new SeviceCategory
+                {
+                    Id = 4,
+                    Name = "Big",
+                    IdSevice = 2,
+                    price = 10000,
+                    IsDeleted = false
+                },
+                new SeviceCategory
+                {
+                    Id = 5,
+                    Name = "Small",
+                    IdSevice = 2,
+                    price = 5000,
+                    IsDeleted = false
+                },
+                new SeviceCategory
+                {
+                    Id = 6,
+                    Name = "Medium",
+                    IdSevice = 2,
+                    price = 7000,
+                    IsDeleted = false
+                },
+                new SeviceCategory
+                {
+                    Id = 7,
+                    Name = "Big",
+                    IdSevice = 3,
+                    price = 10000,
+                    IsDeleted = false
+                },
+                new SeviceCategory
+                {
+                    Id = 8,
+                    Name = "Small",
+                    IdSevice = 3,
+                    price = 5000,
+                    IsDeleted = false
+                }, 
+                new SeviceCategory
+                {
+                    Id = 9,
+                    Name = "Medium",
+                    IdSevice = 3,
+                    price = 7000,
+                    IsDeleted = false
+                }
+                );
         }
     }
 }
