@@ -114,27 +114,103 @@ namespace QuanLiRapPhim.Areas.Admin.Data
 
                  }
             );
-            modelBuilder.Entity<Sevice>().HasData(
+            
+           modelBuilder.Entity<Sevice>().HasData(
                 new Sevice
                 {
                     Id = 1,
                     Name = "Bắp rang",
-                    IsDelete = false,
-                    Price=10000
+                    IsFood=true,
+                    IsDelete = false
                 },
                 new Sevice
                 {
                     Id = 2,
                     Name = "CoCa",
-                    IsDelete = false,
-                    Price = 10000
+                    IsFood=false,
+                    IsDelete = false
                 }, 
                 new Sevice
                 {
                     Id = 3,
                     Name = "Pepsi",
-                    IsDelete = false,
-                    Price = 10000
+                    IsFood=false,
+                    IsDelete = false
+                }
+                );
+
+            modelBuilder.Entity<SeviceCategory>().HasData(
+                new SeviceCategory
+                {
+                    Id = 1,
+                    Name="Big",
+                    IdSevice=1,
+                    price=10000,
+                    IsDeleted = false
+                }, 
+                new SeviceCategory
+                {
+                    Id = 2,
+                    Name = "Small",
+                    IdSevice = 1,
+                    price = 5000,
+                    IsDeleted = false
+                }, 
+                new SeviceCategory
+                {
+                    Id = 3,
+                    Name = "Medium",
+                    IdSevice = 1,
+                    price = 7000,
+                    IsDeleted = false
+                },
+                new SeviceCategory
+                {
+                    Id = 4,
+                    Name = "Big",
+                    IdSevice = 2,
+                    price = 10000,
+                    IsDeleted = false
+                },
+                new SeviceCategory
+                {
+                    Id = 5,
+                    Name = "Small",
+                    IdSevice = 2,
+                    price = 5000,
+                    IsDeleted = false
+                },
+                new SeviceCategory
+                {
+                    Id = 6,
+                    Name = "Medium",
+                    IdSevice = 2,
+                    price = 7000,
+                    IsDeleted = false
+                },
+                new SeviceCategory
+                {
+                    Id = 7,
+                    Name = "Big",
+                    IdSevice = 3,
+                    price = 10000,
+                    IsDeleted = false
+                },
+                new SeviceCategory
+                {
+                    Id = 8,
+                    Name = "Small",
+                    IdSevice = 3,
+                    price = 5000,
+                    IsDeleted = false
+                }, 
+                new SeviceCategory
+                {
+                    Id = 9,
+                    Name = "Medium",
+                    IdSevice = 3,
+                    price = 7000,
+                    IsDeleted = false
                 }
                 );
         }

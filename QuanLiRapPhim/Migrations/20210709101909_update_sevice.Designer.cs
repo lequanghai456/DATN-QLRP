@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLiRapPhim.Areas.Admin.Data;
 
 namespace QuanLiRapPhim.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20210709101909_update_sevice")]
+    partial class update_sevice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -492,7 +494,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "12a6ecb5-e5e3-4283-91e0-5423e20cee87",
+                            ConcurrencyStamp = "a22b6e21-2bd7-436f-a3e7-b23389a6fdac",
                             IsDelete = false,
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -500,7 +502,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "dcae7e69-1bb6-4d6b-b711-da8ac98a4f56",
+                            ConcurrencyStamp = "93904bc4-b00c-4732-888f-cea4f8007229",
                             IsDelete = false,
                             Name = "manager movie",
                             NormalizedName = "MANAGER MOVIE"
@@ -508,7 +510,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "47befe46-c45b-42cd-bcee-760ef393f6c2",
+                            ConcurrencyStamp = "0d2d3649-f6aa-423c-8f45-0c51bb6d0f90",
                             IsDelete = false,
                             Name = "staff",
                             NormalizedName = "STAFF"
@@ -601,7 +603,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             IsDelete = false,
-                            IsFood = true,
+                            IsFood = false,
                             Name = "Bắp rang"
                         },
                         new
@@ -842,7 +844,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6527c063-2fe8-4f2d-874b-0e227b18c315",
+                            ConcurrencyStamp = "852077f2-ae14-49dc-9bb6-45aba3c6a172",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181100@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -851,10 +853,10 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "admin",
-                            PasswordHash = "AFZqY+owznJZSM4IUQI7FkgrVe8FNU80hsf/Nlufjdl3eC47CpVGZLyjWcXxL0gz7Q==",
+                            PasswordHash = "ALgFncA9NJOtuoKn1iEH6jMaym6lAWZ4TTbugMEqH4ExowkCyARjwzgefgiZ+QGgfg==",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "f36dcb00-d248-4287-b412-4613fcff3311",
+                            SecurityStamp = "519521a3-a91b-48c3-ab50-1a2bd5e1f715",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

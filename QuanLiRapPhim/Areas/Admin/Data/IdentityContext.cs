@@ -30,7 +30,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Rate> Rates { get; set; }
         public DbSet<Room> Rooms { get; set; }
-
+        public DbSet<SeviceCategory> SeviceCategories { get; set; }
         public DbSet<Sevice> Sevices { get; set; }
         public DbSet<ShowTime> ShowTimes { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
