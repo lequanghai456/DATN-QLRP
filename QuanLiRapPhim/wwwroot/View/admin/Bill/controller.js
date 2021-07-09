@@ -59,16 +59,16 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             });
 
         vm.dtColumns = [];
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Date', 'Ngày lập').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Date', 'Ngày lập').notSortable().withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('TotalPrice', 'Tổng giá').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('TotalPrice', 'Tổng giá').notSortable().withClass('Center').renderWith(function (data, type) {
             return data;
         })); 
-        vm.dtColumns.push(DTColumnBuilder.newColumn('UserName', 'Tài khoản').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('UserName', 'Tài khoản').notSortable().withClass('Center').renderWith(function (data, type) {
             return data;
         })); 
     }

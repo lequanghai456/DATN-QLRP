@@ -29,7 +29,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             SignInMgr = signInManager;
             RoleMgr = roleManager;
         }
-
+        [TempData]
+        public string Message { get; set; }
         // GET: Admin/Staffs
         public async Task<IActionResult> Index(int? id)
         {
@@ -68,8 +69,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 return Json("Xóa nhân viên thất bại");
             }
         }
-        [TempData]
-        public string Message { get; set; }
+        
         public JsonResult DeleteStaffList(String Listid)
         {
             try
@@ -150,10 +150,11 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 }
                 if (result.Succeeded)
                 {
+                    Message = "Thêm nhân viên thành công";
                     return RedirectToAction(nameof(Index));
                 }
             }
-            
+            Message = "Thêm nhân viên thất bại";
             return View(staff);
         }
 
@@ -222,9 +223,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                Message = "Cập nhật nhân viên thành công";
                 return RedirectToAction(nameof(Index));
             }
-           
+            Message = "Cập nhật nhân viên thất bại";
             return View(staff);
         }
         private bool StaffExists(int id)
