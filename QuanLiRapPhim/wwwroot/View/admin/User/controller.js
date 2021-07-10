@@ -68,7 +68,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         })); 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Img', 'Ảnh').withClass('Center').renderWith(function (data, type) {
             
-            return '<img id="imgPre" src="../admin/img/' + data + '" alt="Alternate Text" class="img-thumbnail" />';
+            return '<img id="imgPre" src="../images/pro/' + data + '" alt="Alternate Text" class="img-thumbnail" />';
         }));
     }
     $scope.init();

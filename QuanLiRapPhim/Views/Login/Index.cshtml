@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <style>
+        form #password {
+            background-color: #f6f6f6;
+            border: none;
+            color: #0d0d0d;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 5px;
+            width: 85%;
+            border: 2px solid #f6f6f6;
+            -webkit-transition: all 0.5s ease-in-out;
+            -moz-transition: all 0.5s ease-in-out;
+            -ms-transition: all 0.5s ease-in-out;
+            -o-transition: all 0.5s ease-in-out;
+            transition: all 0.5s ease-in-out;
+            -webkit-border-radius: 5px 5px 5px 5px;
+            border-radius: 5px 5px 5px 5px;
+            border: 1px solid gray;
+        }
+        .site-footer{
+            display: none;
+        }
+        .site-header{
+            padding: 20px 0;
+        }
+    </style> 
+<div ng-app="App" ng-controller="Ctroller">
+    <div class="wrapper fadeInDown" style="display: flex;justify-content: center; text-align: center;">
+        <div id="formContent" style="margin: auto;">
+            <div class="fadeIn first"><img src="~/admin/img/Icon_User.png" id="icon" alt="User Icon" /></div>
+
+            <form method="post" asp-action="Login" asp-controller="Login">
+                <input type="text" id="login" class="fadeIn second" name="UserName" placeholder="Nhập tài khoản" required>
+                <input type="password" id="password" class="fadeIn third" name="PasswordHash" placeholder="Nhập mật khẩu" required>
+                <input type="submit" class="fadeIn fourth" value="Đăng nhập">
+                @{
+                    if (TempData.Peek("Message") != null)
+                    {
+                        <h2 class="alert alert-danger">@TempData.Peek("Message")</h2>
+                    }
+                }
+            </form>
+            
+            <div id="formFooter">
+                <a class="underlineHover" href="~/Register/Index">Bạn chưa có tài khoản?</a>
+                <a class="underlineHover" href="~/Register/ForgotPassword">Quên mật khẩu?</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link href="~/css/dangnhap.css" rel="stylesheet" />
+
+}
+

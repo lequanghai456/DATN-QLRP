@@ -134,6 +134,7 @@ namespace QuanLiRapPhim.Controllers
                     user.Email = users.Email;
                     user.UserName = users.UserName;
                     user.PasswordHash = users.PasswordHash;
+                    user.Img = "avatar.png";
                     IdentityResult result = await StaffMgr.CreateAsync(user, user.PasswordHash);
                     if (result.Succeeded && SendEmail(users.Email, users.UserName))
                     {

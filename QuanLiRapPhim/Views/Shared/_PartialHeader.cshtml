@@ -52,6 +52,7 @@
                         Contact
                     </a>
                 </li>
+             
                 @if (SignInManager.IsSignedIn(User) && @User.FindFirst("FullNameUser") != null)
                 {
                     <li class="menu-item" id="profile">
@@ -71,13 +72,14 @@
                 }
                 else
                 {
+                    if (ViewData["Title"] != "Login") {
                     <li class="menu-item">
                         <span class="fa fa-sign-in"></span>
                         <a data-toggle="modal" data-target="#myModal" style="height:24px">
                             Login
                         </a>
                     </li>
-
+                    }
                 }
 
 

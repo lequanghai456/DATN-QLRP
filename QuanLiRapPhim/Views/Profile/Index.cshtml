@@ -1,34 +1,40 @@
 ﻿@{
     ViewData["Title"] = "Movie Review | Profile";
 }
-@model QuanLiRapPhim.Controllers.RegisterController.Users
+@model QuanLiRapPhim.Controllers.ProfileController.InputUser
 @using Microsoft.AspNetCore.Identity
 @using QuanLiRapPhim.Areas.Admin.Models
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 <div ng-app="App" ng-controller="Ctroller">
-    <form asp-action="" method="post" class="row" enctype="multipart/form-data">
+    @{
+        if (TempData.Peek("Mess") != null)
+        {
+            <h2 class="alert alert-success">@TempData.Peek("Mess")</h2>
+        }
+    }
+    <form asp-action="EditUser" asp-controller="Profile" method="post" class="row" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input id="idEdit" type="hidden" />
         <div class="form-group col-6" style="text-align:center;">
             <div class="custom-file" style="margin-top: 30px; width:300px;">
-            <input accept="*.png|*.jpg|*.jpep" type="file" name="ful" class="custom-file-input" id="ful" />
-            <label class="custom-file-label" for="ful" style="text-align:left;"><span><i class="fa fa-camera"></i> Đổi avatar</span></label>
+                <input accept="*.png|*.jpg|*.jpep" type="file" name="ful" class="custom-file-input" id="ful" />
+                <label class="custom-file-label" for="ful" style="text-align:left;"><span><i class="fa fa-camera"></i> Đổi avatar</span></label>
             </div>
-        <img id="imgPre" src="~/images/pro/@(ViewContext.RouteData.Values["id"] == null ? "avatar.png" : ViewData["Img"])" alt="Alternate Text" style="width:300px; height:300px;" />
-           
+            <img id="imgPre" src="~/images/pro/@(ViewData["Img"] == null ? "avatar.png" : ViewData["Img"])" alt="Alternate Text" style="width:300px; height:300px;" />
+
 
         </div>
         <div class="col-6">
             <div class="form-group">
                 <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" name="FullName" class="form-control" value="@Model.FullName"/>
+                <input asp-for="FullName" name="FullName" class="form-control" value="@Model.FullName" />
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control"  value="@Model.DateOfBirth.ToString("yyyy-dd-MM")"/>
+                <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control" value="@Model.DateOfBirth.ToString("yyyy-dd-MM")" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -37,8 +43,7 @@
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @*<label asp-for="PasswordHash" class="control-label"></label>
-                <input asp-for="PasswordHash" class="form-control" disabled />*@
+                
                 <button type="button" ng-click="EditPass()">ĐỔI MẬT KHẨU</button>
             </div>
             <div ng-show="EditPassword">
