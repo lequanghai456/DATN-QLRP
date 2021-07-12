@@ -1,4 +1,4 @@
-﻿var ctxfolderurl = "/View/front-end/bookticket";
+﻿var ctxfolderurl = "/View/front-end";
 
 var app = angular.module('App', ['ui.bootstrap', 'ngRoute', 'ngAnimate']);
 
@@ -127,7 +127,7 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
             var modalInstance = $uibModal.open({
                 scope: $scope,
                 animation: true,
-                templateUrl: ctxfolderurl + "/payment.html",
+                templateUrl: ctxfolderurl + "/bookticket/payment.htm",
                 controller: "payment",
                 backdrop: 'static',
                 size: 'lg',
@@ -146,7 +146,19 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
             alert('Ban chưa chon ghe');
         }
     };
+    $scope.controller = "bookticket";
+    $scope.choseService = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: ctxfolderurl + "/your_order/chose-services.html",
+            controller: "choseService",
+            size: 'xl'
+        });
 
+        modalInstance.result.then(function (res) {
+            //xử lý payment và cancel
+        });
+    }
 });
 app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
     $scope.init = function () {

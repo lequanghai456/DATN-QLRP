@@ -1,5 +1,6 @@
 ﻿using AutomatedInvoiceGenerator.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
@@ -16,9 +17,44 @@ namespace QuanLiRapPhim.Controllers
     {
         public readonly IdentityContext _context;
 
+        [TempData]
+        public string Message { get; set; }
+
         public YourOrderController(IdentityContext context)
         {
             _context = context;           
+        }
+        [HttpPost]
+        public IActionResult BuySevice(List<BillDetail> Billdetails) {
+
+            try
+            {
+                foreach (var x in Billdetails)
+                {
+                    var Sevice = _context.SeviceCategories.Find(x.SeviceCatId);
+                    Sevice.Sevice = _context.Sevices.Find(Sevice.IdSevice);
+                    x.Name = Sevice.Sevice.Name + "(" + Sevice.Name + ")";
+                    x.UnitPrice = Sevice.price;
+                    x.Bill = null;
+                }
+                Bill bill = new Bill()
+                {
+                    BillDetails = Billdetails,
+                    Date = DateTime.Now,
+                    TotalPrice = Billdetails.Sum(x => x.UnitPrice * x.Amount),
+                    UserId = _context.Users.Where(x => x.UserName == (string)User.Identity.Name).First().Id,
+                };
+
+                _context.Add(bill);
+                _context.SaveChanges();
+                Message = "Thanh toán thành công ";
+            }
+            catch(Exception er)
+            {
+                Message = "Lỗi";
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Index()
@@ -28,7 +64,17 @@ namespace QuanLiRapPhim.Controllers
 
         public JsonResult GetAllServices() {
             JMessage jMessage = new JMessage();
-            var Object= _context.Sevices.Where(s => !s.IsDelete).ToList();
+            var Object= _context.Sevices.Where(s => !s.IsDelete).Select(x=>new {
+                x.Id,
+                x.IsFood,
+                x.Name,
+                size=x.SeviceCategories.Where(s => !s.IsDeleted).Select(x=>new { 
+                    x.Name,
+                    x.price,
+                    x.Id
+                }).ToList()
+            }).ToList();
+
             jMessage.Error = Object.Count==0;
             if (jMessage.Error)
             {
@@ -41,7 +87,6 @@ namespace QuanLiRapPhim.Controllers
             return Json(jMessage);
         }
 
-        public  List<Bill> Bills { get; set; }
         public List<Ticket> Tickets { get; set; }
         public List<yourOrder> yourOrders { get; set; }
 
@@ -56,29 +101,18 @@ namespace QuanLiRapPhim.Controllers
         public string JtableTestModel(JTableModel jTablePara)
         {
             //Truy vấn lấy ds bill và ticket theo username sắp xếp theo thời gian 
-            Bills = new List<Bill>();
+            var Bills = from b in _context.Bills
+                        select new
+                        {
+                            b.Id,
+                            b.Date,
+                            b.TotalPrice,
+                            b.BillDetails,
+                        };
             Tickets = new List<Ticket>();
-            List<BillDetail> bills = new List<BillDetail>();
-            for (int i = 1; i < 4; i++)
-            {
-                bills.Add(new BillDetail
-                {
-                    Id = i,
-                    Sevice = _context.SeviceCategories.Find(i),
-                    Amount = 1,
-                    UnitPrice = 1000,
-                });
-            }
+            
             for (int i = 0; i < 5; i++)
             {
-                var bill = new Bill()
-                {
-                    Id = i,
-                    Date = DateTime.Now.AddDays(i),
-                    TotalPrice = i * 1000,
-                    BillDetails = bills,
-
-                };
                 var ticket = new Ticket()
                 {
                     Id = i,
@@ -88,7 +122,6 @@ namespace QuanLiRapPhim.Controllers
                     ShowTime = new ShowTime() { Movie = _context.Movies.Find(1) }
                 };
                 Tickets.Add(ticket);
-                Bills.Add(bill);
             }
             yourOrders = new List<yourOrder>();
             yourOrders.AddRange((from x in Bills

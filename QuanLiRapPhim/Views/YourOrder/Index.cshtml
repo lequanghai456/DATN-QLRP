@@ -1,7 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Movie Review | Your Order";
+    ViewData["Title"] = "Hóa đơn";
 }
 <div ng-app="App" ng-controller="Ctroller">
+    @{
+        if (TempData.Peek("Message") != null)
+        {
+            <h2>@TempData.Peek("Message")</h2>
+        }
+    }
     <div ng-view>
 
     </div>
@@ -12,4 +18,5 @@
     <script type="text/javascript" src="https://rawgithub.com/l-lin/angular-datatables/v0.6.1/dist/angular-datatables.js"></script>
     <script src="~/js/jquery.blockUI.js"></script>
     <script src="~/View/front-end/your_order/controller.js"></script>
+    <script src="~/View/front-end/sevice/directive.js"></script>
 }

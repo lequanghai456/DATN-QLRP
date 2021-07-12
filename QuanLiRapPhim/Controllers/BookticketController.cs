@@ -20,6 +20,7 @@ namespace QuanLiRapPhim.Controllers
         //[Route("/{id}")]
         public IActionResult Index(int id)
         {
+            bool a=User.Identity.Name == null;
             if (id <= 0 || _context.ShowTimes.Where(x => x.IsDelete == true).Any(x => x.Id == id))
             {
                 return RedirectToAction("Index","Home");
@@ -83,8 +84,6 @@ namespace QuanLiRapPhim.Controllers
             }
             return Json(jMessage);
         }
-
-
     }
 }
 

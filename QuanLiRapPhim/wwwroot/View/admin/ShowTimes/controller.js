@@ -1,4 +1,4 @@
-﻿var ctxfolderurl = "https://localhost:44350";
+﻿var ctxfolderurl = "/View/front-end/your_order";
 
 var app = angular.module('App', ['datatables', 'ngRoute', 'checklist-model']);
 
