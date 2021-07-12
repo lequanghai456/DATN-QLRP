@@ -26,7 +26,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             _context = context;
         }
 
-        public IActionResult Index() { 
+        public IActionResult Index() {
+           
             return View();
         }
 

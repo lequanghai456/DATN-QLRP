@@ -10,6 +10,8 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Tên thể loại")]
+        [Required(ErrorMessage ="Không được phép bỏ trống")]
         public string Title { get; set; }
         public ICollection<Movie> lstMovie { get; set; }
         public bool IsDelete { get; set; }

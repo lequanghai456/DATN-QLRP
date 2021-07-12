@@ -8,6 +8,8 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Tên thiết bị")]
+        [Required(ErrorMessage = "Không được phép bỏ trống")]
         public String Name { get; set; }
         public int Status { get; set; }
         public int RoomId { get; set; }

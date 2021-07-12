@@ -2,21 +2,16 @@
 
 var app = angular.module('App', ['ngRoute']);
 
-app.controller('Ctroller', function () {
-
-});
-
-app.config(function ($routeProvider) {
-    $routeProvider
-        .when('/', {
-            templateUrl: ctxfolderurl + '/index.html',
-            controller: 'index'
-        })
-});
-
-app.controller('index', function ($scope) {
+app.controller('Ctroller', function ($scope) {
     $scope.init = function () {
-        $("#profile").addClass("current-menu-item");
+        $scope.EditPassword = false;
     }
     $scope.init();
+    $scope.EditPass = function () {
+        $scope.EditPassword = !$scope.EditPassword;
+    };
+    
 });
+
+
+

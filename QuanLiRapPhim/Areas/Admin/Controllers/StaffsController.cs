@@ -29,7 +29,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             SignInMgr = signInManager;
             RoleMgr = roleManager;
         }
-
+        [TempData]
+        public string Message { get; set; }
         // GET: Admin/Staffs
         public async Task<IActionResult> Index(int? id)
         {
@@ -41,10 +42,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
             }
             //Danh sách phòng đã có người quản lí
-            var ListRoom = from a in _context.Staffs
-                         join room in _context.Rooms on a.RoleId equals room.RoleId
-                         select a.RoleId;
-            ViewBag.Role =  _context.Roles.Where(x => x.IsDelete == false && !x.Name.Contains("Admin") && !ListRoom.Contains(x.Id)).ToList();
+            //var ListRoom = from a in _context.Staffs
+            //             join room in _context.Rooms on a.RoleId equals room.RoleId
+            //             select a.RoleId;
+            ViewBag.Role = _context.Roles.Where(x => x.IsDelete == false && !x.Name.Contains("Admin")); /*&& !ListRoom.Contains(x.Id)).ToList();*/
             return View(staff);
         }
         public JsonResult DeleteStaff(int? id)
@@ -68,8 +69,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 return Json("Xóa nhân viên thất bại");
             }
         }
-        [TempData]
-        public string Message { get; set; }
+        
         public JsonResult DeleteStaffList(String Listid)
         {
             try
@@ -100,13 +100,17 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         public class JTableModelCustom : JTableModel
         {
             public string FullName { get; set; }
+            public int Role { get; set; }
         }
-
+        public JsonResult Role()
+        {
+            return Json(_context.Roles.Include(x=>x.Staffs).Where(x=>x.IsDelete==false && x.Id != 1).Select(x=>new {x.Id,x.Name}).ToList());
+        }
         [HttpGet]
         public async Task<String> JtableStaffModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
-            var query = _context.Staffs.Where(x => x.IsDelete == false && x.Id != 1 && x.UserName != User.Identity.Name &&   (String.IsNullOrEmpty(jTablePara.FullName) || x.FullName.Contains(jTablePara.FullName)));
+            var query = _context.Staffs.Where(x => x.IsDelete == false && x.Id != 1 && x.UserName != User.Identity.Name &&   (String.IsNullOrEmpty(jTablePara.FullName) || x.FullName.Contains(jTablePara.FullName)) && (jTablePara.Role ==0 || jTablePara.Role == x.RoleId ));
             int count = query.Count();
             var data = query.AsQueryable().Select(x => new { x.Id, x.Img, x.FullName, x.UserName, date = x.DateOfBirth.ToString("MM/dd/yyyy"), RoleName = x.Role.Name})
                 .Skip(intBegin)
@@ -146,10 +150,11 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 }
                 if (result.Succeeded)
                 {
+                    Message = "Thêm nhân viên thành công";
                     return RedirectToAction(nameof(Index));
                 }
             }
-            
+            Message = "Thêm nhân viên thất bại";
             return View(staff);
         }
 
@@ -218,9 +223,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                Message = "Cập nhật nhân viên thành công";
                 return RedirectToAction(nameof(Index));
             }
-           
+            Message = "Cập nhật nhân viên thất bại";
             return View(staff);
         }
         private bool StaffExists(int id)

@@ -26,7 +26,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 }
                 , type: 'GET'
                 , data: function (d) {
-                    d.IdBill = $scope.valueName;
+                    d.IdBill = $scope.valueId;
                 }
                
                 , dataType: "json"
@@ -63,13 +63,13 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Amount', 'Amount').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Amount', 'Số lượng').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('UnitPrice', 'UnitPrice').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('UnitPrice', 'Giá').withClass('Center').renderWith(function (data, type) {
             return data;
         })); 
-        vm.dtColumns.push(DTColumnBuilder.newColumn('NameSevice', 'NameSevice').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('NameSevice', 'Tên dịch vụ').withClass('Center').renderWith(function (data, type) {
             return data;
         })); 
     }

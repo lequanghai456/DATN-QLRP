@@ -10,19 +10,20 @@
         @await Html.PartialAsync("Create")
     </div>
     <div>
-        <div class="row">
-            <input style="margin-left:30px;" placeholder="Search Title" class="col-3" type="text" ng-model="valueName" />
-            <button class="icon col-1" ng-click="Search()"><i class="fa fa-search"></i></button>
-            <div class="col-lg-4"></div>
-            <button class="btn btn-primary col-1" ng-click="Show()">Input</button>
-            <button class="btn btn-warning col-1" ng-click="deleteMacList()" data-toggle="modal" data-target="#myModal">DeleteList</button>
-        </div>
         @{
             if (TempData.Peek("Message") != null)
             {
                 <h2 class="alert alert-success">@TempData.Peek("Message")</h2>
             }
         }
+        <div class="row">
+            <input style="margin-left:30px;" placeholder="Tìm kiếm theo tiêu đề" class="col-3" type="text" ng-model="valueTitle" />
+            <button class="icon col-1" ng-click="Search()"><i class="fa fa-search"></i></button>
+            <div class="col-lg-4"></div>
+            <button class="btn btn-primary col-1" ng-click="Show()">Input</button>
+            <button class="btn btn-warning col-1" ng-click="deleteMacList()" data-toggle="modal" data-target="#myModal">DeleteList</button>
+        </div>
+
         <table class="table dataTable table-hover table-striped"
                datatable
                dt-options="dtOptions"

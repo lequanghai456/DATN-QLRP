@@ -27,51 +27,32 @@ namespace QuanLiRapPhim.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> Register()
-        {
-            var Message = "Fail";
-            try
-            {
-                //ViewBag.Message = "Admin already registered";
-                //User user = await StaffMgr.FindByNameAsync("User1");
-                //if (user == null)
-                //{
-                //    user = new User();
-                //    user.UserName = "User1";
-                //    user.FullName = "Hồ Gia Bảo";
-                //    user.PasswordHash = "abc1234";
-                //    IdentityResult result = await StaffMgr.CreateAsync(user, user.PasswordHash);
-                //    if (result.Succeeded)
-                //    {
-                //        return Json(Message = "Succeeded");
-                //    }
-                //}
-                User user = await StaffMgr.FindByNameAsync("haile123");
-                IdentityResult result = await StaffMgr.ChangePasswordAsync(user, "abc123", "abc1234");
-                return Json(Message);
-
-            }
-            catch (Exception ex)
-            {
-                return Json(Message);
-            }
-        }
-
+        [TempData]
+        public string Message { get; set; }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(User obj)
         {
-            User user = new User();
-            user = await StaffMgr.FindByNameAsync(obj.UserName);
-            if (user != null && user.ConfirmEmail)
+            try
             {
-                var result = await SignInMgr.PasswordSignInAsync(obj.UserName, obj.PasswordHash, false, false);
-                if (result.Succeeded)
+                User user = new User();
+                user = await StaffMgr.FindByNameAsync(obj.UserName);
+                if (user != null && user.ConfirmEmail)
                 {
-                    return RedirectToAction("Index", "home");
+                    var result = await SignInMgr.PasswordSignInAsync(obj.UserName, obj.PasswordHash, false, false);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "home");
+                    }
                 }
             }
-            return RedirectToAction("Index", "home");
+            catch (Exception err)
+            {
+                Message = "Tài khoản hoặc mật khẩu không chính xát vui lòng đăng nhập lại";
+                return RedirectToAction("Index", "Login");
+            }
+            Message = "Tài khoản hoặc mật khẩu không chính xát vui lòng đăng nhập lại";
+            return RedirectToAction("Index", "Login");
         }
         public async Task<IActionResult> Logout()
         {

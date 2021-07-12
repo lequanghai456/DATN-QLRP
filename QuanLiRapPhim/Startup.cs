@@ -36,7 +36,13 @@ namespace QuanLiRapPhim
             {
                 cfg.UseSqlServer(Configuration.GetConnectionString("IdentityContext"));
             });
-            services.AddSession();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(3000);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             services.AddIdentityCore<User>(options =>
             {
                 options.User.RequireUniqueEmail = false;
@@ -72,16 +78,18 @@ namespace QuanLiRapPhim
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-            app.UseSession();
             app.UseAuthorization();
             app.UseAuthentication();
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                   name: "Admin",
                   pattern: "{area:exists}/{controller=Login}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                  name: "Staff",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

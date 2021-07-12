@@ -8,10 +8,10 @@
             <div class="card card-4">
                 <div class="card-body">
                     @{
-                        if (TempData.Peek("Mess") != null)
+                        if (ViewData["Mess"] != null)
                         {
                                         <div class="row">
-                                            <h1 class="alert-success col-12">Tài khoản của bạn đã tạo thành công vui lòng vào Email của bạn để xác nhận tài khoản </h1>
+                                                                <h1 class="alert-success col-12">@ViewData["Mess"]</h1>
                                             <h3 class="col-4"><a href="https://accounts.google.com/AccountChooser/signinchooser?service=mail&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&flowName=GlifWebSignIn&flowEntry=AccountChooser">Đi tới Email</a></h3>
                                             <div class="col-3"></div>
                                             <h3 class="col-4"><a href="https://localhost:44350/#!/">Trở về trang chủ</a></h3>
@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="input-group">
-                                            <label class="label">Password</label>
+                                            <label class="label">Mật khẩu</label>
                                             <input id="password" asp-for="PasswordHash" class="input--style-4" type="PassWord" name="PasswordHash">
                                             <span asp-validation-for="PasswordHash" class="text-danger"></span>
                                         </div>
@@ -106,9 +106,9 @@
     <script>
         $('#password, #confirm_password').on('keyup', function () {
             if ($('#password').val() == $('#confirm_password').val()) {
-                $('#message').html('Matching').css('color', 'green');
+                $('#message').html('Trùng khớp').css('color', 'green');
             } else
-                $('#message').html('Not Matching').css('color', 'red');
+                $('#message').html('Không trùng khớp').css('color', 'red');
             if ($('#password').val() == "" && $('#confirm_password').val() == "") {
                 $('#message').html('')
 

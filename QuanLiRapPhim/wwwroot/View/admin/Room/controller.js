@@ -76,16 +76,16 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Name', 'Name').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Name', 'Tên phòng').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Row', 'Row').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Row', 'Số lượng ghế ngang').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Col', 'Col').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Col', 'Số lượng ghế dọc').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('FullName', 'ManagerRoom').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('FullName', 'Tên nhân viên quản lí').withClass('Center').renderWith(function (data, type) {
             return data != "" ? data : '<button class="btn btn-primary" >Add Manager Room</button>';
         }));
         
@@ -158,6 +158,19 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
         }
     }
+    $scope.AddManager = function () {
+        var modalInstance = $uibModal.open({
+            scope: $scope,
+            animation: true,
+            backdrop: true,
+            templateUrl: '/admin/Staffs/Create',
+            controller: "Index",
+            size: 'lg',
+        });
+    }
     
-    
+});
+app.controller('index', function ($scope) {
+
+
 });

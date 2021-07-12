@@ -43,12 +43,12 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     { }
                     else
                     {
-                        context.Result = new RedirectResult("~/admin/home");
+                        context.Result = new RedirectResult("~/admin/NotFound");
                     }
                 }
                 else
                 {
-                    context.Result = new RedirectResult("~/home");
+                    context.Result = new RedirectResult("~/NotFound");
                 }
             }
             catch(Exception ex)
@@ -57,7 +57,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                 {
 
                 }else
-                    context.Result = new RedirectResult("~/home");
+                    context.Result = new RedirectResult("~/NotFound");
             }
         }
      

@@ -85,8 +85,9 @@ namespace QuanLiRapPhim.App
             using (SmtpClient client = new SmtpClient("smtp.gmail.com"))
             {
                 client.Port = 587;
-                client.Credentials = new NetworkCredential("giabao158357@gmail.com","baovc1134");
+                client.Credentials = new NetworkCredential("0306181113@caothang.edu.vn","285727901");
                 client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
                 return await SendMail(_from, _to, _subject, _body, client);
             }
 

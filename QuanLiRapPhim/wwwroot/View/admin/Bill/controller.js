@@ -8,7 +8,7 @@ app.factory('dataservice', function ($http) {
     }
 });
 
-app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice) {
+app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice, $filter) {
     var vm = $scope;
     var LengthPage = 3;
    
@@ -26,7 +26,9 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 }
                 , type: 'GET'
                 , data: function (d) {
-                    d.NameUser = $scope.valueName;
+                    d.Price = $scope.valuePrice;
+                    d.Date = !$scope.valueDate?"":$filter('date')($scope.valueDate,'yyyy-MM-dd');
+                    d.UserName = $scope.valueUserName;
                 }
                
                 , dataType: "json"
@@ -57,16 +59,16 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             });
 
         vm.dtColumns = [];
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Date', 'Date').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Date', 'Ngày lập').notSortable().withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('TotalPrice', 'TotalPrice').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('TotalPrice', 'Tổng giá').notSortable().withClass('Center').renderWith(function (data, type) {
             return data;
         })); 
-        vm.dtColumns.push(DTColumnBuilder.newColumn('UserName', 'UserName').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('UserName', 'Tài khoản').notSortable().withClass('Center').renderWith(function (data, type) {
             return data;
         })); 
     }
@@ -89,7 +91,12 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
     }
     $scope.Search = function () { reloadData(true) };
-  
+    vm.Rest = function () {
+        vm.valueDate = "";
+        vm.valuePrice = "";
+        vm.valueUserName = "";
+        reloadData(true);
+    };
    
     
     
