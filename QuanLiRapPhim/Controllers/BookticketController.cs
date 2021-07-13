@@ -17,7 +17,7 @@ namespace QuanLiRapPhim.Controllers
         {
             _context = context;
         }
-        //[Route("/{id}")]
+        [AuthorizeRoles("")]
         public IActionResult Index(int id)
         {
             bool a=User.Identity.Name == null;
@@ -40,7 +40,6 @@ namespace QuanLiRapPhim.Controllers
             }
             else
             {
-
                 jMessage.Object = (from sh in _context.ShowTimes
                                    join r in _context.Rooms on sh.RoomId equals r.Id
                                    join mv in _context.Movies on sh.MovieId equals mv.Id

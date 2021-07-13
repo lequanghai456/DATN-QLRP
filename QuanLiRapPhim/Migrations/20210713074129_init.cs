@@ -29,7 +29,7 @@ namespace QuanLiRapPhim.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -43,7 +43,7 @@ namespace QuanLiRapPhim.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
                     Describe = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false)
@@ -60,7 +60,7 @@ namespace QuanLiRapPhim.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsFood = table.Column<bool>(type: "bit", nullable: false),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -89,7 +89,7 @@ namespace QuanLiRapPhim.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    FullName = table.Column<string>(type: "nvarchar(255)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Img = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConfirmEmail = table.Column<bool>(type: "bit", nullable: false),
@@ -141,7 +141,7 @@ namespace QuanLiRapPhim.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    FullName = table.Column<string>(type: "nvarchar(255)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Img = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: true),
@@ -221,6 +221,28 @@ namespace QuanLiRapPhim.Migrations
                         principalTable: "Macs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SeviceCategories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdSevice = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SeviceCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SeviceCategories_Sevices_IdSevice",
+                        column: x => x.IdSevice,
+                        principalTable: "Sevices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -358,7 +380,7 @@ namespace QuanLiRapPhim.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     RoomId = table.Column<int>(type: "int", nullable: false),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false)
@@ -384,6 +406,7 @@ namespace QuanLiRapPhim.Migrations
                     Y = table.Column<int>(type: "int", nullable: false),
                     ExtraPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     RoomId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -487,7 +510,8 @@ namespace QuanLiRapPhim.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SeviceId = table.Column<int>(type: "int", nullable: true),
+                    SeviceCatId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Amount = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     BillId = table.Column<int>(type: "int", nullable: true)
@@ -502,11 +526,35 @@ namespace QuanLiRapPhim.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_BillDetails_Sevices_SeviceId",
-                        column: x => x.SeviceId,
-                        principalTable: "Sevices",
+                        name: "FK_BillDetails_SeviceCategories_SeviceCatId",
+                        column: x => x.SeviceCatId,
+                        principalTable: "SeviceCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MovieRate",
+                columns: table => new
+                {
+                    MoviesId = table.Column<int>(type: "int", nullable: false),
+                    RatesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MovieRate", x => new { x.MoviesId, x.RatesId });
+                    table.ForeignKey(
+                        name: "FK_MovieRate_Movies_MoviesId",
+                        column: x => x.MoviesId,
+                        principalTable: "Movies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MovieRate_Rates_RatesId",
+                        column: x => x.RatesId,
+                        principalTable: "Rates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -540,6 +588,16 @@ namespace QuanLiRapPhim.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "IsDelete", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, "89e65f5f-4e54-4d26-8c2c-7d98bef84a5a", false, "admin", "ADMIN" },
+                    { 2, "a9208eea-daeb-44a1-bf68-d5ca6bb8f37e", false, "manager movie", "MANAGER MOVIE" },
+                    { 3, "6404a3d5-4764-4dda-9611-5acfb1310e7d", false, "staff", "STAFF" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "IsDelete", "Title" },
                 values: new object[,]
@@ -561,28 +619,44 @@ namespace QuanLiRapPhim.Migrations
 
             migrationBuilder.InsertData(
                 table: "Sevices",
-                columns: new[] { "Id", "IsDelete", "Name", "Price" },
+                columns: new[] { "Id", "IsDelete", "IsFood", "Name" },
                 values: new object[,]
                 {
-                    { 1, false, "Bắp rang", 10000m },
-                    { 2, false, "CoCa", 10000m },
-                    { 3, false, "Pepsi", 10000m }
+                    { 1, false, true, "Bắp rang" },
+                    { 2, false, false, "CoCa" },
+                    { 3, false, false, "Pepsi" }
                 });
 
             migrationBuilder.InsertData(
-                table: "Movies",
-                columns: new[] { "Id", "Describe", "IsDelete", "MacId", "Poster", "Status", "Time", "Title", "TotalRating", "TotalReviewers", "Trailer" },
-                values: new object[] { 1, "Lý Hải trở lại với dòng phim hành động sở trường của mình. Bối cảnh hoành tráng với sự đầu tư nghiêm túc, siêu phẩm hành động Việt Lật Mặt 48h sẽ kể về một hành trình trốn chạy đầy kịch tính, nghẹt thở đến phút cuối cùng.", false, 1, "1.jpg", 0, 110, "Lật mặt", 0, 0, "1.mp4" });
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FullName", "Img", "IsDelete", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { 1, 0, "f3765000-cb46-4589-8995-634afd61cede", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "0306181100@caothang.edu.vn", false, "Hồ Gia Bảo", "admin.img", false, false, null, null, "admin", "APCECMgqwgSvyY/Dup6jPrO2+lrdpUqZhhmVsh7ZI+TSxmk/Zon4fMuEdlIkIFyiag==", null, false, 1, "10d187ae-b20e-44b0-8f55-389720a8757c", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "Movies",
                 columns: new[] { "Id", "Describe", "IsDelete", "MacId", "Poster", "Status", "Time", "Title", "TotalRating", "TotalReviewers", "Trailer" },
-                values: new object[] { 2, "Sau những sự kiện tàn khốc của Avengers: Infinity War (2018), vũ trụ đang dần tàn lụi. Với sự giúp đỡ của các đồng minh còn lại, các Avengers tập hợp một lần nữa để đảo ngược hành động của Thanos và khôi phục lại sự cân bằng cho vũ trụ.", false, 1, "2.jpg", 0, 110, "Biệt đội báo thù", 0, 0, "2.mp4" });
+                values: new object[,]
+                {
+                    { 1, "Lý Hải trở lại với dòng phim hành động sở trường của mình. Bối cảnh hoành tráng với sự đầu tư nghiêm túc, siêu phẩm hành động Việt Lật Mặt 48h sẽ kể về một hành trình trốn chạy đầy kịch tính, nghẹt thở đến phút cuối cùng.", false, 1, "1.jpg", 0, 110, "Lật mặt", 0, 0, "1.mp4" },
+                    { 2, "Sau những sự kiện tàn khốc của Avengers: Infinity War (2018), vũ trụ đang dần tàn lụi. Với sự giúp đỡ của các đồng minh còn lại, các Avengers tập hợp một lần nữa để đảo ngược hành động của Thanos và khôi phục lại sự cân bằng cho vũ trụ.", false, 1, "2.jpg", 0, 110, "Biệt đội báo thù", 0, 0, "2.mp4" },
+                    { 3, "Đây là phần tiếp theo của bom tấn vô cùng ăn khách – “G.I. Joe: The Rise of Cobra”. Nội dung phần 2 của “G.I. Joe” bắt đầu khi những người lãnh đạo nước Mỹ bị tổ chức Cobra (kẻ thù không đội trời chung của đội đặc nhiệm G.I.Joe) kiểm soát và ra lệnh loại bỏ G.I.Joe. Toàn bộ nhóm đặc vụ bị gài bẫy và gần như bị xóa sổ. Những người còn sống của đội đặc nhiệm tìm đến sự giúp đỡ của người lãnh đạo G.I. Joe năm xưa – tướng Joe Colton để cùng nhau tìm nguyên nhân thực sự của mọi chuyện và tìm cách giải cứu nước Mỹ.", false, 1, "3.jpg", 0, 110, "BIỆT ĐỘI G.I. JOE: BÁO THÙ", 0, 0, "3.mp4" }
+                });
 
             migrationBuilder.InsertData(
-                table: "Movies",
-                columns: new[] { "Id", "Describe", "IsDelete", "MacId", "Poster", "Status", "Time", "Title", "TotalRating", "TotalReviewers", "Trailer" },
-                values: new object[] { 3, "Đây là phần tiếp theo của bom tấn vô cùng ăn khách – “G.I. Joe: The Rise of Cobra”. Nội dung phần 2 của “G.I. Joe” bắt đầu khi những người lãnh đạo nước Mỹ bị tổ chức Cobra (kẻ thù không đội trời chung của đội đặc nhiệm G.I.Joe) kiểm soát và ra lệnh loại bỏ G.I.Joe. Toàn bộ nhóm đặc vụ bị gài bẫy và gần như bị xóa sổ. Những người còn sống của đội đặc nhiệm tìm đến sự giúp đỡ của người lãnh đạo G.I. Joe năm xưa – tướng Joe Colton để cùng nhau tìm nguyên nhân thực sự của mọi chuyện và tìm cách giải cứu nước Mỹ.", false, 1, "3.jpg", 0, 110, "BIỆT ĐỘI G.I. JOE: BÁO THÙ", 0, 0, "3.mp4" });
+                table: "SeviceCategories",
+                columns: new[] { "Id", "IdSevice", "IsDeleted", "Name", "price" },
+                values: new object[,]
+                {
+                    { 1, 1, false, "Big", 10000m },
+                    { 2, 1, false, "Small", 5000m },
+                    { 3, 1, false, "Medium", 7000m },
+                    { 4, 2, false, "Big", 10000m },
+                    { 5, 2, false, "Small", 5000m },
+                    { 6, 2, false, "Medium", 7000m },
+                    { 7, 3, false, "Big", 10000m },
+                    { 8, 3, false, "Small", 5000m },
+                    { 9, 3, false, "Medium", 7000m }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -634,9 +708,9 @@ namespace QuanLiRapPhim.Migrations
                 column: "BillId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BillDetails_SeviceId",
+                name: "IX_BillDetails_SeviceCatId",
                 table: "BillDetails",
-                column: "SeviceId");
+                column: "SeviceCatId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bills_UserId",
@@ -664,6 +738,11 @@ namespace QuanLiRapPhim.Migrations
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MovieRate_RatesId",
+                table: "MovieRate",
+                column: "RatesId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Movies_MacId",
                 table: "Movies",
                 column: "MacId");
@@ -682,6 +761,11 @@ namespace QuanLiRapPhim.Migrations
                 name: "IX_Seats_RoomId",
                 table: "Seats",
                 column: "RoomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SeviceCategories_IdSevice",
+                table: "SeviceCategories",
+                column: "IdSevice");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShowTimes_MovieId",
@@ -734,7 +818,7 @@ namespace QuanLiRapPhim.Migrations
                 name: "Devices");
 
             migrationBuilder.DropTable(
-                name: "Rates");
+                name: "MovieRate");
 
             migrationBuilder.DropTable(
                 name: "Test");
@@ -749,16 +833,22 @@ namespace QuanLiRapPhim.Migrations
                 name: "Bills");
 
             migrationBuilder.DropTable(
-                name: "Sevices");
+                name: "SeviceCategories");
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Rates");
 
             migrationBuilder.DropTable(
                 name: "Seats");
 
             migrationBuilder.DropTable(
                 name: "ShowTimes");
+
+            migrationBuilder.DropTable(
+                name: "Sevices");
 
             migrationBuilder.DropTable(
                 name: "Users");

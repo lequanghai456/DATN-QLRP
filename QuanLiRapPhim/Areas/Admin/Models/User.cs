@@ -23,7 +23,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public String Img { get; set; }
         public bool ConfirmEmail { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }
-        public virtual ICollection<Rate> Rate { get; set; }
+        public virtual ICollection<Movie> MoviesRated { get; set; }
         public bool IsDelete { get; set; }
        
     }

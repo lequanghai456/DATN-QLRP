@@ -18,7 +18,7 @@ app.factory('dataservice', function ($http) {
     return {
         GetMovie: function (callback) {
             $http.get('/moviereview/getmovie').then(callback);
-       },
+        },
         GetListShowTime: function (id, Date, callback) {
             $http.get('/moviereview/GetListShowTime?idmovie=' + id + '&date=' + Date).then(callback);
         },
@@ -32,6 +32,9 @@ app.factory('dataservice', function ($http) {
                 data: data,
                 success: callback
             })
+        },
+        Rate: function (id, star,callback) {
+            $http.get('/moviereview/Rate/' + id + '?star=' + star).then(callback);
         }
     }
 });
@@ -126,6 +129,7 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibM
                 $scope.GetListShowTime("");
                 var total = $scope.model.totalRating == 0 ? 0 : $scope.model.totalRating / $scope.model.totalReviewers;
                 $scope.Rated(total, ".Rated");
+                console.log($scope.model);
             }
         });
 
@@ -152,19 +156,18 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibM
         });
     }
     $scope.btnRate = function () {
-        var modalInstance = $uibModal.open({
-            scope: $scope,
-            animation: true,
-            backdrop: true,
-            templateUrl: ctxfolderurl + "/ratePopup.html",
-            controller: "Popupmodal",
-            size: 'lg',
-        });
-        $scope.Rate(0);
+        if (!$scope.model.isRated) {
+            var modalInstance = $uibModal.open({
+                scope: $scope,
+                animation: true,
+                backdrop: true,
+                templateUrl: ctxfolderurl + "/ratePopup.htm",
+                controller: "Popupmodal",
+                size: 'lg',
+            });
+            $scope.Rate(0);
+        }
     }
-
-
-
 
     $scope.Rate = function (index) {
         Rated(index, ".Rate");
@@ -173,7 +176,18 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibM
     $scope.Rated = Rated;
 
     $scope.OK = function () {
-        alert($scope.star);
+        if ($scope.star > 0 && $scope.star <= 5) {
+            dataservice.Rate($scope.model.id, $scope.star, function (rs) {
+                rs = rs.data;
+                if (rs.error) {
+                    alert(rs.title);
+                }
+                else {
+                    alert("Bạn đã dánh giá phim " + $scope.star + " sao");
+                    $scope.model.isRated = true;
+                }
+            });
+        }
     }
     $scope.close = function () {
         $scope.star = 0;
@@ -189,6 +203,7 @@ app.controller('Popupmodal', function ($scope, $uibModalInstance, $uibModal, dat
 
     $scope.close = function () {
         console.log($scope.List);
+        console.log($scope.model);
         $uibModalInstance.close('cancel');
     }
 

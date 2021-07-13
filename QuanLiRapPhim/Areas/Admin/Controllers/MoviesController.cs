@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
+using QuanLiRapPhim.SupportJSON;
 
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
@@ -26,6 +27,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             public string Title { get; set; }
         }
+        
         [HttpGet]
         public async Task<String> JtableMovieModel(JTableModelCustom jTablePara)
         {

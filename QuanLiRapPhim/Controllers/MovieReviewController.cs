@@ -26,47 +26,147 @@ namespace QuanLiRapPhim.Controllers
         {
             return View();
         }
-
-        [HttpGet]
-        public JsonResult GetMovieByName(String Name)
+        [AuthorizeRoles("")]
+        public JsonResult Rate(int id, int star)
         {
+            var movie = _context.Movies.Include(x => x.RatedUsers).Where(x => x.Id == id).First();
             JMessage jMessage = new JMessage();
-            var movie = (from m in  _context.Movies 
-                         where (m.Title == Name)
-                         select new {
-                            m.Id,
-                            m.Title,
-                            m.Time,
-                            Lstcategories=from c in m.Lstcategories select c.Title ,
-                            m.Describe,
-                            m.Mac,
-                            m.Poster,
-                            m.Trailer,
-                            m.TotalRating,
-                            m.TotalReviewers
-                         }).FirstOrDefault();
-            jMessage.Error = movie == null;
-            if (!jMessage.Error)
+            if (User.Identity.Name != null)
             {
-                jMessage.Object = movie;
+                jMessage.Error = star < 0 || star > 5;
+
+                if (!jMessage.Error)
+                {
+                    jMessage.Error = movie == null || movie.IsDelete;
+                    if (!jMessage.Error)
+                    {
+                        movie.TotalRating += star;
+                        movie.TotalReviewers += 1;
+                        var us = _context.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
+                        if (us != null)
+                        {
+                            if (movie.RatedUsers == null)
+                                movie.RatedUsers = new List<User>();
+                            if (movie.RatedUsers.Where(x => x.UserName == User.Identity.Name).Count() == 0)
+                            {
+                                movie.RatedUsers.Add(us);
+                                try
+                                {
+                                    _context.Update(movie);
+                                    _context.SaveChanges();
+                                }
+                                catch (Exception er)
+                                {
+                                    jMessage.Error = true;
+                                    jMessage.Title = "Lỗi đánh giá";
+                                    return Json(jMessage);
+                                }
+
+
+                                jMessage.Object = "Bạn vừa đánh giá phim " + star + " sao";
+                            }
+                            else
+                            {
+                                jMessage.Error = true;
+                                jMessage.Title = "Bạn đã đánh giá phim này rồi!";
+
+                            }
+
+
+                        }
+                        else
+                        {
+                            jMessage.Error = true;
+                            jMessage.Title = "Không tìm thấy người đang đăng nhập";
+                        }
+                    }
+                    else
+                    {
+                        jMessage.Title = "Không tìm thấy phim";
+                    }
+                }
+                else
+                {
+                    jMessage.Title = "Lỗi đánh giá";
+                }
             }
             else
             {
-                jMessage.Title = "<h1>Không có phim "+Name+"</h1>";
+                jMessage.Error = true;
+                jMessage.Title = "Bạn chưa đăng nhập";
             }
             return Json(jMessage);
         }
+        [HttpGet]
+        public JsonResult GetMovieByName(String Name)
+        {
+            JMessage jMess = new JMessage();
+            var Object = _context.Movies
+                .Include(x => x.RatedUsers)
+                .Include(x => x.Lstcategories)
+                .Where(x => x.Title==Name).Where(x => x.IsDelete == false)
+                .Select(x => new {
+                    x.Id,
+                    x.Title,
+                    x.Time,
+                    x.Status,
+                    x.TotalReviewers,
+                    x.TotalRating,
+                    x.Poster,
+                    x.Trailer,
+                    x.Lstcategories,
+                    IsRated = User.Identity.Name == null || x.RatedUsers.Where(x => x.UserName == User.Identity.Name).Count() > 0,
+                    x.Describe
+                }).First();
+            jMess.Error = Object == null;
+            if (jMess.Error)
+            {
+                jMess.Title = "Không tìm thấy phim";
+            }
+            else
+            {
+                jMess.Object = Object;
+            }
+            return Json(jMess);
+        }
+
         public JsonResult GetItem(int id)
         {
-            return Json(_context.Movies.FirstOrDefault(movie=>movie.Id==id));
+            JMessage jMess = new JMessage();
+            var Object = _context.Movies
+                .Include(x=>x.RatedUsers)
+                .Include(x=>x.Lstcategories)
+                .Where(x=>x.Id==id).Where(x=>x.IsDelete==false)
+                .Select(x=>new {
+                    x.Id,
+                    x.Title,
+                    x.Time,
+                    x.Status,
+                    x.TotalReviewers,
+                    x.TotalRating,
+                    x.Poster,
+                    x.Trailer,
+                    x.Lstcategories,
+                    IsRated=User.Identity.Name==null||x.RatedUsers.Where(x=>x.UserName==User.Identity.Name).Count()>0,
+                    x.Describe
+                }).First();
+            jMess.Error = Object == null;
+            if (jMess.Error)
+            {
+                jMess.Title = "Không tìm thấy phim";
+            }
+            else
+            {
+                jMess.Object = Object;
+            }
+            return Json(jMess);
         }
         public async Task<JsonResult> GetMovie(int year, int idCate)
         {
-
-            return Json(_context.Movies.Where(x=>x.IsDelete==false).ToList());
+            return Json(_context.Movies.Where(x => x.IsDelete == false).ToList());
         }
         [HttpGet]
-        public JsonResult GetListShowTime(int? idmovie,String date)
+        public JsonResult GetListShowTime(int? idmovie, String date)
         {
             JMessage jMessage = new JMessage();
             jMessage.ID = (int)idmovie;
@@ -74,12 +174,12 @@ namespace QuanLiRapPhim.Controllers
             {
                 var list = (from sh in _context.ShowTimes
                             where sh.MovieId == (int)idmovie
-                            && (String.IsNullOrEmpty(date)? sh.DateTime.Date.CompareTo(DateTime.Now) == 0 : sh.DateTime.Date.CompareTo(DateTime.Parse(date).Date) == 0)
+                            && (String.IsNullOrEmpty(date) ? sh.DateTime.Date.CompareTo(DateTime.Now) == 0 : sh.DateTime.Date.CompareTo(DateTime.Parse(date).Date) == 0)
                             && !sh.IsDelete
                             select new
                             {
                                 sh.Id,
-                                Time=sh.startTime.ToShortTimeString()+ " - " +sh.startTime.AddMinutes(sh.Movie.Time).ToShortTimeString()
+                                Time = sh.startTime.ToShortTimeString() + " - " + sh.startTime.AddMinutes(sh.Movie.Time).ToShortTimeString()
                             }
                            ).ToList();
 
@@ -93,25 +193,12 @@ namespace QuanLiRapPhim.Controllers
                     jMessage.Title = "Không có lịch chiếu";
                 }
             }
-            catch(Exception er)
+            catch (Exception er)
             {
                 jMessage.Error = true;
                 jMessage.Title = "Có lỗi xảy ra";
             }
             return Json(jMessage);
         }
-    }
-    class movie
-    {
-        public int Id { get; set; }
-        public String Title{ get; set; }
-        public String Trailer{ get; set; }
-        public String Poster{ get; set; }
-        public String Describe{ get; set; }
-        public int Status{ get; set; }
-        public int Time{ get; set; }
-        [DataType(DataType.Date)]
-        [JsonConverter(typeof(JsonDateConverter))]
-        public DateTime Date { get; set; }
     }
 }
