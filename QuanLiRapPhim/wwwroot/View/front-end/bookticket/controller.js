@@ -20,6 +20,9 @@ app.factory("datasevice", function ($http) {
         },
         getListSeatOfShowtime: function(data,callback) {
             $http.get('/Bookticket/getListSeatOfShowtime/'+data).then(callback);
+        },
+        DsGheDaDat: function (id, callback) {
+            $http.get('/Bookticket/DsGheDaDat/' + id).then(callback);
         }
     }
 });
@@ -52,10 +55,22 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
                     rs = rs.data;
                     if (rs.error) {
                         alert(rs.title);
+                        $scope.room = null;
                     }
                     else {
                         $scope.ListSeat = rs.object;
-                        console.log($scope.ListSeat);
+                        datasevice.DsGheDaDat($scope.idShowtime, function (rs) {
+                            rs = rs.data;
+                            if (rs.error) {
+                                alert(rs.title);
+                                $scope.room = null;
+                            }
+                            else {
+                                $scope.dsGheDaThanhToan = rs.object;
+                                console.log(rs.object);
+                                $scope.$apply;
+                            }
+                        })
                     }
                 });
 
@@ -146,7 +161,6 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
             alert('Ban chưa chon ghe');
         }
     };
-    $scope.controller = "bookticket";
     $scope.choseService = function () {
         var modalInstance = $uibModal.open({
             animation: true,
@@ -186,6 +200,7 @@ app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
 
     $scope.payment = function () {
         clearInterval($scope.timeID);
+        $("#bookticket").submit();
         $uibModalInstance.close('ok');
     }
 

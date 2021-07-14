@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLiRapPhim.Areas.Admin.Data;
 
 namespace QuanLiRapPhim.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20210714063601_updatMoviePrice")]
+    partial class updatMoviePrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -418,7 +420,7 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             MacId = 1,
                             Poster = "1.jpg",
-                            Price = 100000m,
+                            Price = 0m,
                             Status = 0,
                             Time = 110,
                             Title = "Lật mặt",
@@ -433,7 +435,7 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             MacId = 1,
                             Poster = "2.jpg",
-                            Price = 120000m,
+                            Price = 0m,
                             Status = 0,
                             Time = 110,
                             Title = "Biệt đội báo thù",
@@ -448,7 +450,7 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             MacId = 1,
                             Poster = "3.jpg",
-                            Price = 90000m,
+                            Price = 0m,
                             Status = 0,
                             Time = 110,
                             Title = "BIỆT ĐỘI G.I. JOE: BÁO THÙ",
@@ -493,7 +495,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "69524e8e-0aa9-437f-ae38-e1a6d4c45291",
+                            ConcurrencyStamp = "73894806-d493-48b4-947f-f1d159614f50",
                             IsDelete = false,
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -501,7 +503,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "bb1d6a6a-3cdf-47c1-aa78-ed7a446202a5",
+                            ConcurrencyStamp = "f8a51663-7b65-4540-8255-a679f06d3131",
                             IsDelete = false,
                             Name = "manager movie",
                             NormalizedName = "MANAGER MOVIE"
@@ -509,7 +511,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "6a162018-1e8f-4028-a207-5232f695315d",
+                            ConcurrencyStamp = "8a029b10-03e7-4b32-b9ae-0a6e739460ff",
                             IsDelete = false,
                             Name = "staff",
                             NormalizedName = "STAFF"
@@ -841,7 +843,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0d053acb-482c-4e5b-b958-c9b3b1affaec",
+                            ConcurrencyStamp = "ab186e63-a6ff-44de-82a7-15a2e6b887f8",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181100@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -850,10 +852,10 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "admin",
-                            PasswordHash = "AD1ZG+gtyPh4vmi6mjfiiMqv5qQH7zEihW6ydK3hWY5BiMWR5LKqsPTTk/k5+/w3Og==",
+                            PasswordHash = "AHrMxG5kcwcLmrz7qn6VrmZwyh/eyGJ3PwuQ/Jo9JOVkN6LkbvBcw+ix9sS4IRstVA==",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "3f3c1d01-cef5-429b-a0be-a22f504034ba",
+                            SecurityStamp = "74b60b3b-6f1b-4014-980a-ceefbffc53da",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

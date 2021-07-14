@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLiRapPhim.Areas.Admin.Data;
 
 namespace QuanLiRapPhim.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20210714061746_updateticket2")]
+    partial class updateticket2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -382,9 +384,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("Poster")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -418,7 +417,6 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             MacId = 1,
                             Poster = "1.jpg",
-                            Price = 100000m,
                             Status = 0,
                             Time = 110,
                             Title = "Lật mặt",
@@ -433,7 +431,6 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             MacId = 1,
                             Poster = "2.jpg",
-                            Price = 120000m,
                             Status = 0,
                             Time = 110,
                             Title = "Biệt đội báo thù",
@@ -448,7 +445,6 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             MacId = 1,
                             Poster = "3.jpg",
-                            Price = 90000m,
                             Status = 0,
                             Time = 110,
                             Title = "BIỆT ĐỘI G.I. JOE: BÁO THÙ",
@@ -493,7 +489,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "69524e8e-0aa9-437f-ae38-e1a6d4c45291",
+                            ConcurrencyStamp = "2a2265ce-c648-4e34-be31-e4cc5a784a06",
                             IsDelete = false,
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -501,7 +497,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "bb1d6a6a-3cdf-47c1-aa78-ed7a446202a5",
+                            ConcurrencyStamp = "50c9af08-3ef7-4f0d-aa2e-9ea6a72b8e15",
                             IsDelete = false,
                             Name = "manager movie",
                             NormalizedName = "MANAGER MOVIE"
@@ -509,7 +505,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "6a162018-1e8f-4028-a207-5232f695315d",
+                            ConcurrencyStamp = "91740d39-8b47-480f-9c65-c87aaec2c729",
                             IsDelete = false,
                             Name = "staff",
                             NormalizedName = "STAFF"
@@ -737,6 +733,9 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<int?>("MovieId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int?>("RoomId")
                         .HasColumnType("int");
 
@@ -841,7 +840,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0d053acb-482c-4e5b-b958-c9b3b1affaec",
+                            ConcurrencyStamp = "486b8d89-6d0d-47b5-b16f-7355bced8469",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181100@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -850,10 +849,10 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "admin",
-                            PasswordHash = "AD1ZG+gtyPh4vmi6mjfiiMqv5qQH7zEihW6ydK3hWY5BiMWR5LKqsPTTk/k5+/w3Og==",
+                            PasswordHash = "AHvAq3G17ZubqQ8zRUEg0I4tkKCgKIsDHEfeY8qx9UK3pbZuDpQcOgvSnLehXcBGHg==",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "3f3c1d01-cef5-429b-a0be-a22f504034ba",
+                            SecurityStamp = "2645f549-6cac-4f0a-83e2-73d60dae740d",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

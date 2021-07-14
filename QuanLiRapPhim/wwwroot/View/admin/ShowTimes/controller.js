@@ -92,9 +92,6 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('DateTime', 'DateTime').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Price', 'Price').withClass('Center').notSortable().renderWith(function (data, type) {
-            return data;
-        }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('NameRoom', 'NameRoom').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
         }));
