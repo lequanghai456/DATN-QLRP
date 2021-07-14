@@ -21,15 +21,16 @@ namespace QuanLiRapPhim.Controllers
         public IActionResult Index(int id)
         {
             bool a=User.Identity.Name == null;
-            if (id <= 0 || _context.ShowTimes.Where(x => x.IsDelete == true).Any(x => x.Id == id))
+            var has = _context.ShowTimes.Any(x => x.Id == id);
+            var deleted = _context.ShowTimes.Where(x=>x.IsDelete).Any(x => x.Id == id);
+            if (id <= 0 || !has || deleted)
             {
-                return RedirectToAction("Index","Home");
+                return NotFound();
             }
             var St = _context.ShowTimes.Find(id);
 
             return View(St);
         }
-
         public JsonResult getRoomByIdShowtime(int id)
         {
             JMessage jMessage = new JMessage();
@@ -46,6 +47,7 @@ namespace QuanLiRapPhim.Controllers
                                    where sh.Id == id
                                    select new
                                    {
+                                       sh.Id,
                                        r.Row,
                                        r.Col,
                                        time=sh.startTime.ToShortTimeString(),
@@ -79,6 +81,26 @@ namespace QuanLiRapPhim.Controllers
                                        se.Y,
                                        se.Status
                                    }).ToList().GroupBy(x => x.X).Select(x => new { name = x.Key,arr=x.ToList().Select(x=> new {x.X, x.Y,x.Id,x.Status}) });
+                jMessage.Object = seats;
+            }
+            return Json(jMessage);
+        }
+        public JsonResult DsGheDaDat(int id) {
+            JMessage jMessage = new JMessage();
+            jMessage.ID = id;
+            var has = _context.ShowTimes.Any(x => x.Id == id);
+            var deleted = _context.ShowTimes.Where(x => x.IsDelete).Any(x => x.Id == id);
+            jMessage.Error = id <= 0 || !has || deleted;
+            if (jMessage.Error == true)
+            {
+                jMessage.Title = "Không tìm thấy lịch chiếu hoặc phim của bạn";
+            }
+            else
+            {
+                var seats = (from t in _context.Tickets
+                            join sh in _context.ShowTimes
+                            on t.ShowTimeId equals sh.Id
+                            select t.SeatId).ToList();
                 jMessage.Object = seats;
             }
             return Json(jMessage);

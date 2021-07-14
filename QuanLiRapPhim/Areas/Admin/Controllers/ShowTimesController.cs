@@ -54,11 +54,11 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             && (String.IsNullOrEmpty(jTablePara.date) || x.DateTime.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
             && (jTablePara.RoomId == 0 || x.RoomId == jTablePara.RoomId));
             int count = query.Count();
-            var data = query.AsQueryable().Select(x => new { x.Id, DateTime = x.DateTime.ToString("MM/dd/yyyy"), NameRoom = x.Room.Name, NameMovie = x.Movie.Title, StartTime = x.startTime.ToString("HH:mm"), x.Price })
+            var data = query.AsQueryable().Select(x => new { x.Id, DateTime = x.DateTime.ToString("MM/dd/yyyy"), NameRoom = x.Room.Name, NameMovie = x.Movie.Title, StartTime = x.startTime.ToString("HH:mm") })
                 .Skip(intBegin)
                 .Take(jTablePara.Length);
 
-            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Price", "DateTime", "NameRoom", "NameMovie", "StartTime");
+            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "DateTime", "NameRoom", "NameMovie", "StartTime");
             return JsonConvert.SerializeObject(jdata);
         }
 
@@ -261,7 +261,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                             s = _context.ShowTimes.Find(showTimes.showTimes[item.index].Id);
                             s.Movie = movie;
                             s.DateTime = showTimes.Date;
-                            s.Price = 10000;
                             s.RoomId = 1;
                             s.startTime = startTime;
                             startTime = startTime.AddMinutes(movie.Time + 30);
@@ -272,7 +271,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                             s = new ShowTime();
                             s.Movie = movie;
                             s.DateTime = showTimes.Date;
-                            s.Price = 10000;
                             s.RoomId = 1;
                             s.startTime = startTime;
                             startTime = startTime.AddMinutes(movie.Time + 30);

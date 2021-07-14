@@ -29,7 +29,7 @@ app.directive('myTicket', function () {
         scope: {
             model:'='
         },
-        templateUrl: ctxfolderurl + '/Tickets.html',
+        templateUrl: ctxfolderurl + '/Ticket.html',
         link:link
     };
 });

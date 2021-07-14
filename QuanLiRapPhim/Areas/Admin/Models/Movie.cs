@@ -24,6 +24,8 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public int Status { get; set; }
         [Display(Name = "Thời lượng")]
         public int Time { get; set; }
+        [Display(Name = "Giá")]
+        public Decimal Price { get; set; }
         public int TotalRating { get; set; }
         public int TotalReviewers { get; set; }
         [ForeignKey("MacId")]

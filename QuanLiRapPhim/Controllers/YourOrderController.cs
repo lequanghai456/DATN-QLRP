@@ -57,25 +57,85 @@ namespace QuanLiRapPhim.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult BookTicket(Ticket ticket)
+        {
+            var flag = (from sh in _context.ShowTimes
+                        join r in _context.Rooms on sh.RoomId equals r.Id
+                        join se in _context.Seats on r.Id equals se.RoomId
+                        where sh.Id == ticket.ShowTimeId && se.Id == ticket.SeatId
+                        select se).Count() > 0;
+
+            var isbooked = (from T in _context.Tickets
+                            where T.SeatId == ticket.SeatId
+                            select T).Count() > 0;
+            if (ticket.SeatId == null || !flag || isbooked)
+            {
+                return NotFound();
+            }
+
+            ticket.Username = User.Identity.Name;
+            ticket.Price = Price((int)ticket.SeatId,(int)ticket.ShowTimeId);
+            ticket.PurchaseDate = DateTime.Now;
+            _context.Add(ticket);
+            try
+            {
+                _context.SaveChanges();
+                Message = "Bạn đã mua thành công";
+            }
+            catch(Exception er)
+            {
+                Message = "Lỗi";
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        private decimal Price(int idseat,int idShowTime)
+        {
+
+            decimal price = _context.ShowTimes
+                .Include(x=>x.Movie).FirstOrDefault(x=>x.Id==idShowTime).Movie.Price;
+            var s = _context.Seats.Find(idseat);
+            switch(s.X)
+            {
+                case "A":
+                case "B":
+                case "C":
+                    price += price/10;
+                    break;
+                case "D":
+                case "E":
+                case "F":
+                    price += price / 5;
+                    break;
+                default:
+                    break;
+            }
+            
+            return price;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public JsonResult GetAllServices() {
+        public JsonResult GetAllServices()
+        {
             JMessage jMessage = new JMessage();
-            var Object= _context.Sevices.Where(s => !s.IsDelete).Select(x=>new {
+            var Object = _context.Sevices.Where(s => !s.IsDelete).Select(x => new
+            {
                 x.Id,
                 x.IsFood,
                 x.Name,
-                size=x.SeviceCategories.Where(s => !s.IsDeleted).Select(x=>new { 
+                size = x.SeviceCategories.Where(s => !s.IsDeleted).Select(x => new
+                {
                     x.Name,
                     x.price,
                     x.Id
                 }).ToList()
             }).ToList();
 
-            jMessage.Error = Object.Count==0;
+            jMessage.Error = Object.Count == 0;
             if (jMessage.Error)
             {
                 jMessage.Title = "Không tìm thấy dịch vụ";
@@ -86,8 +146,6 @@ namespace QuanLiRapPhim.Controllers
             }
             return Json(jMessage);
         }
-
-        public List<Ticket> Tickets { get; set; }
         public List<yourOrder> yourOrders { get; set; }
 
         public JsonResult GetAll()
@@ -102,29 +160,23 @@ namespace QuanLiRapPhim.Controllers
         {
             //Truy vấn lấy ds bill và ticket theo username sắp xếp theo thời gian 
             var Bills = from b in _context.Bills
+                        where b.User.UserName==User.Identity.Name
                         select new
                         {
                             b.Id,
                             b.Date,
                             b.TotalPrice,
                             b.BillDetails,
+                            b.Status
                         };
-            Tickets = new List<Ticket>();
+            var Tickets = from t in _context.Tickets
+                      where t.Username == User.Identity.Name
+                      select t;
+
             
-            for (int i = 0; i < 5; i++)
-            {
-                var ticket = new Ticket()
-                {
-                    Id = i,
-                    PurchaseDate = DateTime.Now.AddDays(i),
-                    SeatId = i,
-                    ShowTimeId = i,
-                    ShowTime = new ShowTime() { Movie = _context.Movies.Find(1) }
-                };
-                Tickets.Add(ticket);
-            }
             yourOrders = new List<yourOrder>();
             yourOrders.AddRange((from x in Bills
+                                 where x.Status == false
                                  select new yourOrder
                                  {
                                      id = "HD" + x.Id,
@@ -133,18 +185,19 @@ namespace QuanLiRapPhim.Controllers
                                  }).ToList());
 
             yourOrders.AddRange((from x in Tickets
+                                 where x.Status==false
                                  select new yourOrder
                                  {
                                      id = "V" + x.Id,
                                      Objects = new {
                                         x.ShowTime.Movie.Title,
-                                        x.SeatId,
+                                        x.Seat,
                                         startTime=x.ShowTime.startTime.ToShortTimeString(),
                                         Name="Hồ Gia Bảo"
                                      },
                                      Date = x.PurchaseDate
                                  }).ToList());
-            yourOrders = yourOrders.OrderBy(x => x.Date).ToList();
+            yourOrders = yourOrders.OrderByDescending(x => x.Date).ToList();
 
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
 

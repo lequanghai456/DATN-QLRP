@@ -15,8 +15,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateTime { get; set; }
-        [Display(Name = "Giá")]
-        public Decimal Price { get; set; }
         [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:HH:mm}")]
         [Display(Name = "Thời gian bắt đầu")]
