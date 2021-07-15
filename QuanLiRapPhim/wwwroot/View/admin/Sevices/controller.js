@@ -80,9 +80,14 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Name', 'Tên dịch vụ').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Price', 'Giá').withClass('Center').renderWith(function (data, type) {
-            return data;
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Size', 'Kích thước - giá').withClass('Center').renderWith(function (data, type) {
+            var Name = "";
+            angular.forEach(JSON.parse(data), function (value, key) {
+                Name += value.Name + " - " + value.price +'</br>';
+            });
+            return Name.slice(0, Name.length - 1);
         }));
+        
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
             return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Sevices/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
         }));
@@ -106,7 +111,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         var flag = true;
         if (id != null) {
             if (id.value == idDelete) {
-                $scope.notification = "Cannot delete object being edited";
+                $scope.notification = "Không thể xóa khi đang cập nhật";
                 flag = false;
             }
         }
@@ -137,7 +142,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     }
     $scope.deleteSeviceList = function () {
         if (id != null) {
-            $scope.notification = "This feature cannot be used while editing";
+            $scope.notification = "Không thể xóa khi đang cập nhật";
         } else {
             $("input:checkbox[name=type]:checked").each(function () {
                 $scope.selected.push($(this).val());
@@ -154,6 +159,44 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         }
         
     }
+    $scope.ListSeviecs = [];
+    //Danh sách loại
+    $scope.addCategorySevice = function ()
+    {
+        if (($scope.name == null || $scope.price == null || $scope.name == "")) {
+            $scope.Mess = "Tên và giá không được bỏ trống"
+        }
+        else {
+            $scope.ListSeviecs.push({
+                "name": $scope.name,
+                "price": $scope.price
+            });
+            $scope.Mess = null;
+            $scope.name = null
+            $scope.price = null;
+            console.log($scope.ListSeviecs);
+        }
+    }
+    $scope.action = {
+        del: function (index) {
+            $scope.ListSeviecs.splice(index, 1);
+            $scope.$apply;
+            console.log($scope.ListSeviecs);
+        },
+
+        //add: function () {
+        //    if ($scope.selected > 0) {
+        //        $scope.LitSeviecs.push($scope.selected);
+        //        $scope.selected = '-1';
+        //        $scope.$apply;
+        //    }
+        //},
+
+
+
+    }
     
     
 });
+
+

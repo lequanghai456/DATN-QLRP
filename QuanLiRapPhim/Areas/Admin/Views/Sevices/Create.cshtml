@@ -1,30 +1,89 @@
 ﻿@model QuanLiRapPhim.Areas.Admin.Models.Sevice
-
-<h1>@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")</h1>
-<form asp-action=@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit") method="post" class="row">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    @{ if (ViewContext.RouteData.Values["id"] != null)
-        {
-            <input id="idEdit" type="hidden" asp-for="Id" />
+    <style>
+        .Sevice {
+            margin: 2px;
+            padding: 5px;
+            display: flex;
+            background-color: #1ae21a;
+            border-radius: 5px;
+            justify-content: space-between;
+            text-align: center;
+            
         }
-    }
-    <div class="form-group col-6">
-        <label asp-for="Name" class="control-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    @*<div class="form-group col-6">
-        <label asp-for="Price" class="control-label"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>*@
-    <div class="form-group col-12 d-flex justify-content-center">
-        <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")" class="btn btn-primary" />
-        @{ if (ViewContext.RouteData.Values["id"] != null)
+
+
+
+        .list-Sevice-categories {
+            background-color: #eee;
+            height: 300px;
+            border: 1px dotted black;
+            overflow: scroll;
+            border: 5px dashed green;
+            color: white;
+        }
+    </style>    
+        <h1>@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")</h1>
+        <div class="row">
+            <form asp-action=@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit") method="post" class="r col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @*@{ if (ViewContext.RouteData.Values["id"] != null)
             {
-                <a href="~/admin/Sevices" class="btn btn-warning">Canncel</a>
+                <input id="idEdit" type="hidden" asp-for="Id" />
             }
-        }
-    </div>
-</form>
+        }*@
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IsFood" class="control-label"></label>
+                    <select asp-for="IsFood" class="form-control">
+                        <option value="true">Thức ăn</option>
+                        <option value="false">Nước</option>
+                    </select>
+                    <span asp-validation-for="IsFood" class="text-danger"></span>
+                </div>
+                @*<div class="form-group" ng-repeat="item in ListSeviecs">
+            <label class="control-label">Kích thước</label>
+            <input class="form-control" name="ListSeviceCategories[{{$index}}].name"  ng-model="item.name" required type="text" />
+            <label class="control-label">Giá</label>
+            <input class="form-control" name="ListSeviceCategories[{{$index}}].price" ng-model="item.price" required type="number" min="0" />
+        </div>*@
+                <div class="form-group" hidden ng-repeat="item in ListSeviecs">
+                    <label class="control-label">Kích thước</label>
+                    <input class="form-control" name="ListSeviceCategories[{{$index}}].name" ng-model="item.name" required type="text" />
+                    <label class="control-label">Giá</label>
+                    <input class="form-control" name="ListSeviceCategories[{{$index}}].price" ng-model="item.price" required type="number" min="0" />
+                </div>
+                
+                <div class="form-group col-12 d-flex justify-content-center">
+                    <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")" class="btn btn-primary" />
+                    @{ if (ViewContext.RouteData.Values["id"] != null)
+                        {
+                            <a href="~/admin/Sevices" class="btn btn-warning">Canncel</a>
+                        }
+                    }
+                </div>
+            </form>
+            <div class="col-6">
+                <h2>Danh sách thể loại mới</h2>
+                <div class="" ng-repeat="item in ListSeviecs">
+                    <div class="Sevice">
+                        <span class="" style="color: white;">Tên loại:{{item.name}} - Giá: {{item.price}}</span>
+                        <a class="btn btn-danger" ng-click="action.del($index)"> delete </a>
+                    </div>
 
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Kích thước</label>
+                    <input class="form-control" ng-model="name" required type="text" />
+                    <label class="control-label">Giá</label>
+                    <input class="form-control" ng-model="price" required type="number" min="0" />
+                </div>
+                <h2 class="alert-danger">{{Mess}}</h2>
+                <input type="submit" class="btn btn-primary" ng-click="addCategorySevice()" value="Thêm loại" />
+            </div>
+        </div>
+           
+            

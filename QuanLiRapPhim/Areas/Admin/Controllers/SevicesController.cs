@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -28,40 +29,53 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // GET: Admin/Sevices
         public async Task<IActionResult> Index(int? id)
         {
-            Sevice sevice = null;
-            if (id != null)
-            {
-                sevice = _context.Sevices.FirstOrDefault(x => x.Id == id);
-            }
-            return View(sevice);
+            return View();
         }
         // POST: Admin/Sevices/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,IsDelete")] Sevice sevice)
+        public async Task<IActionResult> Create(Sevice sevice,List<SeviceCategory> ListSeviceCategories)
         {
+            try {
             if (ModelState.IsValid)
             {
-                _context.Add(sevice);
-                await _context.SaveChangesAsync();
-                Message = "Tạo dịch vụ thành công";
-                return RedirectToAction(nameof(Index));
+                    if (ListSeviceCategories.Count() > 0)
+                    {
+                        foreach (var item in ListSeviceCategories)
+                        {
+                            item.Sevice = sevice;
+                            _context.Add(item);
+                        }
+                        await _context.SaveChangesAsync();
+                        Message = "Tạo dịch vụ thành công";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    Message = "Dịch vụ phải có ít nhất một loại";
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            return View(sevice);
+            catch(Exception err)
+            {
+                Message = "Tạo dịch vụ thất bại";
+                return View();
+            }
+            Message = "Tạo dịch vụ thất bại";
+            return RedirectToAction(nameof(Index));
+
         }
         [HttpGet]
         public async Task<String> JtableSeviceModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
-            var query = _context.Sevices.Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Name) || x.Name.Contains(jTablePara.Name)));
+            var query = _context.Sevices.Include(x=>x.SeviceCategories).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Name) || x.Name.Contains(jTablePara.Name)));
             int count = query.Count();
-            var data = query.AsQueryable()
+            var data = query.AsQueryable().Select(x=>new { x.Id,x.Name,Size = JsonConvert.SerializeObject(x.SeviceCategories.ToList<SeviceCategory>()) })
                 .Skip(intBegin)
                 .Take(jTablePara.Length);
 
-            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Name", "Price");
+            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Name","Size");
             return JsonConvert.SerializeObject(jdata);
         }
         public JsonResult DeleteSevice(int? id)
@@ -117,7 +131,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
 
         }
-      
+
 
         // POST: Admin/Sevices/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -154,7 +168,22 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             }
             return View(sevice);
         }
-       
+        
+        public class inputSevice
+        {
+            
+            [Display(Name = "Tên dịch vụ")]
+            [Required(ErrorMessage ="Tên dịch vụ không được để trống")]
+            public string Name { get; set; }
+            [Display(Name = "Loại dịch vụ")]
+            public bool Isfood { get; set; }
+            
+            //[Display(Name = "Kích thước")]
+            //public string Size { get; set; }
+            //[Display(Name = "Giá")]
+            //[Required(ErrorMessage = "Giá dịch vụ không được để trống")]
+            //public decimal Price { get; set; }
+        }
         private bool SeviceExists(int id)
         {
             return _context.Sevices.Any(e => e.Id == id);
