@@ -29,6 +29,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // GET: Admin/Sevices
         public async Task<IActionResult> Index(int? id)
         {
+            Sevice sevice = new Sevice();
+            if (id != null)
+            {
+                sevice = _context.Sevices.Include(x=>x.SeviceCategories).FirstOrDefault(x => x.Id == id);
+                ViewBag.categories = new SelectList(_context.SeviceCategories.Where(x => x.IsDelete == false && x.Sevice == sevice), "Id", "Name");
+            }
             return View();
         }
         // POST: Admin/Sevices/Create

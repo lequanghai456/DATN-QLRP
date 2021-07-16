@@ -13,5 +13,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public bool IsDeleted { get; set; }
         [ForeignKey("IdSevice")]
         public virtual Sevice Sevice { get; set; }
+        public bool IsDelete { get; set; }
     }
 }
