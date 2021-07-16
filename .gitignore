@@ -41,3 +41,5 @@ QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Rooms/Index.cshtml.g.cs
 QuanLiRapPhim/obj/Debug/net5.0/Razor/Views/Login/Index.cshtml.g.cs
 QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Test/CreateEdit.cshtml.g.cs
 QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/Test/Index.cshtml.g.cs
+QuanLiRapPhim/obj/Debug/net5.0/Razor/Areas/Admin/Views/BillDetails/Index.cshtml.g.cs
+QuanLiRapPhim/obj/Debug/net5.0/Razor/Views/Bookticket/Index.cshtml.g.cs
