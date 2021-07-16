@@ -2,79 +2,90 @@
 
 namespace QuanLiRapPhim.Migrations
 {
-    public partial class model_seat : Migration
+    public partial class updatMoviePrice : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "Status",
-                table: "Seats",
-                type: "int",
+            migrationBuilder.DropColumn(
+                name: "Price",
+                table: "ShowTimes");
+
+            migrationBuilder.AddColumn<decimal>(
+                name: "Price",
+                table: "Movies",
+                type: "decimal(18,2)",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: 0m);
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "ConcurrencyStamp",
-                value: "ed4d2b30-be60-4c26-944a-a44a0337cd8c");
+                value: "73894806-d493-48b4-947f-f1d159614f50");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "ConcurrencyStamp",
-                value: "5737dfae-50a7-486d-949a-bf436f481487");
+                value: "f8a51663-7b65-4540-8255-a679f06d3131");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "ConcurrencyStamp",
-                value: "dbf33b53-c2c9-4b5e-9815-14022f5b6466");
+                value: "8a029b10-03e7-4b32-b9ae-0a6e739460ff");
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "0a929677-52ce-4bff-922b-c4e07e50a96c", "AOhFoENeAPMjltHLkWUBkRgPRJHxU1x/NqlyV37YjD/zuLertiQh+uEIJmP4OzehCw==", "1e16d41a-eb04-4e9e-94e4-1e0538601455" });
+                values: new object[] { "ab186e63-a6ff-44de-82a7-15a2e6b887f8", "AHrMxG5kcwcLmrz7qn6VrmZwyh/eyGJ3PwuQ/Jo9JOVkN6LkbvBcw+ix9sS4IRstVA==", "74b60b3b-6f1b-4014-980a-ceefbffc53da" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Status",
-                table: "Seats");
+                name: "Price",
+                table: "Movies");
+
+            migrationBuilder.AddColumn<decimal>(
+                name: "Price",
+                table: "ShowTimes",
+                type: "decimal(18,2)",
+                nullable: false,
+                defaultValue: 0m);
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "ConcurrencyStamp",
-                value: "4836867d-bfa0-43da-b1b1-b08babe6ddda");
+                value: "2a2265ce-c648-4e34-be31-e4cc5a784a06");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "ConcurrencyStamp",
-                value: "9de713b3-cfdf-4a9d-9c90-0661de0537d0");
+                value: "50c9af08-3ef7-4f0d-aa2e-9ea6a72b8e15");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "ConcurrencyStamp",
-                value: "b4ff7959-7b17-4fc9-b95f-038095647ff6");
+                value: "91740d39-8b47-480f-9c65-c87aaec2c729");
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "e7409a49-c487-4ee9-a7c0-ee58da5c95a8", "ALbr3Vlfz3ZPC5Hw40NJ9yv2W04J/RuEhCwHVoiDpWco/9E8rP6l//qqFrnVHxfqow==", "53be1fb4-aa88-42fb-a3fa-32a36aa7d531" });
+                values: new object[] { "486b8d89-6d0d-47b5-b16f-7355bced8469", "AHvAq3G17ZubqQ8zRUEg0I4tkKCgKIsDHEfeY8qx9UK3pbZuDpQcOgvSnLehXcBGHg==", "2645f549-6cac-4f0a-83e2-73d60dae740d" });
         }
     }
 }

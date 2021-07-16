@@ -28,7 +28,6 @@ namespace QuanLiRapPhim.Areas.Admin.Data
         public DbSet<Device> Devices { get; set; }
         public DbSet<Mac> Macs { get; set; }
         public DbSet<Movie> Movies { get; set; }
-        public DbSet<Rate> Rates { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<SeviceCategory> SeviceCategories { get; set; }
         public DbSet<Sevice> Sevices { get; set; }

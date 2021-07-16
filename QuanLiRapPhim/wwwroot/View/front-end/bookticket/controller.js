@@ -1,4 +1,4 @@
-﻿var ctxfolderurl = "/View/front-end/bookticket";
+﻿var ctxfolderurl = "/View/front-end";
 
 var app = angular.module('App', ['ui.bootstrap', 'ngRoute', 'ngAnimate']);
 
@@ -20,6 +20,9 @@ app.factory("datasevice", function ($http) {
         },
         getListSeatOfShowtime: function(data,callback) {
             $http.get('/Bookticket/getListSeatOfShowtime/'+data).then(callback);
+        },
+        DsGheDaDat: function (id, callback) {
+            $http.get('/Bookticket/DsGheDaDat/' + id).then(callback);
         }
     }
 });
@@ -52,10 +55,22 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
                     rs = rs.data;
                     if (rs.error) {
                         alert(rs.title);
+                        $scope.room = null;
                     }
                     else {
                         $scope.ListSeat = rs.object;
-                        console.log($scope.ListSeat);
+                        datasevice.DsGheDaDat($scope.idShowtime, function (rs) {
+                            rs = rs.data;
+                            if (rs.error) {
+                                alert(rs.title);
+                                $scope.room = null;
+                            }
+                            else {
+                                $scope.dsGheDaThanhToan = rs.object;
+                                console.log(rs.object);
+                                $scope.$apply;
+                            }
+                        })
                     }
                 });
 
@@ -127,7 +142,7 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
             var modalInstance = $uibModal.open({
                 scope: $scope,
                 animation: true,
-                templateUrl: ctxfolderurl + "/payment.html",
+                templateUrl: ctxfolderurl + "/bookticket/payment.htm",
                 controller: "payment",
                 backdrop: 'static',
                 size: 'lg',
@@ -146,7 +161,18 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
             alert('Ban chưa chon ghe');
         }
     };
+    $scope.choseService = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: ctxfolderurl + "/your_order/chose-services.html",
+            controller: "choseService",
+            size: 'xl'
+        });
 
+        modalInstance.result.then(function (res) {
+            //xử lý payment và cancel
+        });
+    }
 });
 app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
     $scope.init = function () {
@@ -174,6 +200,7 @@ app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
 
     $scope.payment = function () {
         clearInterval($scope.timeID);
+        $("#bookticket").submit();
         $uibModalInstance.close('ok');
     }
 

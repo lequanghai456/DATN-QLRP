@@ -7,13 +7,13 @@
     <table class="Hd" style="background:white;width:100%">
             <tr style="border-bottom:DarkGray dashed">
                 <th>Tên</th>
-                <th>Số lượng</th>
-                <th>Đơn giá</th>
+                <th width="200px">Số lượng</th>
+                <th width="200px">Đơn giá</th>
             </tr>
             <tr ng-repeat="x in data.BillDetails" style="background:white;border:none">
-                <td>{{x.Sevice.Name}}</td>
+                <td>{{x.Name}}</td>
                 <td>{{x.Amount}}</td>
-                <td>{{x.Sevice.Price}}</td>
+                <td>{{x.UnitPrice}}</td>
             </tr>
     </table>
     <hr />

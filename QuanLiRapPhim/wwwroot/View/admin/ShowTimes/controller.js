@@ -1,4 +1,4 @@
-﻿var ctxfolderurl = "https://localhost:44350";
+﻿var ctxfolderurl = "/View/front-end/your_order";
 
 var app = angular.module('App', ['datatables', 'ngRoute', 'checklist-model']);
 
@@ -90,9 +90,6 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('DateTime', 'DateTime').withClass('Center').notSortable().renderWith(function (data, type) {
-            return data;
-        }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Price', 'Price').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('NameRoom', 'NameRoom').withClass('Center').notSortable().renderWith(function (data, type) {

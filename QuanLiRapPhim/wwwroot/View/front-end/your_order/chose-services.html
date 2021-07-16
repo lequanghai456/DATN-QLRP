@@ -1,0 +1,194 @@
+﻿<style>
+    .modal-header, .option,.item,.item div {
+        display: flex;
+    }
+    .food ul {
+        overflow: auto;
+        max-height:300px;
+    }
+    .item {
+        justify-content: space-between;
+        padding:5px;
+        margin:5px;
+    }
+        .item div {
+            padding:5px;
+            align-items: center;
+        }
+        .food li, .Bill,.sevice,.food{
+            border: 1px solid black;
+            margin:5px;
+            border-radius:5px;
+        }
+
+    .option {
+        align-items: center;
+    }
+        .option input {
+            outline: none;
+            cursor: pointer;
+            border: none;
+            font-size: 0.875rem;
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: 0;
+            display: flex;
+            text-align: center;
+            transition: background-color 0.1s cubic-bezier(0.4, 0, 0.6, 1);
+            border: 1px solid rgba(0,0,0,0.09);
+            border-radius: 2px;
+            background: transparent;
+            color: rgba(0,0,0,0.8);
+            width: 32px;
+            height: 32px;
+        }
+        .option button {
+            outline: none;
+            cursor: pointer;
+            border: none;
+            font-size: 0.875rem;
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: 0;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.1s cubic-bezier(0.4, 0, 0.6, 1);
+            border: 1px solid rgba(0,0,0,0.09);
+            border-radius: 2px;
+            background: transparent;
+            color: rgba(0,0,0,0.8);
+            width: 32px;
+            height: 32px;
+        }
+
+    .minus-btn,.add-btn {
+        font-size: 10px;
+        width: 10px;
+        height: 10px;
+    }
+    .Bill{
+        height:300px;
+    }
+    table {
+        width: -webkit-fill-available;
+        color: black;
+        margin: 20px;
+        align-content:center;
+        text-align:center;
+    }
+    td{
+        padding:5px;
+    }
+</style>
+<div class="modal-content">
+    <div class="modal-header" style=" justify-content: space-between;">
+        <h3 class="modal-title" id="exampleModalLabel">
+            Dịch vụ
+        </h3>
+        <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="col-12 m-1 d-flex"><input class="form-control col-4" type="text" ng-model="search" placeholder="Tìm kiếm ..."><span style="padding:4px;"><i class="fa fa-2x fa-search"></i></span></p>
+
+        <div class="sevice d-flex">
+            <div class="food  w-50">
+                <h2 style="text-align:center">Đồ ăn</h2>
+                <ul>
+                    <li class="item row" ng-repeat="food in foods | filter:search">
+                        <div class="col-6 option">
+                            <button ng-click="add(food)" ng-show="food.choosesize">
+                                <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0" class="add-btn">
+                                    <polygon points="10 4.5 5.5 4.5 5.5 0 4.5 0 4.5 4.5 0 4.5 0 5.5 4.5 5.5 4.5 10 5.5 10 5.5 5.5 10 5.5"></polygon>
+                                </svg>
+                            </button>
+                            <span class="col">{{food.name}}</span>
+                        </div>
+                        <div class="col-6">
+                            <span>Loại:</span>
+                            <select style="height:32px;" class="form-control" ng-model="food.choosesize">
+                                <option ng-repeat="x in food.size" value="{{x.id}}">{{x.name}}</option>
+                            </select>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="food w-50">
+                <h2 style="text-align:center">Nước uống</h2>
+                <ul>
+                    <li class="item row" ng-repeat="food in waters | filter:search">
+                        <div class="col-6 option">
+                            <button ng-click="add(food)" ng-show="food.choosesize">
+                                <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0" class="add-btn">
+                                    <polygon points="10 4.5 5.5 4.5 5.5 0 4.5 0 4.5 4.5 0 4.5 0 5.5 4.5 5.5 4.5 10 5.5 10 5.5 5.5 10 5.5"></polygon>
+                                </svg>
+                            </button>
+                            <span class="col">{{food.name}}</span>
+                        </div>
+                        <div class="col-6">
+                            <span>Loại:</span>
+                            <select style="height:32px;" class="form-control" ng-model="food.choosesize">
+                                <option ng-repeat="x in food.size" value="{{x.id}}">{{x.name}}</option>
+                            </select>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="Bill dataTables_wrapper">
+            <h1 class="w-100 text-center">Hóa đơn</h1>
+            <form method="post" action="\YourOrder\BuySevice">
+                <table>
+                    <thead style="border-bottom: 2px solid black;">
+                        <tr>
+                            <th>Tên</th>
+                            <th width="200px">Số lượng</th>
+                            <th width="200px">Đơn giá</th>
+                        </tr>
+                    </thead>
+                    <tbody style="border-bottom: 2px solid black;max-height: 40px;overflow:scroll">
+                        <tr ng-repeat="billdetail in ListBilldetail">
+                            <td>
+                                {{billdetail.name}}({{billdetail.size.name}})
+                            </td>
+                            <td>
+                                <div class="option">
+                                    <span class="btn btn-outline-danger" ng-click="minus($index)" >
+                                        <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0" class="minus-btn">
+                                            <polygon points="4.5 4.5 3.5 4.5 0 4.5 0 5.5 3.5 5.5 4.5 5.5 10 5.5 10 4.5"></polygon>
+                                        </svg>
+                                    </span>
+                                    <input hidden ng-model="billdetail.size.id" name="Billdetails[{{$index}}].SeviceCatId" />
+                                    <input class="w-100 h-100" type="number" min=1 ng-model="billdetail.amout" ng-change="billdetail.amout<=0:minus($index)" name="Billdetails[{{$index}}].Amount" required>
+                                    <span class="btn btn-outline-info" ng-click="addinList($index)">
+                                        <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0" class="add-btn">
+                                            <polygon points="10 4.5 5.5 4.5 5.5 0 4.5 0 4.5 4.5 0 4.5 0 5.5 4.5 5.5 4.5 10 5.5 10 5.5 5.5 10 5.5"></polygon>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>{{billdetail.size.price}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot ng-show="Total(ListBilldetail)">
+                        <tr>
+                            <td><button class="btn btn-success">Thanh Toán</button></td>
+                            <td><h4>Tổng tiền</h4></td>
+                            <td><h5>{{Total(ListBilldetail)}}</h5></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </form>
+            <div class="d-flex justify-content-end">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="payment()" data-dismiss="modal">Save changes</button>
+        <button type="button" class="btn btn-secondary"  ng-click="cancel()">Close</button>
+    </div>
+</div>

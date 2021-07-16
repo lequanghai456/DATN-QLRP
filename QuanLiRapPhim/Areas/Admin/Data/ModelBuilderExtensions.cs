@@ -88,8 +88,8 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Trailer = "1.mp4",
                     Poster = "1.jpg",
                     Describe = "Lý Hải trở lại với dòng phim hành động sở trường của mình. Bối cảnh hoành tráng với sự đầu tư nghiêm túc, siêu phẩm hành động Việt Lật Mặt 48h sẽ kể về một hành trình trốn chạy đầy kịch tính, nghẹt thở đến phút cuối cùng.",
-                    Time = 110
-                    
+                    Time = 110,
+                    Price=100000,                    
                 },
                 new Movie
                 {
@@ -99,8 +99,8 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Trailer = "2.mp4",
                     Poster = "2.jpg",
                     Describe = "Sau những sự kiện tàn khốc của Avengers: Infinity War (2018), vũ trụ đang dần tàn lụi. Với sự giúp đỡ của các đồng minh còn lại, các Avengers tập hợp một lần nữa để đảo ngược hành động của Thanos và khôi phục lại sự cân bằng cho vũ trụ.",
-                    Time = 110
-
+                    Time = 110,
+                    Price=120000
                 },
                  new Movie
                  {
@@ -110,7 +110,8 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                      Trailer = "3.mp4",
                      Poster = "3.jpg",
                      Describe = "Đây là phần tiếp theo của bom tấn vô cùng ăn khách – “G.I. Joe: The Rise of Cobra”. Nội dung phần 2 của “G.I. Joe” bắt đầu khi những người lãnh đạo nước Mỹ bị tổ chức Cobra (kẻ thù không đội trời chung của đội đặc nhiệm G.I.Joe) kiểm soát và ra lệnh loại bỏ G.I.Joe. Toàn bộ nhóm đặc vụ bị gài bẫy và gần như bị xóa sổ. Những người còn sống của đội đặc nhiệm tìm đến sự giúp đỡ của người lãnh đạo G.I. Joe năm xưa – tướng Joe Colton để cùng nhau tìm nguyên nhân thực sự của mọi chuyện và tìm cách giải cứu nước Mỹ.",
-                     Time = 110
+                     Time = 110,
+                     Price=90000
 
                  }
             );

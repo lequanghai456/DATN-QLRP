@@ -24,6 +24,8 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public int Status { get; set; }
         [Display(Name = "Thời lượng")]
         public int Time { get; set; }
+        [Display(Name = "Giá")]
+        public Decimal Price { get; set; }
         public int TotalRating { get; set; }
         public int TotalReviewers { get; set; }
         [ForeignKey("MacId")]
@@ -31,6 +33,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public virtual ICollection<Category> Lstcategories { get; set; }
         public virtual ICollection<ShowTime> LstShowTime { get; set; }
         public virtual ICollection<Comment> LstComment { get; set; }
+        public virtual ICollection<User> RatedUsers { get; set; }
         public bool IsDelete { get; set; }
     }
 
