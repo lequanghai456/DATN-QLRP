@@ -122,21 +122,21 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Id = 1,
                     Name = "Bắp rang",
                     IsFood=true,
-                    IsDelete = false
+                    
                 },
                 new Sevice
                 {
                     Id = 2,
                     Name = "CoCa",
                     IsFood=false,
-                    IsDelete = false
+                    
                 }, 
                 new Sevice
                 {
                     Id = 3,
                     Name = "Pepsi",
                     IsFood=false,
-                    IsDelete = false
+                    
                 }
                 );
 
@@ -147,7 +147,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Name="Big",
                     IdSevice=1,
                     price=10000,
-                    IsDeleted = false
+                    
                 }, 
                 new SeviceCategory
                 {
@@ -155,7 +155,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Name = "Small",
                     IdSevice = 1,
                     price = 5000,
-                    IsDeleted = false
+                    
                 }, 
                 new SeviceCategory
                 {
@@ -163,7 +163,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Name = "Medium",
                     IdSevice = 1,
                     price = 7000,
-                    IsDeleted = false
+                    
                 },
                 new SeviceCategory
                 {
@@ -171,7 +171,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Name = "Big",
                     IdSevice = 2,
                     price = 10000,
-                    IsDeleted = false
+                    
                 },
                 new SeviceCategory
                 {
@@ -179,7 +179,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Name = "Small",
                     IdSevice = 2,
                     price = 5000,
-                    IsDeleted = false
+                    
                 },
                 new SeviceCategory
                 {
@@ -187,7 +187,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Name = "Medium",
                     IdSevice = 2,
                     price = 7000,
-                    IsDeleted = false
+                    
                 },
                 new SeviceCategory
                 {
@@ -195,7 +195,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Name = "Big",
                     IdSevice = 3,
                     price = 10000,
-                    IsDeleted = false
+                    
                 },
                 new SeviceCategory
                 {
@@ -203,7 +203,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Name = "Small",
                     IdSevice = 3,
                     price = 5000,
-                    IsDeleted = false
+                    
                 }, 
                 new SeviceCategory
                 {
@@ -211,7 +211,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     Name = "Medium",
                     IdSevice = 3,
                     price = 7000,
-                    IsDeleted = false
+                    
                 }
                 );
         }

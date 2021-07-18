@@ -127,7 +127,7 @@ namespace QuanLiRapPhim.Controllers
                 x.Id,
                 x.IsFood,
                 x.Name,
-                size = x.SeviceCategories.Where(s => !s.IsDeleted).Select(x => new
+                size = x.SeviceCategories.Where(s => !s.IsDelete).Select(x => new
                 {
                     x.Name,
                     x.price,
