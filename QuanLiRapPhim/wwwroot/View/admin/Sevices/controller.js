@@ -10,6 +10,18 @@ app.factory('dataservice', function ($http) {
         deleteSeviceCheckbox: function (data, callback) {
             $http.post('/Admin/Sevices/DeleteSeviceList?Listid=' + data).then(callback);
         },
+        editSevice: function (data, callback) {
+            $http.post('/Admin/Sevices/editSevice?id=' + data).then(callback);
+        },
+        editCategorySevice: function (data, callback) {
+            $http.post('/Admin/Sevices/editCategorySevice', data).then(callback);
+        },
+        addCategorySevice: function (data, callback) {
+            $http.post('/Admin/Sevices/addCategorySevice', data).then(callback);
+        },
+        delCategorySevice: function (data, callback) {
+            $http.post('/Admin/Sevices/delCategorySevice?id='+ data).then(callback);
+        },
     }
 });
 
@@ -79,7 +91,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Name', 'Tên dịch vụ').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }));    
         vm.dtColumns.push(DTColumnBuilder.newColumn('Size', 'Kích thước - giá').withClass('Center').renderWith(function (data, type) {
             var Name = "";
             angular.forEach(JSON.parse(data), function (value, key) {
@@ -92,7 +104,8 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Sevices/Index/' + data + '#! > Cập nhật</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Xóa</button>';
         }));
         
-       
+        vm.addCategory = true;
+        vm.editCategory = false;
         if (id != null) {
             vm.create = true;
             
@@ -100,7 +113,26 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         else {
             vm.create = false;
         }
+        $scope.buttonCategorySevices = "addCategorySevice()";
         
+        if (id != null) {
+            dataservice.editSevice(id.value, function (rs) {
+                $scope.seviceName = rs.data[0].name;
+                $scope.seviceIsFood = rs.data[0].IsFood;
+                rs = rs.data[0].listCategorysevice;
+                
+                console.log(rs);
+                angular.forEach(rs, function (value, key) {
+                    $scope.ListSeviecs.push({
+                        "id": value.id,
+                        "name": value.name,
+                        "price": value.price
+                    });    
+                });
+                
+                console.log($scope.ListSeviecs);
+            });
+        }
     }
     $scope.init();
     
@@ -164,26 +196,139 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     $scope.addCategorySevice = function ()
     {
         if (($scope.name == null || $scope.price == null || $scope.name == "")) {
-            $scope.Mess = "Tên và giá không được bỏ trống"
+            $scope.Mess = "Tên và giá không được bỏ trống";
         }
         else {
-            $scope.ListSeviecs.push({
-                "name": $scope.name,
-                "price": $scope.price
-            });
-            $scope.Mess = null;
-            $scope.name = null
-            $scope.price = null;
-            console.log($scope.ListSeviecs);
+            if (id != null) {
+                $scope.categorySevice.name = $scope.name;
+                $scope.categorySevice.price = $scope.price;
+                $scope.categorySevice.id = $scope.idCategorySevice;
+                $scope.categorySevice.idSevice = id.value;
+                dataservice.addCategorySevice($scope.categorySevice, function (rs) {
+                    if (rs.data != 0) {
+                        $scope.ListSeviecs.push({
+                            "id": rs.data,
+                            "name": $scope.name,
+                            "price": $scope.price
+                        });
+                        $scope.Mess = null;
+                        $scope.name = null
+                        $scope.price = null;
+                        reloadData(true);
+                    }
+                    else {
+                        $scope.Mess = "Thêm thất bại";
+                    }
+
+                });
+            } else {
+                if ($scope.itam == null) {
+                    $scope.ListSeviecs.push({
+                        "name": $scope.name,
+                        "price": $scope.price
+                    });
+                    $scope.Mess = null;
+                    $scope.name = null
+                    $scope.price = null;
+                    console.log($scope.ListSeviecs);
+                }
+                else {
+                    $scope.ListSeviecs[$scope.itam].name = $scope.name;
+                    $scope.ListSeviecs[$scope.itam].price = $scope.price;
+                    $scope.Mess = null;
+                    $scope.name = null;
+                    $scope.price = null;
+                    $scope.itam = null;
+                    vm.addCategory = true;
+                    vm.editCategory = false;
+                    console.log($scope.ListSeviecs);
+                    $scope.addCategoryButton = "Thêm loại";
+                }
+            }
         }
+    }
+    $scope.categorySevice = {
+        id: "",
+        name: "",
+        price: "",
+        idSevice: "",
+        
+    }
+    $scope.editCategorySevice = function () {
+        $scope.categorySevice.name = $scope.name;
+        $scope.categorySevice.price = $scope.price;
+        $scope.categorySevice.id = $scope.idCategorySevice;
+            dataservice.editCategorySevice($scope.categorySevice, function (rs) {
+            rs = rs.data;
+            if (rs) {
+                $scope.ListSeviecs[$scope.itam].name = $scope.name;
+                $scope.ListSeviecs[$scope.itam].price = $scope.price;
+                $scope.Mess = null;
+                $scope.name = null;
+                $scope.price = null;
+                $scope.itam = null;
+                vm.addCategory = true;
+                vm.editCategory = false;
+                console.log($scope.ListSeviecs);
+                $scope.addCategoryButton = "Thêm loại";
+                $scope.Mess = "Cập nhật thành công";
+                reloadData(true);
+            }
+            else {
+                $scope.Mess = "Cập nhật thất bại";
+            }
+
+        });
+    }
+    $scope.delCategorySevice = function (id, index) {
+        dataservice.delCategorySevice(id, function (rs) {
+            if (rs.data) {
+                $scope.ListSeviecs.splice(index, 1);
+                $scope.$apply;
+                console.log($scope.ListSeviecs);
+                $scope.name = "";
+                $scope.price = "";
+                reloadData(true);
+            }
+            else {
+                $scope.Mess = "Có lỗi xảy ra không thể xóa đối tượng này";
+            }
+        });
+    }
+    $scope.cancelCategorySevice = function () {
+        $scope.Mess = null;
+        $scope.name = null;
+        $scope.price = null;
+        $scope.itam = null;
+        vm.addCategory = true;
+        vm.editCategory = false;
+        $scope.addCategoryButton = "Thêm loại";
     }
     $scope.action = {
         del: function (index) {
-            $scope.ListSeviecs.splice(index, 1);
-            $scope.$apply;
+            if ($scope.itam == null) {
+                $scope.ListSeviecs.splice(index, 1);
+                $scope.$apply;
+                console.log($scope.ListSeviecs);
+                $scope.name = "";
+                $scope.price = "";
+            }
+            else {
+                $scope.Mess = "Không thể xóa khi đang sử dụng tính năng cập nhật"
+            }
+            
+
+        },
+        edit: function (index) {
+            $scope.name = $scope.ListSeviecs[index].name;
+            $scope.price = $scope.ListSeviecs[index].price;
+            $scope.idCategorySevice = $scope.ListSeviecs[index].id;
+            $scope.itam = index;
+            vm.addCategory = false;
+            vm.editCategory = true;
+            $scope.addCategoryButton = "Cập nhật";
             console.log($scope.ListSeviecs);
         },
-
         //add: function () {
         //    if ($scope.selected > 0) {
         //        $scope.LitSeviecs.push($scope.selected);

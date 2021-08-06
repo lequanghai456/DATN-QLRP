@@ -10,7 +10,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public int IdSevice { get; set; }
         public string Name { get; set; }
         public decimal price { get; set; }
-        public bool IsDeleted { get; set; }
         [ForeignKey("IdSevice")]
         public virtual Sevice Sevice { get; set; }
         public bool IsDelete { get; set; }

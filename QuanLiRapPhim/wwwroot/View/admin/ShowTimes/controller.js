@@ -272,7 +272,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     }
 });
 
-app.directive('listSevices', function () {
+app.directive('listMovie', function () {
     return {
         restrict: 'E',
         template: '<input type="number" hidden ng-repeat="x in data track by $index" name="ListMivie[{{$index}}]" value="{{x}}"/>',
