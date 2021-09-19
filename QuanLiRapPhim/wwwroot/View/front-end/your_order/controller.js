@@ -29,7 +29,7 @@ app.directive('myTicket', function () {
         scope: {
             model:'='
         },
-        templateUrl: ctxfolderurl + '/Ticket.html',
+        templateUrl: ctxfolderurl + '/Ticket.htm',
         link:link
     };
 });
@@ -43,7 +43,6 @@ app.directive('myBill', function (DTColumnDefBuilder, DTOptionsBuilder) {
         restrict: 'A',
         scope: {
             model: "=",
-            
         },
         templateUrl: ctxfolderurl + '/Bill.html',
         link: link
@@ -95,7 +94,7 @@ app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnB
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Objects', 'Đơn hàng của bạn').withOption('sWidth', '320px').renderWith(function (data, type,full,meta) {
         data = JSON.parse(data);
         console.log(data);
-        if (data.Date)
+        if (data.isTicket == false)
             return '<div my-Bill model="All[' + meta.row + ']" ></div > ';
         return '<div my-Ticket model="All[' + meta.row + ']" ></div > ';
     }).notSortable());

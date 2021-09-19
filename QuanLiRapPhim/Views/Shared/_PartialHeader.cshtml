@@ -18,68 +18,67 @@
             <ul class="menu">
                 <li class="menu-item" id="home">
                     <a asp-controller="Home" asp-action="Index">
-                        <img src="~/images/home.png" width="24" height="24" />
-                        Home
+                        <img src="~/images/home.png" width="24" height="26" />
+                        Trang chủ
                     </a>
                 </li>
-
                 <li class="menu-item" id="movie_review">
-                    <div class="row">
                     <a asp-controller="moviereview" asp-action="Index">
-                            <img src="~/images/cinema.png" alt="" srcset="" width="24" height="24">
-                        Movie Review
+                        <img src="~/images/cinema.png" alt="" srcset="" width="24" height="26">
+                        Danh sách phim
                     </a>
-                    </div>
                 </li>
-
-                &nbsp;
-                &nbsp;
-                &nbsp;
-                <li class="menu-item" id="my_order">
-                    <div class="row">
-                    <a asp-controller="YourOrder" asp-action="Index">
-                        <img src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-cgv/icon_ticket25.png"
-                                 alt="" srcset="" width="24" height="24">
-                        My order
+                <li class="menu-item" id="showtimes">
+                    <a asp-controller="Showtimes" asp-action="Index">
+                        <img src="~/images/time.png" alt="" srcset="" width="24" height="26">
+                        Lịch chiếu phim
                     </a>
-                    </div>
                 </li>
-                &nbsp;
-                &nbsp;
                 <li class="menu-item" id="contact">
                     <a asp-controller="Contact" asp-action="Index">
-                        <img src="~/images/information.png" width="24" height="24" />
-                        Contact
+                        <img src="~/images/information.png" width="24" height="26" />
+                        Liên hệ
                     </a>
                 </li>
-             
                 @if (SignInManager.IsSignedIn(User) && @User.FindFirst("FullNameUser") != null)
                 {
+                    <li class="menu-item" id="my_order">
+                        <a asp-controller="YourOrder" asp-action="Index">
+                            <img src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-cgv/icon_ticket25.png"
+                                 alt="" srcset="" width="24" height="26">
+                            Hóa đơn
+                        </a>
+                    </li>
+
                     <li class="menu-item" id="profile">
                         <a asp-controller="Profile" asp-action="Index">
                             <img src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-cgv/icon_login25.png"
-                                 width="24" height="24">
+                                 width="24" height="26">
+
                             @User.FindFirst("FullNameUser").Value!
-                        <div id="id" hidden>@User.FindFirst("Id").Value</div>
+                            <div id="id" hidden>@User.FindFirst("Id").Value</div>
                         </a>
                     </li>
+
                     <li class="menu-item">
-                        <img class="fas fa-sign-out" width="24" height="24" />
                         <a asp-controller="Login" asp-action="Logout" style="height:100%">
-                            Logout
+
+                            <img src="https://image.flaticon.com/icons/png/512/25/25376.png" width="24" height="26" />
+                            Đăng xuất
                         </a>
                     </li>
                 }
                 else
                 {
-                    if (ViewData["Title"] != "Login") {
+                    //if (ViewData["Title"] != "Login")
+                    //{
                     <li class="menu-item">
-                        <span class="fa fa-sign-in"></span>
-                        <a data-toggle="modal" data-target="#myModal" style="height:24px">
-                            Login
+                        <a asp-controller="login" asp-action="Index" style="height:100%">
+                            <img src="https://cdn-icons-png.flaticon.com/512/25/25245.png" width="24" height="26" />
+                            Đăng nhập
                         </a>
                     </li>
-                    }
+                    //}
                 }
 
 

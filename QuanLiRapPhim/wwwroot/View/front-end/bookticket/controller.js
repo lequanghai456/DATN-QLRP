@@ -59,18 +59,6 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
                     }
                     else {
                         $scope.ListSeat = rs.object;
-                        datasevice.DsGheDaDat($scope.idShowtime, function (rs) {
-                            rs = rs.data;
-                            if (rs.error) {
-                                alert(rs.title);
-                                $scope.room = null;
-                            }
-                            else {
-                                $scope.dsGheDaThanhToan = rs.object;
-                                console.log(rs.object);
-                                $scope.$apply;
-                            }
-                        })
                     }
                 });
 
@@ -86,21 +74,32 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
 
         //load những ghế đang được người khác chọn
     socket.on('load_ghe_da_chon', function (data) {
+        datasevice.DsGheDaDat($scope.idShowtime, function (rs) {
+            $scope.dsghedachon = [];
+            rs = rs.data;
+            if (rs.error) {
+                alert(rs.title);
+            }
+            else {
+                $scope.dsghedachon = rs.object;
+                console.log(rs.object);
+            }
 
-        $scope.dsghedachon = [];
-        if (data != null) {
-            data.forEach(function (seat, ind) {
-                if (seat.idGhe != -1) {
-                    $scope.dsghedachon.push(seat.idGhe);
-                    if ($scope.seat != null && $scope.seat == seat.idGhe)
-                        $scope.seat = null;
-                }
+            if (data != null) {
+                data.forEach(function (seat, ind) {
+                    if (seat.idGhe != -1) {
+                        $scope.dsghedachon.push(seat.idGhe);
+                        if ($scope.seat != null && $scope.seat == seat.idGhe)
+                            $scope.seat = null;
+                    }
 
-            });
-        }
-        $scope.dsghedachon = $scope.dsghedachon.concat($scope.dsGheDaThanhToan);
-        console.log("dang load ghe");
-        $scope.$apply(function () {
+                });
+            }
+
+            $scope.dsghedachon = $scope.dsghedachon.concat($scope.dsGheDaThanhToan);
+            console.log("dang load ghe");
+            $scope.$apply;
+
             $.unblockUI();
         });
     });
@@ -142,7 +141,7 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
             var modalInstance = $uibModal.open({
                 scope: $scope,
                 animation: true,
-                templateUrl: ctxfolderurl + "/bookticket/payment.htm",
+                templateUrl: ctxfolderurl + "/bookticket/payment.html",
                 controller: "payment",
                 backdrop: 'static',
                 size: 'lg',
@@ -175,6 +174,15 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
     }
 });
 app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
+    $scope.data = {
+        Date: $scope.room.date,
+        Name: $scope.room.user,
+        Room: $scope.room.name,
+        Seat: { X: $scope.seat.x, Y: $scope.seat.y },
+        Title: $scope.room.title,
+        Time: $scope.room.time,
+    }
+    console.log($scope.data);
     $scope.init = function () {
         $scope.minuted = 1;
         $scope.second = 10;
@@ -204,4 +212,21 @@ app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
         $uibModalInstance.close('ok');
     }
 
+});
+
+
+app.directive('myTicket', function () {
+    function link($scope, element, attributes) {
+        $scope.data = $scope.model;
+        console.log($scope.data);
+    }
+
+    return {
+        restrict: 'E',
+        scope: {
+            model: '='
+        },
+        templateUrl: "/View/front-end/your_order/Ticket.htm",
+        link: link
+    };
 });

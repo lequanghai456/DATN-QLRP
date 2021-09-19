@@ -51,9 +51,11 @@ namespace QuanLiRapPhim.Controllers
                                        r.Row,
                                        r.Col,
                                        time=sh.startTime.ToShortTimeString(),
+                                       date=sh.DateTime.ToShortDateString(),
                                        r.Name,
                                        mv.Title,
                                        mv.Poster,
+                                       User=_context.Users.FirstOrDefault(x=>x.UserName==User.Identity.Name).FullName
                                    }).FirstOrDefault();
             }
             return Json(jMessage);

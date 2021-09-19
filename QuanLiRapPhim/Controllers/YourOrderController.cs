@@ -91,7 +91,6 @@ namespace QuanLiRapPhim.Controllers
 
         private decimal Price(int idseat,int idShowTime)
         {
-
             decimal price = _context.ShowTimes
                 .Include(x=>x.Movie).FirstOrDefault(x=>x.Id==idShowTime).Movie.Price;
             var s = _context.Seats.Find(idseat);
@@ -127,7 +126,7 @@ namespace QuanLiRapPhim.Controllers
                 x.Id,
                 x.IsFood,
                 x.Name,
-                size = x.SeviceCategories.Where(s => !s.IsDelete).Select(x => new
+                size = x.SeviceCategories.Where(x=>!x.IsDelete).Select(x => new
                 {
                     x.Name,
                     x.price,
@@ -163,6 +162,7 @@ namespace QuanLiRapPhim.Controllers
                         where b.User.UserName==User.Identity.Name
                         select new
                         {
+                            isTicket = false,
                             b.Id,
                             b.Date,
                             b.TotalPrice,
@@ -190,10 +190,13 @@ namespace QuanLiRapPhim.Controllers
                                  {
                                      id = "V" + x.Id,
                                      Objects = new {
+                                        isTicket=true,
                                         x.ShowTime.Movie.Title,
                                         x.Seat,
-                                        startTime=x.ShowTime.startTime.ToShortTimeString(),
-                                        Name="Hồ Gia Bảo"
+                                        Time=x.ShowTime.startTime.ToShortTimeString(),
+                                        x.Name,
+                                        Date=x.ShowTime.DateTime.ToShortDateString(),
+                                        Room=x.Seat.Room.Name
                                      },
                                      Date = x.PurchaseDate
                                  }).ToList());
