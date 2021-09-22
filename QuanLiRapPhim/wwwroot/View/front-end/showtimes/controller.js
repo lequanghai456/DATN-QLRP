@@ -9,7 +9,25 @@ app.config(function ($routeProvider) {
             controller: 'index'
         })
 });
+app.factory('dataservice', function ($http) {
+    var headers = {
+    "Content-Type": "application/json;odata=verbose",
+    "Accept": "application/json;odata=verbose",
+    }
 
-app.controller('Ctroller', function () {
+    return {
+        GetListShowTime: function (id, Date, callback) {
+            $http.get('/moviereview/GetListShowTime?idmovie=' + id + '&date=' + Date).then(callback);
+        },
+    }
+});
+
+app.controller('Ctroller', function ($scope) {
+    $scope.init = function () {
+        $("#showtimes").addClass("current-menu-item");
+    }
+    $scope.init();
+});
+app.controller('index', function () {
 
 });

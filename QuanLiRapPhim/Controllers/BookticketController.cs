@@ -20,7 +20,6 @@ namespace QuanLiRapPhim.Controllers
         [AuthorizeRoles("")]
         public IActionResult Index(int id)
         {
-            bool a=User.Identity.Name == null;
             var has = _context.ShowTimes.Any(x => x.Id == id);
             var deleted = _context.ShowTimes.Where(x=>x.IsDelete).Any(x => x.Id == id);
             if (id <= 0 || !has || deleted)
