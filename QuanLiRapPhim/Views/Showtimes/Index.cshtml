@@ -1,11 +1,78 @@
 ﻿@{
     ViewData["Title"] = "Movie Review";
 }
+<style>
+    .listday {
+        display: flex;
+        border-bottom: 1px solid;
+    }
 
+        .listday li {
+            display: block;
+            padding: 5px;
+        }
+
+    .day {
+        border: 2px solid;
+        border-radius: 5px;
+        color: black;
+        cursor: pointer;
+        height: 48px;
+        position: relative;
+        width: 110px;
+    }
+
+
+    .day > strong {
+        color: #717171;
+        font-size: 32px;
+        font-weight: normal;
+        right: 4px;
+        line-height: 32px;
+        position: absolute;
+        top: 8px;
+    }
+
+    .day > span {
+        color: #717171;
+        font-size: 11px;
+        left: 4px;
+        position: absolute;
+        top: 4px;
+    }
+
+    .day > em {
+        color: #717171;
+        font-size: 11px;
+        font-style: normal;
+        left: 4px;
+        position: absolute;
+        top: 20px;
+    }
+
+        .day:hover,  .current {
+            color: red;
+            background-color: white;
+        }
+</style>
 <div ng-app="App" ng-controller="Ctroller">
-    <div ng-view>
+        <div style="width:100%">
+            <ul class="listday">
+                @foreach (DateTime a in ViewBag.Dates) {
+                    <li ng-click="GetDate(@a.ToShortDateString())">
+                        <div class=" @(a.Day.Equals(DateTime.Now.Day) ? "day current" : "day")">
+                            <span>@a.Month</span>
+                            <em>@a.DayOfWeek.ToString()</em>
+                            <strong>@a.Day</strong>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
 
-    </div>
+    <ng-view>
+
+    </ng-view>
 </div>
 
 @section Scripts {
