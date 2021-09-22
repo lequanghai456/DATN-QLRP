@@ -86,11 +86,11 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('FullName', 'Tên nhân viên quản lí').withClass('Center').renderWith(function (data, type) {
-            return data != "" ? data : '<button class="btn btn-primary" >Add Manager Room</button>';
+            return data != "" ? data : '<button class="btn btn-primary" >Thêm nhân viên quản lí phòng</button>';
         }));
         
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Tùy chọn').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Rooms/Index/' + data + '#! > Edit</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Rooms/Index/' + data + '#! > Cập nhật</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Xóa</button>';
         }));
         
        
@@ -112,7 +112,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         var flag = true;
         if (id != null) {
             if (id.value == idDelete) {
-                $scope.notification = "Cannot delete object being edited";
+                $scope.notification = "Không thể xóa khi đang cập nhật";
                 flag = false;
             }
         }
@@ -143,7 +143,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     }
     $scope.deleteList = function () {
         if (id != null) {
-            $scope.notification = "This feature cannot be used while editing";
+            $scope.notification = "Không thể xóa đối tượng đang cập nhật";
         } else {
             $("input:checkbox[name=type]:checked").each(function () {
                 $scope.selected.push($(this).val());

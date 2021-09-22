@@ -42,9 +42,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             if (id != null)
             {
                 sevice = _context.Sevices.FirstOrDefault(x => x.Id == id);
-                ViewData["IsFood"] = new SelectList(listIsFood, "isFood", "name");
+                
 
             }
+            ViewData["IsFood"] = new SelectList(listIsFood, "isFood", "name");
             return View(sevice);
         }
         // POST: Admin/Sevices/Create

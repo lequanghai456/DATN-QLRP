@@ -19,8 +19,8 @@
             <input style="margin-left:30px;" placeholder="Tìm kiếm theo tên" class="col-3" type="text" ng-model="valueName" />
             <button class="icon col-1" ng-click="Search()"><i class="fa fa-search"></i></button>
             <div class="col-lg-4"></div>
-            <button class="btn btn-primary col-1" ng-click="Show()">Input</button>
-            <button class="btn btn-warning col-1" ng-click="deleteSeviceList()" data-toggle="modal" data-target="#myModal">DeleteList</button>
+            <button class="btn btn-primary col-1" ng-click="Show()">Thêm mới</button>
+            <button class="btn btn-warning col-1" ng-click="deleteSeviceList()" data-toggle="modal" data-target="#myModal">Xóa nhanh</button>
         </div>
 
         <table class="table dataTable table-hover table-striped"
@@ -37,7 +37,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="row modal-header">
-                    <h4 class="col-3 modal-title">Notification</h4>
+                    <h4 class="col-3 modal-title">Thông báo</h4>
                     <div class="col-5"></div>
                     <button type="button" class="col-3 close" ng-click="reloadData(true)" data-dismiss="modal">&times;</button>
 

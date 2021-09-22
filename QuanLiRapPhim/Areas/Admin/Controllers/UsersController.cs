@@ -52,7 +52,7 @@ namespace QuanLiRapPhim.Areas.Admin.Views
                 .Skip(intBegin)
                 .Take(jTablePara.Length);
 
-            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id","FullName","UserName", "PasswordHash" , "Img");
+            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id","FullName","UserName","Email", "PasswordHash" , "Img");
             return JsonConvert.SerializeObject(jdata);
         }
     }

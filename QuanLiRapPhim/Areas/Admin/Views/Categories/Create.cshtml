@@ -1,5 +1,5 @@
 ﻿@model QuanLiRapPhim.Areas.Admin.Models.Category
-<h1>@(ViewContext.RouteData.Values["id"] == null ? "Thêm" : "Cập nhật")</h1>
+<h1>@(ViewContext.RouteData.Values["id"] == null ? "Thêm mới" : "Cập nhật")</h1>
     <form asp-action=@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit") method="post" class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @{ if (ViewContext.RouteData.Values["id"] != null)

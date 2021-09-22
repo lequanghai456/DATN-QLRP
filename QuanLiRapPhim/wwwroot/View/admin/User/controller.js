@@ -26,7 +26,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 , type: 'GET'
                 , data: function (d) {
                     d.FullName = $scope.valueName;
-                    d.UserName = $scope.valueName;
+                    d.Email = $scope.valueEmail;
                 }
                
                 , dataType: "json"
@@ -65,7 +65,10 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('UserName', 'Tài khoản').withClass('Center').renderWith(function (data, type) {
             return data;
-        })); 
+        }));
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Email', 'Email').withClass('Center').renderWith(function (data, type) {
+            return data;
+        }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Img', 'Ảnh').withClass('Center').renderWith(function (data, type) {
             
             return '<img id="imgPre" src="../images/pro/' + data + '" alt="Alternate Text" class="img-thumbnail" />';
