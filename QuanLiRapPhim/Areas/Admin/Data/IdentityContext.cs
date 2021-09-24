@@ -36,6 +36,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Staff> Staffs { get; set; }
+        public DbSet<SeviceSeviceCategories> seviceSeviceCategories { get; set; }
         public DbSet<Test> Test { get; set; }
 
 

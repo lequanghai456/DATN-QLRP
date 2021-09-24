@@ -61,6 +61,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             ViewData["MacId"] = new SelectList(_context.Macs.Where(x=>x.IsDelete==false), "Id", "Title");
            
             ViewBag.categories = new SelectList(_context.Categories.Where(x => x.IsDelete == false), "Id", "Title");
+            
             return View(movie);
         }
 
@@ -198,7 +199,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             ViewData["MacId"] = new SelectList(_context.Macs, "Id", "Id", movie.MacId);
             return View(movie);
         }
-
+         
         public JsonResult DeleteMovie(int? id)
         {
             try

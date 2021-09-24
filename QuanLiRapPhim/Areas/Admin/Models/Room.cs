@@ -22,6 +22,8 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public int? RoleId { get; set; }
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
+        [Display(Name = "Giá")]
+        public Decimal Price { get; set; }
         public virtual ICollection<ShowTime> LstShowTime { get; set; }
         public virtual ICollection<Device> Devices { get; set; }
         public virtual ICollection<Seat> Seats { get; set; }

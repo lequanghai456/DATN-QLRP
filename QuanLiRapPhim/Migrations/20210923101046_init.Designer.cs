@@ -10,8 +10,8 @@ using QuanLiRapPhim.Areas.Admin.Data;
 namespace QuanLiRapPhim.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20210714064312_updatSeed")]
-    partial class updatSeed
+    [Migration("20210923101046_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -197,17 +197,17 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SeviceCatId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("idSeviceSeviceCategories")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BillId");
 
-                    b.HasIndex("SeviceCatId");
+                    b.HasIndex("idSeviceSeviceCategories");
 
                     b.ToTable("BillDetails");
                 });
@@ -384,9 +384,6 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<string>("Poster")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -420,7 +417,6 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             MacId = 1,
                             Poster = "1.jpg",
-                            Price = 100000m,
                             Status = 0,
                             Time = 110,
                             Title = "Lật mặt",
@@ -435,7 +431,6 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             MacId = 1,
                             Poster = "2.jpg",
-                            Price = 120000m,
                             Status = 0,
                             Time = 110,
                             Title = "Biệt đội báo thù",
@@ -450,7 +445,6 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             MacId = 1,
                             Poster = "3.jpg",
-                            Price = 90000m,
                             Status = 0,
                             Time = 110,
                             Title = "BIỆT ĐỘI G.I. JOE: BÁO THÙ",
@@ -495,7 +489,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "69524e8e-0aa9-437f-ae38-e1a6d4c45291",
+                            ConcurrencyStamp = "5d318828-65e3-4e0c-8701-89bd5c8ad903",
                             IsDelete = false,
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -503,7 +497,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "bb1d6a6a-3cdf-47c1-aa78-ed7a446202a5",
+                            ConcurrencyStamp = "873beeb9-18be-4d57-a88e-5c3c172eac2e",
                             IsDelete = false,
                             Name = "manager movie",
                             NormalizedName = "MANAGER MOVIE"
@@ -511,7 +505,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "6a162018-1e8f-4028-a207-5232f695315d",
+                            ConcurrencyStamp = "74267f84-842c-4d3f-89f3-2fea4c3da04b",
                             IsDelete = false,
                             Name = "staff",
                             NormalizedName = "STAFF"
@@ -533,6 +527,9 @@ namespace QuanLiRapPhim.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
@@ -593,34 +590,12 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Sevices");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsDelete = false,
-                            IsFood = true,
-                            Name = "Bắp rang"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsDelete = false,
-                            IsFood = false,
-                            Name = "CoCa"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsDelete = false,
-                            IsFood = false,
-                            Name = "Pepsi"
-                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.SeviceCategory", b =>
@@ -630,97 +605,43 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("IdSevice")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("price")
+                    b.HasKey("Id");
+
+                    b.ToTable("SeviceCategories");
+                });
+
+            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.SeviceSeviceCategories", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("IdSevice")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdSeviceCategory")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("isDelete")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IdSevice");
 
-                    b.ToTable("SeviceCategories");
+                    b.HasIndex("IdSeviceCategory");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IdSevice = 1,
-                            IsDeleted = false,
-                            Name = "Big",
-                            price = 10000m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IdSevice = 1,
-                            IsDeleted = false,
-                            Name = "Small",
-                            price = 5000m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IdSevice = 1,
-                            IsDeleted = false,
-                            Name = "Medium",
-                            price = 7000m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IdSevice = 2,
-                            IsDeleted = false,
-                            Name = "Big",
-                            price = 10000m
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IdSevice = 2,
-                            IsDeleted = false,
-                            Name = "Small",
-                            price = 5000m
-                        },
-                        new
-                        {
-                            Id = 6,
-                            IdSevice = 2,
-                            IsDeleted = false,
-                            Name = "Medium",
-                            price = 7000m
-                        },
-                        new
-                        {
-                            Id = 7,
-                            IdSevice = 3,
-                            IsDeleted = false,
-                            Name = "Big",
-                            price = 10000m
-                        },
-                        new
-                        {
-                            Id = 8,
-                            IdSevice = 3,
-                            IsDeleted = false,
-                            Name = "Small",
-                            price = 5000m
-                        },
-                        new
-                        {
-                            Id = 9,
-                            IdSevice = 3,
-                            IsDeleted = false,
-                            Name = "Medium",
-                            price = 7000m
-                        });
+                    b.ToTable("seviceSeviceCategories");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.ShowTime", b =>
@@ -843,7 +764,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0d053acb-482c-4e5b-b958-c9b3b1affaec",
+                            ConcurrencyStamp = "94fa9f39-d90f-4bda-a310-d92eee97ef13",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181100@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -852,10 +773,10 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "admin",
-                            PasswordHash = "AD1ZG+gtyPh4vmi6mjfiiMqv5qQH7zEihW6ydK3hWY5BiMWR5LKqsPTTk/k5+/w3Og==",
+                            PasswordHash = "AI+IncYSq6lKNZTrUCfCR0bM/YgU7vWuX/mwGOhC/Q4J175SX9ic5eHR3cElTr7zjw==",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "3f3c1d01-cef5-429b-a0be-a22f504034ba",
+                            SecurityStamp = "a367934f-b45a-461f-b86b-8987996b82a2",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -1090,13 +1011,13 @@ namespace QuanLiRapPhim.Migrations
                         .WithMany("BillDetails")
                         .HasForeignKey("BillId");
 
-                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.SeviceCategory", "Sevice")
+                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.SeviceSeviceCategories", "seviceSeviceCategories")
                         .WithMany()
-                        .HasForeignKey("SeviceCatId");
+                        .HasForeignKey("idSeviceSeviceCategories");
 
                     b.Navigation("Bill");
 
-                    b.Navigation("Sevice");
+                    b.Navigation("seviceSeviceCategories");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Comment", b =>
@@ -1154,15 +1075,23 @@ namespace QuanLiRapPhim.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.SeviceCategory", b =>
+            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.SeviceSeviceCategories", b =>
                 {
                     b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Sevice", "Sevice")
-                        .WithMany("SeviceCategories")
+                        .WithMany()
                         .HasForeignKey("IdSevice")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.SeviceCategory", "SeviceCategory")
+                        .WithMany()
+                        .HasForeignKey("IdSeviceCategory")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Sevice");
+
+                    b.Navigation("SeviceCategory");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.ShowTime", b =>
@@ -1233,11 +1162,6 @@ namespace QuanLiRapPhim.Migrations
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Seat", b =>
                 {
                     b.Navigation("Ticket");
-                });
-
-            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Sevice", b =>
-                {
-                    b.Navigation("SeviceCategories");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.ShowTime", b =>

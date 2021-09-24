@@ -31,18 +31,18 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             BillDetail billDetail = new BillDetail();
             return View(billDetail);
         }
-        [HttpGet]
-        public async Task<String> JtableBillDetailModel(JTableModelCustom jTablePara)
-        {
-            int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
-            var query = _context.BillDetails.Include(a => a.Sevice).Where(x=>(jTablePara.IdBill == 0 || x.BillId == jTablePara.IdBill));
-            int count = query.Count();
-            var data = query.AsQueryable().Select(x => new { x.Id, x.Amount ,x.UnitPrice , NameSevice = x.Sevice.Name,x.BillId })
-                .Skip(intBegin)
-                .Take(jTablePara.Length);
+        //[HttpGet]
+        //public async Task<String> JtableBillDetailModel(JTableModelCustom jTablePara)
+        //{
+        //    int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
+        //    var query = _context.BillDetails.Include(a => a.Sevice).Where(x=>(jTablePara.IdBill == 0 || x.BillId == jTablePara.IdBill));
+        //    int count = query.Count();
+        //    var data = query.AsQueryable().Select(x => new { x.Id, x.Amount ,x.UnitPrice , NameSevice = x.Sevice.Name,x.BillId })
+        //        .Skip(intBegin)
+        //        .Take(jTablePara.Length);
 
-            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Amount", "UnitPrice", "NameSevice", "BillId");
-            return JsonConvert.SerializeObject(jdata);
-        }
+        //    var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Amount", "UnitPrice", "NameSevice", "BillId");
+        //    return JsonConvert.SerializeObject(jdata);
+        //}
     }
 }

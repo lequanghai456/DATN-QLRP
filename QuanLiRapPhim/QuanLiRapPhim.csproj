@@ -5,9 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Staff\**" />
     <Compile Remove="wwwroot\img\**" />
+    <Content Remove="Areas\Staff\**" />
     <Content Remove="wwwroot\img\**" />
+    <EmbeddedResource Remove="Areas\Staff\**" />
     <EmbeddedResource Remove="wwwroot\img\**" />
+    <None Remove="Areas\Staff\**" />
     <None Remove="wwwroot\img\**" />
   </ItemGroup>
 

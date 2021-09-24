@@ -24,127 +24,127 @@ namespace QuanLiRapPhim.Controllers
         {
             _context = context;           
         }
-        [HttpPost]
-        public IActionResult BuySevice(List<BillDetail> Billdetails) {
+        //[HttpPost]
+        //public IActionResult BuySevice(List<BillDetail> Billdetails) {
 
-            try
-            {
-                foreach (var x in Billdetails)
-                {
-                    var Sevice = _context.SeviceCategories.Find(x.SeviceCatId);
-                    Sevice.Sevice = _context.Sevices.Find(Sevice.IdSevice);
-                    x.Name = Sevice.Sevice.Name + "(" + Sevice.Name + ")";
-                    x.UnitPrice = Sevice.price;
-                    x.Bill = null;
-                }
-                Bill bill = new Bill()
-                {
-                    BillDetails = Billdetails,
-                    Date = DateTime.Now,
-                    TotalPrice = Billdetails.Sum(x => x.UnitPrice * x.Amount),
-                    UserId = _context.Users.Where(x => x.UserName == (string)User.Identity.Name).First().Id,
-                };
+        //    try
+        //    {
+        //        foreach (var x in Billdetails)
+        //        {
+        //            var Sevice = _context.SeviceCategories.Find(x.SeviceCatId);
+        //            Sevice.Sevice = _context.Sevices.Find(Sevice.IdSevice);
+        //            x.Name = Sevice.Sevice.Name + "(" + Sevice.Name + ")";
+        //            x.UnitPrice = Sevice.price;
+        //            x.Bill = null;
+        //        }
+        //        Bill bill = new Bill()
+        //        {
+        //            BillDetails = Billdetails,
+        //            Date = DateTime.Now,
+        //            TotalPrice = Billdetails.Sum(x => x.UnitPrice * x.Amount),
+        //            UserId = _context.Users.Where(x => x.UserName == (string)User.Identity.Name).First().Id,
+        //        };
 
-                _context.Add(bill);
-                _context.SaveChanges();
-                Message = "Thanh toán thành công ";
-            }
-            catch(Exception er)
-            {
-                Message = "Lỗi";
-            }
+        //        _context.Add(bill);
+        //        _context.SaveChanges();
+        //        Message = "Thanh toán thành công ";
+        //    }
+        //    catch(Exception er)
+        //    {
+        //        Message = "Lỗi";
+        //    }
 
-            return RedirectToAction(nameof(Index));
-        }
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-        public IActionResult BookTicket(Ticket ticket)
-        {
-            var flag = (from sh in _context.ShowTimes
-                        join r in _context.Rooms on sh.RoomId equals r.Id
-                        join se in _context.Seats on r.Id equals se.RoomId
-                        where sh.Id == ticket.ShowTimeId && se.Id == ticket.SeatId
-                        select se).Count() > 0;
+        //public IActionResult BookTicket(Ticket ticket)
+        //{
+        //    var flag = (from sh in _context.ShowTimes
+        //                join r in _context.Rooms on sh.RoomId equals r.Id
+        //                join se in _context.Seats on r.Id equals se.RoomId
+        //                where sh.Id == ticket.ShowTimeId && se.Id == ticket.SeatId
+        //                select se).Count() > 0;
 
-            var isbooked = (from T in _context.Tickets
-                            where T.SeatId == ticket.SeatId
-                            select T).Count() > 0;
-            if (ticket.SeatId == null || !flag || isbooked)
-            {
-                return NotFound();
-            }
+        //    var isbooked = (from T in _context.Tickets
+        //                    where T.SeatId == ticket.SeatId
+        //                    select T).Count() > 0;
+        //    if (ticket.SeatId == null || !flag || isbooked)
+        //    {
+        //        return NotFound();
+        //    }
 
-            ticket.Username = User.Identity.Name;
-            ticket.Price = Price((int)ticket.SeatId,(int)ticket.ShowTimeId);
-            ticket.PurchaseDate = DateTime.Now;
-            _context.Add(ticket);
-            try
-            {
-                _context.SaveChanges();
-                Message = "Bạn đã mua thành công";
-            }
-            catch(Exception er)
-            {
-                Message = "Lỗi";
-            }
-            return RedirectToAction(nameof(Index));
-        }
+        //    ticket.Username = User.Identity.Name;
+        //    ticket.Price = Price((int)ticket.SeatId,(int)ticket.ShowTimeId);
+        //    ticket.PurchaseDate = DateTime.Now;
+        //    _context.Add(ticket);
+        //    try
+        //    {
+        //        _context.SaveChanges();
+        //        Message = "Bạn đã mua thành công";
+        //    }
+        //    catch(Exception er)
+        //    {
+        //        Message = "Lỗi";
+        //    }
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-        private decimal Price(int idseat,int idShowTime)
-        {
-            decimal price = _context.ShowTimes
-                .Include(x=>x.Movie).FirstOrDefault(x=>x.Id==idShowTime).Movie.Price;
-            var s = _context.Seats.Find(idseat);
-            switch(s.X)
-            {
-                case "A":
-                case "B":
-                case "C":
-                    price += price/10;
-                    break;
-                case "D":
-                case "E":
-                case "F":
-                    price += price / 5;
-                    break;
-                default:
-                    break;
-            }
+        //private decimal Price(int idseat,int idShowTime)
+        //{
+        //    decimal price = _context.ShowTimes
+        //        .Include(x=>x.Movie).FirstOrDefault(x=>x.Id==idShowTime).Movie.Price;
+        //    var s = _context.Seats.Find(idseat);
+        //    switch(s.X)
+        //    {
+        //        case "A":
+        //        case "B":
+        //        case "C":
+        //            price += price/10;
+        //            break;
+        //        case "D":
+        //        case "E":
+        //        case "F":
+        //            price += price / 5;
+        //            break;
+        //        default:
+        //            break;
+        //    }
             
-            return price;
-        }
+        //    return price;
+        //}
 
         public IActionResult Index()
         {
             return View();
         }
 
-        public JsonResult GetAllServices()
-        {
-            JMessage jMessage = new JMessage();
-            var Object = _context.Sevices.Where(s => !s.IsDelete).Select(x => new
-            {
-                x.Id,
-                x.IsFood,
-                x.Name,
-                size = x.SeviceCategories.Where(x=>!x.IsDelete).Select(x => new
-                {
-                    x.Name,
-                    x.price,
-                    x.Id
-                }).ToList()
-            }).ToList();
+        //public JsonResult GetAllServices()
+        //{
+        //    JMessage jMessage = new JMessage();
+        //    var Object = _context.Sevices.Where(s => !s.IsDelete).Select(x => new
+        //    {
+        //        x.Id,
+        //        x.IsFood,
+        //        x.Name,
+        //        size = x.SeviceCategories.Where(x=>!x.IsDelete).Select(x => new
+        //        {
+        //            x.Name,
+        //            x.price,
+        //            x.Id
+        //        }).ToList()
+        //    }).ToList();
 
-            jMessage.Error = Object.Count == 0;
-            if (jMessage.Error)
-            {
-                jMessage.Title = "Không tìm thấy dịch vụ";
-            }
-            else
-            {
-                jMessage.Object = Object;
-            }
-            return Json(jMessage);
-        }
+        //    jMessage.Error = Object.Count == 0;
+        //    if (jMessage.Error)
+        //    {
+        //        jMessage.Title = "Không tìm thấy dịch vụ";
+        //    }
+        //    else
+        //    {
+        //        jMessage.Object = Object;
+        //    }
+        //    return Json(jMessage);
+        //}
         public List<yourOrder> yourOrders { get; set; }
 
         public JsonResult GetAll()

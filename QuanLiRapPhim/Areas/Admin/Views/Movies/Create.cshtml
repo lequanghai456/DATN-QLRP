@@ -36,27 +36,27 @@
             <span asp-validation-for="Time" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label class="control-label">Categories</label>
-            <select id="#mySelect2" style="width:100%" class="form-control js-example-basic-single" name="Lstcategories[]" multiple="multiple" asp-items="ViewBag.categories">
-                @{ if (ViewContext.RouteData.Values["id"] != null)
-                    {
-                        foreach (var (index, value) in @Model.Lstcategories.Select((value, i) => (i, value)))
+            <label class="control-label">Thể loại</label>
+                <select id="#mySelect2" style="width:100%" class="form-control js-example-basic-single " name="Lstcategories[]" multiple="multiple" asp-items="ViewBag.categories">
+                    @{ if (ViewContext.RouteData.Values["id"] != null)
                         {
+                            foreach (var (index, value) in @Model.Lstcategories.Select((value, i) => (i, value)))
+                            {
 
-                            <option selected value="@value.Id">@value.Title</option>
+                                <option selected value="@value.Id">@value.Title</option>
+                            }
                         }
                     }
-                }
-            </select>
-
-            <span asp-validation-for="Lstcategories" class="text-danger"></span>
+                </select>
+                <input type="button" value="Thêm mới thể loại" class="btn btn-info" ng-click="open()" style="margin: 15px;" />
+                <span asp-validation-for="Lstcategories" class="text-danger"></span>
         </div>
     </div>
-    <div class="form-group col-6">
+    @*<div class="form-group col-6">
         <label asp-for="Price" class="control-label"></label>
         <input asp-for="Price" class="form-control" />
         <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
+    </div>*@
     <div class="form-group col-6">
         <div class="custom-file">
             <input asp-for="Trailer" accept="video/mp4,video/x-m4v,video/*" type="file" name="video" class="custom-file-input" id="video" />

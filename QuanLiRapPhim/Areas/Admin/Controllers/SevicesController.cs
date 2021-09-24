@@ -51,50 +51,50 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // POST: Admin/Sevices/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Sevice sevice,List<SeviceCategory> ListSeviceCategories)
-        {
-            try {
-            if (ModelState.IsValid)
-            {
-                    if (ListSeviceCategories.Count() > 0)
-                    {
-                        foreach (var item in ListSeviceCategories)
-                        {
-                            item.Sevice = sevice;
-                            _context.Add(item);
-                        }
-                        await _context.SaveChangesAsync();
-                        Message = "Tạo dịch vụ thành công";
-                        return RedirectToAction(nameof(Index));
-                    }
-                    Message = "Dịch vụ phải có ít nhất một loại";
-                    return RedirectToAction(nameof(Index));
-                }
-            }
-            catch(Exception err)
-            {
-                Message = "Tạo dịch vụ thất bại";
-                return View();
-            }
-            Message = "Tạo dịch vụ thất bại";
-            return RedirectToAction(nameof(Index));
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(Sevice sevice,List<SeviceCategory> ListSeviceCategories)
+        //{
+        //    try {
+        //    if (ModelState.IsValid)
+        //    {
+        //            if (ListSeviceCategories.Count() > 0)
+        //            {
+        //                foreach (var item in ListSeviceCategories)
+        //                {
+        //                    item.Sevice = sevice;
+        //                    _context.Add(item);
+        //                }
+        //                await _context.SaveChangesAsync();
+        //                Message = "Tạo dịch vụ thành công";
+        //                return RedirectToAction(nameof(Index));
+        //            }
+        //            Message = "Dịch vụ phải có ít nhất một loại";
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //    }
+        //    catch(Exception err)
+        //    {
+        //        Message = "Tạo dịch vụ thất bại";
+        //        return View();
+        //    }
+        //    Message = "Tạo dịch vụ thất bại";
+        //    return RedirectToAction(nameof(Index));
 
-        }
-        [HttpGet]
-        public async Task<String> JtableSeviceModel(JTableModelCustom jTablePara)
-        {
-            int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
-            var query = _context.Sevices.Include(x=>x.SeviceCategories).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Name) || x.Name.Contains(jTablePara.Name)));
-            int count = query.Count();
-            var data = query.AsQueryable().Select(x=>new { x.Id,x.Name,Size = JsonConvert.SerializeObject(x.SeviceCategories.Where(a=>a.IsDelete==false).ToList<SeviceCategory>()) })
-                .Skip(intBegin)
-                .Take(jTablePara.Length);
+        //}
+        //[HttpGet]
+        //public async Task<String> JtableSeviceModel(JTableModelCustom jTablePara)
+        //{
+        //    int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
+        //    var query = _context.Sevices.Include(x=>x.SeviceCategories).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Name) || x.Name.Contains(jTablePara.Name)));
+        //    int count = query.Count();
+        //    var data = query.AsQueryable().Select(x=>new { x.Id,x.Name,Size = JsonConvert.SerializeObject(x.SeviceCategories.Where(a=>a.IsDelete==false).ToList<SeviceCategory>()) })
+        //        .Skip(intBegin)
+        //        .Take(jTablePara.Length);
 
-            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Name","Size");
-            return JsonConvert.SerializeObject(jdata);
-        }
+        //    var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Name","Size");
+        //    return JsonConvert.SerializeObject(jdata);
+        //}
         public JsonResult DeleteSevice(int? id)
         {
             try
@@ -148,12 +148,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
 
         }
-        [HttpPost]
-        public IActionResult editSevice(int id)
-        {
-            var data = _context.Sevices.Include(x =>x.SeviceCategories).Where(x => x.Id == id && x.IsDelete == false).Select(x=> new { x.Id,x.Name,x.IsFood, listCategorysevice = x.SeviceCategories.Where(x=>x.IsDelete == false)});
-            return Json(data);
-        }
+        //[HttpPost]
+        //public IActionResult editSevice(int id)
+        //{
+        //    var data = _context.Sevices.Include(x =>x.SeviceCategories).Where(x => x.Id == id && x.IsDelete == false).Select(x=> new { x.Id,x.Name,x.IsFood, listCategorysevice = x.SeviceCategories.Where(x=>x.IsDelete == false)});
+        //    return Json(data);
+        //}
         public bool delCategorySevice(int id)
         {
             try
@@ -174,28 +174,28 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 return false;
             }
         }
-        public async Task<int> addCategorySevice([FromBody] ModelCategorySevice sevice)
-        {
-            try
-            {
-                SeviceCategory seviceCategory = new SeviceCategory();
-                seviceCategory.IdSevice = sevice.idSevice;
-                seviceCategory.Name = sevice.name;
-                seviceCategory.price = sevice.price;
-                if (seviceCategory != null)
-                {
+        //public async Task<int> addCategorySevice([FromBody] ModelCategorySevice sevice)
+        //{
+        //    try
+        //    {
+        //        SeviceCategory seviceCategory = new SeviceCategory();
+        //        seviceCategory.IdSevice = sevice.idSevice;
+        //        seviceCategory.Name = sevice.name;
+        //        seviceCategory.price = sevice.price;
+        //        if (seviceCategory != null)
+        //        {
                     
-                    _context.Add(seviceCategory);
-                    await _context.SaveChangesAsync();
-                    return seviceCategory.Id;
-                }
-                return 0;
-            }
-            catch (Exception err)
-            {
-                return 0;
-            }
-        }
+        //            _context.Add(seviceCategory);
+        //            await _context.SaveChangesAsync();
+        //            return seviceCategory.Id;
+        //        }
+        //        return 0;
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        return 0;
+        //    }
+        //}
         public class ModelCategorySevice
         {
             public int id { get; set; }
@@ -204,24 +204,24 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             public Decimal price { get; set; }
             public int idSevice { get; set; }
         }
-        [HttpPost]
-        public async Task<bool> editCategorySevice([FromBody]ModelCategorySevice sevice)
-        {
-            try
-            {
-                SeviceCategory seviceCategory = new SeviceCategory();
-                seviceCategory = _context.SeviceCategories.FirstOrDefault(x => x.Id == sevice.id && x.IsDelete == false);
-                seviceCategory.Name = sevice.name;
-                seviceCategory.price = sevice.price;
-                _context.Update(seviceCategory);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch(Exception err) {
-                return false;
-            }
+        //[HttpPost]
+        //public async Task<bool> editCategorySevice([FromBody]ModelCategorySevice sevice)
+        //{
+        //    try
+        //    {
+        //        SeviceCategory seviceCategory = new SeviceCategory();
+        //        seviceCategory = _context.SeviceCategories.FirstOrDefault(x => x.Id == sevice.id && x.IsDelete == false);
+        //        seviceCategory.Name = sevice.name;
+        //        seviceCategory.price = sevice.price;
+        //        _context.Update(seviceCategory);
+        //        await _context.SaveChangesAsync();
+        //        return true;
+        //    }
+        //    catch(Exception err) {
+        //        return false;
+        //    }
             
-        }
+        //}
         // POST: Admin/Sevices/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

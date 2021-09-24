@@ -7,11 +7,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
     {
         [Key]
         public int Id { get; set; }
-        public int IdSevice { get; set; }
         public string Name { get; set; }
-        public decimal price { get; set; }
-        [ForeignKey("IdSevice")]
-        public virtual Sevice Sevice { get; set; }
         public bool IsDelete { get; set; }
     }
 }

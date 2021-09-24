@@ -17,6 +17,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public int UserId { get; set; }
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
+        
         public bool IsDelete {get;set;}
         public bool Status { get; set; }
         public virtual ICollection<BillDetail> BillDetails { get; set; }

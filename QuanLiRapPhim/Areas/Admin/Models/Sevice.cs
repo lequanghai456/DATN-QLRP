@@ -13,7 +13,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public String Name{get;set;}
         [Display(Name ="Chọn loại")]
         public bool IsFood { get; set; }
-        public virtual ICollection<SeviceCategory> SeviceCategories{ get; set; }
         public bool IsDelete { get; set; }
     }
 }

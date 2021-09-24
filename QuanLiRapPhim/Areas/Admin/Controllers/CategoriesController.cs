@@ -63,8 +63,23 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             }
             return View(category);
         }
-
         
+        public async Task<JsonResult> CreateAPI(String name)
+        {
+            try
+            {
+                Category category = new Category();
+                category.Title = name;
+                _context.Add(category);
+                await _context.SaveChangesAsync();
+                return Json(category.Id);
+            }
+            catch (Exception ex)
+            {
+                return Json("0");
+            }
+
+        }
         // POST: Admin/Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

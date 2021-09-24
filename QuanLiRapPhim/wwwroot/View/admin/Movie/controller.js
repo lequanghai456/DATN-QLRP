@@ -1,7 +1,7 @@
 ﻿
 var ctxfolderurl = "https://localhost:44350";
 
-var app = angular.module('App', ['datatables', 'ngRoute']);
+var app = angular.module('App', ['datatables', 'ngRoute', 'ui.bootstrap']);
 
 app.factory('dataservice', function ($http) {
     return {
@@ -11,10 +11,13 @@ app.factory('dataservice', function ($http) {
         deleteMovieCheckbox: function (data, callback) {
             $http.post('/Admin/Movies/DeleteMovieList?Listid=' + data).then(callback);
         },
+        CreateAPI: function (data, callback) {
+            $http.post('/Admin/Categories/CreateAPI?name=' + data).then(callback);
+        },
     }
 });
 
-app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice) {
+app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice, $uibModal) {
     
     var vm = $scope;
     var id = document.getElementById('idEdit');
@@ -169,16 +172,35 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
         }
     }
-    //$scope.btnThemCategory = function () {
-    //    var modalInstance = $uibModal.open({
-    //        scope: $scope,
-    //        animation: true,
-    //        backdrop: true,
-    //        templateUrl:  + "/ratePopup.html",
-    //        controller: "Popupmodal",
-    //        size: 'lg',
-    //    });
-    //    $scope.Rate(0);
-    //}
     
+    $scope.open = function () {
+        var modalInstance = $uibModal.open({
+            templateUrl: "/View/admin/Movie/addCategories.html",
+            controller: "ModalContent",
+            size: '',
+            windowClass: 'show',
+        });
+    };
+});
+app.controller('ModalContent', function ($scope, $uibModalInstance, dataservice) {
+    $scope.ok = function () {
+        dataservice.CreateAPI($scope.nameCategory, function (rs) {
+            console.log(rs.data);
+            if (rs.data == '0') {
+                $scope.messApi == "Tạo không thành công";
+            }
+            else
+            {
+               
+                $uibModalInstance.close("Ok");
+            }
+            
+        });
+        
+    }
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss();
+    }
+
 });
