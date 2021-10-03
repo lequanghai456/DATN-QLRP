@@ -57,61 +57,62 @@ namespace QuanLiRapPhim.Controllers
         //    return RedirectToAction(nameof(Index));
         //}
 
-        //public IActionResult BookTicket(Ticket ticket)
-        //{
-        //    var flag = (from sh in _context.ShowTimes
-        //                join r in _context.Rooms on sh.RoomId equals r.Id
-        //                join se in _context.Seats on r.Id equals se.RoomId
-        //                where sh.Id == ticket.ShowTimeId && se.Id == ticket.SeatId
-        //                select se).Count() > 0;
+        public IActionResult BookTicket(Ticket ticket)
+        {
+            //var flag = (from sh in _context.ShowTimes
+            //            join r in _context.Rooms on sh.RoomId equals r.Id
+            //            join se in _context.Seats on r.Id equals se.RoomId
+            //            where sh.Id == ticket.ShowTimeId && se.Id == ticket.SeatId
+            //            select se).Count() > 0;
 
-        //    var isbooked = (from T in _context.Tickets
-        //                    where T.SeatId == ticket.SeatId
-        //                    select T).Count() > 0;
-        //    if (ticket.SeatId == null || !flag || isbooked)
-        //    {
-        //        return NotFound();
-        //    }
+            try
+            {
+                var isbooked = (from T in _context.Tickets
+                            where T.SeatId == ticket.SeatId && T.IsDelete==false
+                            select T).Count() > 0;
 
-        //    ticket.Username = User.Identity.Name;
-        //    ticket.Price = Price((int)ticket.SeatId,(int)ticket.ShowTimeId);
-        //    ticket.PurchaseDate = DateTime.Now;
-        //    _context.Add(ticket);
-        //    try
-        //    {
-        //        _context.SaveChanges();
-        //        Message = "Bạn đã mua thành công";
-        //    }
-        //    catch(Exception er)
-        //    {
-        //        Message = "Lỗi";
-        //    }
-        //    return RedirectToAction(nameof(Index));
-        //}
+                if (ticket.SeatId == null || isbooked)
+                {
+                    return NotFound();
+                }
 
-        //private decimal Price(int idseat,int idShowTime)
-        //{
-        //    decimal price = _context.ShowTimes
-        //        .Include(x=>x.Movie).FirstOrDefault(x=>x.Id==idShowTime).Movie.Price;
-        //    var s = _context.Seats.Find(idseat);
-        //    switch(s.X)
-        //    {
-        //        case "A":
-        //        case "B":
-        //        case "C":
-        //            price += price/10;
-        //            break;
-        //        case "D":
-        //        case "E":
-        //        case "F":
-        //            price += price / 5;
-        //            break;
-        //        default:
-        //            break;
-        //    }
-            
-        //    return price;
-        //}
+                ticket.Username = User.Identity.Name;
+                ticket.Price = Price((int)ticket.SeatId, (int)ticket.ShowTimeId);
+                ticket.PurchaseDate = DateTime.Now;
+                _context.Add(ticket);
+                _context.SaveChanges();
+                Message = "Bạn đã mua thành công";
+            }
+            catch (Exception er)
+            {
+                Message = "Lỗi";
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        private decimal Price(int idseat, int idShowTime)
+        {
+            decimal price = _context.ShowTimes
+                .Include(x => x.Room).FirstOrDefault(x => x.Id == idShowTime).Room.Price;
+            var s = _context.Seats.Find(idseat);
+            switch (s.X)
+            {
+                case "A":
+                case "B":
+                case "C":
+                    price += price / 10;
+                    break;
+                case "D":
+                case "E":
+                case "F":
+                    price += price / 5;
+                    break;
+                default:
+                    break;
+            }
+
+            return price;
+        }
 
         public IActionResult Index()
         {

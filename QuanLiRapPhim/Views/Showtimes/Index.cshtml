@@ -3,12 +3,11 @@
 }
 <style>
     .listday {
-        display: flex;
         border-bottom: 1px solid;
     }
 
         .listday li {
-            display: block;
+            display: inline-block;
             padding: 5px;
         }
 
@@ -54,25 +53,54 @@
             color: red;
             background-color: white;
         }
+    .item {
+        border: 1px solid black;
+        padding: 5px;
+        display: inline-block;
+        margin: 10px;
+        width: 300px;
+    }
+
+        .item > div {
+            display: inline-block;
+        }
+
+    .item-infor a {
+        display: inline-block;
+        width: 140px;
+        height: 16px;
+        overflow: hidden;
+    }
 </style>
 <div ng-app="App" ng-controller="Ctroller">
-        <div style="width:100%">
-            <ul class="listday">
-                @foreach (DateTime a in ViewBag.Dates) {
-                    <li ng-click="GetDate(@a.ToShortDateString())">
-                        <div class=" @(a.Day.Equals(DateTime.Now.Day) ? "day current" : "day")">
-                            <span>@a.Month</span>
-                            <em>@a.DayOfWeek.ToString()</em>
-                            <strong>@a.Day</strong>
-                        </div>
-                    </li>
-                }
-            </ul>
+    <div style="width:100%">
+        <ul class="listday">
+            @foreach (DateTime a in ViewBag.Dates)
+            {
+                <li ng-click="GetDate('@a.ToShortDateString()')">
+                    <div class=" @(a.Day.Equals(DateTime.Now.Day) ? "day current" : "day")">
+                        <span>@a.Month</span>
+                        <em>@a.DayOfWeek.ToString()</em>
+                        <strong>@a.Day</strong>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="Showtimes row">
+        <div style="text-align:center; width:100%; font-size:30px" ng-show="data.error"><strong>{{mess}}</strong></div>
+        <div class="item" ng-repeat="item in data.object">
+            <a href="https://localhost:44350/bookticket/Index/{{item.id}}">
+                <img src="https://localhost:44350/admin/img/Poster/{{item.poster}}" width="75" height="100" />
+            </a>
+            <div class="item-infor">
+                <div><strong>Tên phim:<span><a href="https://localhost:44350/moviereview#!/{{item.title}}"> {{item.title}}</a></span></strong></div>
+                <div><strong>Giờ chiếu:</strong> {{item.time}}</div>
+                <div><strong>Phòng chiếu:</strong> {{item.name}}</div>
+                <div><strong>Ghế đã đặt:</strong> {{item.soghe}}/{{item.total}}</div>
+            </div>
         </div>
-
-    <ng-view>
-
-    </ng-view>
+    </div>
 </div>
 
 @section Scripts {

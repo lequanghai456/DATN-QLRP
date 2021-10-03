@@ -30,31 +30,38 @@ namespace QuanLiRapPhim.Controllers
         public JsonResult GetListShowtime(DateTime? date)
         {
             JMessage jmess = new JMessage();
-            if (date != null)
+            try
             {
+                if (date == null)
+                {
+                    date = DateTime.Now;
+                }
                 jmess.Object = (from st in _context.ShowTimes
                                 where st.DateTime.CompareTo((DateTime)date) == 0
-                                select new {
+                                select new
+                                {
                                     st.Id,
                                     st.Movie.Title,
                                     st.Movie.Poster,
-                                    Soghe = st.Tickets.Where(x=>x.IsDelete==false).Count(),
-                                    Total=st.Room.Seats.Count(),
+                                    st.Room.Name,
+                                    Soghe = st.Tickets.Where(x => x.IsDelete == false).Count(),
+                                    Total = st.Room.Seats.Count(),
                                     st.DateTime,
-                                    st.startTime
+                                    Time = string.Format("{0:t}", st.startTime)
                                 }).ToList();
 
-                jmess.Error= jmess.Object==null;
+                jmess.Error = jmess.Object == null;
                 if (jmess.Error)
                 {
                     jmess.Title = "Không tìm thấy lịch chiếu";
                 }
             }
-            else
+            catch(Exception er)
             {
                 jmess.Error = true;
-                jmess.Title="Bạn chưa chọn ngày";
+                jmess.Title = "Có lỗi xãy ra";
             }
+
             return Json(jmess);
         }
     }

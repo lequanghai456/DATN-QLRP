@@ -89,18 +89,18 @@ namespace QuanLiRapPhim.Controllers
         public JsonResult DsGheDaDat(int id) {
             JMessage jMessage = new JMessage();
             jMessage.ID = id;
-            var has = _context.ShowTimes.Any(x => x.Id == id);
-            var deleted = _context.ShowTimes.Where(x => x.IsDelete).Any(x => x.Id == id);
-            jMessage.Error = id <= 0 || !has || deleted;
+            var has = _context.ShowTimes.Where(x => !x.IsDelete).Any(x => x.Id == id);
+            jMessage.Error = id <= 0 || !has;
             if (jMessage.Error == true)
             {
-                jMessage.Title = "Không tìm thấy lịch chiếu hoặc phim của bạn";
+                jMessage.Title = "Không tìm thấy lịch chiếu của bạn";
             }
             else
             {
                 var seats = (from t in _context.Tickets
                             join sh in _context.ShowTimes
                             on t.ShowTimeId equals sh.Id
+                            where sh.Id==id
                             select t.SeatId).ToList();
                 jMessage.Object = seats;
             }
