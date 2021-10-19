@@ -22,21 +22,21 @@
         }
     </style>    
         <h1>@(ViewContext.RouteData.Values["id"] == null ? "Thêm mới" : "Cập nhật")</h1>
-        <div class="row">
-            <form asp-action=@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit") method="post" class="r col-6">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @{ if (ViewContext.RouteData.Values["id"] != null)
-                    {
-                        <input id="idEdit" type="hidden" asp-for="Id" />
-                    }
+        
+        <form asp-action=@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit") method="post" class="r row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{ if (ViewContext.RouteData.Values["id"] != null)
+                {
+                    <input id="idEdit" type="hidden" asp-for="Id" />
                 }
+            }
 
-                <div class="form-group" style="margin-top: 15px;">
-                    <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" ng-model="seviceName" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-                @*<div class="form-group">
+            <div class="form-group col-6">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" ng-model="seviceName" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
                     <label asp-for="IsFood" class="control-label"></label>
                     <select asp-for="IsFood" class="form-control" name="IsFood">
             @{ if (ViewContext.RouteData.Values["id"] == null)
@@ -62,77 +62,87 @@
         </select>
                      <span asp-validation-for="IsFood" class="text-danger"></span>
                 </div>*@
-                    <div class="form-group">
-                        <label asp-for="IsFood" class="control-label"></label>
-                        <select asp-for="IsFood" class="form-control" name="IsFood" asp-items="ViewBag.IsFood">
-                        </select>
-                        <span asp-validation-for="IsFood" class="text-danger"></span>
-                    </div>
-                   
-                
-                @*<div class="form-group" ng-repeat="item in ListSeviecs">
+            <div class="form-group col-6">
+                <label asp-for="IsFood" class="control-label"></label>
+                <select asp-for="IsFood" class="form-control" name="IsFood" asp-items="ViewBag.IsFood">
+                </select>
+                <span asp-validation-for="IsFood" class="text-danger"></span>
+            </div>
+
+
+            @*<div class="form-group" ng-repeat="item in ListSeviecs">
             <label class="control-label">Kích thước</label>
             <input class="form-control" name="ListSeviceCategories[{{$index}}].name"  ng-model="item.name" required type="text" />
             <label class="control-label">Giá</label>
             <input class="form-control" name="ListSeviceCategories[{{$index}}].price" ng-model="item.price" required type="number" min="0" />
         </div>*@
-                @{ if (ViewContext.RouteData.Values["id"] == null)
+            @*@{ if (ViewContext.RouteData.Values["id"] == null)
+                {
+                            <div class="form-group" hidden ng-repeat="item in ListSeviecs">
+                                <label class="control-label">Kích thước</label>
+                                <input class="form-control" name="ListSeviceCategories[{{$index}}].name" ng-model="item.name" required type="text" />
+                                <label class="control-label">Giá</label>
+                                <input class="form-control" name="ListSeviceCategories[{{$index}}].price" ng-model="item.price" required type="number" min="0" />
+                            </div>
+                }
+            }
+
+
+            <div class="form-group col-12 d-flex justify-content-center">
+                <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Thêm" : "Cập nhật")" class="btn btn-primary" />
+                @{ if (ViewContext.RouteData.Values["id"] != null)
                     {
-                                <div class="form-group" hidden ng-repeat="item in ListSeviecs">
-                                    <label class="control-label">Kích thước</label>
-                                    <input class="form-control" name="ListSeviceCategories[{{$index}}].name" ng-model="item.name" required type="text" />
-                                    <label class="control-label">Giá</label>
-                                    <input class="form-control" name="ListSeviceCategories[{{$index}}].price" ng-model="item.price" required type="number" min="0" />
-                                </div>
+                        <a href="~/admin/Sevices" class="btn btn-warning">Hủy</a>
                     }
                 }
-                
+            </div>
 
-                <div class="form-group col-12 d-flex justify-content-center">
-                    <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Thêm" : "Cập nhật")" class="btn btn-primary" />
+        <div class="col-6">
+            <h2>Danh sách kích thước</h2>
+            <div class="" ng-repeat="item in ListSeviecs">
+                <div class="Sevice">
+                    <span class="" style="color: white;">Tên loại:{{item.name}} - Giá: {{item.price}}</span>
                     @{ if (ViewContext.RouteData.Values["id"] != null)
                         {
-                            <a href="~/admin/Sevices" class="btn btn-warning">Hủy</a>
+                            <a class="btn btn-danger" ng-click="delCategorySevice(item.id,$index)"> Xóa </a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-danger" ng-click="action.del($index)"> Xóa </a>
                         }
                     }
-                </div>
-            </form>
-            <div class="col-6">
-                <h2>Danh sách kích thước</h2>
-                <div class="" ng-repeat="item in ListSeviecs">
-                    <div class="Sevice">
-                        <span class="" style="color: white;">Tên loại:{{item.name}} - Giá: {{item.price}}</span>
-                        @{ if (ViewContext.RouteData.Values["id"] != null)
-                            {
-                                <a class="btn btn-danger" ng-click="delCategorySevice(item.id,$index)"> Xóa </a>
-                            }
-                            else
-                            {
-                                <a class="btn btn-danger" ng-click="action.del($index)"> Xóa </a>
-                            }
-                        }
-                        
 
 
-                        <a class="btn btn-danger" ng-click="action.edit($index)"> Cập nhật </a>
-                    </div>
 
+                    <a class="btn btn-danger" ng-click="action.edit($index)"> Cập nhật </a>
                 </div>
 
-                <div class="form-group">
-                    <input class="form-control" ng-model="itam" hidden type="text" />
-                    <input class="form-control" ng-model="idCategorySevice" hidden type="text" />
-                    <label class="control-label">Kích thước</label>
-                    <input class="form-control" ng-model="name" required type="text" />
-                    <label class="control-label">Giá</label>
-                    <input class="form-control" ng-model="price" required type="number" min="0" />
-                </div>
-                <h2 class="alert-danger">{{Mess}}</h2>
-
-                <input ng-show="addCategory" type="submit" ng-init="addCategoryButton = 'Thêm loại'" class="btn btn-primary" ng-click="addCategorySevice()" value="{{addCategoryButton}}" />
-                <input ng-show="editCategory" type="submit" class="btn btn-primary" ng-click="editCategorySevice()" value="{{addCategoryButton}}" />
-                <input ng-show="editCategory" type="submit" class="btn btn-primary" ng-click="cancelCategorySevice()" value="Hủy cập nhật" />
             </div>
-        </div>
+
+            <div class="form-group">
+                <input class="form-control" ng-model="itam" hidden type="text" />
+                <input class="form-control" ng-model="idCategorySevice" hidden type="text" />
+                <label class="control-label">Kích thước</label>
+                <input class="form-control" ng-model="name" required type="text" />
+                <label class="control-label">Giá</label>
+                <input class="form-control" ng-model="price" required type="number" min="0" />
+            </div>
+            <h2 class="alert-danger">{{Mess}}</h2>
+
+            <input ng-show="addCategory" type="submit" ng-init="addCategoryButton = 'Thêm loại'" class="btn btn-primary" ng-click="addCategorySevice()" value="{{addCategoryButton}}" />
+            <input ng-show="editCategory" type="submit" class="btn btn-primary" ng-click="editCategorySevice()" value="{{addCategoryButton}}" />
+            <input ng-show="editCategory" type="submit" class="btn btn-primary" ng-click="cancelCategorySevice()" value="Hủy cập nhật" />
+        </div>*@
+            <div class="form-group col-12 d-flex justify-content-center">
+                <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Thêm" : "Cập nhật")" class="btn btn-primary" />
+                @{ if (ViewContext.RouteData.Values["id"] != null)
+                    {
+                        <a href="~/admin/Sevices" class="btn btn-warning">Hủy</a>
+                    }
+                }
+            </div>
+
+        </form> 
+      
            
             

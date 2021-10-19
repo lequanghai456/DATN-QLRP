@@ -14,6 +14,9 @@ app.factory('dataservice', function ($http) {
         CreateAPI: function (data, callback) {
             $http.post('/Admin/Categories/CreateAPI?name=' + data).then(callback);
         },
+        ListCategories: function (callback) {
+            $http.post('/Admin/Categories/ListCategories').then(callback);
+        },
     }
 });
 
@@ -116,9 +119,18 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
     }
     $scope.init();
-
+    $scope.LoadCategories = function () {
+        dataservice.ListCategories(function (rs) {
+            rs = rs.data;
+            console.log(rs);
+            $scope.categories = rs.object;
+        });
+    }
     vm.Show = function () {
         vm.create = !vm.create;
+        if (vm.create) {
+            $scope.LoadCategories();
+        }
     };
     $scope.delete = function (idDelete) {
         var flag = true;
@@ -178,8 +190,11 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             templateUrl: "/View/admin/Movie/addCategories.html",
             controller: "ModalContent",
             size: '',
+            scope: $scope,
             windowClass: 'show',
         });
+
+
     };
 });
 app.controller('ModalContent', function ($scope, $uibModalInstance, dataservice) {
@@ -191,7 +206,7 @@ app.controller('ModalContent', function ($scope, $uibModalInstance, dataservice)
             }
             else
             {
-               
+                $scope.LoadCategories();
                 $uibModalInstance.close("Ok");
             }
             

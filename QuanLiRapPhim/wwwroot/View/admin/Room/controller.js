@@ -86,7 +86,8 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('FullName', 'Tên nhân viên quản lí').withClass('Center').renderWith(function (data, type) {
-            return data != "" ? data : '<button class="btn btn-primary" >Thêm nhân viên quản lí phòng</button>';
+       
+            return data != "" ? data : 'Chưa có người quản lí phòng này';
         }));
         
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Tùy chọn').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {

@@ -1,0 +1,40 @@
+﻿<style>
+    .left-nav, .right-nav {
+        float: left;
+    }
+
+    .right-nav {
+        margin-left: 20px;
+    }
+
+    a {
+        cursor: pointer;
+    }
+    
+
+    .modal-header {
+        text-align: center;
+    }
+</style>
+<div class="modal-header">
+    <h3>Thêm thể loại</h3>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <label class="control-label">Nhập giá cho kích thước</label>
+        <select id="#mySelect2" style="width:100%" class="form-control" ng-model="model.idSeviceCategory">
+            <option ng-repeat="value in sevicesCategories" value="{{value.id}}">{{value.name}}</option>
+        </select>
+        <input type="button" value="Thêm mới thể loại" class="btn btn-info" ng-click="addSize()" style="margin: 15px;" />
+        <span asp-validation-for="Lstcategories" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Giá</label>
+        <input class="form-control" type="number" ng-model="model.price" />
+        <span>{{messApiPrice}}</span>
+    </div>
+</div><input class="form-control" ng-model="model.idSevice" />
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">Thêm mới</button>
+    <button class="btn btn-warning" ng-click="cancel()">Hủy</button>
+</div>

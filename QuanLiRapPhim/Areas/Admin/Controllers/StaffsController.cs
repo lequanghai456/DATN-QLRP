@@ -42,10 +42,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
             }
             //Danh sách phòng đã có người quản lí
-            //var ListRoom = from a in _context.Staffs
-            //             join room in _context.Rooms on a.RoleId equals room.RoleId
-            //             select a.RoleId;
-            ViewBag.Role = _context.Roles.Where(x => x.IsDelete == false && !x.Name.Contains("Admin")); /*&& !ListRoom.Contains(x.Id)).ToList();*/
+            var ListRoom = from a in _context.Staffs
+                           join room in _context.Rooms on a.RoleId equals room.RoleId
+                           select a.RoleId;
+            ViewBag.Role = _context.Roles.Where(x => x.IsDelete == false && !x.Name.Contains("Admin") && !ListRoom.Contains(x.Id)).ToList();
             return View(staff);
         }
         public JsonResult DeleteStaff(int? id)

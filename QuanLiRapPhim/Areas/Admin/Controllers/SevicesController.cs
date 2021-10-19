@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
+using QuanLiRapPhim.SupportJSON;
 
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
@@ -51,50 +52,105 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // POST: Admin/Sevices/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(Sevice sevice,List<SeviceCategory> ListSeviceCategories)
-        //{
-        //    try {
-        //    if (ModelState.IsValid)
-        //    {
-        //            if (ListSeviceCategories.Count() > 0)
-        //            {
-        //                foreach (var item in ListSeviceCategories)
-        //                {
-        //                    item.Sevice = sevice;
-        //                    _context.Add(item);
-        //                }
-        //                await _context.SaveChangesAsync();
-        //                Message = "Tạo dịch vụ thành công";
-        //                return RedirectToAction(nameof(Index));
-        //            }
-        //            Message = "Dịch vụ phải có ít nhất một loại";
-        //            return RedirectToAction(nameof(Index));
-        //        }
-        //    }
-        //    catch(Exception err)
-        //    {
-        //        Message = "Tạo dịch vụ thất bại";
-        //        return View();
-        //    }
-        //    Message = "Tạo dịch vụ thất bại";
-        //    return RedirectToAction(nameof(Index));
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Sevice sevice)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(sevice);
+                    await _context.SaveChangesAsync();
+                    Message = "Tạo dịch vụ thành công";
+                        
+                }
+            }
+            catch (Exception err)
+            {
+                Message = "Tạo dịch vụ thất bại";
+                
+            }
+            return RedirectToAction(nameof(Index));
 
-        //}
-        //[HttpGet]
-        //public async Task<String> JtableSeviceModel(JTableModelCustom jTablePara)
-        //{
-        //    int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
-        //    var query = _context.Sevices.Include(x=>x.SeviceCategories).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Name) || x.Name.Contains(jTablePara.Name)));
-        //    int count = query.Count();
-        //    var data = query.AsQueryable().Select(x=>new { x.Id,x.Name,Size = JsonConvert.SerializeObject(x.SeviceCategories.Where(a=>a.IsDelete==false).ToList<SeviceCategory>()) })
-        //        .Skip(intBegin)
-        //        .Take(jTablePara.Length);
+        }
+        [HttpGet]
+        public async Task<String> JtableSeviceModel(JTableModelCustom jTablePara)
+        {
+            int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
+            var query = _context.Sevices.Include(x => x.LstSeviceSeviceCategories).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Name) || x.Name.Contains(jTablePara.Name)));
+            int count = query.Count();
+            var data = query.AsQueryable().Select(x => new { x.Id, x.Name, Size = JsonConvert.SerializeObject(x.LstSeviceSeviceCategories.Where(a => a.isDelete == false).ToList()) })
+                .Skip(intBegin)
+                .Take(jTablePara.Length);
 
-        //    var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Name","Size");
-        //    return JsonConvert.SerializeObject(jdata);
-        //}
+            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Name", "Size");
+            return JsonConvert.SerializeObject(jdata);
+        }
+        public async Task<JsonResult> getSeviceCategory()
+        {
+            JMessage jMessage = new JMessage();
+            try
+            {
+                var obj = _context.SeviceCategories.Where(x => x.IsDelete == false).ToList();
+                jMessage.Error = obj.Count() > 0;
+                if (jMessage.Error)
+                {
+                    jMessage.Object = obj;
+                }
+                else
+                {
+                    jMessage.Title = "Không có kích thước";
+                }
+            }
+            catch (Exception er)
+            {
+                jMessage.Error = true;
+                jMessage.Title = "Có lỗi xảy ra";
+            }
+
+            return Json(jMessage);
+        }
+        public async Task<JsonResult> addCategory(String name)
+        {
+            JMessage jMessage = new JMessage();
+            try
+            {
+                SeviceCategory seviceCategory = new SeviceCategory();
+                seviceCategory.Name = name;
+                _context.Add(seviceCategory);
+                await _context.SaveChangesAsync();
+                jMessage.Error = false;
+            }
+            catch (Exception ex)
+            {
+                jMessage.Error = true;
+                jMessage.Title = "Thêm thất bại";
+            }
+            return Json(jMessage);
+
+        }
+        
+        public async Task<JsonResult> addCategorySevice(int? idSevice,decimal? price,int? idSeviceCategory)
+        {
+            JMessage jMessage = new JMessage();
+            SeviceSeviceCategories seviceSeviceCategories = new SeviceSeviceCategories();
+            try
+            {
+                
+                seviceSeviceCategories.IdSevice = (int)idSevice;
+                seviceSeviceCategories.Price = (decimal)price;
+                seviceSeviceCategories.IdSeviceCategory = (int)idSeviceCategory;
+                _context.Add(seviceSeviceCategories);
+                await _context.SaveChangesAsync();
+                jMessage.Error = false;
+            }catch(Exception err)
+            {
+                jMessage.Error = true;
+                jMessage.Title = "Thêm thất bại";
+            }
+            return Json(jMessage);
+        }
         public JsonResult DeleteSevice(int? id)
         {
             try

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
+using QuanLiRapPhim.SupportJSON;
 
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
@@ -79,6 +80,28 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 return Json("0");
             }
 
+        }
+        public async Task<JsonResult> ListCategories()
+        {
+            JMessage jMessage = new JMessage();
+            try
+            {
+                var obj = _context.Categories.Where(x => x.IsDelete == false).ToList();
+                jMessage.Error = obj.Count() > 0;
+                if (jMessage.Error)
+                {
+                    jMessage.Object = obj;
+                }
+                else
+                {
+                    jMessage.Title = "Không có thể loại";
+                }
+            }
+            catch (Exception er){
+                jMessage.Error = true;
+                jMessage.Title = "Có lỗi xảy ra";
+            }
+            return Json(jMessage);
         }
         // POST: Admin/Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
