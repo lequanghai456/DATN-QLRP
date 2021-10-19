@@ -34,10 +34,11 @@ namespace QuanLiRapPhim.Controllers
             {
                 if (date == null)
                 {
-                    date = DateTime.Now;
+                    date =DateTime.Parse(DateTime.Now.ToShortDateString());
                 }
                 jmess.Object = (from st in _context.ShowTimes
                                 where st.DateTime.CompareTo((DateTime)date) == 0
+                                orderby st.startTime.TimeOfDay
                                 select new
                                 {
                                     st.Id,
@@ -47,7 +48,8 @@ namespace QuanLiRapPhim.Controllers
                                     Soghe = st.Tickets.Where(x => x.IsDelete == false).Count(),
                                     Total = st.Room.Seats.Count(),
                                     st.DateTime,
-                                    Time = string.Format("{0:t}", st.startTime)
+                                    Time = string.Format("{0:t}", st.startTime),
+                                    Day = st.DateTime
                                 }).ToList();
 
                 jmess.Error = jmess.Object == null;

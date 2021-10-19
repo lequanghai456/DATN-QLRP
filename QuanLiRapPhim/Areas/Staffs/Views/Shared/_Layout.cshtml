@@ -32,12 +32,11 @@
     <div class="page">
         <!-- navbar-->
         @await Html.PartialAsync("_HeaderPartial")
-        <div class="container-fluid">
+        <div class="container">
             @RenderBody()
         </div>
         @await Html.PartialAsync("_FooterPartial")
     </div>
-
     @await Html.PartialAsync("_LibJSPartial")
     @RenderSection("Scripts", required: false)
 </body>

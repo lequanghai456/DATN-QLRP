@@ -1,3 +1,4 @@
+
 .paginate_button {
     background-color: white;
     color: black;
@@ -2563,4 +2564,74 @@ div {
 
 .bbb_viewed_item.is_new .item_new {
     display: inline-block
+}
+.listday {
+    border-bottom: 1px solid;
+}
+
+    .listday li {
+        display: inline-block;
+        padding: 5px;
+    }
+
+.day {
+    border: 2px solid;
+    border-radius: 5px;
+    color: black;
+    cursor: pointer;
+    height: 48px;
+    position: relative;
+    width: 110px;
+}
+
+
+    .day > strong {
+        color: #717171;
+        font-size: 32px;
+        font-weight: normal;
+        right: 4px;
+        line-height: 32px;
+        position: absolute;
+        top: 8px;
+    }
+
+    .day > span {
+        color: #717171;
+        font-size: 11px;
+        left: 4px;
+        position: absolute;
+        top: 4px;
+    }
+
+    .day > em {
+        color: #717171;
+        font-size: 11px;
+        font-style: normal;
+        left: 4px;
+        position: absolute;
+        top: 20px;
+    }
+
+    .day:hover, .day.current {
+        color: red;
+        background-color: white;
+    }
+
+.item {
+    border: 1px solid black;
+    padding: 5px;
+    display: inline-block;
+    margin: 10px;
+    width: 300px;
+}
+
+    .item > div {
+        display: inline-block;
+    }
+
+.item-infor a {
+    display: inline-block;
+    width: 140px;
+    height: 16px;
+    overflow: hidden;
 }

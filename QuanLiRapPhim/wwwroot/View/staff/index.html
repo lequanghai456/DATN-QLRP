@@ -1,0 +1,20 @@
+﻿<div>
+    Chọn ngày: <input ng-model="day" ng-change="selectday()" type="date" />{{day.toLocaleDateString('en-US')}}
+</div>
+<div>
+    <div class="Showtimes row">
+        <div style="text-align:center; width:100%; font-size:30px" ng-show="data.error"><strong>{{mess}}</strong></div>
+        <div class="item" ng-repeat="item in data.object">
+            <a href="#!{{item.id}}">
+                <img src="https://localhost:44350/admin/img/Poster/{{item.poster}}" width="75" height="100" />
+            </a>
+            <div class="item-infor">
+                <div><strong>Tên phim:<span><a href="https://localhost:44350/moviereview#!/{{item.title}}"> {{item.title}}</a></span></strong></div>
+                <div><strong>Giờ chiếu:</strong> {{item.time}}</div>
+                <div><strong>Phòng chiếu:</strong> {{item.name}}</div>
+                <div><strong>Ghế đã đặt:</strong> {{item.soghe}}/{{item.total}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -19,7 +19,7 @@ app.controller('Ctroller', function ($scope, dataservice) {
     $(".listday .day").click(function () {
         $(".listday .current").removeClass("current");
         $(this).addClass("current");
-    })
+    });
     $scope.GetDate = function (date) {
         dataservice.GetListShowTime(date, function (rs) {
             rs = rs.data;
