@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using QuanLiRapPhim.App;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
 using QuanLiRapPhim.SupportJSON;
@@ -9,18 +11,22 @@ using System.Threading.Tasks;
 
 namespace QuanLiRapPhim.Controllers
 {
+    [AuthorizeRoles("User,Admin,Staff")]
     public class BookticketController : Controller
     {
+        [TempData]
+        public string Message { get; set; }
         private readonly IdentityContext _context;
         
         public BookticketController(IdentityContext context)
         {
             _context = context;
         }
-        [AuthorizeRoles("")]
         public IActionResult Index(int id)
         {
-            var deleted = _context.ShowTimes.Where(x=>x.IsDelete).Any(x => x.Id == id);
+            var deleted = _context.ShowTimes.Include(x=>x.Room).Where(x=>x.IsDelete)
+                .Where(x=>x.Room.IsDelete)
+                .Any(x => x.Id == id);
             if (id <= 0 || deleted)
             {
                 return NotFound();
@@ -28,6 +34,55 @@ namespace QuanLiRapPhim.Controllers
             var St = _context.ShowTimes.Find(id);
 
             return View(St);
+        }
+        [HttpPost]
+        public IActionResult BookTicket(Ticket ticket)
+        {
+
+            try
+            {
+
+
+                ticket.Username = User.Identity.Name;
+                ticket.Price = Price((int)ticket.SeatId, (int)ticket.ShowTimeId);
+                ticket.PurchaseDate = DateTime.Now;
+                var isbooked = (from T in _context.Tickets
+                                where T.SeatId == ticket.SeatId && T.IsDelete == false
+                                select T).Count() > 0;
+
+                if (ticket.SeatId == null || isbooked || !ModelState.IsValid)
+                {
+                    Message = "Không tìm thấy ghế";
+                    return RedirectToAction("Index/" + ticket.ShowTimeId.Value);
+                }
+                _context.Add(ticket);
+                _context.SaveChanges();
+                Message = "Bạn đã mua thành công";
+
+                var a = SendEmailSuccesOder(_context.Users.Where(x => x.UserName == ticket.Username)
+                    .FirstOrDefault(), ticket);
+            }
+            catch (Exception er)
+            {
+                Message= "Lỗi";
+                return RedirectToAction("Index/" + ticket.ShowTimeId.Value);
+            }
+            return RedirectToAction("Index", "YourOrder");
+        }
+
+        public bool SendEmailSuccesOder(User user, Ticket ticket)
+        {
+            String res = "";
+            if (ticket == null)
+            {
+                res = "Có lỗi xảy ra! Vui lòng thông báo lại vào email này.";
+            }
+            else
+            {
+                res = "Bạn đã đặt vé có mã: V" + ticket.Id + " Vào ngày: " + ticket.PurchaseDate.Date;
+            }
+            return Email.SendMailGoogleSmtp("giabao158357@gmail.com", user.Email, "Lấy mã đơn hàng", res).Result ?
+                true : false;
         }
         public JsonResult getRoomByIdShowtime(int id)
         {
@@ -58,6 +113,31 @@ namespace QuanLiRapPhim.Controllers
             }
             return Json(jMessage);
         }
+
+        public decimal Price(int idseat, int idShowTime)
+        {
+            decimal price = _context.ShowTimes
+                .Include(x => x.Room).FirstOrDefault(x => x.Id == idShowTime).Room.Price;
+            var s = _context.Seats.Find(idseat);
+            switch (s.X)
+            {
+                case "A":
+                case "B":
+                case "C":
+                    price += price / 10;
+                    break;
+                case "D":
+                case "E":
+                case "F":
+                    price += price / 5;
+                    break;
+                default:
+                    break;
+            }
+
+            return price;
+        }
+
         public JsonResult getListSeatOfShowtime(int id)
         {
             JMessage jMessage = new JMessage();
@@ -79,8 +159,8 @@ namespace QuanLiRapPhim.Controllers
                                        se.Id,
                                        se.X,
                                        se.Y,
-                                       se.Status
-                                   }).ToList().GroupBy(x => x.X).Select(x => new { name = x.Key,arr=x.ToList().Select(x=> new {x.X, x.Y,x.Id,x.Status}) });
+                                       se.Status,
+                                   }).ToList().GroupBy(x => x.X).Select(x => new { name = x.Key,arr=x.ToList().Select(x=> new {x.X, x.Y,x.Id,x.Status,Price=Price(x.Id, id)}) });
                 jMessage.Object = seats;
             }
             return Json(jMessage);

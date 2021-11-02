@@ -1,5 +1,5 @@
 ﻿<div id="carouselExampleControls" class="page carousel slide" data-ride="carousel">
-    <div class="slider carousel-inner" >
+    <div class="slider carousel-inner">
         <div class="carousel-item" ng-repeat="x in slider">
             <img class="d-block w-100" src="{{x}}" alt="First slide">
         </div>
@@ -20,6 +20,7 @@
         <img src="../images/h3_movie_selection.gif">
     </div>
 </div>
+
 <div class="row">
     <div class="col-sm-12" style="height: fit-content;">
         <div class="bbb_viewed">
@@ -39,13 +40,13 @@
                         <div class="bbb_viewed_slider_container">
                             <div class="owl-carousel owl-theme bbb_viewed_slider">
                                 <div class="temp" ng-repeat="x in mvs" style="width: 270px; margin-right: 0px; height: 400px;">
-                                    <img src="{{x.img}}" width="270" height="400" />
+                                    <img src="../admin/img/Poster/{{x.poster}}" width="270" height="400" />
                                     <div class="row abc" style="position: relative; top: -399px;">
                                         <div class="col-sm-12">
-                                            <a href="#" data-toggle="modal" id="a" ng-click="play(x.id)"
+                                            <div id="a" ng-click="playTrailer($index)"
                                                data-target="#exampleModal">
                                                 <img src="https://www.cgv.vn/skin/frontend/cgv/default/images/bg-transparent-grey.png" />
-                                            </a>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -55,9 +56,8 @@
                                             <div class="row">
                                                 <div class="col-sm-12"
                                                      style="display: flex; align-items: center; border: 1px solid red;">
-                                                    <h4 style="color: #FFFFFF; font-size: 18px; position: relative; top: 5x; left: -10px; text-transform: uppercase">
-                                                        Cô
-                                                        gái đến từ hôm qua
+                                                    <h4 style="height:43px;color: #FFFFFF; font-size: 18px; position: relative; top: 5x; left: -10px; text-transform: uppercase">
+                                                        {{x.title}}
                                                     </h4>
                                                 </div>
                                             </div>
@@ -97,36 +97,23 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
-
-
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <iframe width="100%" height="500"
-                                src='https://www.youtube.com/embed/LggaymnzDjc'
-                                title="YouTube video player"
-                                frameborder="0" allow="accelerometer;
-                                autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen></iframe>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Dừng xem</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- </div> -->
     </div>
 </div>
 
-<!--<div class="row"
-     style="background: url(images/bg_h3_line.jpg) repeat-x scroll left center rgba(0, 0, 0, 0);">
-    <div style="background-color: #ffffff; padding-left: 10px; padding-right: 10px; margin: 0px auto;">
-        <img src="../images/h3_event.png">
+<!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div>
+                    <input ng-model="trailer" />-->
+                    <!--<video id="Prevideo" width="100%" height="450" controls="controls" src="../admin/img/Trailer/{{trailer}}"></video>-->
+                <!--</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Dừng xem</button>
+            </div>
+        </div>
     </div>
 </div>-->

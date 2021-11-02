@@ -1,8 +1,8 @@
 ﻿<div class="modal-content">
     <div class="modal-header">
-        <img class="icon-remove" title="Close" src="/images/default/close.png" ng-click="back()" />
+        <img class="icon-remove" title="Đóng" src="/images/default/close.png" ng-click="back()" />
         <i class="fa fa-plus-circle icon-insert "></i>
-        <span class="modal-title" id="modal-title"> Payment</span>
+        <span class="modal-title" id="modal-title"> Đặt vé</span>
     </div>
     <div class="modal-body userFormAreaHeader pb-0" id="modal-body">
         <div class="row" style="height: 300px;">
@@ -15,7 +15,7 @@
             </div>
             <div class="col-sm-4" style="height: 100%;">
                 <h3 class="text-center">Thông tin thanh toán</h3>
-                <form id="bookticket" action="https://localhost:44350/YourOrder/BookTicket" method="get">
+                <form id="bookticket" action="https://localhost:44350/Bookticket/BookTicket" method="post">
                     <div class="form-group row">
                             <label style="padding: 0px 0px 0px 0px; display: flex; align-items: center;" for="staticEmail" class="col-sm-2 col-form-label">Họ Tên:</label>
                             <div style="padding-left: 8px;" class="col-sm-10">
@@ -33,10 +33,10 @@
                 </form>
             <div class="row">
                 <div class="col-sm-6">
-                    <button style="width: 100%;" type="button" class="btn btn-success" ng-click="payment()">Payment</button>
+                    <button style="width: 100%;" type="button" class="btn btn-success" ng-click="payment()">Xác nhận</button>
                 </div>
                 <div class="col-sm-6">
-                    <button style="width: 100%;" type="button" class="btn btn-dark" ng-click="back()">Back</button>
+                    <button style="width: 100%;" type="button" class="btn btn-dark" ng-click="back()">Hủy</button>
                 </div>
             </div>
             <br />
@@ -59,7 +59,7 @@
                 <a class="btn btn-icon-only btn-circle btn-outline red-custom" ng-click="back()">
                     <span><i class="fa fa-close"></i></span>
                 </a>
-                <p class="text-underline fs9 mb5 pt3">cancel</p>
+                <p class="text-underline fs9 mb5 pt3">Đóng</p>
             </div>
         </div>
     </div>

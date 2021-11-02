@@ -69,7 +69,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('UnitPrice', 'Giá').withClass('Center').renderWith(function (data, type) {
             return data;
         })); 
-        vm.dtColumns.push(DTColumnBuilder.newColumn('NameSevice', 'Tên dịch vụ').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('NameSevice', 'Tên dịch vụ(Loại)').withClass('Center').renderWith(function (data, type) {
             return data;
         })); 
     }

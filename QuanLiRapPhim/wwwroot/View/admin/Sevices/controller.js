@@ -5,15 +5,28 @@ var ctxfolderurl = "https://localhost:44350";
 var app = angular.module('App', ['datatables', 'ui.bootstrap', 'ngRoute', 'checklist-model']);
 
 app.factory('dataservice', function ($http) {
+
     return {
-        getSeviceCategory: function (callback) {
-            $http.get('/Admin/Sevices/getSeviceCategory').then(callback);
+        getSeviceCategory: function (data,callback) {
+            $http.get('/Admin/Sevices/getSeviceCategory/'+data).then(callback);
+        },
+        getSeviceCategoryUpdate: function (data, callback) {
+            $http.get('/Admin/Sevices/getSeviceCategoryUpdate/' + data).then(callback);
         },
         addCategory: function (data,callback) {
             $http.post('/Admin/Sevices/addCategory?name=' + data).then(callback);
         },
-        addCategorySevice: function (data, callback) {
-            $http.post('/Admin/Sevices/addCategorySevice', data).then(callback);
+        addCategorySevice: function (idSevice, price, idSeviceCategory, callback) {
+            $http.get('/Admin/Sevices/addCategorySevice?idSevice=' + idSevice + '&price=' + price + '&idSeviceCategory=' + idSeviceCategory).then(callback);
+        },
+        checkCategory: function (data, callback) {
+            $http.post('/Admin/Sevices/checkCategory?name=' + data).then(callback);
+        },
+        updateCategorySevice: function (idSevice, price, idSeviceCategory, callback) {
+            $http.get('/Admin/Sevices/updateCategorySevice?idSevice=' + idSevice + '&price=' + price + '&idSeviceCategory=' + idSeviceCategory).then(callback);
+        },
+        deleteSeviceCategory: function (data, callback) {
+            $http.post('/Admin/Sevices/deleteSeviceCategory?id=' + data).then(callback);
         },
 
 
@@ -48,7 +61,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     var LengthPage = 3;
     var itam = LengthPage;
     $scope.toggleOne = toggleOne;
-   
+    
     
     
     $scope.init = function () {
@@ -107,16 +120,19 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Size', 'Kích thước - giá').withClass('Center').renderWith(function (data, type) {
-            //var Name = "";
-            //angular.forEach(JSON.parse(data), function (value, key) {
-            //    Name += value.Name + " - " + value.price +'</br>';
-            //});
-            //return Name.slice(0, Name.length - 1);
-            return '<input type="button" value="Thêm kích thước" class="btn btn-info" ng-click="addPrice('+1+')" style="margin: 15px;" />'
+            var Name = "";
+            console.log(data);
+            angular.forEach(JSON.parse(data), function (value, key) {
+                Name += value.Name + " - " + value.Price + ' |<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="deleteSeviceCategory(' + value.Id + ')">Xóa</button>';
+            });
+            return Name.slice(0, Name.length - 1);
+            
         }));
 
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Tùy chọn').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Sevices/Index/' + data + '#! > Cập nhật</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete(' + data + ')">Xóa</button>';
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Tùy chọn').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, stt, full, type) {
+            console.log(full)
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Sevices/Index/' + data + '#! > Cập nhật</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete(' + data + ')">Xóa</button> </br> <input type="button" value="Thêm kích thước" class="btn btn-info" ng-click="addPrice(' + full.Id + ')" style="margin: 15px;" />';
+
         }));
 
         vm.addCategory = true;
@@ -130,24 +146,24 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         }
         $scope.buttonCategorySevices = "addCategorySevice()";
 
-            if (id != null) {
-                dataservice.editSevice(id.value, function (rs) {
-                    $scope.seviceName = rs.data[0].name;
-                    $scope.seviceIsFood = rs.data[0].IsFood;
-                    rs = rs.data[0].listCategorysevice;
+            //if (id != null) {
+            //    dataservice.editSevice(id.value, function (rs) {
+            //        $scope.seviceName = rs.data[0].name;
+            //        $scope.seviceIsFood = rs.data[0].IsFood;
+            //        rs = rs.data[0].listCategorysevice;
 
-                    console.log(rs);
-                    angular.forEach(rs, function (value, key) {
-                        $scope.ListSeviecs.push({
-                            "id": value.id,
-                            "name": value.name,
-                            "price": value.price
-                        });    
-                    });
+            //        console.log(rs);
+            //        angular.forEach(rs, function (value, key) {
+            //            $scope.ListSeviecs.push({
+            //                "id": value.id,
+            //                "name": value.name,
+            //                "price": value.price
+            //            });    
+            //        });
 
-                    console.log($scope.ListSeviecs);
-                });
-            }
+            //        console.log($scope.ListSeviecs);
+            //    });
+            //}
         }
         $scope.init();
 
@@ -354,16 +370,10 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
 
         }
-    $scope.model = {
-        
-        idSevice: "",
-        price: "",
-        idSeviceCategory: "",
-
-    }
+    
     $scope.addPrice = function (id) {
-
-        $scope.model.idsevice = id;
+        $scope.id = id;
+        $scope.$apply;
             var modalInstance = $uibModal.open({
                 templateUrl: "/View/admin/Sevices/addPrice.html",
                 controller: "ModalContent",
@@ -373,18 +383,45 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             });
 
 
-        };
-    
-});
-app.controller('ModalContent', function ($scope, $uibModalInstance, dataservice, $uibModal) {
-    $scope.initModal = function () {
-        dataservice.getSeviceCategory(function (rs) {
+    };
+    $scope.update = function (id) {
+        $scope.idupdate = id;
+        var modalInstance = $uibModal.open({
+            templateUrl: "/View/admin/Sevices/updatePrice.html",
+            controller: "ModalUpdate",
+            size: 'lg',
+            scope: $scope,
+            windowClass: 'show',
+        });
+
+
+    };
+    $scope.sevicesCategories = function (id) {
+        dataservice.getSeviceCategory(id, function (rs) {
             rs = rs.data;
             console.log(rs);
             $scope.sevicesCategories = rs.object;
         });
     }
-    $scope.initModal();
+    $scope.getSeviceCategoryUpdate = function (id) {
+        dataservice.getSeviceCategoryUpdate(id, function (rs) {
+            rs = rs.data;
+            console.log(rs);
+            $scope.sevicesCategories = rs.object;
+        });
+    }
+    $scope.deleteSeviceCategory = function (id) {
+        dataservice.deleteSeviceCategory(id, function (rs) {
+            if (rs) {
+                $scope.notification = "Xóa thành công";
+                $scope.$apply;
+            }
+        });
+    }
+});
+app.controller('ModalContent', function ($scope, $uibModalInstance, dataservice, $uibModal) {
+
+    $scope.sevicesCategories($scope.id);
     $scope.addSize = function () {
         var modalInstance = $uibModal.open({
             templateUrl: "/View/admin/Sevices/addSize.html",
@@ -397,19 +434,13 @@ app.controller('ModalContent', function ($scope, $uibModalInstance, dataservice,
 
     };
     $scope.ok = function () {
-        console.log($scope.model);
-        dataservice.addCategorySevice($scope.model, function (rs) {
-            console.log(rs.data);
-            rs = rs.data;
-            if (rs.error) {
-                $scope.messApiPrice == rs.title;
-            }
-            else {
-                $scope.initModal();
-                $uibModalInstance.close("Ok");
-            }
-
-        });
+        if ($scope.model.Price <= 0 || $scope.model.Price == undefined || $scope.model.IdSeviceCategory == undefined) {
+            $scope.messApiPrice = "Vui lòng kiểm tra thông tin";
+            $scope.$apply;
+        }
+        else {
+            $('#addprice').submit();
+        }
 
     }
 
@@ -421,19 +452,48 @@ app.controller('ModalContent', function ($scope, $uibModalInstance, dataservice,
 
 app.controller('ModalContentSize', function ($scope, $uibModalInstance, dataservice) {
     $scope.addSeviceCategory = function () {
-        dataservice.addCategory($scope.nameSize, function (rs) {
-            rs = rs.data;
-            console.log(rs);
-            if (rs.error) {
-                $scope.messApi = rs.title;
-            } else {
-                $scope.initModal();
-                $uibModalInstance.close("Ok");
+        dataservice.checkCategory($scope.nameSize, function (rs1) {
+            rs1 = rs1.data;
+            $scope.flag = rs1;
+        
+        console.log($scope.flag);
+        if ($scope.flag) {
+            $scope.messApi = "Kích thước đã tồn tại";
+        }
+            else {
+            dataservice.addCategory($scope.nameSize, function (rs) {
+                rs = rs.data;
+
+                if (rs.error) {
+                    $scope.messApi = rs.title;
+                } else {
+                    /*$scope.sevicesCategories($scope.id);*/
+                    $uibModalInstance.close("Ok");
+                }
+            });
             }
         });
 
     }
 
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss();
+    }
+
+});
+app.controller('ModalUpdate', function ($scope, $uibModalInstance, dataservice) {
+
+    $scope.getSeviceCategoryUpdate($scope.idupdate);
+    $scope.update = function () {
+        if ($scope.model.Price <= 0 || $scope.model.Price == undefined || $scope.model.IdSeviceCategory == undefined) {
+            $scope.messApiPrice = "Vui lòng kiểm tra thông tin";
+            $scope.$apply;
+        }
+        else {
+            $('#update').submit();
+        }
+
+    }
     $scope.cancel = function () {
         $uibModalInstance.dismiss();
     }

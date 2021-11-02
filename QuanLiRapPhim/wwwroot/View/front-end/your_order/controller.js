@@ -49,7 +49,7 @@ app.directive('myBill', function (DTColumnDefBuilder, DTOptionsBuilder) {
     };
 });
 
-app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnBuilder, $compile, datasevice) {
+app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnBuilder, $compile, datasevice, $filter) {
     
     var vm = $scope;
 
@@ -63,10 +63,14 @@ app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnB
                 });
             }
             , type: 'GET'
+            , data: function (d) {
+                d.date = !$scope.Date ? "" : $filter('date')($scope.Date, 'yyyy-MM-dd');
+                console.log(d);
+            }
             , dataType: "json"
             , complete: function (rs) {
                 $.unblockUI();
-                console.log(rs.responseJSON.data);
+                //console.log(rs.responseJSON.data);
                 if (rs && rs.responseJSON && rs.responseJSON.Error) {
                     App.toastrError(rs.responseJSON.Title);
                 }
@@ -87,13 +91,16 @@ app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnB
         .withOption('createdRow', function (row) {
             $compile(angular.element(row).contents())($scope);
         });
+
     vm.dtOrderColumns = [];
+
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('id', 'id').withOption('sWidth', '20px').renderWith(function (data, type) {
         return data
     }).notSortable());
+
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Objects', 'Đơn hàng của bạn').withOption('sWidth', '320px').renderWith(function (data, type,full,meta) {
         data = JSON.parse(data);
-        console.log(data);
+        //console.log(data);
         if (data.isTicket == false)
             return '<div my-Bill model="All[' + meta.row + ']" ></div > ';
         return '<div my-Ticket model="All[' + meta.row + ']" ></div > ';
@@ -109,6 +116,14 @@ app.controller('index', function ($scope, $uibModal, DTOptionsBuilder, DTColumnB
     }
     $scope.init();
 
+    vm.dtInstance = {};
+
+    vm.reloadData =function(resetPaging) {
+        vm.dtInstance.reloadData(callback, resetPaging);
+    }
+    function callback(json) {
+
+    }
     $scope.controller = "YourOrder";
     $scope.choseService = function () {
         var modalInstance = $uibModal.open({

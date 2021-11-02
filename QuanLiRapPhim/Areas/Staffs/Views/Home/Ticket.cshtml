@@ -1,0 +1,62 @@
+﻿@model QuanLiRapPhim.Areas.Admin.Models.Ticket
+@{
+    Layout = "";
+}
+@*<meta charset="utf-8">*@
+@*<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Bootstrap Dashboard by Bootstrapious.com</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">*@
+<!--<meta name="robots" content="all,follow">-->
+<!-- Bootstrap CSS-->
+<!--<link rel="stylesheet" href="~/admin/vendor/bootstrap/css/bootstrap.min.css">-->
+<!-- Font Awesome CSS-->
+<!--<link rel="stylesheet" href="~/admin/vendor/font-awesome/css/font-awesome.min.css">-->
+<!-- Fontastic Custom icon font-->
+<!--<link rel="stylesheet" href="~/admin/css/fontastic.css">
+<link rel="stylesheet" href="~/admin/css/style.default.css" id="theme-stylesheet">-->
+<!--dataTables-->
+<!--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.1/css/jquery.dataTables.css" />
+
+<link rel="stylesheet" href="~/css/style.css" />-->
+<div style="height: 200px; width: fit-content; display:flex">
+    <div style="height: 190px; width: 400px; background: linear-gradient(to bottom, #e84c3d 0%, #e84c3d 26%, #ecedef 26%, #ecedef 100%); border-radius: 8px; ">
+        <div class="row">
+            <div class="col-sm-12">
+                <p style="display: flex; align-items: center; height: 100%; margin-left: 15px; color: #ffffff; font-size: 20px;">
+                    My Cinema
+                </p>
+            </div>
+        </div>
+        <div class="row" style="height: fit-content; margin-top: 10px;">
+            <div class="col-sm-12" style="height: 40px;">
+                <p style=" text-transform: uppercase;margin-bottom: 0px; height: fit-content; font-size: 15px; color: #000000; font-weight: bold; margin-left: 15px; margin-top: 8px;">
+                    @Model.ShowTime.Movie.Title
+                </p>
+                <p style="margin-left: 15px; text-transform: uppercase; font-size: 13px;">
+                    PHIM
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <p style="text-transform: uppercase; margin-bottom: 0px; height: fit-content; font-size: 15px; color: #000000; font-weight: bold; margin-left: 15px; margin-top: 8px;">
+                    @Model.Name
+                </p><p style="margin-left: 15px; text-transform: uppercase; font-size: 13px;">            Người mua</p></div><div class="col-sm-6">
+                <p style="text-transform: uppercase; margin-bottom: 0px; height: fit-content; font-size: 15px; color: #000000; font-weight: bold; margin-left: 15px; margin-top: 8px;">
+                    @Model.ShowTime.Room.Name
+                </p><p style="margin-left: 15px; text-transform: uppercase; font-size: 13px;">Phòng</p></div></div>
+        <div class="row"><div class="col-2"><p style="font-size: 13px; margin-left: 15px; color: #000000; font-weight: bold; margin-bottom: 0px; ">
+                    @(Model.Seat.X + Model.Seat.Y)
+                </p><p style="font-size: 13px; margin-left: 15px;  text-transform: uppercase; ">Ghế</p></div><div class="col-5">
+                <p style="font-size: 13px; margin-left: 15px; color: #000000; font-weight: bold; margin-bottom: 0px; ">
+                    @Model.ShowTime.DateTime.Date.ToShortDateString()
+                </p><p style="font-size: 13px; margin-left: 15px;  text-transform: uppercase; ">Giờ chiếu</p>
+            </div><div class="col-5"><p style="font-size: 13px; margin-left: 15px; color: #000000; font-weight: bold; margin-bottom: 0px; ">
+                    @Model.ShowTime.startTime.TimeOfDay
+            </p><p style="font-size: 13px; margin-left: 15px;  text-transform: uppercase; ">Ngày chiếu</p></div></div></div>
+    <div class="col-sm-4" style="background: linear-gradient(to bottom, #e84c3d 0%, #e84c3d 26%, #ecedef 26%, #ecedef 100%); border-radius: 8px;  border-left: 3px dashed #fff; height: 190px; display: flex; align-items: center; justify-content: center;">
+        <div class="row"style="margin-top: 20px; width: fit-content; margin-left: -20px;  height: fit-content;">
+            <div class="col-sm-12"><p style="margin-bottom: 0px; align-items: center; color: #e84c3d; font-size: 40px; font-weight: bold; display: flex; justify-content: center;">
+                    @(Model.Seat.X + Model.Seat.Y)
+                 </p><p class="text-center" style="font-size: 20px;text-transform: uppercase; ">Số ghế</p></div></div></div></div>

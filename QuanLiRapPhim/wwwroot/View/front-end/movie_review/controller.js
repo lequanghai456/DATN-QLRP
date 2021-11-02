@@ -16,8 +16,8 @@ app.factory('dataservice', function ($http) {
     }
 
     return {
-        GetMovie: function (callback) {
-            $http.get('/moviereview/getmovie').then(callback);
+        GetMovie: function (data,callback) {
+            $http.get('/moviereview/getmovie?search='+data).then(callback);
         },
         GetListShowTime: function (id, Date, callback) {
             $http.get('/moviereview/GetListShowTime?idmovie=' + id + '&date=' + Date).then(callback);
@@ -51,22 +51,23 @@ app.config(function ($routeProvider) {
         }).when('/:NameMovie/bookticket/:id', {
             templateUrl: ctxfolderurl + '/bookticket.html',
             controller: 'bookticket'
-        }).when('/:NameMovie/bookticket/:id/payment', {
-            templateUrl: ctxfolderurl + '/payment.html',
-            controller: 'payment'
         });
 
 });
 
-app.controller('index', function ($scope, $rootScope, dataservice) {
-    $scope.init = function () {
-        dataservice.GetMovie(function (rs) {
-            $rootScope.data = rs.data;
+app.controller('index', function ($scope, dataservice) {
+    $scope.Search = "";
+    $scope.search = function () {
+        dataservice.GetMovie($scope.Search, function (rs) {
+            $scope.data = rs.data;
+            console.log(rs.data);
+            if ($scope.data == null) {
 
-            if ($rootScope.data == null) {
                 console.log('Không có phim');
+
             } else {
-                $scope.totalItems = $rootScope.data.length;
+
+                $scope.totalItems = $scope.data.length;
                 $scope.currentPage = 1;
                 $scope.numPerPage = 8;
                 $scope.maxSize = 5; //Number of pager buttons to show
@@ -76,7 +77,7 @@ app.controller('index', function ($scope, $rootScope, dataservice) {
                 };
 
                 $scope.numPages = function () {
-                    return Math.ceil($rootScope.data.length / $scope.numPerPage);
+                    return Math.ceil($scope.data.length / $scope.numPerPage);
                 }
 
                 $scope.pageChanged = function () {
@@ -91,16 +92,23 @@ app.controller('index', function ($scope, $rootScope, dataservice) {
                     var begin = (($scope.currentPage - 1) * $scope.numPerPage)
                         , end = begin + $scope.numPerPage;
 
-                    $scope.movies = $rootScope.data.slice(begin, end);
+                    $scope.movies = $scope.data.slice(begin, end);
                 });
+
+                $scope.reset = function () {
+
+                }
+
                 $(document).ready(function () {
                     $(".pagination li").addClass("page-item");
                     $(".pagination li a").addClass("page-link");
                 });
-                    }
+            }
+
         });
     }
-    $scope.init();
+
+    $scope.search();
 });
 
 app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibModal, $sce) {

@@ -1,16 +1,22 @@
-﻿
-var ctxfolderurl = "https://localhost:44350";
+﻿var ctxfolderurl = "https://localhost:44350";
 
 var app = angular.module('App', ['datatables', 'ngRoute', 'ui.bootstrap']);
 
 app.factory('dataservice', function ($http) {
     return {
         deleteMovie: function (data, callback) {
-            $http.post('/Admin/Movies/DeleteMovie?id=' + data).then(callback);
+            $http.get('/Admin/Movies/Kiemtradelete/' + data).then(function (rs) {
+                console.log(rs);
+                if (!rs.data)
+                    $http.post('/Admin/Movies/DeleteMovie?id=' + data).then(callback);
+                else
+                    $(".modal-body .alert").html("Phim có lịch chiếu");
+            });
         },
         deleteMovieCheckbox: function (data, callback) {
             $http.post('/Admin/Movies/DeleteMovieList?Listid=' + data).then(callback);
         },
+        
         CreateAPI: function (data, callback) {
             $http.post('/Admin/Categories/CreateAPI?name=' + data).then(callback);
         },
@@ -26,6 +32,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     var id = document.getElementById('idEdit');
     
     $scope.selected = [];
+    
     $scope.items = [];
     $scope.selectAll = false;
     var LengthPage = 3;
@@ -116,9 +123,8 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         else {
             vm.create = false;
         }
-
+        $scope.LoadCategories();
     }
-    $scope.init();
     $scope.LoadCategories = function () {
         dataservice.ListCategories(function (rs) {
             rs = rs.data;
@@ -126,7 +132,9 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             $scope.categories = rs.object;
         });
     }
-    vm.Show = function () {
+
+    $scope.init();
+        vm.Show = function () {
         vm.create = !vm.create;
         if (vm.create) {
             $scope.LoadCategories();
@@ -196,13 +204,22 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
 
     };
+    $scope.Checkecategory = function (id) {
+
+        var a = $scope.Lstcategori.find(function (data) {
+            return data == id;
+        });
+
+        return a == undefined;
+    }
 });
 app.controller('ModalContent', function ($scope, $uibModalInstance, dataservice) {
     $scope.ok = function () {
         dataservice.CreateAPI($scope.nameCategory, function (rs) {
             console.log(rs.data);
             if (rs.data == '0') {
-                $scope.messApi == "Tạo không thành công";
+                $scope.messApi = "Tạo không thành công";
+                $scope.$apply;
             }
             else
             {

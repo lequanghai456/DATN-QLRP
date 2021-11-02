@@ -487,7 +487,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "5d318828-65e3-4e0c-8701-89bd5c8ad903",
+                            ConcurrencyStamp = "ec9fd79b-736b-4a50-9810-19ed828541c3",
                             IsDelete = false,
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -495,7 +495,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "873beeb9-18be-4d57-a88e-5c3c172eac2e",
+                            ConcurrencyStamp = "5159a846-fbe5-4887-9e0e-643756f27fd0",
                             IsDelete = false,
                             Name = "manager movie",
                             NormalizedName = "MANAGER MOVIE"
@@ -503,7 +503,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "74267f84-842c-4d3f-89f3-2fea4c3da04b",
+                            ConcurrencyStamp = "b1f06639-ba2e-41fc-a207-392df9b1e3cd",
                             IsDelete = false,
                             Name = "staff",
                             NormalizedName = "STAFF"
@@ -607,6 +607,7 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -762,7 +763,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "94fa9f39-d90f-4bda-a310-d92eee97ef13",
+                            ConcurrencyStamp = "961e34d9-ab37-4f52-97b4-b51a712b96e4",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181100@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -771,10 +772,10 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "admin",
-                            PasswordHash = "AI+IncYSq6lKNZTrUCfCR0bM/YgU7vWuX/mwGOhC/Q4J175SX9ic5eHR3cElTr7zjw==",
+                            PasswordHash = "AP+9g49g4kaPlyC/4odnxkizZMMBVdmDBg/VDcVCJyoG098aVMSCtHG94KfIcnpM0A==",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "a367934f-b45a-461f-b86b-8987996b82a2",
+                            SecurityStamp = "a007f7c5-cc58-446e-9de9-5ce3590de3e3",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -1076,13 +1077,13 @@ namespace QuanLiRapPhim.Migrations
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.SeviceSeviceCategories", b =>
                 {
                     b.HasOne("QuanLiRapPhim.Areas.Admin.Models.Sevice", "Sevice")
-                        .WithMany()
+                        .WithMany("LstSeviceSeviceCategories")
                         .HasForeignKey("IdSevice")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("QuanLiRapPhim.Areas.Admin.Models.SeviceCategory", "SeviceCategory")
-                        .WithMany()
+                        .WithMany("LstSeviceSeviceCategories")
                         .HasForeignKey("IdSeviceCategory")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1160,6 +1161,16 @@ namespace QuanLiRapPhim.Migrations
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Seat", b =>
                 {
                     b.Navigation("Ticket");
+                });
+
+            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Sevice", b =>
+                {
+                    b.Navigation("LstSeviceSeviceCategories");
+                });
+
+            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.SeviceCategory", b =>
+                {
+                    b.Navigation("LstSeviceSeviceCategories");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.ShowTime", b =>

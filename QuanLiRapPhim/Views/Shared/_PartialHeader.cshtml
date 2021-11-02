@@ -34,12 +34,6 @@
                         Lịch chiếu phim
                     </a>
                 </li>
-                <li class="menu-item" id="contact">
-                    <a asp-controller="Contact" asp-action="Index">
-                        <img src="~/images/information.png" width="24" height="26" />
-                        Liên hệ
-                    </a>
-                </li>
                 @if (SignInManager.IsSignedIn(User) && @User.FindFirst("FullNameUser") != null)
                 {
                     <li class="menu-item" id="my_order">

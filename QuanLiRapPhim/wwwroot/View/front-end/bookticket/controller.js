@@ -33,13 +33,14 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
 
     var socket = io.connect('https://my-cinema-qlrp.herokuapp.com/bookticket');
 
-    //$scope.socket = io.connect('localhost:3000/bookticket');
+    //var socket = io.connect('http://localhost:3000/bookticket');
     socket.on('connect', function () {
 
         $.blockUI({
             boxed: true,
             message: 'loading...'
         });
+
         datasevice.GetRoom($scope.idShowtime, function (rs) {
             rs = rs.data;
             console.log(rs);
@@ -74,6 +75,7 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
 
         //load những ghế đang được người khác chọn
     socket.on('load_ghe_da_chon', function (data) {
+        console.log(data);
         datasevice.DsGheDaDat($scope.idShowtime, function (rs) {
             $scope.dsghedachon = [];
             rs = rs.data;
@@ -87,12 +89,9 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
 
             if (data != null) {
                 data.forEach(function (seat, ind) {
-                    if (seat.idGhe != -1) {
-                        $scope.dsghedachon.push(seat.idGhe);
-                        if ($scope.seat != null && $scope.seat == seat.idGhe)
+                        $scope.dsghedachon.push(seat);
+                        if ($scope.seat != null && $scope.seat == seat)
                             $scope.seat = null;
-                    }
-
                 });
             }
 
@@ -131,12 +130,10 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
     $scope.open = function () {
         if ($scope.seat != null) {
             var data = {
-                key: 'chon-ghe',
-                idGhe: $scope.seat.id,
-                idLichChieu: $scope.idShowtime
+                idGhe: $scope.seat.id
             };
             //gửi socket lên sever
-            socket.emit('Client-to-server-to-all', data);
+            socket.emit('ChonGhe', data);
 
             var modalInstance = $uibModal.open({
                 scope: $scope,
@@ -150,8 +147,7 @@ app.controller('Ctroller', function ($scope, $routeParams, $uibModal, $rootScope
             modalInstance.result.then(function (result) {
                 console.log('result: ' + result);
                 // $scope.schedule = angular.fromJson(scheduleJSON);
-                data.key = 'huy-ghe-da-chon';
-                socket.emit('Client-to-server-to-all', data);
+                socket.emit('HuyGhe', data);
             }, function () {
                 console.info('Modal dismissed at: ' + new Date());
             });

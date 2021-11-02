@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using QuanLiRapPhim.App;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
 using QuanLiRapPhim.SupportJSON;
@@ -24,73 +25,48 @@ namespace QuanLiRapPhim.Controllers
         {
             _context = context;           
         }
-        //[HttpPost]
-        //public IActionResult BuySevice(List<BillDetail> Billdetails) {
-
-        //    try
-        //    {
-        //        foreach (var x in Billdetails)
-        //        {
-        //            var Sevice = _context.SeviceCategories.Find(x.SeviceCatId);
-        //            Sevice.Sevice = _context.Sevices.Find(Sevice.IdSevice);
-        //            x.Name = Sevice.Sevice.Name + "(" + Sevice.Name + ")";
-        //            x.UnitPrice = Sevice.price;
-        //            x.Bill = null;
-        //        }
-        //        Bill bill = new Bill()
-        //        {
-        //            BillDetails = Billdetails,
-        //            Date = DateTime.Now,
-        //            TotalPrice = Billdetails.Sum(x => x.UnitPrice * x.Amount),
-        //            UserId = _context.Users.Where(x => x.UserName == (string)User.Identity.Name).First().Id,
-        //        };
-
-        //        _context.Add(bill);
-        //        _context.SaveChanges();
-        //        Message = "Thanh toán thành công ";
-        //    }
-        //    catch(Exception er)
-        //    {
-        //        Message = "Lỗi";
-        //    }
-
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        public IActionResult BookTicket(Ticket ticket)
+        [HttpPost]
+        public IActionResult BuySevice(List<BillDetail> Billdetails)
         {
-            //var flag = (from sh in _context.ShowTimes
-            //            join r in _context.Rooms on sh.RoomId equals r.Id
-            //            join se in _context.Seats on r.Id equals se.RoomId
-            //            where sh.Id == ticket.ShowTimeId && se.Id == ticket.SeatId
-            //            select se).Count() > 0;
-
             try
             {
-                var isbooked = (from T in _context.Tickets
-                            where T.SeatId == ticket.SeatId && T.IsDelete==false
-                            select T).Count() > 0;
-
-                if (ticket.SeatId == null || isbooked)
+                foreach (var x in Billdetails)
                 {
-                    return NotFound();
-                }
+                    var seviceSeviceCategories = _context.seviceSeviceCategories.Find(x.idSeviceSeviceCategories);
+                    seviceSeviceCategories.Sevice = _context.Sevices.Find(seviceSeviceCategories.IdSevice);
+                    seviceSeviceCategories.SeviceCategory = _context.SeviceCategories.Find(seviceSeviceCategories.IdSeviceCategory);
 
-                ticket.Username = User.Identity.Name;
-                ticket.Price = Price((int)ticket.SeatId, (int)ticket.ShowTimeId);
-                ticket.PurchaseDate = DateTime.Now;
-                _context.Add(ticket);
+                    x.Name = seviceSeviceCategories.Sevice.Name + "(" + seviceSeviceCategories.SeviceCategory.Name + ")";
+                    x.UnitPrice = seviceSeviceCategories.Price;
+                    x.Bill = null;
+                }
+                Bill bill = new Bill()
+                {
+                    BillDetails = Billdetails,
+                    Date = DateTime.Now,
+                    TotalPrice = Billdetails.Sum(x => x.UnitPrice * x.Amount),
+                    UserId = _context.Users.Where(x => x.UserName == (string)User.Identity.Name).First().Id,
+                };
+
+                _context.Add(bill);
                 _context.SaveChanges();
-                Message = "Bạn đã mua thành công";
+                User u = _context.Users.Find(bill.UserId);
+                bool a = SendEmailSuccesOder(u,bill,null);
+                if (a)
+                    Message = "Thanh toán thành công ";
+                else Message = u.Email;
             }
             catch (Exception er)
             {
-                Message = "Lỗi";
+                Message+= "Lỗi";
+                return RedirectToAction(nameof(Index));
             }
+
             return RedirectToAction(nameof(Index));
         }
 
-        private decimal Price(int idseat, int idShowTime)
+
+        public decimal Price(int idseat, int idShowTime)
         {
             decimal price = _context.ShowTimes
                 .Include(x => x.Room).FirstOrDefault(x => x.Id == idShowTime).Room.Price;
@@ -119,33 +95,33 @@ namespace QuanLiRapPhim.Controllers
             return View();
         }
 
-        //public JsonResult GetAllServices()
-        //{
-        //    JMessage jMessage = new JMessage();
-        //    var Object = _context.Sevices.Where(s => !s.IsDelete).Select(x => new
-        //    {
-        //        x.Id,
-        //        x.IsFood,
-        //        x.Name,
-        //        size = x.SeviceCategories.Where(x=>!x.IsDelete).Select(x => new
-        //        {
-        //            x.Name,
-        //            x.price,
-        //            x.Id
-        //        }).ToList()
-        //    }).ToList();
+        public JsonResult GetAllServices()
+        {
+            JMessage jMessage = new JMessage();
+            var Object = _context.Sevices.Where(s => !s.IsDelete).Select(x => new
+            {
+                x.Id,
+                x.IsFood,
+                x.Name,
+                size = x.LstSeviceSeviceCategories.Where(x =>x.isDelete==false).Select(x => new
+                {
+                    x.SeviceCategory.Name,
+                    x.Price,
+                    x.Id
+                }).ToList()
+            }).ToList();
 
-        //    jMessage.Error = Object.Count == 0;
-        //    if (jMessage.Error)
-        //    {
-        //        jMessage.Title = "Không tìm thấy dịch vụ";
-        //    }
-        //    else
-        //    {
-        //        jMessage.Object = Object;
-        //    }
-        //    return Json(jMessage);
-        //}
+            jMessage.Error = Object.Count == 0;
+            if (jMessage.Error)
+            {
+                jMessage.Title = "Không tìm thấy dịch vụ";
+            }
+            else
+            {
+                jMessage.Object = Object;
+            }
+            return Json(jMessage);
+        }
         public List<yourOrder> yourOrders { get; set; }
 
         public JsonResult GetAll()
@@ -156,11 +132,12 @@ namespace QuanLiRapPhim.Controllers
 
 
         [HttpGet]
-        public string JtableTestModel(JTableModel jTablePara)
+        public string JtableTestModel(JModel jTablePara)
         {
             //Truy vấn lấy ds bill và ticket theo username sắp xếp theo thời gian 
             var Bills = from b in _context.Bills
-                        where b.User.UserName==User.Identity.Name
+                        where b.User.UserName == User.Identity.Name
+                        //&& (String.IsNullOrEmpty(jTablePara.date) || b.Date.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
                         select new
                         {
                             isTicket = false,
@@ -172,7 +149,8 @@ namespace QuanLiRapPhim.Controllers
                         };
             var Tickets = from t in _context.Tickets
                       where t.Username == User.Identity.Name
-                      select t;
+                      //&& (String.IsNullOrEmpty(jTablePara.date) || t.ShowTime.DateTime.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
+                          select t;
 
             
             yourOrders = new List<yourOrder>();
@@ -201,7 +179,8 @@ namespace QuanLiRapPhim.Controllers
                                      },
                                      Date = x.PurchaseDate
                                  }).ToList());
-            yourOrders = yourOrders.OrderByDescending(x => x.Date).ToList();
+            yourOrders = yourOrders.Where(x=> String.IsNullOrEmpty(jTablePara.date) || x.Date.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
+                .OrderByDescending(x => x.Date).ToList();
 
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
 
@@ -222,6 +201,31 @@ namespace QuanLiRapPhim.Controllers
             return JsonConvert.SerializeObject(jdata);
         }
 
+        public bool SendEmailSuccesOder(User user, Bill bill,Ticket ticket)
+        {
+            String res="";
+            if (bill == null && ticket == null)
+            {
+                res = "Có lỗi xảy ra! Vui lòng thông báo lại vào email này.";
+            }
+            else {
+                if (bill == null)
+                {
+                    res = "Bạn đã đặt vé có mã: V" + ticket.Id + " Vào ngày: " +ticket.PurchaseDate.Date;
+                }
+                else
+                {
+                    res = "Bạn đã đặt hóa đơn có mã: HD" + bill.Id+ " Vào ngày: " + bill.Date.Date;
+                }
+            }
+            return Email.SendMailGoogleSmtp("giabao158357@gmail.com",user.Email, "Lấy mã đơn hàng",res).Result?
+                true: false;
+        }
+    }
+    public class JModel : JTableModel
+    {
+        public string date { get; set; }
+        public string idsearch { get; set; }
     }
     public class yourOrder
     {
@@ -231,6 +235,7 @@ namespace QuanLiRapPhim.Controllers
         [JsonConverter(typeof(JsonDateConverter))]
         public DateTime Date { get; set; }
         public bool IsTicket { get; set; }
+        public string Username { get; set; }
 
     }
 }

@@ -161,7 +161,7 @@
                                             <polygon points="4.5 4.5 3.5 4.5 0 4.5 0 5.5 3.5 5.5 4.5 5.5 10 5.5 10 4.5"></polygon>
                                         </svg>
                                     </span>
-                                    <input hidden ng-model="billdetail.size.id" name="Billdetails[{{$index}}].SeviceCatId" />
+                                    <input ng-model="billdetail.size.id" name="Billdetails[{{$index}}].idSeviceSeviceCategories" />
                                     <input class="w-100 h-100" type="number" min=1 ng-model="billdetail.amout" ng-change="billdetail.amout<=0:minus($index)" name="Billdetails[{{$index}}].Amount" required>
                                     <span class="btn btn-outline-info" ng-click="addinList($index)">
                                         <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0" class="add-btn">
@@ -188,7 +188,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-primary" ng-click="payment()" data-dismiss="modal">Save changes</button>
-        <button type="button" class="btn btn-secondary"  ng-click="cancel()">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="payment()" data-dismiss="modal">Xác nhận</button>
+        <button type="button" class="btn btn-secondary"  ng-click="cancel()">Đóng</button>
     </div>
 </div>

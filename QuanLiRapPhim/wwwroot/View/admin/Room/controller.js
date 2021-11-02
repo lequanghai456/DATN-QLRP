@@ -38,7 +38,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 , type: 'GET'
                 , data: function (d) {
                     d.NameRoom = $scope.valueName;
-                    d.FullName = $scope.valueName;
+                   
                 }
                
                 , dataType: "json"
@@ -74,6 +74,9 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             return '<input id="checkbox" style="margin: 0 auto;" value=' + data + ' ng-checked="selectAll" name="type" type="checkbox" ng-click="toggleOne(' + data + ',$event)">';
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
+            return data;
+        }));
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Price', 'Giá').withClass('Center').renderWith(function (data, type) {
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Name', 'Tên phòng').withClass('Center').renderWith(function (data, type) {

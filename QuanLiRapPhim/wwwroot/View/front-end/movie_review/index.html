@@ -1,16 +1,19 @@
-﻿<div class="page" >
+﻿<div class="page">
     <div class="breadcrumbs">
-        <a href="../#!/">Home</a>
-        <span>Movie Review</span>
+        <a href="../#!/">Trang chủ</a>
+        <span>Danh sách phim</span>
     </div>
-
+    <div style="padding-bottom:20px">
+        <input ng-model="Search" class="border-dark form-control" ng-change="search()" placeholder="Tìm kiếm..." />
+    </div>
     <div class="movie-list">
         <div class="movie" ng-repeat="movie in movies">
             <figure class="movie-poster"><img src="../admin/img/Poster/{{movie.poster}}" alt="#" height="300"></figure>
             <div class="movie-title"><a href="#!{{movie.title}}">{{movie.title}}</a></div>
             <p>{{movie.describe}}</p>
         </div>
-    </div> <!-- .movie-list -->
+    </div>
+    <!-- .movie-list -->
         <ul uib-pagination
             total-items="totalItems"
             ng-model="currentPage"
@@ -19,4 +22,5 @@
             data-boundary-links="true"
             items-per-page="numPerPage">
         </ul>
+    
 </div>

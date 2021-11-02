@@ -2,16 +2,15 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-2">
-                <h1 class="text-center" style="color: #000000;">Danh sách vé</h1>    
+                <h2 class="text-center" style="color: #000000;">Danh sách vé</h2>
                 <div style="height:50%">
-                    <div class="border" style="text-align:center;padding:1px;margin:1px">
-                        A1
+                    <div class="border" style="text-align:center;padding:1px;margin:1px" ng-repeat="s in listseat">
+                        {{s.x+s.y}}-{{s.price}}
                     </div>
-                    <div class="border" style="text-align: center; padding: 1px; margin: 1px">
-                        A1
-                    </div>
+
                 </div>
-                <button class="btn btn-success d-block" style="width:100%">In vé</button>
+                <button class="btn btn-success" ng-click="InVe()" style="width: 100%;">In vé</button>
+                <span>Tổng tiền: {{Total(listseat)}}</span>
             </div>
             <div class="col-sm-7">
                 <h1 class="text-center" style="color: #000000;">Chọn ghế</h1>
@@ -27,7 +26,7 @@
 
                         <div>
                             <div class="row" ng-repeat="s in ListSeat">
-                                <div class="col-sm-1">
+                                <div class="col-1">
                                     <h5>{{s.name}}</h5>
                                 </div>
                                 <div class="row col-10">
@@ -38,19 +37,19 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-1">
+                                <div class="col-1">
                                     <h5>{{s.name}}</h5>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-1">
+                                <div class="col-1">
                                 </div>
                                 <div class="row col-10">
                                     <div class="d-inline-block" style="margin:0 auto" ng-repeat="x in col">
                                         <h5>{{x}}</h5>
                                     </div>
                                 </div>
-                                <div class="col-sm-1">
+                                <div class="col-1">
                                 </div>
                             </div>
                         </div>
@@ -58,7 +57,7 @@
                 </div>
             </div>
             <div class="col-sm-2">
-                <h1 class="text-center" style="color: #000000;">Thông tin</h1>
+                <h2 class="text-center" style="color: #000000;">Thông tin</h2>
                 <div class="row">
                     <img width="100%" src="../admin/img/Poster/{{room.poster}}" />
                     <div class="col-12">
@@ -75,7 +74,7 @@
                                 <span style="color: #f20;">{{seat==null?'Chưa chọn':seat.x+seat.y}}</span>
                             </div>
                             <div class="col-12" style="display: flex; justify-content: center;">
-                                <button type="button" class="btn btn-success" ng-click="">Thêm</button>
+                                <button type="button" ng-click="addseat()" class="btn btn-success" ng-click="">Thêm</button>
                             </div>
                         </div>
                     </div>

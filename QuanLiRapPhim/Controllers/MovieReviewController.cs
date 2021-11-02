@@ -161,9 +161,9 @@ namespace QuanLiRapPhim.Controllers
             }
             return Json(jMess);
         }
-        public async Task<JsonResult> GetMovie(int year, int idCate)
+        public async Task<JsonResult> GetMovie(String search)
         {
-            return Json(_context.Movies.Where(x => x.IsDelete == false).ToList());
+            return Json(_context.Movies.Where(x => x.IsDelete == false).Where(x=>search==null||x.Title.Contains(search)).ToList());
         }
         [HttpGet]
         public JsonResult GetListShowTime(int? idmovie, String date)

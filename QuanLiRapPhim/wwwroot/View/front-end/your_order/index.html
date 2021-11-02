@@ -1,6 +1,6 @@
 ﻿<div class="breadcrumbs">
-    <a href="../">Home</a>
-    <span>Your Order</span>
+    <a href="../">Trang chủ</a>
+    <span>Hóa đơn</span>
 </div>
 <style>
     .order td, .order th{
@@ -12,12 +12,16 @@
 <div class="row">
     <!--<button class="btn btn-success float-right" ng-click="choseService()">Đặt dịch vụ</button>-->
     <div class="col-sm-12">
-        <h1 class="text-center" style="color: #000000;">Đơn hàng đã thanh toán</h1>
-
+        <h1 class="text-center" style="color: #000000;">Đơn hàng đã đặt</h1>
+        <div class="p-1">
+            <span>Tìm kiếm: </span>
+            <input class="form-control border-dark p-2" style="width:300px" type="date" ng-model="Date" ng-change="reloadData(true)" />
+        </div>
         <table class="order table dataTable table-hover table-striped" style="border:solid; background:white"
                datatable
                dt-options="dtOrderhOptions"
                dt-columns="dtOrderColumns"
+                dt-instance="dtInstance"
                id="tblData"></table>
     </div>
 </div>
