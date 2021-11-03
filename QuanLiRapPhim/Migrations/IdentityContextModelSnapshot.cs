@@ -163,6 +163,9 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPurchased")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
@@ -233,13 +236,25 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             IsDelete = false,
-                            Title = "Detective"
+                            Title = "Trinh thám"
                         },
                         new
                         {
                             Id = 2,
                             IsDelete = false,
-                            Title = "Adventure"
+                            Title = "Phiêu lưu"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDelete = false,
+                            Title = "Hành động"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsDelete = false,
+                            Title = "Hoạt hình"
                         });
                 });
 
@@ -449,6 +464,34 @@ namespace QuanLiRapPhim.Migrations
                             TotalRating = 0,
                             TotalReviewers = 0,
                             Trailer = "3.mp4"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Describe = "Cuối thời Nam Tống, Tiểu Bạch vì muốn cứu Hứa Tiên mà dâng nước dìm Kim Sơn tự, cuối cùng bị Pháp Hải nhốt dưới tháp Lôi Phong. Tiểu Thanh bất ngờ bị Pháp Hải đánh rơi vào ảo cảnh của Tu La thành quỷ dị. Mấy lần nguy cấp, Tiểu Thanh được một thiếu niên thần bí cứu, Tiểu Thanh mang theo chấp niệm cứu Tiểu Bạch ra ngoài mà trải qua kiếp nạn rồi trưởng thành, cùng thiếu niên thần bí đi tìm biện pháp.",
+                            IsDelete = false,
+                            MacId = 1,
+                            Poster = "4.jpg",
+                            Status = 0,
+                            Time = 132,
+                            Title = "BẠCH XÀ 2: THANH XÀ KIẾP KHỞI",
+                            TotalRating = 0,
+                            TotalReviewers = 0,
+                            Trailer = "4.mp4"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Describe = "Trước khi Himura Kenshin gặp Kaoru, anh ta là một sát thủ đáng sợ được gọi là Hitokiri Battousai. 'Rurouni Kenshin: The Beginning' kể câu chuyện về một Kenshin trẻ tuổi, người trở thành sát thủ số một cho Ishin Shishi (sau này trở thành 'thời Minh Trị'), người đã chiến đấu chống lại Mạc phủ trong những ngày cuối cùng của thời đại Tokugawa, và làm thế nào anh ấy có dấu 'X' nổi tiếng trên má trái của mình. Trong những ngày đầu của HimuraKenshin trong vai Hitokiri Battousai, một ngày nọ, anh gặp Yukishiro Tomoe, một thiếu nữ xinh đẹp, có vẻ ngoài thanh thoát nhưng luôn mang một khuôn mặt buồn bã. Battousai và Tomoe yêu nhau nhưng ít ai biết rằng, Tomoe mang trong lòng một gánh nặng to lớn sẽ thay đổi cuộc đời của Himura Kenshin mãi mãi.",
+                            IsDelete = false,
+                            MacId = 1,
+                            Poster = "5.jpg",
+                            Status = 0,
+                            Time = 140,
+                            Title = "LÃNG KHÁCH KENSHIN: KHỞI ĐẦU",
+                            TotalRating = 0,
+                            TotalReviewers = 0,
+                            Trailer = "5.mp4"
                         });
                 });
 
@@ -487,7 +530,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "ec9fd79b-736b-4a50-9810-19ed828541c3",
+                            ConcurrencyStamp = "00735db5-3e36-4069-8704-710dd7f476ce",
                             IsDelete = false,
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -495,15 +538,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "5159a846-fbe5-4887-9e0e-643756f27fd0",
-                            IsDelete = false,
-                            Name = "manager movie",
-                            NormalizedName = "MANAGER MOVIE"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ConcurrencyStamp = "b1f06639-ba2e-41fc-a207-392df9b1e3cd",
+                            ConcurrencyStamp = "ab89281d-8425-4132-b19e-7de910b1066d",
                             IsDelete = false,
                             Name = "staff",
                             NormalizedName = "STAFF"
@@ -594,6 +629,29 @@ namespace QuanLiRapPhim.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sevices");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDelete = false,
+                            IsFood = true,
+                            Name = "Bắp rang"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDelete = false,
+                            IsFood = false,
+                            Name = "CoCa"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDelete = false,
+                            IsFood = false,
+                            Name = "Pepsi"
+                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.SeviceCategory", b =>
@@ -607,12 +665,31 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("SeviceCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDelete = false,
+                            Name = "Big"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDelete = false,
+                            Name = "Small"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDelete = false,
+                            Name = "Medium"
+                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.SeviceSeviceCategories", b =>
@@ -641,6 +718,64 @@ namespace QuanLiRapPhim.Migrations
                     b.HasIndex("IdSeviceCategory");
 
                     b.ToTable("seviceSeviceCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IdSevice = 1,
+                            IdSeviceCategory = 1,
+                            Price = 30000m,
+                            isDelete = false
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IdSevice = 1,
+                            IdSeviceCategory = 2,
+                            Price = 25000m,
+                            isDelete = false
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IdSevice = 1,
+                            IdSeviceCategory = 3,
+                            Price = 10000m,
+                            isDelete = false
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IdSevice = 2,
+                            IdSeviceCategory = 1,
+                            Price = 10000m,
+                            isDelete = false
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IdSevice = 2,
+                            IdSeviceCategory = 2,
+                            Price = 30000m,
+                            isDelete = false
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IdSevice = 3,
+                            IdSeviceCategory = 1,
+                            Price = 10000m,
+                            isDelete = false
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IdSevice = 3,
+                            IdSeviceCategory = 2,
+                            Price = 30000m,
+                            isDelete = false
+                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.ShowTime", b =>
@@ -763,7 +898,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "961e34d9-ab37-4f52-97b4-b51a712b96e4",
+                            ConcurrencyStamp = "9cfd4d94-5d5a-42a0-b994-f44aba114417",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181100@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -772,12 +907,32 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "admin",
-                            PasswordHash = "AP+9g49g4kaPlyC/4odnxkizZMMBVdmDBg/VDcVCJyoG098aVMSCtHG94KfIcnpM0A==",
+                            PasswordHash = "AFGJ9NWPYyocQ1nRYPEfGAqrzjoGQHZ1ehh2lciFx60ky+2xFVALt66Bc9Puu/23+A==",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "a007f7c5-cc58-446e-9de9-5ce3590de3e3",
+                            SecurityStamp = "cda907bc-85a0-47b0-8118-4ffd67cc6244",
                             TwoFactorEnabled = false,
                             UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "9d5f5520-7aca-474a-9523-7375807872dc",
+                            DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "0306181113@caothang.edu.vn",
+                            EmailConfirmed = false,
+                            FullName = "Lê Quang Hải",
+                            Img = "manager1.img",
+                            IsDelete = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "manager1",
+                            PasswordHash = "APMvutPVqwwC6OLQuC/nUWU4dfPIOwD0FBKoRblsTpq0ijxm8vjrT1ehx9eVVJbY4Q==",
+                            PhoneNumberConfirmed = false,
+                            RoleId = 2,
+                            SecurityStamp = "cdc0e105-62e5-44d5-88bd-f6bf9b42b3fb",
+                            TwoFactorEnabled = false,
+                            UserName = "manager1"
                         });
                 });
 
@@ -810,6 +965,9 @@ namespace QuanLiRapPhim.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPurchased")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")

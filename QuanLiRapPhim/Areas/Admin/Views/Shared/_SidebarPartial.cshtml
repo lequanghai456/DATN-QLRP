@@ -1,4 +1,7 @@
-﻿<nav class="side-navbar">
+﻿@using Microsoft.AspNetCore.Identity
+@using QuanLiRapPhim.Areas.Admin.Models
+@inject SignInManager<Staff> SignInManager
+<nav class="side-navbar">
     <div class="side-navbar-wrapper">
         <!-- Sidebar Header    -->
         <div class="sidenav-header d-flex align-items-center justify-content-center">
@@ -15,23 +18,21 @@
             <h5 class="sidenav-heading">Main</h5>
             <ul id="side-main-menu" class="side-menu list-unstyled">
                 <li><a href="#"> <i class="icon-home"></i>Home</a></li>
-                <li><a href="#"> <i class="icon-form"></i>Forms</a></li>
-                <li><a href="#"> <i class="fa fa-bar-chart"></i>Charts</a></li>
-                <li>
-                    <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Table</a>
-                    <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                        <li><a asp-area="Admin" asp-action="Index" asp-controller="Users">Người Dùng</a></li>
-                        <li><a asp-area="Admin" asp-action="Index" asp-controller="Categories">Thể loại</a></li>
-                        <li><a asp-area="Admin" asp-action="Index" asp-controller="Rooms">Phòng</a></li>
-                        <li><a asp-area="Admin" asp-action="Index" asp-controller="Sevices">Dịch vụ</a></li>
-                        <li><a asp-area="Admin" asp-action="Index" asp-controller="Macs">Mac</a></li>
-                        <li><a asp-area="Admin" asp-action="Index" asp-controller="Movies">Phim</a></li>
-                        <li><a asp-area="Admin" asp-action="Index" asp-controller="Showtimes">Lịch chiếu</a></li>
-                        <li><a asp-area="Admin" asp-action="Index" asp-controller="Staffs">Nhân viên</a></li>
-                        <li><a asp-area="Admin" asp-action="Index" asp-controller="Bills">Hóa đơn</a></li>
-                        <li><a asp-area="Admin" asp-action="Index" asp-controller="BillDetails">Chi tiết hóa đơn</a></li>
-                    </ul>
-                </li>
+                <li><a asp-area="Admin" asp-action="Index" asp-controller="Showtimes">Lịch chiếu</a></li>
+                @if (SignInManager.IsSignedIn(User) && User.FindFirst("Role").Value.Contains("Admin"))
+                {
+                    <li><a asp-area="Admin" asp-action="Index" asp-controller="Users">Người Dùng</a></li>
+                    <li><a asp-area="Admin" asp-action="Index" asp-controller="Categories">Thể loại</a></li>
+                    <li><a asp-area="Admin" asp-action="Index" asp-controller="Rooms">Phòng</a></li>
+                    <li><a asp-area="Admin" asp-action="Index" asp-controller="Sevices">Dịch vụ</a></li>
+                    <li><a asp-area="Admin" asp-action="Index" asp-controller="Macs">Mac</a></li>
+                    <li><a asp-area="Admin" asp-action="Index" asp-controller="Movies">Phim</a></li>
+
+                    <li><a asp-area="Admin" asp-action="Index" asp-controller="Staffs">Nhân viên</a></li>
+                    <li><a asp-area="Admin" asp-action="Index" asp-controller="Bills">Hóa đơn</a></li>
+                    <li><a asp-area="Admin" asp-action="Index" asp-controller="BillDetails">Chi tiết hóa đơn</a></li>
+
+                }
             </ul>
         </div>
     </div>

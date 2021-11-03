@@ -23,5 +23,6 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public virtual ShowTime ShowTime { get; set; }
         public bool IsDelete { get; set; }
         public bool Status { get; set; }
+        public bool IsPurchased { get; set; }
     }
 }

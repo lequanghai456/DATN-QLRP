@@ -21,6 +21,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public bool IsDelete {get;set;}
         public bool Status { get; set; }
         public virtual ICollection<BillDetail> BillDetails { get; set; }
+        public bool IsPurchased { get; set; }
 
     }
 }

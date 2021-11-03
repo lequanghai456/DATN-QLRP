@@ -42,6 +42,8 @@
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.7",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.6",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "5.0.2",
+          "Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core": "19.3.0.47",
+          "xunit.extensibility.core": "2.4.1",
           "Microsoft.AspNetCore.Antiforgery": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Cookies": "5.0.0.0",
@@ -1527,6 +1529,27 @@
           "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
         }
       },
+      "Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core/19.3.0.47": {
+        "runtime": {
+          "lib/netstandard2.0/Syncfusion.Compression.Portable.dll": {
+            "assemblyVersion": "19.3200.0.47",
+            "fileVersion": "19.3200.0.47"
+          },
+          "lib/netstandard2.0/Syncfusion.HtmlConverter.Portable.dll": {
+            "assemblyVersion": "19.3200.0.47",
+            "fileVersion": "19.3200.0.47"
+          },
+          "lib/netstandard2.0/Syncfusion.Pdf.Portable.dll": {
+            "assemblyVersion": "19.3200.0.47",
+            "fileVersion": "19.3200.0.47"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Syncfusion.Compression.Portable.dll": {},
+          "lib/netstandard2.0/Syncfusion.HtmlConverter.Portable.dll": {},
+          "lib/netstandard2.0/Syncfusion.Pdf.Portable.dll": {}
+        }
+      },
       "System.AppContext/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.0"
@@ -2518,6 +2541,32 @@
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0",
           "System.Xml.XmlDocument": "4.3.0"
+        }
+      },
+      "xunit.abstractions/2.0.3": {
+        "runtime": {
+          "lib/netstandard2.0/xunit.abstractions.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/xunit.abstractions.dll": {}
+        }
+      },
+      "xunit.extensibility.core/2.4.1": {
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "xunit.abstractions": "2.0.3"
+        },
+        "runtime": {
+          "lib/netstandard1.1/xunit.core.dll": {
+            "assemblyVersion": "2.4.1.0",
+            "fileVersion": "2.4.1.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.1/xunit.core.dll": {}
         }
       },
       "Microsoft.AspNetCore.Antiforgery/5.0.0.0": {
@@ -4726,7 +4775,7 @@
     "runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-G2+96gYRbzp1JZCID6B+u2XJ0bs2wCubd6rE3+Tj436dKfnciF7YgsLi2VvLeJq6kxYyU4IJrVrpCvC8Yf6bhA==",
+      "sha512": "sha512-KeLz4HClKf+nFS7p/6Fi/CqyLXh81FpiGzcmuS8DGi9lUqSnZ6Es23/gv2O+1XVGfrbNmviF7CckBpavkBoIFQ==",
       "path": "runtime.opensuse.42.1-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "hashPath": "runtime.opensuse.42.1-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512"
     },
@@ -4747,14 +4796,14 @@
     "runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-T5NvFgmHX0WH4c7lP72krsnk+IJI10vJf2j2twGE+5QBRA4RyRAgD+ZjEgdmpLOjW4B+nZGaadewTCUcR899OQ==",
+      "sha512": "sha512-nyFNiCk/r+VOiIqreLix8yN+q3Wga9+SE8BCgkf+2BwEKiNx6DyvFjCgkfV743/grxv8jHJ8gUK4XEQw7yzRYg==",
       "path": "runtime.rhel.7-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "hashPath": "runtime.rhel.7-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512"
     },
     "runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-JGc0pAWRE8lB4Ucygk2pYSKbUPLlAIq6Bczf5/WF2D/VKJEPtYlVUMxk8fbl1zRfTWzSHi+VcFZlaPlWiNxeKg==",
+      "sha512": "sha512-ytoewC6wGorL7KoCAvRfsgoJPJbNq+64k2SqW6JcOAebWsFUvCCYgfzQMrnpvPiEl4OrblUlhF2ji+Q1+SVLrQ==",
       "path": "runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "hashPath": "runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512"
     },
@@ -4799,6 +4848,13 @@
       "sha512": "sha512-AY6+vv/4ji1mCkLrS6HP/88rHT9YFKRyg3LUj8RyIk6imJMUFdQDiP8rK8gq0a/0FbqspLjK1t7rtKcr7FXRYA==",
       "path": "sqlitepclraw.provider.dynamic_cdecl/2.0.4",
       "hashPath": "sqlitepclraw.provider.dynamic_cdecl.2.0.4.nupkg.sha512"
+    },
+    "Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core/19.3.0.47": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-79ySeHaxafy4UUZrEbNWb/Boypu/WseJx7Xk9UpAcanYQxJtj1J6sqdsO84BW/BWxPb7R9djHyNiV52xnpxCFg==",
+      "path": "syncfusion.htmltopdfconverter.qtwebkit.net.core/19.3.0.47",
+      "hashPath": "syncfusion.htmltopdfconverter.qtwebkit.net.core.19.3.0.47.nupkg.sha512"
     },
     "System.AppContext/4.3.0": {
       "type": "package",
@@ -5450,6 +5506,20 @@
       "sha512": "sha512-MYoTCP7EZ98RrANESW05J5ZwskKDoN0AuZ06ZflnowE50LTpbR5yRg3tHckTVm5j/m47stuGgCrCHWePyHS70Q==",
       "path": "system.xml.xmlserializer/4.3.0",
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
+    },
+    "xunit.abstractions/2.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pot1I4YOxlWjIb5jmwvvQNbTrZ3lJQ+jUGkGjWE3hEFM0l5gOnBWS+H3qsex68s5cO52g+44vpGzhAt+42vwKg==",
+      "path": "xunit.abstractions/2.0.3",
+      "hashPath": "xunit.abstractions.2.0.3.nupkg.sha512"
+    },
+    "xunit.extensibility.core/2.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-yKZKm/8QNZnBnGZFD9SewkllHBiK0DThybQD/G4PiAmQjKtEZyHi6ET70QPU9KtSMJGRYS6Syk7EyR2EVDU4Kg==",
+      "path": "xunit.extensibility.core/2.4.1",
+      "hashPath": "xunit.extensibility.core.2.4.1.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Antiforgery/5.0.0.0": {
       "type": "referenceassembly",

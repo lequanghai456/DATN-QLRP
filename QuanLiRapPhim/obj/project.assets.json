@@ -1409,6 +1409,19 @@
           "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
         }
       },
+      "Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core/19.3.0.47": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Syncfusion.Compression.Portable.dll": {},
+          "lib/netstandard2.0/Syncfusion.HtmlConverter.Portable.dll": {},
+          "lib/netstandard2.0/Syncfusion.Pdf.Portable.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Syncfusion.Compression.Portable.dll": {},
+          "lib/netstandard2.0/Syncfusion.HtmlConverter.Portable.dll": {},
+          "lib/netstandard2.0/Syncfusion.Pdf.Portable.dll": {}
+        }
+      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -3019,6 +3032,28 @@
         },
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
+        }
+      },
+      "xunit.abstractions/2.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/xunit.abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/xunit.abstractions.dll": {}
+        }
+      },
+      "xunit.extensibility.core/2.4.1": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "xunit.abstractions": "2.0.3"
+        },
+        "compile": {
+          "lib/netstandard1.1/xunit.core.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/xunit.core.dll": {}
         }
       }
     }
@@ -5064,11 +5099,12 @@
       ]
     },
     "runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "G2+96gYRbzp1JZCID6B+u2XJ0bs2wCubd6rE3+Tj436dKfnciF7YgsLi2VvLeJq6kxYyU4IJrVrpCvC8Yf6bhA==",
+      "sha512": "KeLz4HClKf+nFS7p/6Fi/CqyLXh81FpiGzcmuS8DGi9lUqSnZ6Es23/gv2O+1XVGfrbNmviF7CckBpavkBoIFQ==",
       "type": "package",
       "path": "runtime.opensuse.42.1-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.opensuse.42.1-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -5104,11 +5140,12 @@
       ]
     },
     "runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "T5NvFgmHX0WH4c7lP72krsnk+IJI10vJf2j2twGE+5QBRA4RyRAgD+ZjEgdmpLOjW4B+nZGaadewTCUcR899OQ==",
+      "sha512": "nyFNiCk/r+VOiIqreLix8yN+q3Wga9+SE8BCgkf+2BwEKiNx6DyvFjCgkfV743/grxv8jHJ8gUK4XEQw7yzRYg==",
       "type": "package",
       "path": "runtime.rhel.7-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.rhel.7-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -5117,11 +5154,12 @@
       ]
     },
     "runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "JGc0pAWRE8lB4Ucygk2pYSKbUPLlAIq6Bczf5/WF2D/VKJEPtYlVUMxk8fbl1zRfTWzSHi+VcFZlaPlWiNxeKg==",
+      "sha512": "ytoewC6wGorL7KoCAvRfsgoJPJbNq+64k2SqW6JcOAebWsFUvCCYgfzQMrnpvPiEl4OrblUlhF2ji+Q1+SVLrQ==",
       "type": "package",
       "path": "runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -5226,6 +5264,144 @@
         "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll",
         "sqlitepclraw.provider.dynamic_cdecl.2.0.4.nupkg.sha512",
         "sqlitepclraw.provider.dynamic_cdecl.nuspec"
+      ]
+    },
+    "Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core/19.3.0.47": {
+      "sha512": "79ySeHaxafy4UUZrEbNWb/Boypu/WseJx7Xk9UpAcanYQxJtj1J6sqdsO84BW/BWxPb7R9djHyNiV52xnpxCFg==",
+      "type": "package",
+      "path": "syncfusion.htmltopdfconverter.qtwebkit.net.core/19.3.0.47",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "lib/QtBinariesLinux/Syncfusion.WebKitWrapper",
+        "lib/QtBinariesLinux/imageformats/libqdds.so",
+        "lib/QtBinariesLinux/imageformats/libqgif.so",
+        "lib/QtBinariesLinux/imageformats/libqicns.so",
+        "lib/QtBinariesLinux/imageformats/libqico.so",
+        "lib/QtBinariesLinux/imageformats/libqjp2.so",
+        "lib/QtBinariesLinux/imageformats/libqjpeg.so",
+        "lib/QtBinariesLinux/imageformats/libqmng.so",
+        "lib/QtBinariesLinux/imageformats/libqsvg.so",
+        "lib/QtBinariesLinux/imageformats/libqtga.so",
+        "lib/QtBinariesLinux/imageformats/libqtiff.so",
+        "lib/QtBinariesLinux/imageformats/libqwbmp.so",
+        "lib/QtBinariesLinux/imageformats/libqwebp.so",
+        "lib/QtBinariesLinux/libGL.so.1",
+        "lib/QtBinariesLinux/libQt5Core.so.5",
+        "lib/QtBinariesLinux/libQt5DBus.so.5",
+        "lib/QtBinariesLinux/libQt5Gui.so.5",
+        "lib/QtBinariesLinux/libQt5Multimedia.so.5",
+        "lib/QtBinariesLinux/libQt5MultimediaWidgets.so.5",
+        "lib/QtBinariesLinux/libQt5Network.so.5",
+        "lib/QtBinariesLinux/libQt5OpenGL.so.5",
+        "lib/QtBinariesLinux/libQt5Positioning.so.5",
+        "lib/QtBinariesLinux/libQt5PrintSupport.so.5",
+        "lib/QtBinariesLinux/libQt5Qml.so.5",
+        "lib/QtBinariesLinux/libQt5Quick.so.5",
+        "lib/QtBinariesLinux/libQt5Sensors.so.5",
+        "lib/QtBinariesLinux/libQt5Sql.so.5",
+        "lib/QtBinariesLinux/libQt5Svg.so.5",
+        "lib/QtBinariesLinux/libQt5WebChannel.so.5",
+        "lib/QtBinariesLinux/libQt5WebKit.so.5",
+        "lib/QtBinariesLinux/libQt5WebKitWidgets.so.5",
+        "lib/QtBinariesLinux/libQt5Widgets.so.5",
+        "lib/QtBinariesLinux/libQt5XcbQpa.so.5",
+        "lib/QtBinariesLinux/libicudata.so.55",
+        "lib/QtBinariesLinux/libicui18n.so.55",
+        "lib/QtBinariesLinux/libicuuc.so.55",
+        "lib/QtBinariesLinux/libjpeg.so.8",
+        "lib/QtBinariesLinux/libpng12.so.0",
+        "lib/QtBinariesLinux/libsqlite3.so.0",
+        "lib/QtBinariesLinux/libstdc++.so.6",
+        "lib/QtBinariesLinux/platforms/libqminimal.so",
+        "lib/QtBinariesLinux/platforms/libqoffscreen.so",
+        "lib/QtBinariesLinux/platforms/libqxcb.so",
+        "lib/QtBinariesMac/Syncfusion.WebKitWrapper",
+        "lib/QtBinariesMac/imageformats/libqdds.dylib",
+        "lib/QtBinariesMac/imageformats/libqgif.dylib",
+        "lib/QtBinariesMac/imageformats/libqicns.dylib",
+        "lib/QtBinariesMac/imageformats/libqico.dylib",
+        "lib/QtBinariesMac/imageformats/libqjp2.dylib",
+        "lib/QtBinariesMac/imageformats/libqjpeg.dylib",
+        "lib/QtBinariesMac/imageformats/libqmng.dylib",
+        "lib/QtBinariesMac/imageformats/libqsvg.dylib",
+        "lib/QtBinariesMac/imageformats/libqtga.dylib",
+        "lib/QtBinariesMac/imageformats/libqtiff.dylib",
+        "lib/QtBinariesMac/imageformats/libqwbmp.dylib",
+        "lib/QtBinariesMac/imageformats/libqwebp.dylib",
+        "lib/QtBinariesMac/libQt5Core.5.dylib",
+        "lib/QtBinariesMac/libQt5DBus.5.dylib",
+        "lib/QtBinariesMac/libQt5Gui.5.dylib",
+        "lib/QtBinariesMac/libQt5Multimedia.5.dylib",
+        "lib/QtBinariesMac/libQt5MultimediaWidgets.5.dylib",
+        "lib/QtBinariesMac/libQt5Network.5.dylib",
+        "lib/QtBinariesMac/libQt5OpenGL.5.dylib",
+        "lib/QtBinariesMac/libQt5Positioning.5.dylib",
+        "lib/QtBinariesMac/libQt5PrintSupport.5.dylib",
+        "lib/QtBinariesMac/libQt5Qml.5.dylib",
+        "lib/QtBinariesMac/libQt5Quick.5.dylib",
+        "lib/QtBinariesMac/libQt5Sensors.5.dylib",
+        "lib/QtBinariesMac/libQt5Sql.5.dylib",
+        "lib/QtBinariesMac/libQt5Svg.5.dylib",
+        "lib/QtBinariesMac/libQt5WebChannel.5.dylib",
+        "lib/QtBinariesMac/libQt5WebKit.5.dylib",
+        "lib/QtBinariesMac/libQt5WebKitWidgets.5.dylib",
+        "lib/QtBinariesMac/libQt5Widgets.5.dylib",
+        "lib/QtBinariesMac/libcrypto.1.0.0.dylib",
+        "lib/QtBinariesMac/libssl.1.0.0.dylib",
+        "lib/QtBinariesMac/platforms/libqcocoa.dylib",
+        "lib/QtBinariesMac/platforms/libqminimal.dylib",
+        "lib/QtBinariesMac/platforms/libqoffscreen.dylib",
+        "lib/QtBinariesWindows/Qt5Core.dll",
+        "lib/QtBinariesWindows/Qt5Gui.dll",
+        "lib/QtBinariesWindows/Qt5Multimedia.dll",
+        "lib/QtBinariesWindows/Qt5MultimediaWidgets.dll",
+        "lib/QtBinariesWindows/Qt5Network.dll",
+        "lib/QtBinariesWindows/Qt5OpenGL.dll",
+        "lib/QtBinariesWindows/Qt5Positioning.dll",
+        "lib/QtBinariesWindows/Qt5PrintSupport.dll",
+        "lib/QtBinariesWindows/Qt5Qml.dll",
+        "lib/QtBinariesWindows/Qt5Quick.dll",
+        "lib/QtBinariesWindows/Qt5Sensors.dll",
+        "lib/QtBinariesWindows/Qt5Sql.dll",
+        "lib/QtBinariesWindows/Qt5Svg.dll",
+        "lib/QtBinariesWindows/Qt5WebChannel.dll",
+        "lib/QtBinariesWindows/Qt5WebKit.dll",
+        "lib/QtBinariesWindows/Qt5WebKitWidgets.dll",
+        "lib/QtBinariesWindows/Qt5Widgets.dll",
+        "lib/QtBinariesWindows/Syncfusion.WebKitWrapper",
+        "lib/QtBinariesWindows/icudt49.dll",
+        "lib/QtBinariesWindows/icuin49.dll",
+        "lib/QtBinariesWindows/icuuc49.dll",
+        "lib/QtBinariesWindows/imageformats/qdds.dll",
+        "lib/QtBinariesWindows/imageformats/qgif.dll",
+        "lib/QtBinariesWindows/imageformats/qicns.dll",
+        "lib/QtBinariesWindows/imageformats/qico.dll",
+        "lib/QtBinariesWindows/imageformats/qjp2.dll",
+        "lib/QtBinariesWindows/imageformats/qjpeg.dll",
+        "lib/QtBinariesWindows/imageformats/qmng.dll",
+        "lib/QtBinariesWindows/imageformats/qsvg.dll",
+        "lib/QtBinariesWindows/imageformats/qtga.dll",
+        "lib/QtBinariesWindows/imageformats/qtiff.dll",
+        "lib/QtBinariesWindows/imageformats/qwbmp.dll",
+        "lib/QtBinariesWindows/imageformats/qwebp.dll",
+        "lib/QtBinariesWindows/libEGL.dll",
+        "lib/QtBinariesWindows/libGLESv2.dll",
+        "lib/QtBinariesWindows/platforms/qminimal.dll",
+        "lib/QtBinariesWindows/platforms/qoffscreen.dll",
+        "lib/QtBinariesWindows/platforms/qwindows.dll",
+        "lib/QtBinariesWindows/zlib1.dll",
+        "lib/netstandard2.0/Syncfusion.Compression.Portable.dll",
+        "lib/netstandard2.0/Syncfusion.Compression.Portable.xml",
+        "lib/netstandard2.0/Syncfusion.HtmlConverter.Portable.dll",
+        "lib/netstandard2.0/Syncfusion.HtmlConverter.Portable.xml",
+        "lib/netstandard2.0/Syncfusion.Pdf.Portable.dll",
+        "lib/netstandard2.0/Syncfusion.Pdf.Portable.xml",
+        "syncfusion.htmltopdfconverter.qtwebkit.net.core.19.3.0.47.nupkg.sha512",
+        "syncfusion.htmltopdfconverter.qtwebkit.net.core.nuspec",
+        "syncfusion_logo.png"
       ]
     },
     "System.AppContext/4.3.0": {
@@ -9702,6 +9878,41 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "xunit.abstractions/2.0.3": {
+      "sha512": "pot1I4YOxlWjIb5jmwvvQNbTrZ3lJQ+jUGkGjWE3hEFM0l5gOnBWS+H3qsex68s5cO52g+44vpGzhAt+42vwKg==",
+      "type": "package",
+      "path": "xunit.abstractions/2.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net35/xunit.abstractions.dll",
+        "lib/net35/xunit.abstractions.xml",
+        "lib/netstandard1.0/xunit.abstractions.dll",
+        "lib/netstandard1.0/xunit.abstractions.xml",
+        "lib/netstandard2.0/xunit.abstractions.dll",
+        "lib/netstandard2.0/xunit.abstractions.xml",
+        "xunit.abstractions.2.0.3.nupkg.sha512",
+        "xunit.abstractions.nuspec"
+      ]
+    },
+    "xunit.extensibility.core/2.4.1": {
+      "sha512": "yKZKm/8QNZnBnGZFD9SewkllHBiK0DThybQD/G4PiAmQjKtEZyHi6ET70QPU9KtSMJGRYS6Syk7EyR2EVDU4Kg==",
+      "type": "package",
+      "path": "xunit.extensibility.core/2.4.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net452/xunit.core.dll",
+        "lib/net452/xunit.core.dll.tdnet",
+        "lib/net452/xunit.core.xml",
+        "lib/net452/xunit.runner.tdnet.dll",
+        "lib/net452/xunit.runner.utility.net452.dll",
+        "lib/netstandard1.1/xunit.core.dll",
+        "lib/netstandard1.1/xunit.core.xml",
+        "xunit.extensibility.core.2.4.1.nupkg.sha512",
+        "xunit.extensibility.core.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -9714,34 +9925,26 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.6",
       "Microsoft.EntityFrameworkCore.Sqlite >= 5.0.7",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.6",
-      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.2"
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.2",
+      "Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core >= 19.3.0.47",
+      "xunit.extensibility.core >= 2.4.1"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\HT\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\giaba\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DATN\\Use case\\QuanLiRapPhim\\QuanLiRapPhim.csproj",
+      "projectUniqueName": "D:\\DATN\\QuanLiRapPhim\\QuanLiRapPhim.csproj",
       "projectName": "QuanLiRapPhim",
-      "projectPath": "D:\\DATN\\Use case\\QuanLiRapPhim\\QuanLiRapPhim.csproj",
-      "packagesPath": "C:\\Users\\HT\\.nuget\\packages\\",
-      "outputPath": "D:\\DATN\\Use case\\QuanLiRapPhim\\obj\\",
+      "projectPath": "D:\\DATN\\QuanLiRapPhim\\QuanLiRapPhim.csproj",
+      "packagesPath": "C:\\Users\\giaba\\.nuget\\packages\\",
+      "outputPath": "D:\\DATN\\QuanLiRapPhim\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\HT\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\giaba\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
@@ -9803,6 +10006,14 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[5.0.2, )"
+          },
+          "Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core": {
+            "target": "Package",
+            "version": "[19.3.0.47, )"
+          },
+          "xunit.extensibility.core": {
+            "target": "Package",
+            "version": "[2.4.1, )"
           }
         },
         "imports": [
@@ -9823,7 +10034,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
       }
     }
   },
