@@ -13,7 +13,7 @@ using QuanLiRapPhim.Areas.Admin.Models;
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[AuthorizeRoles("admin")]
+    [AuthorizeRoles("Admin")]
     public class RoomsController : Controller
     {
         public class JTableModelCustom : JTableModel
@@ -52,6 +52,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                             room.Name,
                             room.Row,
                             room.Col,
+                            room.Price,
                             FullName = room.Role.Staffs.First().FullName.Length != 0 ?            room.Role.Staffs.First().FullName : ""
                         
                         };
@@ -63,7 +64,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 .Skip(intBegin)
                 .Take(jTablePara.Length);
 
-            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Name", "Row", "Col", "FullName");
+            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Name", "Row", "Col","Price", "FullName");
             return JsonConvert.SerializeObject(jdata);
         }
         public JsonResult DeleteRoom(int? id)
@@ -128,7 +129,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Row,Col,RoleId")] Room room)
+        public async Task<IActionResult> Create([Bind("Id,Name,Row,Col,Price,RoleId")] Room room)
         {
             if (ModelState.IsValid)
             {

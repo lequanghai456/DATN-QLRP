@@ -7,10 +7,10 @@ using QuanLiRapPhim.Areas.Admin.Data;
 
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [AuthorizeRoles("Admin,Manager")]
     public class HomeController : Controller
     {
-        [Area("Admin")]
-        [AuthorizeRoles("Admin,Manager")]
         public IActionResult Index()
         {
             return View();

@@ -21,6 +21,11 @@
         <input asp-for="Col" class="form-control" />
         <span asp-validation-for="Col" class="text-danger"></span>
     </div>
+    <div class="form-group col-6">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
 
     <div class="form-group col-12 d-flex justify-content-center">
         <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Thêm" : "Cập nhật")" class="btn btn-primary" />

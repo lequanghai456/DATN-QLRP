@@ -19,7 +19,7 @@
             <ul id="side-main-menu" class="side-menu list-unstyled">
                 <li><a href="#"> <i class="icon-home"></i>Home</a></li>
                 <li><a asp-area="Admin" asp-action="Index" asp-controller="Showtimes">Lịch chiếu</a></li>
-                @if (SignInManager.IsSignedIn(User) && User.FindFirst("Role").Value.Contains("Admin"))
+                @if (SignInManager.IsSignedIn(User) && User.FindFirst("Role").Value.Contains("admin"))
                 {
                     <li><a asp-area="Admin" asp-action="Index" asp-controller="Users">Người Dùng</a></li>
                     <li><a asp-area="Admin" asp-action="Index" asp-controller="Categories">Thể loại</a></li>

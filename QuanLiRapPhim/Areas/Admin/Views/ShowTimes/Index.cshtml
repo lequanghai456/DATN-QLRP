@@ -27,7 +27,9 @@
                 {
                     @await Html.PartialAsync("CreateTimes")
                 }
-            }
+
+
+}
 
             <div class="row p-2">
                 <form class="col-md-5" id="form" asp-action="CreateTimes" method="get">
@@ -36,11 +38,16 @@
                         <input type="date" ng-change="Search()" name="Date" class="form-control" ng-model="Date" />
                     </div>
                     <div>
-                        <h4>Phòng: </h4>
+                        @if (ViewBag.Manager==null) {
+                        <h4>Phòng:</h4>
                         <select ng-change="Search()" ng-init="RoomId='-1'" name="Roomid" class="form-control" ng-model="RoomId" 
                                 asp-items="@ViewBag.ListRooms">
                             <option value="-1" selected>--All--</option>
                         </select>
+                            }else{
+                        <input ng-model="RoomId" ng-init="RoomId=@ViewBag.Manager" name="Roomid" hidden/>
+                        }
+                        
                     </div>
                 </form>
 

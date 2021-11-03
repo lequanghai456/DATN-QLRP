@@ -12,14 +12,18 @@ using Newtonsoft.Json;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
 using QuanLiRapPhim.SupportJSON;
+using QuanLiRapPhim.Areas.Admin.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthorizeRoles("Admin,Manager")]
     public class ShowTimesController : Controller
     {
         private readonly IdentityContext _context;
         private ShowTimes show;
+        private SignInManager<Staff> SignInManager;
 
         [TempData]
         public string Message { get; set; }
@@ -28,11 +32,14 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             base.OnActionExecuted(context);
             ViewBag.ListRooms = new SelectList(_context.Rooms.Where(x => x.IsDelete == false).ToList(), "Id", "Name");
+            if(SignInManager.IsSignedIn(User) && !User.FindFirst("Role").Value.Contains("admin"))
+            ViewBag.Manager = _context.Rooms.Where(x => x.Role.Name.Contains(User.FindFirst("Role").Value)).First().Id;
         }
 
-        public ShowTimesController(IdentityContext context)
+        public ShowTimesController(IdentityContext context, SignInManager<Staff> signInManager)
         {
             _context = context;
+            SignInManager = signInManager;
         }
 
         // GET: Admin/ShowTimes
