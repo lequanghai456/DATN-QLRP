@@ -20,6 +20,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
 
             identity.AddClaim(new Claim("FullNameUser", user.FullName));
             identity.AddClaim(new Claim("Id", user.Id.ToString()));
+            identity.AddClaim(new Claim("Role", "User"));
             return identity;
         }
     }

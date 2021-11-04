@@ -172,12 +172,10 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Bills");
                 });
@@ -530,7 +528,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "00735db5-3e36-4069-8704-710dd7f476ce",
+                            ConcurrencyStamp = "273bf690-2c0d-4b40-ab9f-2a65da92da0f",
                             IsDelete = false,
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -538,7 +536,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "ab89281d-8425-4132-b19e-7de910b1066d",
+                            ConcurrencyStamp = "69d4ea5f-9d58-4daf-89df-5a618c3f68d8",
                             IsDelete = false,
                             Name = "staff",
                             NormalizedName = "STAFF"
@@ -898,7 +896,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9cfd4d94-5d5a-42a0-b994-f44aba114417",
+                            ConcurrencyStamp = "f1cb06bb-2e74-4be0-a363-f69cb194407b",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181100@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -907,10 +905,10 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "admin",
-                            PasswordHash = "AFGJ9NWPYyocQ1nRYPEfGAqrzjoGQHZ1ehh2lciFx60ky+2xFVALt66Bc9Puu/23+A==",
+                            PasswordHash = "AGDSblkSTROtDwG06K9zWBXpdcrK4yzRpAZy4OBp6xe+Ji/vEnLuKAvDzS63nS1ykA==",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "cda907bc-85a0-47b0-8118-4ffd67cc6244",
+                            SecurityStamp = "9bd097b1-dd53-47ed-ab82-cc29a7d7ad26",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -918,7 +916,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9d5f5520-7aca-474a-9523-7375807872dc",
+                            ConcurrencyStamp = "6ac45417-4b43-42c6-8eeb-c7fbcf44ea65",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181113@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -927,10 +925,10 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "manager1",
-                            PasswordHash = "APMvutPVqwwC6OLQuC/nUWU4dfPIOwD0FBKoRblsTpq0ijxm8vjrT1ehx9eVVJbY4Q==",
+                            PasswordHash = "AApPqw59GAHh9VLusZWuEW/mKcFHxWx1CpmJby++8m7iXH/PDmpKAjqgDht+1UPLQg==",
                             PhoneNumberConfirmed = false,
                             RoleId = 2,
-                            SecurityStamp = "cdc0e105-62e5-44d5-88bd-f6bf9b42b3fb",
+                            SecurityStamp = "5f14c1bf-a70d-483c-a3ed-2b084bffe712",
                             TwoFactorEnabled = false,
                             UserName = "manager1"
                         });
@@ -1149,17 +1147,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasForeignKey("RatedUsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Bill", b =>
-                {
-                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.BillDetail", b =>

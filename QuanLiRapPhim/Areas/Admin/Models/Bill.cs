@@ -14,9 +14,10 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public DateTime Date { get; set; }
         [Display(Name = "Tổng giá")]
         public Decimal TotalPrice { get; set; }
-        public int UserId { get; set; }
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public String Username { get; set; }
+        //public int UserId { get; set; }
+        //[ForeignKey("UserId")]
+        //public virtual User User { get; set; }
         
         public bool IsDelete {get;set;}
         public bool Status { get; set; }

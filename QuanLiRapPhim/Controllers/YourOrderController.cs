@@ -45,12 +45,12 @@ namespace QuanLiRapPhim.Controllers
                     BillDetails = Billdetails,
                     Date = DateTime.Now,
                     TotalPrice = Billdetails.Sum(x => x.UnitPrice * x.Amount),
-                    UserId = _context.Users.Where(x => x.UserName == (string)User.Identity.Name).First().Id,
+                    Username = User.Identity.Name,
                 };
 
                 _context.Add(bill);
                 _context.SaveChanges();
-                User u = _context.Users.Find(bill.UserId);
+                User u = _context.Users.Find(bill.Username);
                 bool a = SendEmailSuccesOder(u,bill,null);
                 if (a)
                     Message = "Thanh toán thành công ";
@@ -136,7 +136,7 @@ namespace QuanLiRapPhim.Controllers
         {
             //Truy vấn lấy ds bill và ticket theo username sắp xếp theo thời gian 
             var Bills = from b in _context.Bills
-                        where b.User.UserName == User.Identity.Name
+                        where b.Username == User.Identity.Name
                         //&& (String.IsNullOrEmpty(jTablePara.date) || b.Date.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
                         select new
                         {

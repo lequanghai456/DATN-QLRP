@@ -40,7 +40,9 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                         }
                     }
                     if (flag == true)
-                    { }
+                    { 
+
+                    }
                     else
                     {
                         context.Result = new RedirectResult("~/admin/NotFound");

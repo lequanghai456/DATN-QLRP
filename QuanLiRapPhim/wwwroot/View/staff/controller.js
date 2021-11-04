@@ -15,12 +15,30 @@ app.config(function ($routeProvider) {
             templateUrl: ctxfolderurl + '/TicketPrint.html',
             controller: 'TicketPrint'
         })
+        .when('/:Sevice', {
+            templateUrl: ctxfolderurl + '/Sevice.html',
+            controller: 'choseService'
+        })
         .when('/:id', {
             templateUrl: ctxfolderurl + '/bookTicket.html',
             controller: 'bookTicket'
         });
 });
+app.factory('service', function ($http) {
+    var headers = {
+        "Content-Type": "application/json;odata=verbose",
+        "Accept": "application/json;odata=verbose",
+    }
 
+    return {
+        GetAllSevice: function (callback) {
+            $http.get("https://localhost:44350/YourOrder/GetAllServices").then(callback);
+        },
+        BuyBill: function (data, callback) {
+            $http.post("https://localhost:44350/Staffs/home/BuySevice",data).then(callback);
+        }
+    }
+});
 app.factory("datasevice", function ($http) {
     var headers = {
         "Content-Type": "application/json;odata=verbose",
@@ -47,7 +65,7 @@ app.factory("datasevice", function ($http) {
             $http.get('/Showtimes/GetListShowtime?date=' + Date).then(callback);
         },
         BookTickets: function (data, callback) {
-            $http.post('https://localhost:44350/Staffs/home/BuyTickets',data).then(callback);
+            $http.post('https://localhost:44350/Staffs/home/BuyTicket',data).then(callback);
         },
         //GetPrice: function (idseat, idShowTime,callback) {
         //    $http.get('/YourOrder/Price?idseat=' + idseat + '&idShowTime=' + idShowTime).then(callback);
@@ -117,11 +135,9 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http) 
                     }
                     else {
                         $scope.ListSeat = rs.object;
-
                     }
                 });
 
-                console.log($scope.seats);
             }
         });
 
@@ -432,7 +448,128 @@ app.controller('TicketPrint', function ($scope, $uibModal, DTOptionsBuilder, DTC
     }
 });
 
+app.controller('choseService', function ($scope, service,$http) {
+    
+    $scope.init = function () {
+        service.GetAllSevice(function (rs) {
+            rs = rs.data;
+            console.log(rs);
+            if (rs.error) {
+                console.log(rs.title);
+            } else {
 
+                $scope.sevices = rs.object;
+
+                $scope.foods = $scope.sevices.filter(a => a.isFood);
+                $scope.waters = $scope.sevices.filter(a => !a.isFood);
+                console.log($scope.foods);
+
+                $scope.$apply;
+            }
+
+        });
+    }
+    $scope.init();
+
+    $scope.ListBilldetail = [];
+
+    $scope.minus = function (index) {
+        if ($scope.ListBilldetail[index].amout <= 1)
+            if (confirm("Bạn muốn xóa ?"))
+                $scope.ListBilldetail.splice(index, 1);
+            else { }
+        else
+            $scope.ListBilldetail[index].amout--;
+        $scope.$apply;
+    }
+    $scope.addinList = function (index) {
+        $scope.ListBilldetail[index].amout++;
+        $scope.$apply;
+    }
+    $scope.add = function (food) {
+        var item = {
+            id: food.id,
+            name: food.name,
+            size: food.size.find(x => x.id == food.choosesize),
+            amout: 1
+        }
+        var bool = $scope.ListBilldetail.find(x => x.id == item.id && x.size.id == food.choosesize)
+        if (bool != null) {
+            var a = $scope.ListBilldetail.indexOf(bool);
+            $scope.ListBilldetail[a].amout++;
+        }
+        else {
+            $scope.ListBilldetail.push(item);
+        }
+        console.log($scope.ListBilldetail);
+        $scope.$apply;
+    }
+    $scope.selected = [];
+
+    $scope.Total = function (arr) {
+        var total = 0;
+        arr.forEach(function (item, ind) {
+            total += item.size.price * item.amout;
+        });
+        return total;
+    }
+    $scope.Successs = function () {
+        var Billdetails = [];
+        $scope.ListBilldetail.forEach(function (data) {
+            var billdt = {
+                "id": 0,
+                "idSeviceSeviceCategories": data.size.id,
+                "name": "",
+                "amount": 1,
+                "unitPrice": 0,
+                "billId": 0,
+                "bill": null,
+                "seviceSeviceCategories": null
+            }
+            Billdetails.push(billdt);
+        });
+        service.BuyBill(Billdetails, function (rs) {
+            rs = rs.data;
+            if (rs.error) {
+                alert(rs.title);
+            } else {
+                $http.defaults.headers.common.Authorization = '87c21eb5-0a4a-4b31-bba8-a8593992b110'; //replace with our API key from portal.api2pdf.com
+
+                var endpoint = "https://v2018.api2pdf.com/chrome/html"
+                var payload;
+
+                var html = "";
+                var model = {
+                    Objects: JSON.parse(rs.object) 
+                };
+                html += HtmlBill(model);
+                console.log(html);
+                ////$http.get("https://localhost:44350/staffs/Home/Ticket/11").then(function (rs) {
+                ////console.log(rs);
+
+                payload = {
+                    html: html, //HtmlTicket(model),//"<p>Chó Hải dm</p>" //set your HTML here!
+                    inlinePdf: true
+                }
+
+
+                $http.post(endpoint, payload).then(
+                    function (response) {
+                        //your PDF is in this response. Do something with it!
+                        $scope.pdf = response.data.pdf;
+                        console.log($scope.pdf)
+                        $scope.$apply;
+
+                        window.open($scope.pdf, '_blank').focus();
+                        location.reload();
+                    },
+                    function (error) {
+
+                    });
+            }
+        });
+    }
+})
 
 
 app.directive('myTicket', function () {

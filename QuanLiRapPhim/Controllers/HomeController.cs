@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using QuanLiRapPhim.App;
 using QuanLiRapPhim.Areas.Admin.Data;
@@ -28,6 +29,11 @@ namespace QuanLiRapPhim.Controllers
             return Email.SendMailGoogleSmtp("giabao158357@gmail.com", email, "TestEmail","<h1>Cho Hai</h1>").Result
                 ? "true"
                 : "false";
+        }
+        public JsonResult GetJSON()
+        {
+            var a = _context.BillDetails.Where(x => x.BillId == 1);
+            return Json(a);
         }
         public IActionResult Index()
         {

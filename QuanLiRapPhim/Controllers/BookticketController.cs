@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace QuanLiRapPhim.Controllers
 {
-    [AuthorizeRoles("User,Admin,Staff")]
     public class BookticketController : Controller
     {
         [TempData]
@@ -22,6 +21,7 @@ namespace QuanLiRapPhim.Controllers
         {
             _context = context;
         }
+        [AuthorizeRoles("User")]
         public IActionResult Index(int id)
         {
             var deleted = _context.ShowTimes.Include(x=>x.Room).Where(x=>x.IsDelete)
@@ -84,6 +84,8 @@ namespace QuanLiRapPhim.Controllers
             return Email.SendMailGoogleSmtp("giabao158357@gmail.com", user.Email, "Lấy mã đơn hàng", res).Result ?
                 true : false;
         }
+
+        [AuthorizeRoles("User,Staff,Admin")]
         public JsonResult getRoomByIdShowtime(int id)
         {
             JMessage jMessage = new JMessage();
@@ -138,6 +140,7 @@ namespace QuanLiRapPhim.Controllers
             return price;
         }
 
+        [AuthorizeRoles("User,Staff,Admin")]
         public JsonResult getListSeatOfShowtime(int id)
         {
             JMessage jMessage = new JMessage();
@@ -160,11 +163,20 @@ namespace QuanLiRapPhim.Controllers
                                        se.X,
                                        se.Y,
                                        se.Status,
-                                   }).ToList().GroupBy(x => x.X).Select(x => new { name = x.Key,arr=x.ToList().Select(x=> new {x.X, x.Y,x.Id,x.Status,Price=Price(x.Id, id)}) });
+                                   }).ToList().GroupBy(x => x.X).Select(x => new { name = x.Key,arr=x.ToList().Select(x=> new 
+                                   {
+                                       x.X,
+                                       x.Y,
+                                       x.Id,
+                                       x.Status,
+                                       Price=Price(x.Id, id)
+                                   }) });
                 jMessage.Object = seats;
             }
             return Json(jMessage);
         }
+
+        [AuthorizeRoles("User,Staff,Admin")]
         public JsonResult DsGheDaDat(int id) {
             JMessage jMessage = new JMessage();
             jMessage.ID = id;

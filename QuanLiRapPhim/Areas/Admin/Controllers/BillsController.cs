@@ -37,9 +37,9 @@ namespace QuanLiRapPhim.Areas.Admin.Views
         public async Task<String> JtableBillModel(JTableModelCustom jTablePara)
         {
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
-            var query = _context.Bills.Include(a => a.User).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Date) || x.Date.Date.CompareTo(DateTime.Parse(jTablePara.Date).Date) == 0) && ((String.IsNullOrEmpty(jTablePara.UserName)) || ((x.User.FullName.Contains(jTablePara.UserName)))) && ((jTablePara.Price) < x.TotalPrice));
+            var query = _context.Bills.Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Date) || x.Date.Date.CompareTo(DateTime.Parse(jTablePara.Date).Date) == 0) && ((String.IsNullOrEmpty(jTablePara.UserName)) || ((x.Username.Contains(jTablePara.UserName)))) && ((jTablePara.Price) < x.TotalPrice));
             int count = query.Count();
-            var data = query.AsQueryable().Select(x => new { x.Id, Date = x.Date.ToString("MM/dd/yyyy"), x.TotalPrice,UserName = x.User.FullName})
+            var data = query.AsQueryable().Select(x => new { x.Id, Date = x.Date.ToString("MM/dd/yyyy"), x.TotalPrice,UserName = x.Username})
                 .Skip(intBegin)
                 .Take(jTablePara.Length);
 

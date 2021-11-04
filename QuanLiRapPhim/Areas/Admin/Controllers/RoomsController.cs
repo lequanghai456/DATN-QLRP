@@ -129,7 +129,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Row,Col,Price,RoleId")] Room room)
+        public async Task<IActionResult> Create([Bind("Id,Name,Row,Col,RoleId,Price")] Room room)
         {
             if (ModelState.IsValid)
             {
@@ -167,7 +167,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Row,Col,RoleId,IsDelete")] Room room)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Row,Col,RoleId,Price,IsDelete")] Room room)
         {
             
             if (id != room.Id)
@@ -180,7 +180,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 {
                     _context.Update(room);
                     room = _context.Rooms.Include(x => x.Seats).FirstOrDefault(x => x.Id == id);
-                    //room.Seats.Clear();
+                    
                     var seats = new List<Seat>();
                     room.Seats.All(x => x.IsDelete = true);
                     for (int j = 0; j < room.Row; j++)
@@ -204,8 +204,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                         }
                     }
                     await _context.SaveChangesAsync();
-                    
-                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {

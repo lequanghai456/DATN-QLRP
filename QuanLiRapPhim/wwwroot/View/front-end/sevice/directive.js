@@ -40,6 +40,7 @@ app.controller('choseService', function ($scope, $uibModalInstance, $uibModal, s
         if ($scope.ListBilldetail[index].amout <= 1)
             if (confirm("Bạn muốn xóa ?"))
                 $scope.ListBilldetail.splice(index, 1);
+            else { }
         else
             $scope.ListBilldetail[index].amout--;
         $scope.$apply;

@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using QuanLiRapPhim.Areas.Admin.Data;
+using QuanLiRapPhim.Areas.Admin.Models;
 using QuanLiRapPhim.Controllers;
+using QuanLiRapPhim.SupportJSON;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +18,8 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
     public class HomeController : Controller
     {
         private readonly IdentityContext _context;
+        [TempData]
+        public string Message { get; set; }
 
         public HomeController(IdentityContext context)
         {
@@ -25,14 +30,79 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public JsonResult BuyTicket([FromBody]STime st) {
+            JMessage message = new JMessage();
+            try
+            {
+                message.Object = st;
+                var ShowTime = _context.ShowTimes.Where(x => !x.IsDelete && x.Id == int.Parse(st.id)).FirstOrDefault();
+                message.Error = ShowTime == null;
+                if (message.Error)
+                {
+                    message.Title = "Không tìm thấy lịch chiếu";
+                }
+                else{
+                    message.Error = st.idS.Count() == 0;
+                    if (message.Error)
+                    {
+                        message.Title = "Bạn chưa chọn ghế";
+                    }
+                    else
+                    {
+                        foreach(int id in st.idS)
+                        {
+                            Ticket ticket = new Ticket();
+                            ticket.Username = User.Identity.Name;
+                            ticket.SeatId = id;
+                            ticket.Price = Price(id, int.Parse(st.id));
+                            ticket.PurchaseDate = DateTime.Now;
+                            ticket.Name = "--------";
+                            ticket.ShowTimeId = int.Parse(st.id);
+                            ticket.IsPurchased = true;
+                            _context.Add(ticket);
+                        }
+                        _context.SaveChanges();
+                    }
+                }
+            }
+            catch(Exception err)
+            {
+                message.Error = true;
+                message.Title = "Có lỗi xảy ra "+err.ToString();
+            }
+            return Json(message);
+        }
 
+        private decimal Price(int seatId, int showTimeId)
+        {
+            decimal price = _context.ShowTimes
+                .Include(x => x.Room).FirstOrDefault(x => x.Id == showTimeId).Room.Price;
+            var s = _context.Seats.Find(seatId);
+            switch (s.X)
+            {
+                case "A":
+                case "B":
+                case "C":
+                    price += price / 10;
+                    break;
+                case "D":
+                case "E":
+                case "F":
+                    price += price / 5;
+                    break;
+                default:
+                    break;
+            }
+
+            return price;
+        }
 
         [HttpGet]
         public string JtableTestModel(JModel jTablePara)
         {
             //Truy vấn lấy ds bill và ticket theo username sắp xếp theo thời gian 
             var Bills = from b in _context.Bills.Where(x=>!x.IsDelete)
-                        //where b.User.UserName == User.Identity.Name
                         where (String.IsNullOrEmpty(jTablePara.date) || b.Date.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
                         select new
                         {
@@ -41,7 +111,8 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
                             b.Date,
                             b.TotalPrice,
                             b.BillDetails,
-                            b.Status
+                            b.Status,
+                            b.Username
                         };
             var Tickets = from t in _context.Tickets
                           where t.Username == User.Identity.Name
@@ -56,10 +127,11 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
                                  {
                                      id = "HD" + x.Id,
                                      Objects = x,
-                                     Date = x.Date
+                                     Date = x.Date,
+                                     Username = x.Username
                                  }).ToList());
 
-            yourOrders.AddRange((from x in Tickets
+            yourOrders.AddRange((from x in Tickets.Where(x=>!x.IsDelete&&x.SeatId!=null)
                                  where x.Status == false
                                  select new yourOrder
                                  {
@@ -74,7 +146,8 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
                                          Date = x.ShowTime.DateTime.ToShortDateString(),
                                          Room = x.Seat.Room.Name
                                      },
-                                     Date = x.PurchaseDate
+                                     Date = x.PurchaseDate,
+                                     Username = x.Username
                                  }).ToList());
             yourOrders = yourOrders.Where(x => String.IsNullOrEmpty(jTablePara.date) || x.Date.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
                 .OrderByDescending(x => x.Date).ToList();
@@ -82,11 +155,14 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
 
             var query = from a in yourOrders
+                        where
+                        (jTablePara.idsearch == null || a.Username.Contains(jTablePara.idsearch) || a.id.Contains(jTablePara.idsearch))
                         select new
                         {
                             a.id,
                             Objects = JsonConvert.SerializeObject(a.Objects),
-                            Date = a.Date.ToShortDateString()
+                            Date = a.Date.ToShortDateString(),
+                            a.Username
                         };
 
             int count = query.Count();
@@ -95,8 +171,60 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
                 .Skip(intBegin)
                 .Take(jTablePara.Length);
 
-            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "id", "Objects", "Date");
+            var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "id","Username" ,"Objects", "Date");
             return JsonConvert.SerializeObject(jdata);
         }
+       
+        [HttpPost]
+        public JsonResult BuySevice([FromBody]List<BillDetail> Billdetails)
+        {
+            JMessage message = new JMessage();
+            try
+            {
+                message.Error = Billdetails == null;
+                if (message.Error)
+                {
+                    message.Title = "Không tìm thấy hóa đơn";
+                }
+                else
+                {
+                    foreach (var x in Billdetails)
+                    {
+                        var seviceSeviceCategories = _context.seviceSeviceCategories.Find(x.idSeviceSeviceCategories);
+                        seviceSeviceCategories.Sevice = _context.Sevices.Find(seviceSeviceCategories.IdSevice);
+                        seviceSeviceCategories.SeviceCategory = _context.SeviceCategories.Find(seviceSeviceCategories.IdSeviceCategory);
+
+                        x.Name = seviceSeviceCategories.Sevice.Name + "(" + seviceSeviceCategories.SeviceCategory.Name + ")";
+                        x.UnitPrice = seviceSeviceCategories.Price;
+                        x.Bill = null;
+                    }
+                    Bill bill = new Bill()
+                    {
+                        BillDetails = Billdetails,
+                        Date = DateTime.Now,
+                        TotalPrice = Billdetails.Sum(x => x.UnitPrice * x.Amount),
+                        Username = User.Identity.Name,
+                        IsPurchased = true
+                    };
+                    message.Object = JsonConvert.SerializeObject(bill);
+                    _context.Add(bill);
+                    _context.SaveChanges();
+                }
+            }
+            catch (Exception er)
+            {
+                message.Error = true;
+                message.Title = "Có lỗi xảy ra";
+
+            }
+
+            return Json(message);
+        }
+    }
+
+    public class STime
+    {
+        public String id { get; set; }
+        public int[] idS { get; set; }
     }
 }

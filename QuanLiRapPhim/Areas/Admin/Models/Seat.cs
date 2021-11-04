@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,5 +19,10 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public virtual Room Room { get; set; }
         public virtual ICollection<Ticket> Ticket { get; set; }
         public bool IsDelete { get; set; }
+
+        public static implicit operator Seat(int v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
