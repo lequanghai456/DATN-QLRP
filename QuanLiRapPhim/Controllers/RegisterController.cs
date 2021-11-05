@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QuanLiRapPhim.App;
 using QuanLiRapPhim.Areas.Admin.Data;
@@ -101,6 +102,8 @@ namespace QuanLiRapPhim.Controllers
         }
         [TempData]
         public string MessForgotPassword { get; set; }
+        [TempData]
+        public string Password { get; set; }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(string Email)
@@ -120,6 +123,8 @@ namespace QuanLiRapPhim.Controllers
             ViewData["MessForgotPassword"] = "Có lỗi xảy ra trong quá trình gửi email";
             return View();
         }
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Users users)
         {
             User user = new User();
@@ -128,7 +133,7 @@ namespace QuanLiRapPhim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    
+
                     user.FullName = users.FullName;
                     user.DateOfBirth = users.DateOfBirth;
                     user.Email = users.Email;
@@ -136,21 +141,20 @@ namespace QuanLiRapPhim.Controllers
                     user.PasswordHash = users.PasswordHash;
                     user.Img = "avatar.png";
                     IdentityResult result = await StaffMgr.CreateAsync(user, user.PasswordHash);
+                    
                     if (result.Succeeded && SendEmail(users.Email, users.UserName))
                     {
                         ViewData["Mess"] = "Tài khoản của bạn đã tạo thành công vui lòng vào Email của bạn để xác nhận tài khoản ";
                         return View("Index");
                     }
+                    
                 }
-                return View("Index");
-                
-
             }
             catch (Exception ex)
             {
-                return View("Index");
+                
             }
-            
+            return View("Index");
         }
         public async Task<IActionResult> confirmEmail(string username)
         {
@@ -184,6 +188,13 @@ namespace QuanLiRapPhim.Controllers
             return Json(data: true);
 
         }
+        //public async Task<IActionResult> CheckPassword(string PasswordHash)
+        //{
+
+        //    IdentityResult result = StaffMgr.;
+        //    return Json(data: ());
+
+        //}
         //public JsonResult 
         public bool SendEmail(string email, string username)
         {
@@ -201,13 +212,16 @@ namespace QuanLiRapPhim.Controllers
             [Required(ErrorMessage = "Vui lòng nhập tài khoản")]
             [Remote(action: "VerifyUsername", controller: "Register", ErrorMessage = "Tên tài khoản đã có người sử dụng")]
             public string UserName { get; set; }
-            [Required(ErrorMessage = "Vui lòng nhập mật khẩu, mật khẩu phải có số và chữ")]
+            [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
+            //[Remote(action: "CheckPassword", controller: "Register", ErrorMessage = "Mật khẩu phải có chữ, số và ít nhất 6 kí tự")]
+            [DataType(DataType.Password)]
+            [MinLength(6,ErrorMessage ="Mật khẩu ít nhất 6 kí tự")]
             public string PasswordHash { get; set; }
             [Compare(otherProperty: "PasswordHash", ErrorMessage = "Mật khẩu không trùng khớp")]
             public string confirmPasswordHash { get; set; }
             [DisplayName("Ngày sinh")]
             [DataType(DataType.Date)]
-            [Required]
+            [Required(ErrorMessage = "Ngày sinh không được bỏ trống")]
             [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
             public DateTime DateOfBirth { get; set; }
             public string SecurityStamp { get; set; }

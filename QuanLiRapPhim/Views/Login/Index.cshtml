@@ -41,9 +41,9 @@
                 <input type="password" id="password" class="fadeIn third" name="PasswordHash" placeholder="Nhập mật khẩu" required>
                 <input type="submit" class="fadeIn fourth" value="Đăng nhập">
                 @{
-                    if (TempData.Peek("Message") != null)
+                    if (TempData.Peek("MessageLogin") != null)
                     {
-                        <h2 class="alert alert-danger">@TempData.Peek("Message")</h2>
+                        <h2 class="alert alert-danger">@TempData.Peek("MessageLogin")</h2>
                     }
                 }
             </form>

@@ -127,9 +127,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Staff staff, IFormFile ful)
         {
-            if (ModelState.IsValid)
+            IdentityResult result = await StaffMgr.CreateAsync(staff, staff.PasswordHash);
+            if (ModelState.IsValid && result.Succeeded)
             {
-                IdentityResult result = await StaffMgr.CreateAsync(staff, staff.PasswordHash);
+                
                 if (ful != null)
                 {
                     var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
@@ -148,11 +149,9 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     _context.Update(staff);
                     await _context.SaveChangesAsync();
                 }
-                if (result.Succeeded)
-                {
-                    Message = "Thêm nhân viên thành công";
-                    return RedirectToAction(nameof(Index));
-                }
+                Message = "Thêm nhân viên thành công";
+                return RedirectToAction(nameof(Index));
+                
             }
             Message = "Thêm nhân viên thất bại";
             return View(staff);

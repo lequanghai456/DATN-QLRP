@@ -28,7 +28,7 @@ namespace QuanLiRapPhim.Controllers
             return View();
         }
         [TempData]
-        public string Message { get; set; }
+        public string MessageLogin { get; set; }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(User obj)
@@ -48,10 +48,10 @@ namespace QuanLiRapPhim.Controllers
             }
             catch (Exception err)
             {
-                Message = "Tài khoản hoặc mật khẩu không chính xát vui lòng đăng nhập lại";
+                MessageLogin = "Tài khoản hoặc mật khẩu không chính xát vui lòng đăng nhập lại";
                 return RedirectToAction("Index", "Login");
             }
-            Message = "Tài khoản hoặc mật khẩu không chính xát vui lòng đăng nhập lại";
+            MessageLogin = "Tài khoản hoặc mật khẩu không chính xát vui lòng đăng nhập lại";
             return RedirectToAction("Index", "Login");
         }
         public async Task<IActionResult> Logout()
