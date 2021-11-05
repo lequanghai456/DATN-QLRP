@@ -21,7 +21,49 @@ namespace QuanLiRapPhim.Controllers
         {
             _context = context;
         }
+        public JsonResult postComment(int id,String comment)
+        {
+            JMessage message = new JMessage();
+            try
+            {
+                 
+            }
+            catch (Exception err)
+            {
 
+            }
+            return Json(message);
+        }
+        public JsonResult GetListComment(int id)
+        {
+            JMessage message = new JMessage();
+            try
+            {
+                message.ID = id;
+                var comments = _context.Comments
+                    .Include(x=>x.User)
+                    .Where(x=>x.MovieId==id&&!x.IsDelete);
+
+                message.Error = comments.Count() == 0;
+                if (message.Error)
+                {
+                    message.Title = "Không có bình luận";
+                }
+                else
+                {
+                    message.Object = comments.Select(x=>new {
+                        x.Content,
+                        x.User,
+                    }).ToArray();
+                }
+            }
+            catch (Exception err)
+            {
+                message.Error = true;
+                message.Title = err.ToString();
+            }
+            return Json(message);
+        }
         public IActionResult Index()
         {
             return View();

@@ -10,7 +10,7 @@ app.factory('dataservice', function ($http) {
                 if (!rs.data)
                     $http.post('/Admin/Movies/DeleteMovie?id=' + data).then(callback);
                 else
-                    $(".modal-body .alert").html("Phim có lịch chiếu");
+                    $(".modal-body .alert").html("Phim có lịch chiếu" +data);
             });
         },
         deleteMovieCheckbox: function (data, callback) {
@@ -152,6 +152,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             dataservice.deleteMovie(idDelete, function (rs) {
                 rs = rs.data;
                 $scope.notification = rs;
+                $scope.$apply;
                 reloadData(true);
             });
         }

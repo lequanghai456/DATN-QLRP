@@ -24,7 +24,7 @@
     <form id="update" action="../../Sevices/updateCategorySevice" method="get">
         <div class="form-group">
             <label class="control-label">Kích thước</label>
-            <select id="#mySelect2" style="width:100%" class="form-control"  name="model.Id" ng-model="model.IdSeviceCategory">
+            <select id="#mySelect2" style="width:100%" class="form-control"  name="model.IdSeviceCategory" ng-model="model.IdSeviceCategory">
                 <option ng-repeat="value in sevicesCategories" value="{{value.id}}">{{value.name}}</option>
             </select>
             <span asp-validation-for="Lstcategories" class="text-danger"></span>
@@ -34,7 +34,7 @@
             <input class="form-control" name="model.Price" type="number" ng-model="model.Price" />
             <span style="color:red">{{messApiPrice}}</span>
         </div>
-        <input hidden name="model.IdSevice" class="form-control" ng-model="id" />
+        <input hidden  name="model.IdSevice" class="form-control" ng-model="idupdate" />
         
 
         <!--<h2>Danh sách kích thước</h2>

@@ -254,10 +254,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                         .OrderBy(x => x.startTime).ToList();
 
                     DateTime startTime = showTimes.TimeStart;
-                    if (showTimes.showTimes.Count > showTimes.ListMivie.Count)
-                    {
-
-                    }
+                    
                     foreach (var item in showTimes.ListMivie.Select((value, index) => (index, value)))
                     {
                         var movie = _context.Movies.FirstOrDefault(x => x.Id == item.value);

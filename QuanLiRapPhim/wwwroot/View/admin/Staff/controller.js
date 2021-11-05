@@ -32,10 +32,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             .withOption('ajax', {
                 url: "/Admin/Staffs/JtablestaffModel"
                 , beforeSend: function (jqXHR, settings) {
-                    $.blockUI({
-                        boxed: true,
-                        message: 'loading...'
-                    });
+                   
                 }
                 , type: 'GET'
                 , data: function (d) {

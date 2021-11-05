@@ -45,12 +45,21 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                     }
                     else
                     {
-                        context.Result = new RedirectResult("~/admin/NotFound");
+                        context.Result = new RedirectResult("~/admin");
                     }
                 }
                 else
                 {
-                    context.Result = new RedirectResult("~/NotFound");
+                    String flagrole = "~/admin";
+                    foreach (string item in _acceptedRoles)
+                    {
+                        if ("User".ToUpper().Contains(item.ToUpper()))
+                        {
+                            flagrole = "~/Login";
+                            
+                        }
+                    }
+                    context.Result = new RedirectResult(flagrole);
                 }
             }
             catch(Exception ex)
@@ -59,7 +68,7 @@ namespace QuanLiRapPhim.Areas.Admin.Data
                 {
 
                 }else
-                    context.Result = new RedirectResult("~/NotFound");
+                    context.Result = new RedirectResult("~/home/NotFound");
             }
         }
      

@@ -33,11 +33,15 @@ app.factory('dataservice', function ($http) {
                 success: callback
             })
         },
-        Rate: function (id, star,callback) {
+        Rate: function (id, star, callback) {
             $http.get('/moviereview/Rate/' + id + '?star=' + star).then(callback);
+        },
+        Comment: function (id, comment, callback) {
+            $http.get('/moviereview/postComment/' + id + '?comment=' + comment).then(callback);
         }
     }
 });
+
 
 app.config(function ($routeProvider) {
     
@@ -113,7 +117,11 @@ app.controller('index', function ($scope, dataservice) {
 
 app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibModal, $sce) {
     $scope.NameMovie = $routeParams.NameMovie;
-
+    $scope.Comment = function () {
+        dataservice.Comment($scope.model.id, $scope.comment.content, function (rs) {
+            console.log(rs.data);
+        });
+    }
     function Rated(rate,se) {
         if (rate <= 5 && rate >= 0) {
             $(se + " span.fa-star").removeClass("checked");

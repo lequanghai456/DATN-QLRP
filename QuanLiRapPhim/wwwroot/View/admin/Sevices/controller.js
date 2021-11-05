@@ -25,6 +25,7 @@ app.factory('dataservice', function ($http) {
         updateCategorySevice: function (idSevice, price, idSeviceCategory, callback) {
             $http.get('/Admin/Sevices/updateCategorySevice?idSevice=' + idSevice + '&price=' + price + '&idSeviceCategory=' + idSeviceCategory).then(callback);
         },
+
         deleteSeviceCategory: function (data, callback) {
             $http.post('/Admin/Sevices/deleteSeviceCategory?id=' + data).then(callback);
         },
@@ -387,7 +388,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     $scope.update = function (id) {
         $scope.idupdate = id;
         var modalInstance = $uibModal.open({
-            templateUrl: "/View/admin/Sevices/updatePrice.html",
+            templateUrl: "/View/admin/Sevices/updatePrice.htm",
             controller: "ModalUpdate",
             size: 'lg',
             scope: $scope,
@@ -420,7 +421,13 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     }
 });
 app.controller('ModalContent', function ($scope, $uibModalInstance, dataservice, $uibModal) {
-
+    $scope.sevicesCategories = function (id) {
+        dataservice.getSeviceCategory(id, function (rs) {
+            rs = rs.data;
+            console.log(rs);
+            $scope.sevicesCategories = rs.object;
+        });
+    }
     $scope.sevicesCategories($scope.id);
     $scope.addSize = function () {
         var modalInstance = $uibModal.open({
@@ -490,6 +497,7 @@ app.controller('ModalUpdate', function ($scope, $uibModalInstance, dataservice) 
             $scope.$apply;
         }
         else {
+
             $('#update').submit();
         }
 

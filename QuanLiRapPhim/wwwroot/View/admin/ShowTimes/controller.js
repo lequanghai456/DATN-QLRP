@@ -24,7 +24,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     var id = document.getElementById('idEdit');
     $scope.items = [];
     $scope.selectAll = false;
-    var LengthPage = 3;
+    var LengthPage = 6;
     var itam = LengthPage;
     $scope.toggleOne = toggleOne;
     $scope.ListMovie = [];
@@ -50,7 +50,6 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 , data: function (d) {
                     d.date = !$scope.Date ? "" : $filter('date')($scope.Date, 'yyyy-MM-dd');
                     d.RoomId = $scope.RoomId == -1 ? "" : $scope.RoomId;
-                    console.log(d);
                 }
                
                 , dataType: "json"
@@ -89,19 +88,19 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('DateTime', 'DateTime').withClass('Center').notSortable().renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('DateTime', 'Ngày chiếu').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('NameRoom', 'NameRoom').withClass('Center').notSortable().renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('NameRoom', 'Tên phòng').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('NameMovie', 'NameMovie').withClass('Center').notSortable().renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('NameMovie', 'Tên phim').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('StartTime', 'StartTime').withClass('Center').notSortable().renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('StartTime', 'Giờ bắt đầu').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Option').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Chức năng').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
             return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/ShowTimes/Index/' + data + '#! > Edit</a >|<button class="btn btn-danger" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
         }));      
 

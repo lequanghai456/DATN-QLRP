@@ -64,21 +64,39 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             }
             return View(category);
         }
-        
+        public async Task<IActionResult> VerifyTitle(string name)
+        {
+            return Json(data: CheckTitle(name));
+
+        }
+        public bool CheckTitle(string name)
+        {
+            Category category = _context.Categories.Where(x => x.Title.Equals(name) && x.IsDelete == false).FirstOrDefault();
+            return category != null;
+            
+        }
+
         public async Task<JsonResult> CreateAPI(String name)
         {
             try
             {
                 Category category = new Category();
-                category.Title = name;
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                return Json(category.Id);
+                if (!CheckTitle(name))
+                {
+                    
+
+                    category.Title = name;
+
+                    _context.Add(category);
+                    await _context.SaveChangesAsync();
+
+                    return Json(category.Id);
+                }
             }
             catch (Exception ex)
             {
-                return Json("0");
             }
+            return Json("0");
 
         }
         public async Task<JsonResult> ListCategories()

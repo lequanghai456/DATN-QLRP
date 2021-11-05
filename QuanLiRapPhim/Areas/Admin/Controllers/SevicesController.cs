@@ -14,6 +14,7 @@ using QuanLiRapPhim.SupportJSON;
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthorizeRoles("Admin")]
     public class SevicesController : Controller
     {
         private readonly IdentityContext _context;
@@ -43,7 +44,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             if (id != null)
             {
                 sevice = _context.Sevices.FirstOrDefault(x => x.Id == id);
-                
+
 
             }
             ViewData["IsFood"] = new SelectList(listIsFood, "isFood", "name");
@@ -63,13 +64,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     _context.Add(sevice);
                     await _context.SaveChangesAsync();
                     Message = "Tạo dịch vụ thành công";
-                        
                 }
             }
             catch (Exception err)
             {
                 Message = "Tạo dịch vụ thất bại";
-                
+
             }
             return RedirectToAction(nameof(Index));
 
@@ -80,23 +80,56 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
             var query = _context.Sevices.Include(x => x.LstSeviceSeviceCategories).Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Name) || x.Name.Contains(jTablePara.Name)));
             int count = query.Count();
-            var data = query.AsQueryable().Select(x => new { x.Id, x.Name, Size = JsonConvert.SerializeObject(x.LstSeviceSeviceCategories.Where(a => a.isDelete == false).ToList()) })
+            var data = query.AsQueryable().Select(x => new { x.Id, x.Name, Size = JsonConvert.SerializeObject(x.LstSeviceSeviceCategories.Where(a => a.isDelete == false).Select(x => new {
+                x.SeviceCategory.Name,
+                x.Price,
+                x.Id
+            }).ToList()) })
                 .Skip(intBegin)
                 .Take(jTablePara.Length);
 
             var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Name", "Size");
             return JsonConvert.SerializeObject(jdata);
         }
-        public async Task<JsonResult> getSeviceCategory()
+        public async Task<JsonResult> getSeviceCategory(int id)
         {
             JMessage jMessage = new JMessage();
             try
             {
                 var obj = _context.SeviceCategories.Where(x => x.IsDelete == false).ToList();
-                jMessage.Error = obj.Count() > 0;
+                var SeviceId = _context.seviceSeviceCategories.Include(x => x.SeviceCategory)
+                    .Where(x => x.IdSevice == id).Select(x => x.SeviceCategory.Id);
+                var kq = obj.Where(x => !SeviceId.Contains(x.Id));
+                jMessage.Error = kq.Count() > 0;
                 if (jMessage.Error)
                 {
-                    jMessage.Object = obj;
+                    jMessage.Object = kq;
+                }
+                else
+                {
+                    jMessage.Title = "Không có kích thước";
+                }
+            }
+            catch (Exception er)
+            {
+                jMessage.Error = true;
+                jMessage.Title = "Có lỗi xảy ra";
+            }
+
+            return Json(jMessage);
+        }
+        public async Task<JsonResult> getSeviceCategoryUpdate(int id)
+        {
+            JMessage jMessage = new JMessage();
+            try
+            {
+
+                var kq = _context.seviceSeviceCategories.Include(x => x.SeviceCategory)
+                    .Where(x => x.IdSevice == id && x.isDelete == false).Select(x => x.SeviceCategory);
+                jMessage.Error = kq.Count() > 0;
+                if (jMessage.Error)
+                {
+                    jMessage.Object = kq;
                 }
                 else
                 {
@@ -130,28 +163,94 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             return Json(jMessage);
 
         }
-        
-        public async Task<JsonResult> addCategorySevice(int? idSevice,decimal? price,int? idSeviceCategory)
+        public bool checkCategory(string name)
+        {
+            return _context.SeviceCategories.Where(x => name == x.Name).FirstOrDefault() != null;
+        }
+        public class Model
+        {
+            [Required]
+            public int IdSeviceCategory { get; set; }
+            [Required]
+            public Decimal Price { get; set; }
+            [Required]
+            public int IdSevice { get; set; }
+        }
+
+        public async Task<IActionResult> addCategorySevice(Model model)
         {
             JMessage jMessage = new JMessage();
             SeviceSeviceCategories seviceSeviceCategories = new SeviceSeviceCategories();
             try
             {
-                
-                seviceSeviceCategories.IdSevice = (int)idSevice;
-                seviceSeviceCategories.Price = (decimal)price;
-                seviceSeviceCategories.IdSeviceCategory = (int)idSeviceCategory;
+                if (!ModelState.IsValid)
+                {
+                    Message = "Thêm thất bại";
+                    return RedirectToAction(nameof(Index));
+                }
+                seviceSeviceCategories.IdSevice = model.IdSevice;
+                seviceSeviceCategories.Price = model.Price;
+                seviceSeviceCategories.IdSeviceCategory = model.IdSeviceCategory;
                 _context.Add(seviceSeviceCategories);
                 await _context.SaveChangesAsync();
-                jMessage.Error = false;
-            }catch(Exception err)
+                Message = "Thêm giá thành công";
+            } catch (Exception err)
             {
                 jMessage.Error = true;
-                jMessage.Title = "Thêm thất bại";
+                Message = "Có lỗi xảy ra";
             }
-            return Json(jMessage);
+            return RedirectToAction(nameof(Index));
         }
-        public JsonResult DeleteSevice(int? id)
+        public IActionResult updateCategorySevice(Model model)
+        {
+            JMessage jMessage = new JMessage();
+            
+            try
+            {
+                
+                SeviceSeviceCategories seviceSeviceCategories = _context.seviceSeviceCategories.Where(x => x.IdSevice == model.IdSevice && x.IdSeviceCategory == model.IdSeviceCategory).FirstOrDefault();
+                jMessage.Error = model.Price <= 0 || seviceSeviceCategories == null;
+                if (jMessage.Error)
+                {
+                    Message = "Cập nhật thất bại";
+                }
+                else
+                {
+                    seviceSeviceCategories.Price = model.Price;
+                    _context.Update(seviceSeviceCategories);
+                    _context.SaveChanges();
+                    jMessage.Error = false;
+                    Message = "Cập nhật thành công";
+                }
+            }
+            catch (Exception err)
+            {
+                jMessage.Error = true;
+                Message = "Có lỗi xảy ra";
+            }
+            return RedirectToAction("Index" ,new{ id= model.IdSevice});
+        }
+        public bool deleteSeviceCategory(int id)
+        {
+            try
+            {
+                SeviceSeviceCategories seviceSeviceCategories = _context.seviceSeviceCategories.Where(x => x.Id == id).FirstOrDefault();
+                if (seviceSeviceCategories != null)
+                {
+                    seviceSeviceCategories.isDelete = true;
+                    _context.Update(seviceSeviceCategories);
+                    _context.SaveChanges();
+                    
+                    return true;
+                }
+            }
+            catch (Exception err)
+            {
+                
+            }
+            return false;
+        }
+            public JsonResult DeleteSevice(int? id)
         {
             try
             {

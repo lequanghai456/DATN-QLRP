@@ -200,7 +200,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             return View(movie);
         }
          
-        public JsonResult DeleteMovie(int? id)
+        public JsonResult DeleteMovie(int id)
         {
             try
             {
@@ -211,20 +211,28 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
                     return Json("Fail");
                 }
-                movie.IsDelete = true;
-                _context.Update(movie);
-                if(_context.ShowTimes.FirstOrDefault(x=>x.MovieId == id && x.DateTime.Date.CompareTo(DateTime.Now.Date) > 0) != null)
+                if (!Kiemtradelete(id))
                 {
-                    return Json("Phim này vẫn còn lịch chiếu");
+                    movie.IsDelete = true;
+                    _context.Update(movie);
+                    _context.SaveChangesAsync();
+                    return Json("Xóa phim thành công");
                 }
-                _context.SaveChangesAsync();
-                return Json("Xóa phim thành công");
             }
             catch (Exception err)
             {
 
-                return Json("Xóa phim thất bại");
+                
             }
+            return Json("Xóa phim thất bại");
+        }
+        public bool Kiemtradelete(int id)
+        {
+
+            var a = _context.ShowTimes
+                .Where(x => x.MovieId == id && !x.IsDelete)
+                .Where(x=>x.DateTime.Date.CompareTo(DateTime.Now)>=0).ToList();
+            return a.Count()!=0;
         }
         [TempData]
         public string Message { get; set; }
@@ -236,19 +244,25 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 Movie movie = new Movie();
                 foreach (String id in List)
                 {
-                    movie = _context.Movies.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
-                    movie.IsDelete = true;
-                    _context.Update(movie);
+                    if (!Kiemtradelete(int.Parse(id)))
+                    {
+                        movie = _context.Movies.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
+                        movie.IsDelete = true;
+                        _context.Update(movie);
+                    }else
+                    {
+                        return Json("Xóa phim thất bại");
+                       
+                    }    
 
                 }
-
                 _context.SaveChangesAsync();
                 return Json("Xóa phim thành công");
             }
             catch (Exception er)
             {
 
-                return Json("Xóa phim thất bại");
+                return Json("Có lỗi xảy ra");
             }
 
 

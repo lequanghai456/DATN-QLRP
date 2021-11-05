@@ -1,4 +1,4 @@
-﻿    <div class="page">
+﻿<div class="page">
     <div class="breadcrumbs">
         <a href="../#!/">Trang chủ</a>
         <a href="#!">Danh sách phim</a>
@@ -73,6 +73,127 @@
                     padding: 10px;
                 }
         </style>
-   </div>
+    </div>
 </div>
-    <div ng-bind-html="renderHtml(message)"></div>
+<style>
+    .comment-author img {
+        margin: 0 auto;
+    }
+
+    .comment-content {
+        color: #999;
+        width: 80%;
+        min-height: 60px;
+        max-height: 60px;
+        padding: 5px 10px;
+        background-color: #fff;
+        cursor: text;
+        border: 1px solid #bbb;
+    }
+
+    .summary {
+        padding: 5px;
+        background-color: #fff;
+        cursor: text;
+        border: 1px solid #bbb;
+    }
+
+    .commentItems {
+        padding-top: 10px;
+    }
+
+    .commentItems2 {
+        padding: 10px 0 0 100px;
+    }
+
+    .comment-item2 {
+        padding-top: 10px;
+    }
+
+    .form-comment2 {
+        padding-top: 10px;
+    }
+
+    .comment {
+        padding: 10px;
+    }
+
+    .Rate {
+        width: 50%;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .Rate span {
+            width: auto;
+            margin: auto;
+            padding: 10px;
+        }
+</style>
+<div class="comment">
+    <span><h1>Bình luận</h1></span>
+    <div class="comment-area row" ng-init="comment.id=model.id">
+        <textarea class="comment-content col-11" ng-model="comment.content" name="comment" placeholder="Nhập bình luận"></textarea>
+        <input type="submit" ng-click="Comment()" class="btn btn-success col-1" value="Gửi" />
+    </div>
+    <div class="commentItems">
+        <div class="comment-item row">
+            <div class="comment-author col-1">
+                <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                <div>
+                    <input type="submit" class="btn btn-success" value="trả lời" height="5" ng-click="traloi(1)" />
+                </div>
+            </div>
+
+            <div class="summary col-11">
+                <div><span><h2>name user</h2></span></div>
+                <div><span>comment</span></div>
+            </div>
+
+            <div ng-show="comment == 1" class="col-12 form-comment2">
+                <form class="comment-area2 row">
+                    <textarea class="comment-content col-11" placeholder="Comment here!"></textarea>
+                    <input type="submit" class="btn btn-success col-1" value="Send" />
+                </form>
+            </div>
+
+            <div class="commentItems2 col-12">
+
+                <div class="comment-item2 row">
+                    <div class="comment-author col-1">
+                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                    </div>
+                    <div class="summary col-11">
+                        <div><span><h2>name user</h2></span></div>
+                        <div><span>comment</span></div>
+                    </div>
+                </div>
+
+                <div class="comment-item2 row">
+                    <div class="comment-author col-1">
+                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                    </div>
+                    <div class="summary col-11">
+                        <div><span><h2>name user</h2></span></div>
+                        <div><span>comment</span></div>
+                    </div>
+                </div>
+
+                <div class="comment-item2 row">
+                    <div class="comment-author col-1">
+                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                    </div>
+                    <div class="summary col-11">
+                        <div><span><h2>name user</h2></span></div>
+                        <div><span>comment</span></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div ng-bind-html="renderHtml(message)"></div>
