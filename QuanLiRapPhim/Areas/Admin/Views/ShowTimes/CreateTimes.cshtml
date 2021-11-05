@@ -62,6 +62,10 @@
                     <select asp-for="RoomId" class="form-control" asp-items="@(new SelectList(ViewBag.ListRooms, "Id", "Name"))"></select>
                 </div>
             }
+            else
+            {
+                <input type="hidden" asp-for="RoomId" />
+            }
         }
         <div class="form-group col-12">
             <input type="submit" value="Create" class="btn btn-primary" />
