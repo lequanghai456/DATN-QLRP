@@ -21,46 +21,79 @@ namespace QuanLiRapPhim.Controllers
         {
             _context = context;
         }
-        public JsonResult postComment(int id,String comment)
+
+        public JsonResult GetComment(int id,int numoc)
         {
             JMessage message = new JMessage();
             try
             {
-                 
+                var a = _context.Comments.Include(x=>x.User).Where(X=>X.MovieId==id&&X.Parent==0).Select(x=>new{
+                    x.Id,
+                    x.User.FullName,
+                    x.User.Img,
+                    x.SubmittedDate,
+                    x.Content,
+                    ListCmt=_context.Comments.Where(x1=>x1.Parent==x.Id).Select(x2 => new
+                    {
+                        x2.Id,
+                        x2.User.FullName,
+                        x2.User.Img,
+                        x2.SubmittedDate,
+                        x2.Content
+                    }).OrderByDescending(x2 => x2.SubmittedDate).ToList()
+                }).OrderByDescending(x=>x.SubmittedDate);
+                message.ID = a.Count();
+
+                message.Object = a.Take(numoc);
+                message.Error = false;
             }
             catch (Exception err)
             {
-
+                message.Error = true;
+                message.Title = "Có lỗi xảy ra";
             }
             return Json(message);
         }
-        public JsonResult GetListComment(int id)
+        public class comment
+        {
+            [Required]
+            public int id { get; set; }
+            [Required]
+            public String cmt { get; set; }
+            public int parentid { get; set; }
+        }
+
+        [HttpPost]
+        [AuthorizeRoles("User")]
+        public JsonResult postComment([FromBody]comment cm)
         {
             JMessage message = new JMessage();
             try
             {
-                message.ID = id;
-                var comments = _context.Comments
-                    .Include(x=>x.User)
-                    .Where(x=>x.MovieId==id&&!x.IsDelete);
-
-                message.Error = comments.Count() == 0;
-                if (message.Error)
+                if (!ModelState.IsValid)
                 {
-                    message.Title = "Không có bình luận";
+                    message.Error = true;
+                    message.Title = "Chưa đủ dữ liệu";
+                    message.Object = cm;
                 }
                 else
                 {
-                    message.Object = comments.Select(x=>new {
-                        x.Content,
-                        x.User,
-                    }).ToArray();
+                    Comment cmt = new Comment();
+                    cmt.MovieId = cm.id;
+                    cmt.UserId = int.Parse(User.FindFirst("Id").Value);
+                    cmt.Content = cm.cmt;
+                    cmt.SubmittedDate = DateTime.Now;
+                    cmt.Parent = (int)cm.parentid;
+                    _context.Add(cmt);
+                    _context.SaveChanges();
+                    message.Error = false;
+                    message.Object = cmt;
                 }
             }
             catch (Exception err)
             {
                 message.Error = true;
-                message.Title = err.ToString();
+                message.Title = "Có lỗi xảy ra";
             }
             return Json(message);
         }

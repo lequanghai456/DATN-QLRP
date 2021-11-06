@@ -37,7 +37,23 @@ app.factory('dataservice', function ($http) {
             $http.get('/moviereview/Rate/' + id + '?star=' + star).then(callback);
         },
         Comment: function (id, comment, callback) {
-            $http.get('/moviereview/postComment/' + id + '?comment=' + comment).then(callback);
+            var cm = {
+                'id': id,
+                'cmt': comment,
+                'parentid': 0
+            }
+            $http.post('/moviereview/postComment', cm).then(callback);
+        },  
+        Commentlv2: function (id, comment, parent, callback) {
+            var cm = {
+                'id': id,
+                'cmt': comment,
+                'parentid': parent
+            }
+            $http.post('/moviereview/postComment', cm).then(callback);
+        },
+        GetComments: function (id,noc, callback) {
+            $http.get('/moviereview/GetComment/' + id+'?numoc='+noc).then(callback);
         }
     }
 });
@@ -117,9 +133,39 @@ app.controller('index', function ($scope, dataservice) {
 
 app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibModal, $sce) {
     $scope.NameMovie = $routeParams.NameMovie;
+    $scope.NumOfComments = 4;
+    $scope.AddMoreComments = function () {
+        $scope.NumOfComments+= 4;
+        getComment();
+    }
     $scope.Comment = function () {
+        $(".comment-content").attr("disabled",true);
         dataservice.Comment($scope.model.id, $scope.comment.content, function (rs) {
-            console.log(rs.data);
+            rs = rs.data;
+            if (rs.error) {
+                console.log(rs);
+            }
+            else {
+                $scope.NumOfComments += 1;
+                getComment();
+            }
+            $(".comment-content").attr("disabled", false);
+            $scope.comment.content = '';
+        });
+    }
+    $scope.CommentLV2 = function (content) {
+        $(".comment-content").attr("disabled", true);
+        dataservice.Commentlv2($scope.model.id, content, $scope.comment, function (rs) {
+            rs = rs.data;
+            if (rs.error) {
+                console.log(rs);
+            }
+            else {
+                getComment();
+            }
+
+            $(".comment-content").attr("disabled", false);
+            $scope.comment = '';
         });
     }
     function Rated(rate,se) {
@@ -146,11 +192,23 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibM
                 var total = $scope.model.totalRating == 0 ? 0 : $scope.model.totalRating / $scope.model.totalReviewers;
                 $scope.Rated(total, ".Rated");
                 console.log($scope.model);
+                getComment();
             }
         });
 
     }
-
+    function getComment() {
+        dataservice.GetComments($scope.model.id, $scope.NumOfComments, function (rs) {
+            rs = rs.data;
+            if (rs.error) {
+                alert(rs.title);
+            } else {
+                $scope.Comments = rs.object;
+                $scope.total = rs.id;
+                console.log($scope.Comments);
+            }
+        })
+    }
     $scope.GetListShowTime = function (date) {
         dataservice.GetListShowTime($scope.model.id, date, function (rs) {
             $scope.List = rs.data;
@@ -201,6 +259,7 @@ app.controller('moviedetail', function ($scope, $routeParams, dataservice, $uibM
                 else {
                     alert("Bạn đã dánh giá phim " + $scope.star + " sao");
                     $scope.model.isRated = true;
+                    $scope.init();
                 }
             });
         }

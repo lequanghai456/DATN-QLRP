@@ -76,6 +76,10 @@
     </div>
 </div>
 <style>
+    .loadmore:hover{
+       text-decoration:underline;
+       cursor:pointer;
+    }
     .comment-author img {
         margin: 0 auto;
     }
@@ -131,62 +135,42 @@
             padding: 10px;
         }
 </style>
-<div class="comment">
+<div class="comment"  ng-show="model">
     <span><h1>Bình luận</h1></span>
     <div class="comment-area row" ng-init="comment.id=model.id">
         <textarea class="comment-content col-11" ng-model="comment.content" name="comment" placeholder="Nhập bình luận"></textarea>
         <input type="submit" ng-click="Comment()" class="btn btn-success col-1" value="Gửi" />
     </div>
     <div class="commentItems">
-        <div class="comment-item row">
+        <div class="comment-item row p-1" ng-repeat="cmt in Comments">
             <div class="comment-author col-1">
-                <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                <img src="/admin/img/{{cmt.img}}" height="40" width="40" />
                 <div>
-                    <input type="submit" class="btn btn-success" value="trả lời" height="5" ng-click="traloi(1)" />
+                    <input type="submit" class="btn btn-success" value="trả lời" height="5" ng-click="traloi(cmt.id)" />
                 </div>
             </div>
 
             <div class="summary col-11">
-                <div><span><h2>name user</h2></span></div>
-                <div><span>comment</span></div>
+                <div><span><h2>{{cmt.fullName}}</h2></span></div>
+                <div><span>{{cmt.content}}</span></div>
             </div>
 
-            <div ng-show="comment == 1" class="col-12 form-comment2">
-                <form class="comment-area2 row">
-                    <textarea class="comment-content col-11" placeholder="Comment here!"></textarea>
-                    <input type="submit" class="btn btn-success col-1" value="Send" />
-                </form>
+            <div ng-show="comment == cmt.id" class="col-12 form-comment2">
+                <div class="comment-area2 row">
+                    <textarea class="comment-content col-11" ng-model="commentlv2" name="comment" placeholder="Nhập bình luận"></textarea>
+                    <input type="submit" ng-click="CommentLV2(commentlv2)" class="btn btn-success col-1" value="Gửi" />
+                </div>
             </div>
 
             <div class="commentItems2 col-12">
 
-                <div class="comment-item2 row">
+                <div class="comment-item2 row" ng-repeat="cmt2 in cmt.listCmt">
                     <div class="comment-author col-1">
-                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
+                        <img src="/admin/img/{{cmt2.img}}" height="40" width="40" />
                     </div>
                     <div class="summary col-11">
-                        <div><span><h2>name user</h2></span></div>
-                        <div><span>comment</span></div>
-                    </div>
-                </div>
-
-                <div class="comment-item2 row">
-                    <div class="comment-author col-1">
-                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
-                    </div>
-                    <div class="summary col-11">
-                        <div><span><h2>name user</h2></span></div>
-                        <div><span>comment</span></div>
-                    </div>
-                </div>
-
-                <div class="comment-item2 row">
-                    <div class="comment-author col-1">
-                        <img src="/admin/img/Icon_User.png" height="40" width="40" />
-                    </div>
-                    <div class="summary col-11">
-                        <div><span><h2>name user</h2></span></div>
-                        <div><span>comment</span></div>
+                        <div><span><h2>{{cmt2.fullName}}</h2></span></div>
+                        <div><span>{{cmt2.content}}</span></div>
                     </div>
                 </div>
 
@@ -194,6 +178,7 @@
 
         </div>
     </div>
+    <span class="loadmore p-1" ng-click="AddMoreComments()" ng-show="total>NumOfComments"><h3>Tải thêm {{total-NumOfComments>4?4:total-NumOfComments}} bình luận</h3></span>
 </div>
 
 <div ng-bind-html="renderHtml(message)"></div>
