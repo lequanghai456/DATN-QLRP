@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,19 +36,33 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // GET: Admin/Staffs
         public async Task<IActionResult> Index(int? id)
         {
-            Staff staff = null;
+            Staff staff = new Staff();
+            StaffUsers staffUsers = new StaffUsers();
             if (id != null)
             {
                 staff = _context.Staffs.FirstOrDefault(s => s.Id == id);
-                ViewData["Img"] = staff.Img; 
+                staffUsers.FullName = staff.FullName;
+                staffUsers.DateOfBirth = staff.DateOfBirth;
+                staffUsers.RoleId = staff.RoleId;
+                ViewData["Img"] = staff.Img;
+                var ListRoom = from a in _context.Staffs
+                               join room in _context.Rooms on a.RoleId equals room.RoleId
+                               where !a.IsDelete && a.RoleId != staff.RoleId
+                               select a.RoleId;
+                ViewBag.Role = _context.Roles.Where(x => x.IsDelete == false && !x.Name.Contains("Admin") && !ListRoom.Contains(x.Id)).ToList();
 
             }
-            //Danh sách phòng đã có người quản lí
-            var ListRoom = from a in _context.Staffs
-                           join room in _context.Rooms on a.RoleId equals room.RoleId
-                           select a.RoleId;
-            ViewBag.Role = _context.Roles.Where(x => x.IsDelete == false && !x.Name.Contains("Admin") && !ListRoom.Contains(x.Id)).ToList();
-            return View(staff);
+            else
+            {
+                var ListRoom = from a in _context.Staffs
+                               join room in _context.Rooms on a.RoleId equals room.RoleId
+                               where !a.IsDelete
+                               select a.RoleId;
+                ViewBag.Role = _context.Roles.Where(x => x.IsDelete == false && !x.Name.Contains("Admin") && !ListRoom.Contains(x.Id)).ToList();
+            }
+            
+            
+            return View(staffUsers);
         }
         public JsonResult DeleteStaff(int? id)
         {
@@ -125,36 +141,50 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Staff staff, IFormFile ful)
+        public async Task<IActionResult> Create(StaffUsers staffUsers, IFormFile ful)
         {
-            IdentityResult result = await StaffMgr.CreateAsync(staff, staff.PasswordHash);
-            if (ModelState.IsValid && result.Succeeded)
+            try
             {
                 
-                if (ful != null)
+                if (ModelState.IsValid )
                 {
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
-                  staff.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
-                    using (var stream = new FileStream(path, FileMode.Create))
+                    Staff staff = new Staff();
+                    staff.UserName = staffUsers.UserName;
+                    staff.PasswordHash = staffUsers.PasswordHash;
+                    staff.FullName = staffUsers.FullName;
+                    staff.DateOfBirth = staffUsers.DateOfBirth;
+
+                    IdentityResult result = await StaffMgr.CreateAsync(staff, staff.PasswordHash);
+                    if (result.Succeeded)
                     {
-                        await ful.CopyToAsync(stream);
+                        if (ful != null)
+                        {
+                            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
+                          staff.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
+                            using (var stream = new FileStream(path, FileMode.Create))
+                            {
+                                await ful.CopyToAsync(stream);
+                            }
+                            staff.Img = staff.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
+                            _context.Update(staff);
+                            await _context.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            staff.Img = "Noimage.png";
+                            _context.Update(staff);
+                            await _context.SaveChangesAsync();
+                        }
+                        Message = "Thêm nhân viên thành công";
+                        return RedirectToAction(nameof(Index));
                     }
-                    staff.Img = staff.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                    _context.Update(staff);
-                    await _context.SaveChangesAsync();
                 }
-                else
-                {
-                    staff.Img = "Noimage.png";
-                    _context.Update(staff);
-                    await _context.SaveChangesAsync();
-                }
-                Message = "Thêm nhân viên thành công";
-                return RedirectToAction(nameof(Index));
-                
+            }catch(Exception err)
+            {
+
             }
             Message = "Thêm nhân viên thất bại";
-            return View(staff);
+            return RedirectToAction(nameof(Index));
         }
 
         
@@ -166,71 +196,110 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Staff staff,IFormFile ful)
         {
-            if (id != staff.Id)
+            try
             {
-                return NotFound();
-            }
-            Staff staffold = _context.Staffs.FirstOrDefault(x => x.Id == id);
-            staffold.FullName = staff.FullName;
-            staffold.DateOfBirth = staff.DateOfBirth;
-            staffold.RoleId = staff.RoleId;
-            if (ModelState.IsValid)
-            {
-                try
+                if (id != staff.Id)
                 {
-                    _context.Update(staffold); 
-                    if (ful != null)
+                    return NotFound();
+                }
+                Staff staffold = _context.Staffs.FirstOrDefault(x => x.Id == id);
+                staffold.FullName = staff.FullName;
+                staffold.DateOfBirth = staff.DateOfBirth;
+                staffold.RoleId = staff.RoleId;
+                if (ModelState.IsValid)
+                {
+                    try
                     {
-                        if (staffold.Img.Contains("Noimage.png") || staffold.Img == null)
+                        _context.Update(staffold);
+                        if (ful != null)
                         {
-                            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
-                            staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
-                            using (var stream = new FileStream(path, FileMode.Create))
+                            if (staffold.Img.Equals("Noimage.png") || staffold.Img == null)
                             {
-                                await ful.CopyToAsync(stream);
+                                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
+                                staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
+                                using (var stream = new FileStream(path, FileMode.Create))
+                                {
+                                    await ful.CopyToAsync(stream);
+                                }
+                                staffold.Img = staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
+                                _context.Update(staffold);
+                                await _context.SaveChangesAsync();
                             }
-                            staffold.Img = staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                            _context.Update(staffold);
-                            await _context.SaveChangesAsync();
+                            else
+                            {
+                                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img", staffold.Img);
+                                System.IO.File.Delete(path);
+
+                                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
+                                staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
+                                using (var stream = new FileStream(path, FileMode.Create))
+                                {
+                                    await ful.CopyToAsync(stream);
+                                }
+                                staffold.Img = staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
+                                _context.Update(staffold);
+                                await _context.SaveChangesAsync();
+                            }
+                        }
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!StaffExists(staffold.Id))
+                        {
+                            return NotFound();
                         }
                         else
                         {
-                            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img", staffold.Img);
-                            System.IO.File.Delete(path);
-
-                            path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
-                            staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
-                            using (var stream = new FileStream(path, FileMode.Create))
-                            {
-                                await ful.CopyToAsync(stream);
-                            }
-                            staffold.Img = staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                            _context.Update(staffold);
-                            await _context.SaveChangesAsync();
+                            throw;
                         }
                     }
-                    await _context.SaveChangesAsync();
+                    Message = "Cập nhật nhân viên thành công";
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StaffExists(staffold.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                Message = "Cập nhật nhân viên thành công";
-                return RedirectToAction(nameof(Index));
+            }catch(Exception err)
+            {
+
             }
             Message = "Cập nhật nhân viên thất bại";
-            return View(staff);
+            return RedirectToAction(nameof(Index));
         }
         private bool StaffExists(int id)
         {
             return _context.Staffs.Any(e => e.Id == id);
+        }
+        public async Task<IActionResult> VerifyUsername(string username)
+        {
+            Staff user = new Staff();
+            user = await StaffMgr.FindByNameAsync(username);
+            if (user != null)
+            {
+                return Json(data: false);
+            }
+            return Json(data: true);
+
+        }
+        public class StaffUsers
+        {
+            public int Id { get; set; }
+            [DisplayName("Tên đầy đủ")]
+            public string FullName { get; set; }
+            
+            [Required(ErrorMessage = "Vui lòng nhập tài khoản")]
+            [Remote(action: "VerifyUsername", controller: "Staffs", ErrorMessage = "Tên tài khoản đã có người sử dụng")]
+            public string UserName { get; set; }
+            [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
+            [DataType(DataType.Password)]
+            [MinLength(6, ErrorMessage = "Mật khẩu ít nhất 6 kí tự")]
+            public string PasswordHash { get; set; }
+            [DisplayName("Ngày sinh")]
+            [DataType(DataType.Date)]
+            [Required(ErrorMessage = "Ngày sinh không được bỏ trống")]
+            [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+            public DateTime DateOfBirth { get; set; }
+            [DisplayName("Chức vụ")]
+            public int? RoleId { get; set; }
+           
         }
     }
 }

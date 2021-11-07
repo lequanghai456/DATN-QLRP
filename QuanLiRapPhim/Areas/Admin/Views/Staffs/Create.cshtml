@@ -1,4 +1,4 @@
-﻿@model QuanLiRapPhim.Areas.Admin.Models.Staff
+﻿@model QuanLiRapPhim.Areas.Admin.Controllers.StaffsController.StaffUsers
 <h1>@(ViewContext.RouteData.Values["id"] == null ? "Thêm mới" : "Cập nhật")</h1>
 <form asp-action=@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit") method="post" class="row" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -8,36 +8,41 @@
         }
     }
 <div class="col-6">
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" name="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RoleId" class="control-label">Chức vụ</label>
-                <select asp-for="RoleId" class="form-control" asp-items="@(new SelectList(ViewBag.Role,"Id","Name"))"></select>
-                <span asp-validation-for="RoleId" class="text-danger"></span>
-            </div>
-            @{ if (ViewContext.RouteData.Values["id"] == null)
-                {
+    <div class="form-group">
+        <label asp-for="FullName" class="control-label"></label>
+        <input asp-for="FullName" name="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateOfBirth" class="control-label"></label>
+        <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control" />
+        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="RoleId" class="control-label">Chức vụ</label>
+        <select asp-for="RoleId" class="form-control" asp-items="@(new SelectList(ViewBag.Role,"Id","Name"))"></select>
+        <span asp-validation-for="RoleId" class="text-danger"></span>
+    </div>
+    @{ if (ViewContext.RouteData.Values["id"] == null)
+        {
 
-                    <div class="form-group">
-                        <label asp-for="UserName" class="control-label">Tài khoản</label>
-                        <input asp-for="UserName" class="form-control" />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="PasswordHash" class="control-label">Mật khẩu</label>
-                        <input asp-for="PasswordHash" type="password" name="PasswordHash" class="form-control" />
-                        <span asp-validation-for="PasswordHash" class="text-danger"></span>
-                    </div>
-                }
-            }
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label">Tài khoản</label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PasswordHash" class="control-label">Mật khẩu</label>
+                <input asp-for="PasswordHash" type="password" name="PasswordHash" class="form-control" />
+                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+            </div>
+        }
+        else
+        {
+            <input hidden asp-for="UserName" class="form-control"  value="updatestaff"/>
+            <input hidden asp-for="PasswordHash" type="password" name="PasswordHash" class="form-control" value="updatestaff" />
+        }
+    }
 </div>
     <div class="form-group col-6">
         <div class="custom-file" style="margin-top: 30px;">
