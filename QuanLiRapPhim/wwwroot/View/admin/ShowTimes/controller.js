@@ -101,7 +101,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Chức năng').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/ShowTimes/Index/' + data + '#! > Edit</a >|<button class="btn btn-danger" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/ShowTimes/Index/' + data + '#! > Cập nhật</a >|<button class="btn btn-danger" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Xóa</button>';
         }));      
 
     }
@@ -115,7 +115,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         var flag = true;
         if (id != null) {
             if (id.value == idDelete) {
-                $scope.notification = "Cannot delete object being edited";
+                $scope.notification = "Không thể xóa khi đang cập nhật";
                 flag = false;
             }
         }
@@ -149,7 +149,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     }
     $scope.deleteShowTimeList = function () {
         if (id != null) {
-            $scope.notification = "This feature cannot be used while editing";
+            $scope.notification = "Không thể xóa khi đang cập nhật";
         } else {
             $("input:checkbox[name=type]:checked").each(function () {
                 $scope.selected.push($(this).val());

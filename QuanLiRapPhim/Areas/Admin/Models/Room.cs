@@ -15,14 +15,18 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public String Name{get; set;}
         [Display(Name = "Số lượng ghế ngang")]
         [Range(0,15, ErrorMessage = "Số lượng tối thiểu là 0, lớn nhất là 15")]
+        [Required(ErrorMessage = "Không được bỏ trống")]
         public int Row{get; set;}
         [Display(Name = "Số lượng ghế dọc")]
         [Range(0, 15, ErrorMessage = "Số lượng tối thiểu là 0, lớn nhất là 15")]
+        [Required(ErrorMessage = "Không được bỏ trống")]
         public int Col{get; set;}
         public int? RoleId { get; set; }
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
         [Display(Name = "Giá")]
+        [Required(ErrorMessage = "Không được bỏ trống")]
+        [RegularExpression("[0-9]*$")]
         public Decimal Price { get; set; }
         public virtual ICollection<ShowTime> LstShowTime { get; set; }
         public virtual ICollection<Device> Devices { get; set; }

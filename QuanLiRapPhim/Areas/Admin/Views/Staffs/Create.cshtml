@@ -1,5 +1,5 @@
 ﻿@model QuanLiRapPhim.Areas.Admin.Models.Staff
-<h1>@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")</h1>
+<h1>@(ViewContext.RouteData.Values["id"] == null ? "Thêm mới" : "Cập nhật")</h1>
 <form asp-action=@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit") method="post" class="row" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     @{ if (ViewContext.RouteData.Values["id"] != null)
@@ -42,16 +42,16 @@
     <div class="form-group col-6">
         <div class="custom-file" style="margin-top: 30px;">
             <input accept="*.png|*.jpg|*.jpep" type="file" name="ful" class="custom-file-input" id="ful" />
-            <label class="custom-file-label" for="ful">Add Images</label>
+            <label class="custom-file-label" for="ful">Thêm ảnh</label>
         </div>
         <img id="imgPre" src="~/admin/img/@(ViewContext.RouteData.Values["id"] == null ? "Noimage.png" : ViewData["Img"])" alt="Alternate Text" style="width:400px; height:400px;" />
 
     </div>
     <div class="form-group col-12 d-flex justify-content-center">
-        <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Create" : "Edit")" class="btn btn-primary" />
+        <input type="submit" value="@(ViewContext.RouteData.Values["id"] == null ? "Thêm mới" : "Cập nhật")" class="btn btn-primary" />
         @{ if (ViewContext.RouteData.Values["id"] != null)
             {
-                <a href="~/admin/Staffs" class="btn btn-warning">Canncel</a>
+                <a href="~/admin/Staffs" class="btn btn-warning">Hủy</a>
             }
         }
     </div>

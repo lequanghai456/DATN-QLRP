@@ -126,7 +126,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             return View(showTime);
         }
 
-        public JsonResult DeleteShowTime(int? id)
+        public async Task<JsonResult> DeleteShowTime(int? id)
         {
             JMessage jMessage = new JMessage();
             try
@@ -142,8 +142,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 }
                 showtime.IsDelete = true;
                 _context.Update(showtime);
-                _context.SaveChangesAsync();
-                jMessage.Title = "Thành công";
+                 await _context.SaveChangesAsync();
+                jMessage.Title = "Xóa lịch chiếu thành công";
             }
             catch(Exception er)
             {
@@ -153,7 +153,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             return Json(jMessage);
         }
 
-        public JsonResult DeleteShowTimeList(String Listid)
+        public async Task<JsonResult> DeleteShowTimeList(String Listid)
         {
             int itam = 0;
             JMessage jMessage = new JMessage();
@@ -169,9 +169,9 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     _context.Update(showtime);
                     itam++;
                 }
-                _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 jMessage.Error = false;
-                jMessage.Title = "Xóa thành công " + itam + " lịch chiếu";
+                jMessage.Title = "Xóa lịch chiếu thành công";
             }
             catch (Exception er)
             {

@@ -5,7 +5,13 @@ var app = angular.module('App', ['datatables', 'ngRoute', 'checklist-model']);
 app.factory('dataservice', function ($http) {
     return {
         deleteRoom: function (data, callback) {
-            $http.post('/Admin/Rooms/DeleteRoom?id='+data).then(callback);
+            $http.get('/Admin/Rooms/Kiemtradelete/' + data).then(function (rs) {
+                console.log(rs);
+                if (!rs.data)
+                    $http.post('/Admin/Rooms/DeleteRoom?id=' + data).then(callback);
+                else
+                    $(".modal-body .alert").html("Phòng đang có lịch chiếu");
+            });
         },
         deleteRoomCheckbox: function (data, callback) {
             $http.post('/Admin/Rooms/DeleteRoomList?Listid=' + data).then(callback);
@@ -94,7 +100,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         }));
         
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Tùy chọn').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Rooms/Index/' + data + '#! > Cập nhật</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Xóa</button>';
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Rooms/Index/' + data + '> Cập nhật</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Xóa</button>';
         }));
         
        

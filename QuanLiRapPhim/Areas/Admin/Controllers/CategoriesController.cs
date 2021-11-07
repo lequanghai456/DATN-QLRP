@@ -55,14 +55,20 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,IsDelete")] Category category)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                Message = "Tạo thể loại thành công";
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(category);
+                    await _context.SaveChangesAsync();
+                    Message = "Tạo thể loại thành công";
+                    return RedirectToAction(nameof(Index));
+                }
+            }catch(Exception err)
+            {
+                Message = "Có lỗi xảy ra trong quá trình tạo";
             }
-            return View(category);
+            return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> VerifyTitle(string name)
         {
@@ -154,9 +160,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 Message = "Cập nhật thể loại thành công ";
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            Message = "Có lỗi xảy ra trong quá trình tạo";
+            return RedirectToAction(nameof(Index));
         }
-        public JsonResult DeleteCategories(int? id)
+        public async Task<JsonResult> DeleteCategories(int? id)
         {
             try
             {
@@ -165,12 +172,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 if (category == null)
                 {
 
-                    return Json("Fail");
+                    return Json("Không tìm thấy thể loại");
                 }
                 category.IsDelete = true;
                 _context.Update(category);
                 category.lstMovie.All(a => a.Lstcategories.Remove(category));
-                _context.SaveChangesAsync();        
+                await _context.SaveChangesAsync();        
                 return Json("Xóa thể loại thành công");
             }catch(Exception err)
             {
@@ -190,7 +197,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 Category category = new Category();
                 foreach (String id in List)
                 {
-                    category = _context.Categories.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
+                    category = _context.Categories.Include(x=>x.lstMovie).FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
                     category.IsDelete = true;
                     category.lstMovie.All(a => a.Lstcategories.Remove(category));
                     _context.Update(category);

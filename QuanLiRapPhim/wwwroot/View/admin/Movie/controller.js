@@ -10,7 +10,7 @@ app.factory('dataservice', function ($http) {
                 if (!rs.data)
                     $http.post('/Admin/Movies/DeleteMovie?id=' + data).then(callback);
                 else
-                    $(".modal-body .alert").html("Phim có lịch chiếu" +data);
+                    $(".modal-body .alert").html("Phim có lịch chiếu");
             });
         },
         deleteMovieCheckbox: function (data, callback) {

@@ -67,7 +67,16 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Name", "Row", "Col","Price", "FullName");
             return JsonConvert.SerializeObject(jdata);
         }
-        public JsonResult DeleteRoom(int? id)
+        public bool Kiemtradelete(int id)
+        {
+
+            var a = _context.ShowTimes
+                .Where(x => x.RoomId == id && !x.IsDelete)
+                .Where(x => x.DateTime.Date.CompareTo(DateTime.Now) >= 0).ToList();
+            
+            return a.Count() != 0;
+        }
+        public async Task<JsonResult> DeleteRoom(int id)
         {
             try
             {
@@ -78,22 +87,27 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 {
                     return Json("Xóa phòng thất bại");
                 }
-                room.IsDelete = true;
-                role = _context.Roles.FirstOrDefault(x => x.Id == room.RoleId);
-                role.IsDelete = true;
-                _context.Update(role);
-                _context.Update(room);
-                room.Seats.All(x => x.IsDelete = true);
-                _context.SaveChangesAsync();
-                return Json("Xóa phòng thành công");
+                if (!Kiemtradelete(id))
+                {
+                    room.IsDelete = true;
+                    role = _context.Roles.FirstOrDefault(x => x.Id == room.RoleId);
+                    role.IsDelete = true;
+                    _context.Update(role);
+                    _context.Update(room);
+                    room.Seats.All(x => x.IsDelete = true);
+                    _context.SaveChangesAsync();
+                    return Json("Xóa phòng thành công");
+                }
+
             }
             catch(Exception err)
             {
                 
-                return Json("Xóa phòng thất bại");
+               
             }
+            return Json("Xóa phòng thất bại");
         }
-        public JsonResult DeleteRoomList(String Listid)
+        public async Task<JsonResult> DeleteRoomList(String Listid)
         {
             try
             {
@@ -102,17 +116,25 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 Role role = new Role();
                 foreach (String id in List)
                 {
-                    room = _context.Rooms.Include(x=>x.Seats).FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
-                    room.IsDelete = true;
-                    role = _context.Roles.FirstOrDefault(x => x.Id == room.RoleId);
-                    role.IsDelete = true;
-                    room.Seats.All(x => x.IsDelete = true);
-                    _context.Update(role);
-                    _context.Update(room);
+                    if (!Kiemtradelete(int.Parse(id)))
+                    {
+                        room = _context.Rooms.Include(x => x.Seats).FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
+                        room.IsDelete = true;
+                        role = _context.Roles.FirstOrDefault(x => x.Id == room.RoleId);
+                        role.IsDelete = true;
+                        room.Seats.All(x => x.IsDelete = true);
+                        _context.Update(role);
+                        _context.Update(room);
+                    }
+                    else
+                    {
+                        return Json("Xóa phòng thất bại do có phim đã có lịch chiếu");
 
-                    
+                    }
+
+
                 }
-                _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 return Json("Xóa phòng thành công");
             }
             catch (Exception err)
@@ -131,30 +153,36 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Row,Col,RoleId,Price")] Room room)
         {
-            if (ModelState.IsValid)
+            try
             {
-                Role role = new Role();
-                int idem = _context.Rooms.Count() + 1;
-                room.Name = "Room " + idem;
-                role.Name = "Manager " + room.Name;
-                await RoleMgr.CreateAsync(role);
-                room.RoleId = role.Id;
-                _context.Add(room);
-                var seats = new List<Seat>();
-                for (int j = 0; j < room.Row; j++)
+                if (ModelState.IsValid)
                 {
-                    for (int i = 0; i < room.Col; i++)
+                    Role role = new Role();
+                    int idem = _context.Rooms.Count() + 1;
+                    room.Name = "Room " + idem;
+                    role.Name = "Manager " + room.Name;
+                    await RoleMgr.CreateAsync(role);
+                    room.RoleId = role.Id;
+                    _context.Add(room);
+                    var seats = new List<Seat>();
+                    for (int j = 0; j < room.Row; j++)
                     {
-                        Seat seat = new Seat();
-                        seat.X = char.ConvertFromUtf32(65 + j);
-                        seat.Y = i;
-                        seat.Room = room;
-                        _context.Add(seat);
+                        for (int i = 0; i < room.Col; i++)
+                        {
+                            Seat seat = new Seat();
+                            seat.X = char.ConvertFromUtf32(65 + j);
+                            seat.Y = i;
+                            seat.Room = room;
+                            _context.Add(seat);
+                        }
                     }
+                    await _context.SaveChangesAsync();
+                    Message = "Tạo phòng thành công";
+                    return RedirectToAction(nameof(Index));
                 }
-                await _context.SaveChangesAsync();
-                Message = "Tạo phòng thành công";
-                return RedirectToAction(nameof(Index));
+            }catch(Exception err)
+            {
+                Message = "Có lỗi xảy ra trong quá trình tạo";
             }
             ViewData["RoleId"] = new SelectList(_context.Staffs, "Id", "RoleId", room.Role.Name);
             return View(room);
