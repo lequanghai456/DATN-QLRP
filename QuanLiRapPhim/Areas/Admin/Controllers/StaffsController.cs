@@ -41,6 +41,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             if (id != null)
             {
                 staff = _context.Staffs.FirstOrDefault(s => s.Id == id);
+                
                 staffUsers.FullName = staff.FullName;
                 staffUsers.DateOfBirth = staff.DateOfBirth;
                 staffUsers.RoleId = staff.RoleId;
@@ -194,18 +195,19 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Staff staff,IFormFile ful)
+        public async Task<IActionResult> Edit(int id, StaffUsers staffUsers,IFormFile ful)
         {
             try
             {
-                if (id != staff.Id)
+                Staff staff = new Staff();
+                if (id != staffUsers.Id)
                 {
                     return NotFound();
                 }
                 Staff staffold = _context.Staffs.FirstOrDefault(x => x.Id == id);
-                staffold.FullName = staff.FullName;
-                staffold.DateOfBirth = staff.DateOfBirth;
-                staffold.RoleId = staff.RoleId;
+                staffold.FullName = staffUsers.FullName;
+                staffold.DateOfBirth = staffUsers.DateOfBirth;
+                staffold.RoleId = staffUsers.RoleId;
                 if (ModelState.IsValid)
                 {
                     try
