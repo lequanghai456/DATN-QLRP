@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLiRapPhim.Areas.Admin.Data;
 
 namespace QuanLiRapPhim.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20211106164051_update_model_room")]
+    partial class update_model_room
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -528,7 +530,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "d2a74ae2-92e9-46a9-bd91-b653a388a763",
+                            ConcurrencyStamp = "7e0cda90-9179-406d-806d-6fd72c7626c2",
                             IsDelete = false,
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -536,7 +538,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "c4b1f48a-343b-475f-9dc8-5dbb65c7216f",
+                            ConcurrencyStamp = "8e51bece-f2ba-4a6c-bfe4-ca3bad8bcf46",
                             IsDelete = false,
                             Name = "staff",
                             NormalizedName = "STAFF"
@@ -896,7 +898,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ba7a6ce7-d853-4a2d-bd52-cabb66c3e2fe",
+                            ConcurrencyStamp = "b4fff984-182a-4858-986e-feaee7bf49e0",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181100@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -905,10 +907,10 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "admin",
-                            PasswordHash = "ANYoDIwYiz7Qp2UNvOP7qa6N1mMkZkekuZQV8C0pvb82qM5ucpcVThYhojxPM7zcpg==",
+                            PasswordHash = "AOhUaWCxMgvma1/Lyath2/CDLE3x8QImPQ6mfAlDe2DEM6dkAag+Z4DScJUuevC8nA==",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "14dfa38c-ab84-460e-ade1-2ec257fee69b",
+                            SecurityStamp = "4a930a8e-6017-41b3-9fee-5d6cbb361554",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -916,7 +918,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2e325527-ffa4-4a5e-8c57-6ffbfcbb8990",
+                            ConcurrencyStamp = "0771fbfe-a5e3-4386-b295-7351950a2bc6",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181113@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -925,10 +927,10 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "manager1",
-                            PasswordHash = "AFNiUwJQ5hF4e/A1M4coPc5UdlNhZNGPYKNLRU6F0nGZLBVlCJXaqDjGizMXqHRRww==",
+                            PasswordHash = "AGPxUkfNjkCVLM6/XKZ0TWaxqCV881uxiKWy2EykiCMeTtHh++QndSpxHguWjfldog==",
                             PhoneNumberConfirmed = false,
                             RoleId = 2,
-                            SecurityStamp = "2b43b56c-c622-484e-8088-3840cbbe0557",
+                            SecurityStamp = "48b031d5-8b3f-4271-874e-124f347cd6fb",
                             TwoFactorEnabled = false,
                             UserName = "manager1"
                         });

@@ -101,7 +101,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             var jdata = JTableHelper.JObjectTable(data.ToList(), jTablePara.Draw, count, "Id", "Title","Age","Describe");
             return JsonConvert.SerializeObject(jdata);
         }
-        public JsonResult DeleteMac(int? id)
+        public async Task<JsonResult> DeleteMac(int? id)
         {
             try
             {
@@ -110,57 +110,42 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 if (mac == null)
                 {
 
-                    return Json("Fail");
+                    return Json("Không tìm thấy mac");
                 }
-                if (_context.Movies.FirstOrDefault(x => x.IsDelete == false && x.MacId == mac.Id) == null)
-                {
-                    mac.IsDelete = true;
-                    _context.Update(mac);
-                    _context.SaveChangesAsync();
-                    return Json("Xóa mac thành công");
-                }
-                else
-                {
-                    return Json("Xóa mac thất bại vui lòng xóa phim có chứa mac này");
-                }
+              
+                mac.IsDelete = true;
+                _context.Update(mac);
+                await _context.SaveChangesAsync();
+                 return Json("Xóa mac thành công");
             }catch(Exception err)
             {
                 
-                return Json("Xóa mac thất bại");
+                return Json("Có lỗi xảy ra");
             }
         }
         [TempData]
         public string Message { get; set; }
-        public JsonResult DeleteMacList(String Listid)
+        public async Task<JsonResult> DeleteMacList(String Listid)
         {
             try
             {
-                bool flag = true;
+                
                 String[] List = Listid.Split(',');
                 Mac mac = new Mac();
                 foreach (String id in List)
                 {
                     mac = _context.Macs.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
-                    if (_context.Movies.FirstOrDefault(x => x.IsDelete == false && x.MacId == mac.Id) != null)
-                    {
-                        flag = false;
-                        break;
-                    }
                     mac.IsDelete = true;
                     _context.Update(mac);
-
+                   
                 }
-                if (flag)
-                {
-                    _context.SaveChangesAsync();
-                    return Json("Xóa mac thành công");
-                }
-                return Json("Xóa mac thất bại do vướng khóa ngoại");
+                await _context.SaveChangesAsync();
+                return Json("Xóa thành công MAC");
             }
             catch (Exception er)
             {
 
-                return Json("Xóa mac thất bại");
+                return Json("Có lỗi xảy ra");
             }
            
 

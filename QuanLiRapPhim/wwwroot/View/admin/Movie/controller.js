@@ -10,7 +10,7 @@ app.factory('dataservice', function ($http) {
                 if (!rs.data)
                     $http.post('/Admin/Movies/DeleteMovie?id=' + data).then(callback);
                 else
-                    $(".modal-body .alert").html("Phim có lịch chiếu" +data);
+                    $(".modal-body .alert").html("Phim có lịch chiếu");
             });
         },
         deleteMovieCheckbox: function (data, callback) {
@@ -112,7 +112,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             return '<img id="imgPre" src="/admin/img/Poster/' + data + '" alt="Alternate Text" style="width:240px; height:250px;"/>';
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Tùy chọn').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Movies/Index/' + data + '#! > Edit</a ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete(' + data + ')">Delete</button>';
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Movies/Index/' + data + '> Cập nhật</a ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete(' + data + ')">Xóa</button>';
         }));
 
 
