@@ -30,14 +30,25 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             return View("Login");
         }
+        
+        public async Task<IActionResult> Logout()
+        {
+            //var demo = User.FindFirstValue("RoleId");
+            ////var listRole = RoleMgr.Roles.ToListAsync();
+            //var demo1 = User.Claims.ToList();
+            //HttpContext.Session.Clear();
+            await SignInMgr.SignOutAsync();
+            return RedirectToAction("Index", "Login");
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(Staff obj)
         {
             var result = await SignInMgr.PasswordSignInAsync(obj.UserName, obj.PasswordHash, false, false);
-            if(result.Succeeded && !obj.IsDelete)
+            if (result.Succeeded && !obj.IsDelete)
             {
-                if(_context.Staffs.FirstOrDefault(x=>x.UserName.Equals(obj.UserName)).RoleId ==2)
+
+                if (_context.Staffs.FirstOrDefault(x => x.UserName.Equals(obj.UserName)).RoleId == 2)
                 {
                     var url = Url.RouteUrl("areas", new { controller = "Home", action = "index", area = "Staffs" });
                     return Redirect(url);
@@ -47,15 +58,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             }
             ViewData["Message"] = "Tài khoản hoặc mật khẩu không chính xát vui lòng đăng nhập lại";
             return View();
-        }
-        public async Task<IActionResult> Logout()
-        {
-            //var demo = User.FindFirstValue("RoleId");
-            ////var listRole = RoleMgr.Roles.ToListAsync();
-            //var demo1 = User.Claims.ToList();
-            //HttpContext.Session.Clear();
-            await SignInMgr.SignOutAsync();
-            return RedirectToAction("Index", "Login");
         }
         public async Task<IActionResult> RegisterAsync()
         {
