@@ -10,7 +10,7 @@
                         <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">Dashboard</strong></div>
                     </a>
                 </div>
-                <a asp-controller="Login" asp-action="Logout">
+                <a asp-controller="Login" asp-action="Logout" asp-area="Admin">
                     @if (SignInManager.IsSignedIn(User) && User.FindFirst("FullName") != null)
                     {@User.FindFirst("FullName").Value}!,Logout
             </a>
