@@ -13,6 +13,7 @@ using QuanLiRapPhim.Areas.Admin.Models;
 namespace QuanLiRapPhim.Areas.Admin.Views
 {
     [Area("Admin")]
+    [AuthorizeRoles("Admin")]
     public class UsersController : Controller
     {
         private readonly IdentityContext _context;

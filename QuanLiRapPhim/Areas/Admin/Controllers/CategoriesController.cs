@@ -13,6 +13,7 @@ using QuanLiRapPhim.SupportJSON;
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthorizeRoles("Admin")]
     public class CategoriesController : Controller
     {
         private readonly IdentityContext _context;

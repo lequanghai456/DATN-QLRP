@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 
 namespace QuanLiRapPhim.Controllers
 {
+
+    [AuthorizeRoles("User")]
     public class YourOrderController : Controller
     {
         public readonly IdentityContext _context;

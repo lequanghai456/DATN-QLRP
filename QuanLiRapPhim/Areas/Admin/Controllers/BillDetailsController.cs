@@ -12,6 +12,7 @@ using QuanLiRapPhim.Areas.Admin.Models;
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthorizeRoles("Admin")]
     public class BillDetailsController : Controller
     {
         private readonly IdentityContext _context;

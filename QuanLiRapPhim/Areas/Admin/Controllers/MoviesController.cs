@@ -15,6 +15,7 @@ using QuanLiRapPhim.SupportJSON;
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthorizeRoles("Admin")]
     public class MoviesController : Controller
     {
         private readonly IdentityContext _context;
