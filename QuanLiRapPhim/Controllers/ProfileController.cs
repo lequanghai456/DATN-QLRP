@@ -26,7 +26,7 @@ namespace QuanLiRapPhim.Controllers
             StaffMgr = userManager;
             SignInMgr = signInManager;
         }
-        [AuthorizeRolesAttribute("")]
+        [AuthorizeRolesAttribute("User")]
         public IActionResult Index()
         {
             try
@@ -50,6 +50,9 @@ namespace QuanLiRapPhim.Controllers
         public class InputUser
         {
             public string FullName { get; set; }
+            [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
+            [DataType(DataType.Password)]
+            [MinLength(6, ErrorMessage = "Mật khẩu ít nhất 6 kí tự")]
             public string PasswordHash { get; set; }
             [Compare(otherProperty: "PasswordHash", ErrorMessage = "Mật khẩu không trùng khớp")]
             public string confirmPasswordHash { get; set; }
@@ -69,7 +72,7 @@ namespace QuanLiRapPhim.Controllers
                     User user = _identityConext.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
                     user.FullName = users.FullName;
                     user.DateOfBirth = users.DateOfBirth;
-                    if (users.PasswordHash != null)
+                    if (users.PasswordHash != null || users.PasswordHash != "capnhatprofile")
                     {
                         await StaffMgr.RemovePasswordAsync(user);
                         IdentityResult result = await StaffMgr.AddPasswordAsync(user, users.PasswordHash);

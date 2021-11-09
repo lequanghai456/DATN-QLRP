@@ -1,5 +1,4 @@
-﻿@model QuanLiRapPhim.Areas.Admin.Models.Staff
-
+﻿@*@model QuanLiRapPhim.Areas.Admin.Controllers.StaffsController.StaffUser*@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -19,7 +18,7 @@
             <input style="margin-left:30px;" ng-change="Search()" placeholder="Tìm kiếm theo tên" class="col-3" type="text" ng-model="valueName" />
             <button class="icon col-1" ng-click="Search()"><i class="fa fa-search"></i></button>
             <div class="col-lg-4"></div>
-            <button class="btn btn-primary col-1" ng-click="Show()">Thêm mới</button>
+            <button class="btn btn-primary col-1" ng-click="Show()">Nhập dữ liệu</button>
             <button class="btn btn-warning col-1" ng-click="deleteStaffList()" data-toggle="modal" data-target="#myModal">Xóa nhanh</button>
         </div>
         <div class="form-group col-3">

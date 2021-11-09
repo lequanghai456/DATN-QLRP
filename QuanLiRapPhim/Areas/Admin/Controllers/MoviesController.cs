@@ -200,7 +200,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             return View(movie);
         }
          
-        public JsonResult DeleteMovie(int id)
+        public async Task<JsonResult> DeleteMovie(int id)
         {
             try
             {
@@ -209,13 +209,13 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 if (movie == null)
                 {
 
-                    return Json("Fail");
+                    return Json("Không tìm thấy phim");
                 }
                 if (!Kiemtradelete(id))
                 {
                     movie.IsDelete = true;
                     _context.Update(movie);
-                    _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                     return Json("Xóa phim thành công");
                 }
             }
@@ -236,7 +236,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
         [TempData]
         public string Message { get; set; }
-        public JsonResult DeleteMovieList(String Listid)
+        public async Task<JsonResult> DeleteMovieList(String Listid)
         {
             try
             {
@@ -251,12 +251,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                         _context.Update(movie);
                     }else
                     {
-                        return Json("Xóa phim thất bại");
+                        return Json("Xóa phim thất bại do có phim đã có lịch chiếu");
                        
                     }    
 
                 }
-                _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 return Json("Xóa phim thành công");
             }
             catch (Exception er)

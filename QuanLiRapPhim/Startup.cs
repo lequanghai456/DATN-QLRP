@@ -55,6 +55,11 @@ namespace QuanLiRapPhim
             {
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                
+
+
             });
             services.AddDistributedMemoryCache();
             services.AddControllersWithViews().AddSessionStateTempDataProvider();

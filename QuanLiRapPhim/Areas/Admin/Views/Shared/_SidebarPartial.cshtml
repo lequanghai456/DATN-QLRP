@@ -7,8 +7,8 @@
         <div class="sidenav-header d-flex align-items-center justify-content-center">
             <!-- User Info-->
             <div class="sidenav-header-inner text-center">
-                <img src="~/admin/img/avatar-7.jpg" alt="person" class="img-fluid rounded-circle">
-                <h2 class="h5">Nathan Andrews</h2><span>Web Developer</span>
+                <img src="~/admin/img/@User.FindFirst("Img").Value" alt="person" class="img-fluid rounded-circle">
+                <h2 class="h5">Nathan Andrews</h2><span>@User.FindFirst("Role").Value</span>
             </div>
             <!-- Small Brand information, appears on minimized sidebar-->
             <div class="sidenav-header-logo"><a href="index.html" class="brand-small text-center"> <strong>B</strong><strong class="text-primary">D</strong></a></div>
@@ -17,7 +17,7 @@
         <div class="main-menu">
             <h5 class="sidenav-heading">Main</h5>
             <ul id="side-main-menu" class="side-menu list-unstyled">
-                <li><a href="#"> <i class="icon-home"></i>Home</a></li>
+                <li><a asp-area="Admin" asp-action="Index" asp-controller="Home">Home</a></li>
                 <li><a asp-area="Admin" asp-action="Index" asp-controller="Showtimes">Lịch chiếu</a></li>
                 @if (SignInManager.IsSignedIn(User) && User.FindFirst("Role").Value.Contains("admin"))
                 {

@@ -3,13 +3,9 @@
 var app = angular.module('App', ['datatables', 'ngRoute', 'checklist-model']);
 
 app.factory('dataservice', function ($http) {
-    var headers = {
-        "Content-Type": "application/json;odata=verbose",
-        "Accept": "application/json;odata=verbose",
-    }
     return {
         deleteShowTime: function (data, callback) {
-            $http.get('/Admin/ShowTimes/DeleteShowTime?id='+data).then(callback);
+            $http.post('/Admin/ShowTimes/DeleteShowTime?id='+data).then(callback);
         },
         deleteShowTimeCheckbox: function (data, callback) {
             $http.post('/Admin/ShowTimes/DeleteShowTimeList?Listid=' + data).then(callback);
@@ -105,7 +101,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Chức năng').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<button class="btn btn-danger" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Delete</button>';
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/ShowTimes/Index/' + data + '#! > Cập nhật</a >|<button class="btn btn-danger" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Xóa</button>';
         }));      
 
     }
@@ -119,7 +115,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         var flag = true;
         if (id != null) {
             if (id.value == idDelete) {
-                $scope.notification = "Cannot delete object being edited";
+                $scope.notification = "Không thể xóa khi đang cập nhật";
                 flag = false;
             }
         }
@@ -127,7 +123,6 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             dataservice.deleteShowTime(idDelete, function (rs) {
                 rs = rs.data;
                 $scope.notification = rs;
-                $scope.$apply;
                 reloadData(true);
             });
         }
@@ -154,9 +149,8 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     }
     $scope.deleteShowTimeList = function () {
         if (id != null) {
-            $scope.notification.title = "This feature cannot be used while editing";
+            $scope.notification = "Không thể xóa khi đang cập nhật";
         } else {
-            $scope.selected = [];
             $("input:checkbox[name=type]:checked").each(function () {
                 $scope.selected.push($(this).val());
             });
@@ -164,7 +158,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             dataservice.deleteShowTimeCheckbox($scope.selected, function (rs) {
                 
                 rs = rs.data;
-
+                
                 $scope.notification = rs;
                 $scope.selected = [];
                 reloadData(true);
