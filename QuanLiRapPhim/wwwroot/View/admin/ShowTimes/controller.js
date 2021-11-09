@@ -101,7 +101,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             return data;
         }));
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Chức năng').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/ShowTimes/Index/' + data + '#! > Cập nhật</a >|<button class="btn btn-danger" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Xóa</button>';
+            return '<button class="btn btn-danger" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Xóa</button>';
         }));      
 
     }
@@ -305,7 +305,7 @@ app.directive('listTitleMovie', function (dataservice) {
                     + '<br><span>Thời lượng: {{action.getMovie(x).time}} phút </span>'
                 + '</div>'
                 + '<div>{{action.ShowTime($index)}} </div>'
-                + '<a class="btn btn-danger" ng-click="action.del($index)"> delete </a>'
+                + '<a class="btn btn-danger" ng-click="action.del($index)"> Xóa </a>'
             + '</div>',
         scope: {
             data: "=",

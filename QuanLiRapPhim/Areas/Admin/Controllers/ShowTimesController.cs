@@ -31,9 +31,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         public override void OnActionExecuted(ActionExecutedContext context)
         {
             base.OnActionExecuted(context);
-            ViewBag.ListRooms = new SelectList(_context.Rooms.Where(x => x.IsDelete == false).ToList(), "Id", "Name");
-            if(SignInManager.IsSignedIn(User) && !User.FindFirst("Role").Value.Contains("admin"))
-            ViewBag.Manager = _context.Rooms.Where(x => x.Role.Name.Contains(User.FindFirst("Role").Value)).First().Id;
         }
 
         public ShowTimesController(IdentityContext context, SignInManager<Staff> signInManager)
@@ -45,7 +42,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // GET: Admin/ShowTimes
         public async Task<IActionResult> Index()
         {
-           return View();
+            
+            if (SignInManager.IsSignedIn(User) && !User.FindFirst("Role").Value.Contains("admin"))
+                ViewBag.Manager = _context.Rooms.Where(x => x.Role.Name.Contains(User.FindFirst("Role").Value)).First().Id;
+            else
+                ViewBag.ListRooms = new SelectList(_context.Rooms.Where(x => x.IsDelete == false).ToList(), "Id", "Name");
+            return View();
         }
 
         public class JTableModelCustom : JTableModel
@@ -61,7 +63,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             && (String.IsNullOrEmpty(jTablePara.date) || x.DateTime.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
             && (jTablePara.RoomId == 0 || x.RoomId == jTablePara.RoomId));
             int count = query.Count();
-            var data = query.AsQueryable().Select(x => new { x.Id, DateTime = x.DateTime.ToString("MM/dd/yyyy"), NameRoom = x.Room.Name, NameMovie = x.Movie.Title, StartTime = x.startTime.ToString("HH:mm") })
+
+            var data = query.AsQueryable().Select(x => new { x.Id, DateTime = x.DateTime.ToString("MM/dd/yyyy"),
+                NameRoom = x.Room.Name,
+                NameMovie = x.Movie.Title,
+                StartTime = x.startTime.ToString("HH:mm") }
+            )
                 .Skip(intBegin)
                 .Take(jTablePara.Length);
 
@@ -69,62 +76,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             return JsonConvert.SerializeObject(jdata);
         }
 
-        // POST: Admin/ShowTimes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,DateTime,Price,startTime,MovieId,RoomId,IsDelete")] ShowTime showTime)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(showTime);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewBag.ListShowTimes = _context.ShowTimes.Where(x => x.IsDelete == false).ToList();
-        //    ViewBag.ListMovies = _context.Movies.Where(x => x.IsDelete == false).ToList();
-        //    return View(showTime);
-        //}
-
-
-
-        // POST: Admin/ShowTimes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DateTime,Price,startTime,MovieId,RoomId,IsDelete")] ShowTime showTime)
-        {
-            if (id != showTime.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(showTime);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ShowTimeExists(showTime.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Title");
-            ViewData["ShowTimeId"] = new SelectList(_context.ShowTimes, "Id", "Id");
-            return View(showTime);
-        }
 
         public async Task<JsonResult> DeleteShowTime(int? id)
         {
@@ -135,6 +86,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
                 showtime = _context.ShowTimes.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
                 jMessage.Error = showtime == null;
+                if (CheckDeleteShowTimes((int)id))
+                {
+                    jMessage.Error = true;
+                    jMessage.Title = "Tồn tại lịch chiếu có vé đã đặt";
+                    return Json(jMessage);
+                }
                 if (jMessage.Error)
                 {
                     jMessage.Title = "Không tìm thấy lịch chiếu";
@@ -164,6 +121,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
                 foreach (String id in List)
                 {
+                    if (CheckDeleteShowTimes(int.Parse(id)))
+                    {
+                        jMessage.Error = true;
+                        jMessage.Title = "Tồn tại lịch chiếu có vé đã đặt";
+                        return Json(jMessage);
+                    }
                     showtime = _context.ShowTimes.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
                     showtime.IsDelete = true;
                     _context.Update(showtime);
@@ -214,22 +177,27 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
                 showTimes.Date = (DateTime)Date;
 
-                ViewBag.ListMovies = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title");
-                ViewBag.ListRooms = new SelectList(_context.Rooms.Where(x => x.IsDelete == false).ToList(), "Id", "Name");
-
-
+                if (SignInManager.IsSignedIn(User) && !User.FindFirst("Role").Value.Contains("admin"))
+                    ViewBag.Manager = _context.Rooms.Where(x => x.Role.Name.Contains(User.FindFirst("Role").Value)).First().Id;
+                else
+                    ViewBag.ListRooms = new SelectList(_context.Rooms.Where(x => x.IsDelete == false).ToList(), "Id", "Name");
+                
+                ViewBag.ListMovies=new SelectList(_context.Movies.Where(x => x.IsDelete == false).ToList(), "Id", "Title");
                 return View("Index", showTimes);
             }
+            else
+            {
+                Message = "Bạn chưa chọn ngày";
+                return RedirectToAction(nameof(Index));
+            }
+
             return View("Index");
         }
 
-        //public IActionResult listshowTime(DateTime date)
-        //{
-        //    ShowTimes showTimes = new ShowTimes();
-        //    var query = _context.ShowTimes.Include(x => x.Movie).Where(x => x.IsDelete == false && x.DateTime.Date.CompareTo(date.Date) == 0).Select(x=> new { DateTime = x.DateTime.ToString("MM/dd/yyyy"), x.Movie.Title, startTime = x.startTime.ToString("HH:mm"),endTime = x.startTime.AddMinutes(x.Movie.Time).ToString("HH:mm") });
-        //    return Json(query);
-        //}
-
+        private bool CheckDeleteShowTimes(int id)
+        {
+            return _context.Tickets.Any(x => x.ShowTimeId == id);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateTimes([Bind("TimeStart,Date,TotalTime,ListMivie,RoomId")] ShowTimes showTimes)
@@ -266,18 +234,17 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                             s = _context.ShowTimes.Find(showTimes.showTimes[item.index].Id);
                             s.Movie = movie;
                             s.startTime = startTime;
+                            s.RoomId=showTimes.RoomId;
                             startTime = startTime.AddMinutes(movie.Time + 30);
                             _context.Update(s);
                         }
                         else
                         {
-                            s = new ShowTime();
                             s.Movie = movie;
                             s.DateTime = showTimes.Date;
                             s.RoomId = showTimes.RoomId;
                             s.startTime = startTime;
                             startTime = startTime.AddMinutes(movie.Time + 30);
-
                             _context.Add(s);
                         }
 
@@ -291,15 +258,18 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
                     _context.SaveChanges();
                     Message = "Lưu thành công";
-                    return View("Index");
+                    
                 }
                 catch (Exception e)
                 {
-                    Message = e.ToString();
+                    Message ="Có lỗi xảy ra";
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewBag.ListMovies = new SelectList(_context.Movies.Where(x => x.IsDelete == false), "Id", "Title"); ;
+
+            if (SignInManager.IsSignedIn(User) && !User.FindFirst("Role").Value.Contains("admin"))
+                ViewBag.Manager = _context.Rooms.Where(x => x.Role.Name.Contains(User.FindFirst("Role").Value)).First().Id;
+            else
+                ViewBag.ListRooms = new SelectList(_context.Rooms.Where(x => x.IsDelete == false).ToList(), "Id", "Name");
             
             return RedirectToAction(nameof(Index));
         }
@@ -322,9 +292,13 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     .Where(x => x.RoomId == idTo)
                     .Where(x => x.Room.IsDelete == false)
                     .OrderBy(x => x.startTime).ToList();
-
                 foreach(var item in showtimeto)
                 {
+                    if (CheckDeleteShowTimes(item.Id))
+                    {
+                        Message = "Tồn tại lịch chiếu có vé đã đặt";
+                        return RedirectToAction(nameof(Index));
+                    }
                     item.IsDelete = true;
                     _context.Update(item);
                 }
@@ -343,6 +317,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 Message = "Có lỗi xãy ra";
             }
+
+            if (SignInManager.IsSignedIn(User) && !User.FindFirst("Role").Value.Contains("admin"))
+                ViewBag.Manager = _context.Rooms.Where(x => x.Role.Name.Contains(User.FindFirst("Role").Value)).First().Id;
+            else
+                ViewBag.ListRooms = new SelectList(_context.Rooms.Where(x => x.IsDelete == false).ToList(), "Id", "Name");
+            
             return RedirectToAction(nameof(Index));
         }
     }
