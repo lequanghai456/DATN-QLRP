@@ -86,38 +86,43 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    movie.Poster = "Noimage.png";
-                    foreach (int category in Lstcategories)
+                    try
                     {
-                        movie.Lstcategories.Add(_context.Categories.FirstOrDefault(x => x.Id == category));
-                    }
-                    _context.Add(movie);
-                    await _context.SaveChangesAsync();
-                    if (ful != null)
-                    {
-                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Poster",
-                           movie.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
-                        using (var stream = new FileStream(path, FileMode.Create))
+                        movie.Poster = "Noimage.png";
+                        foreach (int category in Lstcategories)
                         {
-                            await ful.CopyToAsync(stream);
-
+                            movie.Lstcategories.Add(_context.Categories.FirstOrDefault(x => x.Id == category));
                         }
-                        movie.Poster = movie.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                    }
-                    if (video != null)
-                    {
-                        var pathVideo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Trailer",
-                           movie.Id + "." + video.FileName.Split(".")[video.FileName.Split(".").Length - 1]);
-
-                        using (var stream = new FileStream(pathVideo, FileMode.Create))
+                        if (ful != null)
                         {
-                            await video.CopyToAsync(stream);
-                        }
+                            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Poster",
+                               movie.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
+                            using (var stream = new FileStream(path, FileMode.Create))
+                            {
+                                await ful.CopyToAsync(stream);
 
-                        movie.Trailer = movie.Id + "." + video.FileName.Split(".")[video.FileName.Split(".").Length - 1];
+                            }
+                            movie.Poster = movie.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
+                        }
+                        if (video != null)
+                        {
+                            var pathVideo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img/Trailer",
+                               movie.Id + "." + video.FileName.Split(".")[video.FileName.Split(".").Length - 1]);
+
+                            using (var stream = new FileStream(pathVideo, FileMode.Create))
+                            {
+                                await video.CopyToAsync(stream);
+                            }
+
+                            movie.Trailer = movie.Id + "." + video.FileName.Split(".")[video.FileName.Split(".").Length - 1];
+                        }
+                        _context.Add(movie);
+                        await _context.SaveChangesAsync();
                     }
-                    _context.Update(movie);
-                    await _context.SaveChangesAsync();
+                    catch ( Exception err)
+                    {
+                        Message = "CÓ lỗi xảy ra";
+                    }
                     return RedirectToAction(nameof(Index));
                 }
 

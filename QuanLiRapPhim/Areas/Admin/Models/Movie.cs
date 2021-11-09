@@ -12,8 +12,10 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         [Key]
         public int Id { get; set; }
         [Display(Name = "Tên phim")]
-        [Required(ErrorMessage = "Không được phép bỏ trống")]
+        [Required(ErrorMessage = "Tên phim không được phép bỏ trống")]
         public string Title { get; set; }
+
+        [Display(Name = "Mac")]
         public int? MacId { get; set; }
         [Display(Name = "Giới thiệu")]
         public String Trailer { get; set; }
@@ -22,7 +24,9 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         [Display(Name = "Mô tả")]
         public String Describe { get; set; }
         public int Status { get; set; }
+        [Required(ErrorMessage = "Thời lượng không được bỏ trống")]
         [Display(Name = "Thời lượng")]
+        [Range(45, int.MaxValue, ErrorMessage = "Thời lượng phim ít nhất 45 phút, nhiều nhất 3h")]
         public int Time { get; set; }
         public int TotalRating { get; set; }
         public int TotalReviewers { get; set; }
