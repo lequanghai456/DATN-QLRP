@@ -248,6 +248,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 try
                 {
                     List<Movie> movies = new List<Movie>();
+                    //Lấy danh sách lịch chiếu trong ng
                     showTimes.showTimes = _context.ShowTimes
                         .Where(x => x.DateTime.CompareTo(showTimes.Date)==0)
                         .Where(x => x.RoomId == showTimes.RoomId)
@@ -267,8 +268,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                         {
                             s = _context.ShowTimes.Find(showTimes.showTimes[item.index].Id);
                             s.Movie = movie;
-                            s.DateTime = showTimes.Date;
-                            s.RoomId = 1;
                             s.startTime = startTime;
                             startTime = startTime.AddMinutes(movie.Time + 30);
                             s.IsDelete = false;
@@ -279,7 +278,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                             s = new ShowTime();
                             s.Movie = movie;
                             s.DateTime = showTimes.Date;
-                            s.RoomId = 1;
+                            s.RoomId = showTimes.RoomId;
                             s.startTime = startTime;
                             startTime = startTime.AddMinutes(movie.Time + 30);
                             s.IsDelete = false;
@@ -321,14 +320,17 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     .Where(x => x.RoomId == idTo)
                     .Where(x => x.Room.IsDelete == false)
                     .OrderBy(x => x.startTime).ToList();
+
                 foreach(var item in showtimeto)
                 {
                     item.IsDelete = true;
                     _context.Update(item);
                 }
+
                 foreach (var item in showtimefrom)
                 {
                     item.DateTime = to.Date;
+                    item.RoomId = idTo;
                     item.Id = 0;
                     _context.Add(item);
                 }

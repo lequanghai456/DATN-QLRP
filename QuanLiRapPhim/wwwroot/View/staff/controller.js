@@ -15,7 +15,7 @@ app.config(function ($routeProvider) {
             templateUrl: ctxfolderurl + '/TicketPrint.html',
             controller: 'TicketPrint'
         })
-        .when('/:Sevice', {
+        .when('/Sevice', {
             templateUrl: ctxfolderurl + '/Sevice.html',
             controller: 'choseService'
         })
@@ -168,7 +168,7 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http) 
                         $scope.seat = null;
                 });
             }
-
+            if ($scope.dsghedachon != undefined)
             $scope.dsghedachon = $scope.dsghedachon.concat($scope.dsGheDaThanhToan);
             console.log("dang load ghe");
             $scope.$apply;
