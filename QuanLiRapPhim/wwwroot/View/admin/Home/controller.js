@@ -1,4 +1,4 @@
-﻿var ctxfolderurl = "/View/front-end/profile";
+﻿
 
 var app = angular.module('App', ['ngRoute']);
 
@@ -18,7 +18,5 @@ app.controller('Ctroller', function ($scope) {
             $scope.capnhatmatkhau = null;
         $scope.xacnhancapnhatmatkhau = null;
     };
+
 });
-
-
-
