@@ -85,12 +85,14 @@ namespace QuanLiRapPhim.Controllers
                 true : false;
         }
 
-        [AuthorizeRoles("User,Staff,Admin")]
+        [AuthorizeRoles("User,Staff,Manager,Admin")]
         public JsonResult getRoomByIdShowtime(int id)
         {
             JMessage jMessage = new JMessage();
             jMessage.ID = id;
-            jMessage.Error = id <= 0 || _context.ShowTimes.Where(x => x.IsDelete == true).Any(x => x.Id == id);
+            jMessage.Error = id <= 0 || _context.ShowTimes.Where(x => x.IsDelete == true
+            || x.DateTime.Date.AddHours(x.startTime.Hour).AddMinutes(x.startTime.Minute).CompareTo(DateTime.Now.AddMinutes(x.Movie.Time)) < 0).Any(x => x.Id == id)
+            || _context.ShowTimes.Find(id) == null;
             if (jMessage.Error == true) {
                 jMessage.Title = "Không tìm thấy lịch chiếu hoặc phim của bạn";
             }
