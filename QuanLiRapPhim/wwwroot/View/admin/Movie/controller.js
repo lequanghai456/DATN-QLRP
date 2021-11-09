@@ -27,7 +27,7 @@ app.factory('dataservice', function ($http) {
 });
 
 app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice, $uibModal) {
-    
+
     var vm = $scope;
     var id = document.getElementById('idEdit');
     
@@ -42,6 +42,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
 
     $scope.init = function () {
+        $('title').html("Quản lý phim");
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withOption('ajax', {
                 url: "/Admin/Movies/JtableMovieModel"

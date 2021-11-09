@@ -31,7 +31,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
     $scope.listShowTime = [];
    
     $scope.init = function () {
-
+        $('title').html("Quản lý lịch chiếu");
         dataservice.getListMovie(function (rs) {
             rs = rs.data;
             $scope.List = rs;

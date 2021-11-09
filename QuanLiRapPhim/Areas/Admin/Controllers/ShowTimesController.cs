@@ -124,7 +124,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     if (CheckDeleteShowTimes(int.Parse(id)))
                     {
                         jMessage.Error = true;
-                        jMessage.Title = "Tồn tại lịch chiếu có vé đã đặt";
+                        jMessage.Title = "Tồn tại lịch chiếu không thể xóa";
                         return Json(jMessage);
                     }
                     showtime = _context.ShowTimes.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
