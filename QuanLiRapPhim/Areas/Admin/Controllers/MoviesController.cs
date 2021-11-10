@@ -52,6 +52,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             if (id != null)
             {
                 movie = _context.Movies.Include(x=>x.Lstcategories).FirstOrDefault(x => x.Id == id);
+                if (movie==null)
+                {
+                    return NotFound();
+                }
                 ViewData["Poster"] = movie.Poster;
                 ViewData["Trailer"] = movie.Trailer;
                 ViewData["MacId"] = new SelectList(_context.Macs.Where(x => x.IsDelete == false), "Id", "Title");
@@ -205,7 +209,16 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             ViewData["MacId"] = new SelectList(_context.Macs, "Id", "Id", movie.MacId);
             return View(movie);
         }
-         
+
+        private bool CheckDeleteMovie(int id)
+        {
+            return _context.ShowTimes.Any(x =>
+                x.MovieId == id 
+                && !x.IsDelete 
+                && x.DateTime.AddHours(x.startTime.Hour).AddMinutes(x.startTime.Minute).CompareTo(DateTime.Now)>=0
+            );
+        }
+
         public async Task<JsonResult> DeleteMovie(int id)
         {
             try
@@ -214,7 +227,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 movie = _context.Movies.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
                 if (movie == null)
                 {
-
                     return Json("Không tìm thấy phim");
                 }
                 if (!Kiemtradelete(id))
@@ -228,7 +240,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             catch (Exception err)
             {
 
-                
             }
             return Json("Xóa phim thất bại");
         }

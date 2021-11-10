@@ -196,7 +196,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
         private bool CheckDeleteShowTimes(int id)
         {
-            return _context.Tickets.Any(x => x.ShowTimeId == id);
+            return _context.Tickets.Any(x => x.ShowTimeId == id && !x.IsDelete);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

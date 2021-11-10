@@ -26,7 +26,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public int Status { get; set; }
         [Required(ErrorMessage = "Thời lượng không được bỏ trống")]
         [Display(Name = "Thời lượng")]
-        [Range(45, int.MaxValue, ErrorMessage = "Thời lượng phim ít nhất 45 phút, nhiều nhất 3h")]
+        [Range(45, 180, ErrorMessage = "Thời lượng phim ít nhất 45 phút, nhiều nhất 180 phút")]
         public int Time { get; set; }
         public int TotalRating { get; set; }
         public int TotalReviewers { get; set; }

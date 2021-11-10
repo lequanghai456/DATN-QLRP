@@ -150,6 +150,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             }
         }
         if (flag) {
+            $scope.notification = null;
             dataservice.deleteMovie(idDelete, function (rs) {
                 rs = rs.data;
                 $scope.notification = rs;
@@ -183,6 +184,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 $scope.selected.push($(this).val());
             });
             console.log($scope.selected);
+            $scope.notification = null;
             dataservice.deleteMovieCheckbox($scope.selected, function (rs) {
 
                 rs = rs.data;
