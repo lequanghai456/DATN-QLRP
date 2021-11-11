@@ -23,11 +23,11 @@ namespace QuanLiRapPhim.Controllers
             SignInMgr = signInManager;
             //_httpContextAccessor = httpContextAccessor;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (SignInMgr.IsSignedIn(User))
             {
-                return RedirectToAction("NotFound", "Home");
+                await SignInMgr.SignOutAsync();
             }
             return View();
         }
