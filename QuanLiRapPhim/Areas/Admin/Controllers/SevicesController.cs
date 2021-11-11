@@ -44,8 +44,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             if (id != null)
             {
                 sevice = _context.Sevices.FirstOrDefault(x => x.Id == id);
-
-
+                if (sevice == null)
+                {
+                    return NotFound();
+                }
             }
             ViewData["IsFood"] = new SelectList(listIsFood, "isFood", "name");
             return View(sevice);
@@ -123,7 +125,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             JMessage jMessage = new JMessage();
             try
             {
-
                 var kq = _context.seviceSeviceCategories.Include(x => x.SeviceCategory)
                     .Where(x => x.IdSevice == id && x.isDelete == false).Select(x => x.SeviceCategory);
                 jMessage.Error = kq.Count() > 0;
@@ -179,7 +180,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
 
         public async Task<IActionResult> addCategorySevice(Model model)
         {
-            JMessage jMessage = new JMessage();
             SeviceSeviceCategories seviceSeviceCategories = new SeviceSeviceCategories();
             try
             {
@@ -196,7 +196,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 Message = "Thêm giá thành công";
             } catch (Exception err)
             {
-                jMessage.Error = true;
                 Message = "Có lỗi xảy ra";
             }
             return RedirectToAction(nameof(Index));
@@ -258,8 +257,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 sevice = _context.Sevices.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
                 if (sevice == null)
                 {
-
-                    return Json("Fail");
+                    return Json("Không tìm thấy dịch vụ");
                 }
                 sevice.IsDelete = true;
                 _context.Update(sevice);
@@ -268,8 +266,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 return Json("Xóa dịch vụ thành công");
             }catch(Exception err)
             {
-                
-                return Json("Xóa dịch vụ thất bại");
+                return Json("Có lỗi xảy ra");
             }
         }
         [TempData]
@@ -285,10 +282,13 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 foreach (String id in List)
                 {
                     sevice = _context.Sevices.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
+                    if (sevice == null)
+                    {
+                        return Json("Không tìm thấy");
+                    }
                     sevice.IsDelete = true;
                     _context.Update(sevice);
                     itam++;
-
                 }
                
                 _context.SaveChangesAsync();
@@ -296,8 +296,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             }
             catch (Exception er)
             {
-                
-                return Json("Xóa dịch vụ thất bại");
+                return Json("Có lỗi xảy ra");
             }
             
 
@@ -393,21 +392,13 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 try
                 {
-                  
                     _context.Update(sevice);
                     await _context.SaveChangesAsync();
                     Message = "Cập nhật dịch vụ thành công";
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception er)
                 {
-                    if (!SeviceExists(sevice.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    Message = "Có lỗi xảy ra";
                 }
                 return RedirectToAction(nameof(Index));
             }

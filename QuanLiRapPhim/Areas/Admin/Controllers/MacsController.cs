@@ -32,6 +32,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             if (id != null)
             {
                 mac = _context.Macs.FirstOrDefault(s => s.Id == id);
+                if (mac == null)
+                {
+                    return NotFound();
+                }
             }
             return View(mac);
         }
@@ -44,14 +48,21 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Age,Describe,IsDelete")] Mac mac)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(mac);
-                await _context.SaveChangesAsync();
-                Message = "Tạo mac thành công";
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(mac);
+                    await _context.SaveChangesAsync();
+                    Message = "Tạo mac thành công";
+                }
+
             }
-            return View(mac);
+            catch(Exception err)
+            {
+                Message = "Có lỗi xảy ra";
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Admin/Macs/Edit/5
@@ -76,18 +87,14 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MacExists(mac.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    Message = "Có lỗi xảy ra";
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(mac);
+            else
+            {
+                Message = "Thêm thất bại";
+            }
+            return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         public async Task<String> JtableMacsModel(JTableModelCustom jTablePara)

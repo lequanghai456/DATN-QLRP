@@ -37,6 +37,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             if (id != null)
             {
                 room = _context.Rooms.FirstOrDefault(s => s.Id == id);
+                if (room == null)
+                {
+                    return NotFound();
+                }
             }
             return View(room);
         }

@@ -114,25 +114,24 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
             $("input:checkbox[name=type]:checked").removeAttr('checked');
             return '<input id="checkbox" style="margin: 0 auto;" value=' + data + ' ng-checked="selectAll" name="type" type="checkbox" ng-click="toggleOne(' + data + ',$event)">';
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Name', 'Tên dịch vụ').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Name', 'Tên dịch vụ').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
         }));
-        vm.dtColumns.push(DTColumnBuilder.newColumn('Size', 'Kích thước - giá').withClass('Center').renderWith(function (data, type) {
+        vm.dtColumns.push(DTColumnBuilder.newColumn('Size', 'Kích thước - giá').withClass('Center').notSortable().renderWith(function (data, type) {
             var Name = "";
             console.log(data);
             angular.forEach(JSON.parse(data), function (value, key) {
-                Name += value.Name + " - " + value.Price + ' |<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="deleteSeviceCategory(' + value.Id + ')">Xóa</button>';
+                Name += '<div class="p-1">'+value.Name + " - " + value.Price + ' |<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="deleteSeviceCategory(' + value.Id + ')">Xóa</button></div>';
             });
             return Name.slice(0, Name.length - 1);
-            
         }));
 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Tùy chọn').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, stt, full, type) {
             console.log(full)
-            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Sevices/Index/' + data + '#! > Cập nhật</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete(' + data + ')">Xóa</button> </br> <input type="button" value="Thêm kích thước" class="btn btn-info" ng-click="addPrice(' + full.Id + ')" style="margin: 15px;" />';
+            return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Sevices/Index/' + data + '#! > Cập nhật</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete(' + data + ')">Xóa</button> </br> <input type="button" value="Thêm giá" class="btn btn-info" ng-click="addPrice(' + full.Id + ')" style="margin: 15px;" />';
 
         }));
 
@@ -372,6 +371,17 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
         }
     
+    $scope.addSize = function () {
+        var modalInstance = $uibModal.open({
+            templateUrl: "/View/admin/Sevices/addSize.html",
+            controller: "ModalContentSize",
+            size: '',
+            scope: $scope,
+            windowClass: 'show',
+        });
+
+
+    };
     $scope.addPrice = function (id) {
         $scope.id = id;
         $scope.$apply;
@@ -475,6 +485,7 @@ app.controller('ModalContentSize', function ($scope, $uibModalInstance, dataserv
                     $scope.messApi = rs.title;
                 } else {
                     /*$scope.sevicesCategories($scope.id);*/
+                    alert("Thêm thành công");
                     $uibModalInstance.close("Ok");
                 }
             });

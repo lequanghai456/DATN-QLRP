@@ -199,8 +199,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            else
+            {
+                Message = "Thêm thất bại";
+            }
             ViewData["MacId"] = new SelectList(_context.Macs, "Id", "Id", movie.MacId);
-            return View(movie);
+            return RedirectToAction(nameof(Index));
         }
 
         private bool CheckDeleteMovie(int id)

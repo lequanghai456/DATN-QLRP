@@ -56,41 +56,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 //HttpContext.Session.SetString("Role", RoleMgr.FindByIdAsync(User.FindFirstValue("RoleId")).ToString());
                 return RedirectToAction("Index", "home");
             }
-            ViewData["Message"] = "Tài khoản hoặc mật khẩu không chính xát vui lòng đăng nhập lại";
-            return View();
-        }
-        public async Task<IActionResult> RegisterAsync()
-        {
-            try
-            {
-                ViewBag.Message = "Admin already registered";
-                Staff staff = await StaffMgr.FindByNameAsync("Admin");
-
-                Role role;
-                role = new Role();
-                role.Name = "Admin";
-                await RoleMgr.CreateAsync(role);
-                if (staff == null)
-                {
-                    staff = new Staff();
-                    staff.UserName = "Admin";
-                    staff.PasswordHash = "abc123";
-                    staff.FullName = "Lê Quang Hải";
-                    staff.RoleId = 1;
-                    IdentityResult result = await StaffMgr.CreateAsync(staff, staff.PasswordHash);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "home");
-                    }
-                }
-
-                return View("Login");
-
-            }
-            catch (Exception ex)
-            {
-
-            }
+            ViewData["Message"] = "Tài khoản hoặc mật khẩu không chính xác vui lòng đăng nhập lại";
             return View();
         }
     }

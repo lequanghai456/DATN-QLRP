@@ -42,7 +42,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         // GET: Admin/ShowTimes
         public async Task<IActionResult> Index()
         {
-            
             if (SignInManager.IsSignedIn(User) && !User.FindFirst("Role").Value.Contains("admin"))
                 ViewBag.Manager = _context.Rooms.Where(x => x.Role.Name.Contains(User.FindFirst("Role").Value)).First().Id;
             else

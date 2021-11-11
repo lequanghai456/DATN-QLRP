@@ -41,7 +41,10 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             if (id != null)
             {
                 staff = _context.Staffs.FirstOrDefault(s => s.Id == id);
-                
+                if (staff == null)
+                {
+                    return NotFound();
+                }
                 staffUsers.FullName = staff.FullName;
                 staffUsers.DateOfBirth = staff.DateOfBirth;
                 staffUsers.RoleId = staff.RoleId;
@@ -233,10 +236,13 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                             staffold.Img = staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
                             _context.Update(staffold);
                             await _context.SaveChangesAsync();
+                            Message = "Cập nhật nhân viên thành công";
                         }
                     }
-                    await _context.SaveChangesAsync();
-                    Message = "Cập nhật nhân viên thành công";
+                    else
+                    {
+                        Message = "Thêm thất bại";
+                    }
                 }
                 catch (Exception err)
                 {
