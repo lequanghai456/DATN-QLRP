@@ -195,14 +195,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MovieExists(movie.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    Message = "Có lỗi xảy ra";
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -236,16 +229,16 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     await _context.SaveChangesAsync();
                     return Json("Xóa phim thành công");
                 }
+
+                return Json("Xóa phim thất bại");
             }
             catch (Exception err)
             {
-
+                return Json("Có lỗi xảy ra");
             }
-            return Json("Xóa phim thất bại");
         }
         public bool Kiemtradelete(int id)
         {
-
             var a = _context.ShowTimes
                 .Where(x => x.MovieId == id && !x.IsDelete)
                 .Where(x=>x.DateTime.Date.CompareTo(DateTime.Now)>=0).ToList();
@@ -266,24 +259,19 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                         movie = _context.Movies.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
                         movie.IsDelete = true;
                         _context.Update(movie);
-                    }else
+                    }
+                    else
                     {
                         return Json("Xóa phim thất bại do có phim đã có lịch chiếu");
-                       
-                    }    
-
+                    }
                 }
                 await _context.SaveChangesAsync();
                 return Json("Xóa phim thành công");
             }
             catch (Exception er)
             {
-
                 return Json("Có lỗi xảy ra");
             }
-
-
-
         }
         private bool MovieExists(int id)
         {

@@ -73,8 +73,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 staff = _context.Staffs.FirstOrDefault(x => x.Id == id && x.IsDelete == false);
                 if (staff == null)
                 {
-
-                    return Json("Fail");
+                    return Json("Không tìm thấy nhân viên");
                 }
                 staff.IsDelete = true;
                 _context.Update(staff);
@@ -82,8 +81,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 return Json("Xóa nhân viên thành công");
             }catch(Exception err)
             {
-                
-                return Json("Xóa nhân viên thất bại");
+                return Json("Có lỗi xảy ra");
             }
         }
         
@@ -97,22 +95,20 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 foreach (String id in List)
                 {
                     staff = _context.Staffs.FirstOrDefault(x => x.Id == int.Parse(id) && x.IsDelete == false);
+                    if (staff == null)
+                    {
+                        return Json("Không tìm thấy nhân viên");
+                    }
                     staff.IsDelete = true;
                     _context.Update(staff);
-                
-
                 }
                 _context.SaveChangesAsync();
                 return Json("Xóa nhân viên thành công");
             }
             catch (Exception err)
             {
-         
-                return Json("Xóa nhân viên thất bại");
+                return Json("Có lỗi xảy ra");
             }
-           
-
-
         }
         public class JTableModelCustom : JTableModel
         {
@@ -146,7 +142,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             try
             {
-                
                 if (ModelState.IsValid )
                 {
                     Staff staff = new Staff();
@@ -182,9 +177,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 }
             }catch(Exception err)
             {
-
+                Message = "Có lỗi xảy ra";
             }
-            Message = "Thêm nhân viên thất bại";
             return RedirectToAction(nameof(Index));
         }
 
@@ -197,73 +191,58 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, StaffUsers staffUsers,IFormFile ful)
         {
-            try
+            Staff staff = new Staff();
+            if (id != staffUsers.Id)
             {
-                Staff staff = new Staff();
-                if (id != staffUsers.Id)
+                return NotFound();
+            }
+            Staff staffold = _context.Staffs.FirstOrDefault(x => x.Id == id);
+            staffold.FullName = staffUsers.FullName;
+            staffold.DateOfBirth = staffUsers.DateOfBirth;
+            staffold.RoleId = staffUsers.RoleId;
+            if (ModelState.IsValid)
+            {
+                try
                 {
-                    return NotFound();
-                }
-                Staff staffold = _context.Staffs.FirstOrDefault(x => x.Id == id);
-                staffold.FullName = staffUsers.FullName;
-                staffold.DateOfBirth = staffUsers.DateOfBirth;
-                staffold.RoleId = staffUsers.RoleId;
-                if (ModelState.IsValid)
-                {
-                    try
+                    _context.Update(staffold);
+                    if (ful != null)
                     {
-                        _context.Update(staffold);
-                        if (ful != null)
+                        if (staffold.Img.Equals("Noimage.png") || staffold.Img == null)
                         {
-                            if (staffold.Img.Equals("Noimage.png") || staffold.Img == null)
+                            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
+                            staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
+                            using (var stream = new FileStream(path, FileMode.Create))
                             {
-                                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
-                                staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
-                                using (var stream = new FileStream(path, FileMode.Create))
-                                {
-                                    await ful.CopyToAsync(stream);
-                                }
-                                staffold.Img = staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                                _context.Update(staffold);
-                                await _context.SaveChangesAsync();
+                                await ful.CopyToAsync(stream);
                             }
-                            else
-                            {
-                                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img", staffold.Img);
-                                System.IO.File.Delete(path);
-
-                                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
-                                staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
-                                using (var stream = new FileStream(path, FileMode.Create))
-                                {
-                                    await ful.CopyToAsync(stream);
-                                }
-                                staffold.Img = staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                                _context.Update(staffold);
-                                await _context.SaveChangesAsync();
-                            }
-                        }
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!StaffExists(staffold.Id))
-                        {
-                            return NotFound();
+                            staffold.Img = staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
+                            _context.Update(staffold);
+                            await _context.SaveChangesAsync();
                         }
                         else
                         {
-                            throw;
+                            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img", staffold.Img);
+                            System.IO.File.Delete(path);
+
+                            path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
+                            staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
+                            using (var stream = new FileStream(path, FileMode.Create))
+                            {
+                                await ful.CopyToAsync(stream);
+                            }
+                            staffold.Img = staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
+                            _context.Update(staffold);
+                            await _context.SaveChangesAsync();
                         }
                     }
+                    await _context.SaveChangesAsync();
                     Message = "Cập nhật nhân viên thành công";
-                    return RedirectToAction(nameof(Index));
                 }
-            }catch(Exception err)
-            {
-
+                catch (Exception err)
+                {
+                    Message = "Có lỗi xảy ra ";
+                }
             }
-            Message = "Cập nhật nhân viên thất bại";
             return RedirectToAction(nameof(Index));
         }
         private bool StaffExists(int id)
