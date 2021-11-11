@@ -37,7 +37,7 @@ namespace QuanLiRapPhim.Controllers
                     date =DateTime.Parse(DateTime.Now.ToShortDateString());
                 }
                 jmess.Object = (from st in _context.ShowTimes
-                                where st.DateTime.CompareTo((DateTime)date) == 0
+                                where st.DateTime.CompareTo((DateTime)date) == 0 && !st.IsDelete
                                 orderby st.startTime.TimeOfDay
                                 select new
                                 {

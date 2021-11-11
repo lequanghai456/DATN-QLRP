@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,14 +59,11 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 }
                 ViewData["Poster"] = movie.Poster;
                 ViewData["Trailer"] = movie.Trailer;
-                ViewData["MacId"] = new SelectList(_context.Macs.Where(x => x.IsDelete == false), "Id", "Title");
-                ViewBag.categories = new SelectList(_context.Categories.Where(x => x.IsDelete == false && !x.lstMovie.Contains(movie)), "Id", "Title");
-                return View(movie);
 
             }
             ViewData["MacId"] = new SelectList(_context.Macs.Where(x=>x.IsDelete==false), "Id", "Title");
            
-            ViewBag.categories = new SelectList(_context.Categories.Where(x => x.IsDelete == false), "Id", "Title");
+            ViewBag.categories = JsonConvert.SerializeObject(movie.Lstcategories==null?"" :movie.Lstcategories.Select(x => x.Id).ToList());
             
             return View(movie);
         }
@@ -125,7 +123,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     }
                     catch ( Exception err)
                     {
-                        Message = "CÓ lỗi xảy ra";
+                        Message = "Có lỗi xảy ra";
                     }
                     return RedirectToAction(nameof(Index));
                 }

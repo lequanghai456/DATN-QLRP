@@ -140,7 +140,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 jMessage.Error = true;
                 jMessage.Title = "Có lỗi xãy ra";
             }
-            return Json(Message);
+            return Json(jMessage);
         }
 
         private bool ShowTimeExists(int id)

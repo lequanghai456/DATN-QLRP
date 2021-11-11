@@ -119,12 +119,14 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
         if (id != null) {
             vm.create = true;
-
+           
         }
         else {
+            
             vm.create = false;
         }
         $scope.LoadCategories();
+        
     }
     $scope.LoadCategories = function () {
         dataservice.ListCategories(function (rs) {
@@ -139,7 +141,7 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.create = !vm.create;
         if (vm.create) {
             $scope.LoadCategories();
-        }
+            }
     };
     $scope.delete = function (idDelete) {
         var flag = true;
@@ -196,7 +198,8 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
 
         }
     }
-    
+
+
     $scope.open = function () {
         var modalInstance = $uibModal.open({
             templateUrl: "/View/admin/Movie/addCategories.html",

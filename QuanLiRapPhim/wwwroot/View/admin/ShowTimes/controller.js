@@ -151,15 +151,17 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         if (id != null) {
             $scope.notification = "Không thể xóa khi đang cập nhật";
         } else {
+            $scope.selected = [];
             $("input:checkbox[name=type]:checked").each(function () {
                 $scope.selected.push($(this).val());
             });
             console.log($scope.selected);
             dataservice.deleteShowTimeCheckbox($scope.selected, function (rs) {
                 
-                rs = rs.data;
-                
+                /*rs = rs.data;*/
+                console.log(rs);
                 $scope.notification = rs;
+                $scope.$apply;
                 $scope.selected = [];
                 reloadData(true);
                 //more screenings
