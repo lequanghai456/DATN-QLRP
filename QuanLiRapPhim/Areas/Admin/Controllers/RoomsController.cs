@@ -85,7 +85,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 room = _context.Rooms.Include(x => x.Seats).FirstOrDefault(x => x.Id == id && x.IsDelete == false);
                 if (room == null)
                 {
-                    return Json("Xóa phòng thất bại");
+                    return Json("Không thể tìm thấy phòng");
                 }
                 if (!Kiemtradelete(id))
                 {
@@ -95,17 +95,18 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     _context.Update(role);
                     _context.Update(room);
                     room.Seats.All(x => x.IsDelete = true);
-                    _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                     return Json("Xóa phòng thành công");
                 }
-
+                else
+                {
+                    return Json("Phòng còn lịch chiếu không thể xóa");
+                }
             }
             catch(Exception err)
             {
-                
-               
+                return Json("Có lỗi xảy ra");
             }
-            return Json("Xóa phòng thất bại");
         }
         public async Task<JsonResult> DeleteRoomList(String Listid)
         {
@@ -128,11 +129,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     }
                     else
                     {
-                        return Json("Xóa phòng thất bại do có phim đã có lịch chiếu");
-
+                        return Json("Xóa phòng thất bại do có phòng đã có lịch chiếu");
                     }
-
-
                 }
                 await _context.SaveChangesAsync();
                 return Json("Xóa phòng thành công");
@@ -140,10 +138,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             catch (Exception err)
             {
                 return Json("Xóa thất bại");
-            }
-           
-
-
+            }           
         }
 
         // POST: Admin/Rooms/Create
@@ -162,6 +157,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     room.Name = "Room " + idem;
                     role.Name = "Manager " + room.Name;
                     await RoleMgr.CreateAsync(role);
+
                     room.RoleId = role.Id;
                     _context.Add(room);
                     var seats = new List<Seat>();
@@ -172,7 +168,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                             Seat seat = new Seat();
                             seat.X = char.ConvertFromUtf32(65 + j);
                             seat.Y = i;
-                            seat.Room = room;
+                            seat.Room = room;   
                             _context.Add(seat);
                         }
                     }
@@ -218,7 +214,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                             Seat seat = new Seat();
                             seat.X = char.ConvertFromUtf32(65 + j);
                             seat.Y = i;
-                            Seat seat1 = _context.Seats.Include(a => a.Room).FirstOrDefault(x => x.RoomId == id && x.X == seat.X && x.Y == seat.Y);
+                            Seat seat1 = _context.Seats.Include(a => a.Room)
+                                .FirstOrDefault(x => x.RoomId == id && x.X == seat.X && x.Y == seat.Y);
                             if (seat1 == null)
                             {
                                 seat.Room = room;
@@ -232,19 +229,12 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                         }
                     }
                     await _context.SaveChangesAsync();
+                    Message = "Cập nhật phòng thành công";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RoomExists(room.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    Message = "Cập nhật phòng thất bại";
                 }
-                Message = "Cập nhật phòng thành công";
                 return RedirectToAction(nameof(Index));
             }
             
