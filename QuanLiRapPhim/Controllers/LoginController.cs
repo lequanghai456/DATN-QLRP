@@ -45,13 +45,18 @@ namespace QuanLiRapPhim.Controllers
                         return RedirectToAction("Index", "home");
                     }
                 }
+                if(!user.ConfirmEmail)
+                {
+                    MessageLogin = "Bạn vui lòng xác nhận email";
+                }
+                else
+                    MessageLogin = "Tài khoản hoặc mật khẩu không chính xác vui lòng đăng nhập lại";
             }
             catch (Exception err)
             {
-                MessageLogin = "Tài khoản hoặc mật khẩu không chính xát vui lòng đăng nhập lại";
-                return RedirectToAction("Index", "Login");
+                MessageLogin = "Có lỗi xảy ra";
+                
             }
-            MessageLogin = "Tài khoản hoặc mật khẩu không chính xát vui lòng đăng nhập lại";
             return RedirectToAction("Index", "Login");
         }
         public async Task<IActionResult> Logout()

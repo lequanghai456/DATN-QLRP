@@ -36,8 +36,8 @@
         </div>  
         <div class="form-group">
             <label class="control-label">Thể loại</label>
-                <select id="#mySelect2" style="width:100%" class="form-control js-example-basic-single " name="Lstcategories[]" multiple="multiple">
-                    <option ng-repeat="value in categories" value="{{value.id}}">{{value.title}}</option>
+                <select id="#mySelect2" style="width:100%" class="form-control js-example-basic-single " name="Lstcategories[]" multiple="multiple" ng-init="Lstcategori = @ViewBag.categories">
+                    <option ng-repeat="value in categories" value="{{value.id}}" ng-selected="Checkecategory(value.id)">{{value.title}}</option>
                 </select>
                 <input type="button" value="Thêm mới thể loại" class="btn btn-info" ng-click="open()" style="margin: 15px;" />
                 <span asp-validation-for="Lstcategories" class="text-danger"></span>
@@ -51,16 +51,17 @@
     <div class="form-group col-6">
         <div class="custom-file">
             <input asp-for="Trailer" accept="video/mp4,video/x-m4v,video/*" type="file" name="video" class="custom-file-input" id="video" />
-            <label class="custom-file-label" for="video" id="mess">@(ViewContext.RouteData.Values["id"] == null ? "Thêm mới video" : "Cập nhật video")</label>
-            <span id="Trailer" asp-validation-for="Trailer" class="text-danger">@TempData.Peek("MessageTrailer")</span>
+            <label class="custom-file-label" for="video" id="mess">@(ViewContext.RouteData.Values["id"] == null ? "Thêm mới video(video khống quá 20MB và có đuôi là mp4 hoặc m4v)" : "Cập nhật video(video khống quá 20MB và có đuôi là mp4 hoặc m4v)")</label>
+            <span id="Trailer" class="text-danger"></span>
             <video id="Prevideo" width="400" height="300" controls="controls" src="~/admin/img/Trailer/@(ViewContext.RouteData.Values["id"] == null ? "" : ViewData["Trailer"])"></video>
         </div>
         <div class="custom-file">
             <input asp-for="Poster" accept="image/*" type="file" name="ful" class="custom-file-input" id="ful" />
-            <label class="custom-file-label" for="ful">Add Poster</label>
-            <span asp-validation-for="Poster" class="text-danger">@TempData.Peek("MessagePoster")</span>
+            <label class="custom-file-label" for="ful">Ảnh chỉ chấp nhận file (jpg,png)</label>
+            
         </div>
         <div class="form-group">
+            <span id="Poster" class="text-danger"></span>
             <img id="imgPre" src="~/admin/img/Poster/@(ViewContext.RouteData.Values["id"] == null ? "Noimage.png" : ViewData["Poster"])" alt="Alternate Text" width="400" height="300" />
         </div>
     </div>
@@ -83,3 +84,65 @@
         return true;
     }
 </script>
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/View/admin/Movie/controller.js"></script>
+    <script>
+        
+        $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
+       
+        
+        var trailer = $('#video').val();
+        console.log(trailer);
+        function readURLa(input, idImg) {
+            console.log(input.files[0].type);
+            if (input.files[0].type == "image/jpeg" || input.files[0].type == "image/png") {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $(idImg).attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                    $('#Poster').html("");
+                }
+            } else {
+                $('#ful').val(null);
+                $('#Poster').html("Chỉ chấp nhận file jpg, png");
+            }
+        }
+        $("#ful").change(function () {
+            readURLa(this, '#imgPre');
+        })
+        function readURL(input, idVideo) {
+            
+
+            if (input.files[0].size > 20000000) {
+                $("#video").val(null);
+               
+            }
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $(idVideo).attr('src', e.target.result);
+                    
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#video").change(function () {
+            readURL(this, '#Prevideo');
+            if ($("#video").val() == trailer) {
+                debugger;
+                $('#Trailer').text("Video có dung lượng vượt quá 20MB");
+            }
+            else {
+                $('#Trailer').text("");
+            }
+            console.log($("#video").val());
+        });
+       
+        
+    </script>
+}

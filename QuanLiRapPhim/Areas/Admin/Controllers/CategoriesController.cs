@@ -111,7 +111,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             JMessage jMessage = new JMessage();
             try
             {
-                var obj = _context.Categories.Where(x => x.IsDelete == false).ToList();
+                var obj = _context.Categories.Include(x=>x.lstMovie).Where(x => x.IsDelete == false).Select(x=> new { x.Id,x.Title,MovieId = x.lstMovie.Select(a=>a.Id)}).ToList();
                 jMessage.Error = obj.Count() > 0;
                 if (jMessage.Error)
                 {
