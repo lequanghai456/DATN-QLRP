@@ -25,6 +25,10 @@ namespace QuanLiRapPhim.Controllers
         }
         public IActionResult Index()
         {
+            if (SignInMgr.IsSignedIn(User))
+            {
+                return RedirectToAction("NotFound", "Home");
+            }
             return View();
         }
         [TempData]
