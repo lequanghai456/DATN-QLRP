@@ -137,7 +137,7 @@
 </style>
 <div class="comment"  ng-show="model">
     <span><h1>Bình luận</h1></span>
-    <div class="comment-area row" ng-init="comment.id=model.id">
+    <div class="comment-area row" ng-init="comment.id=model.id" ng-show="model.comment">
         <textarea class="comment-content col-11" ng-model="comment.content" name="comment" placeholder="Nhập bình luận"></textarea>
         <input type="submit" ng-click="Comment()" class="btn btn-success col-1" value="Gửi" />
     </div>

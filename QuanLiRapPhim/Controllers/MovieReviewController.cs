@@ -189,7 +189,8 @@ namespace QuanLiRapPhim.Controllers
                     x.TotalRating,
                     x.Poster,
                     x.Trailer,
-                    x.Lstcategories,
+                    Lstcategories=x.Lstcategories.Select(x=>x.Title),
+                    comment = User.Identity.Name != null,
                     IsRated = User.Identity.Name == null || x.RatedUsers.Where(x => x.UserName == User.Identity.Name).Count() > 0,
                     x.Describe
                 }).First();
@@ -222,6 +223,7 @@ namespace QuanLiRapPhim.Controllers
                     x.Poster,
                     x.Trailer,
                     x.Lstcategories,
+                    comment= User.Identity.Name != null || User.FindFirst("Role").Value.Contains("User"),
                     IsRated=User.Identity.Name==null||x.RatedUsers.Where(x=>x.UserName==User.Identity.Name).Count()>0,
                     x.Describe
                 }).First();

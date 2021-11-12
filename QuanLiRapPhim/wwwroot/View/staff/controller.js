@@ -65,8 +65,16 @@ app.factory("datasevice", function ($http) {
             $http.get('/Showtimes/GetListShowtime?date=' + Date).then(callback);
         },
         BookTickets: function (data, callback) {
+           
             $http.post('https://localhost:44350/Staffs/home/BuyTicket',data).then(callback);
         },
+        PurcharseTicket: function (data, callback) {
+            $http.get('https://localhost:44350/Staffs/home/Purchase/' + data + '?IsT=true').then(callback);
+        },
+        PurcharseBill: function (data, callback) {
+            $http.get('https://localhost:44350/Staffs/home/Purchase/' + data + '?IsT=false').then(callback);
+        },
+
         //GetPrice: function (idseat, idShowTime,callback) {
         //    $http.get('/YourOrder/Price?idseat=' + idseat + '&idShowTime=' + idShowTime).then(callback);
         //}
@@ -79,15 +87,16 @@ app.controller('index', function ($scope, datasevice) {
             $scope.day=$scope.day.toLocaleDateString('en-US');
         }
         datasevice.GetListShowTime($scope.day, function (rs) {
+            $scope.mess = "";
             rs = rs.data;
             if (rs != null && !rs.error) {
                 console.log(rs);
                 $scope.data = rs;
-                $scope.$apply;
             }
             else {
                 $scope.mess = rs.title;
             }
+            $scope.$apply;
         });
     }
     $scope.day = "";
@@ -330,7 +339,7 @@ app.controller('TicketPrint', function ($scope, $uibModal, DTOptionsBuilder, DTC
             , dataType: "json"
             , complete: function (rs) {
                 $.unblockUI();
-                //console.log(rs);
+
                 console.log(rs.responseJSON.data);
                 if (rs && rs.responseJSON && rs.responseJSON.Error) {
                     App.toastrError(rs.responseJSON.Title);
@@ -365,22 +374,16 @@ app.controller('TicketPrint', function ($scope, $uibModal, DTOptionsBuilder, DTC
     }).notSortable());
 
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Objects', 'Đơn hàng của bạn').withOption('sWidth', '250px').renderWith(function (data, type, full, meta) {
-        //data = JSON.parse(data);
-        //console.log(data);
-        //if (data.isTicket == false)
-        //    return '<div my-Bill model="All[' + meta.row + ']" ></div > ';
-        //return '<div my-Ticket model="' + data.Id + '" ></div > ';
         data = JSON.parse(data);
-        //console.log(data);
         if (data.isTicket == false)
-            return '<div my-Bill model="All[' + meta.row + ']" ></div > ';
-        return '<div my-Ticket model="All[' + meta.row + ']" ></div > ';
+            return '<div my-Bill model="All[' + meta.row + ']" ></div > ' + data.IsPurchased;
+        return '<div my-Ticket model="All[' + meta.row + ']" ></div > ' + data.IsPurchased;
     }).notSortable());
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Date', 'Ngày đặt').withOption('sWidth', '40px').renderWith(function (data, type) {
         return data;
     }).notSortable());
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('id','Chức nâng').withOption('sWidth', '40px').renderWith(function (data, type,full,meta) {
-        return '<button class="btn btn-success" ng-click="InVe(All[' + meta.row + '])">In vé</button>';
+        return '<button class="btn btn-success" ng-click="InVe(All[' + meta.row + '])">In</button>';
     }).notSortable());
     $scope.modelrt = function (id) {
         $scope.TotalPrice = $scope.List.find(x => x.Id == a.Id).TotalPrice;
@@ -391,6 +394,9 @@ app.controller('TicketPrint', function ($scope, $uibModal, DTOptionsBuilder, DTC
     $scope.init();
     $scope.InVe = function (model) {
         model.Objects = JSON.parse(model.Objects);
+        datasevice.PurcharseTicket(model.Object, function (rs) {
+            console.log(rs);
+        });
         $http.defaults.headers.common.Authorization = '87c21eb5-0a4a-4b31-bba8-a8593992b110'; //replace with our API key from portal.api2pdf.com
 
         var endpoint = "https://v2018.api2pdf.com/chrome/html"
@@ -402,19 +408,15 @@ app.controller('TicketPrint', function ($scope, $uibModal, DTOptionsBuilder, DTC
             html = HtmlTicket(model);
         }
         else html = HtmlBill(model);
-        console.log(html);
-            //$http.get("https://localhost:44350/staffs/Home/Ticket/11").then(function (rs) {
-            //console.log(rs);
 
         payload = {
-            html: html, //HtmlTicket(model),//"<p>Chó Hải dm</p>" //set your HTML here!
+            html: html,
             inlinePdf: true
         }
        
 
         $http.post(endpoint, payload).then(
             function (response) {
-                //your PDF is in this response. Do something with it!
                 $scope.pdf = response.data.pdf;
                 console.log($scope.pdf)
                 $scope.$apply;

@@ -3,6 +3,8 @@
 </div>
 <div>
     <div class="Showtimes row">
+
+        <div class="center"><span>{{mess}}</span></div>
         <div style="text-align:center; width:100%; font-size:30px" ng-show="data.error"><strong>{{mess}}</strong></div>
         <div class="item" ng-repeat="item in data.object">
             <a href="#!{{item.id}}">

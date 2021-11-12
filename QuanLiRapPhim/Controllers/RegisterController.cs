@@ -88,22 +88,12 @@ namespace QuanLiRapPhim.Controllers
         [TempData]
         public String Mess { get; set; }
         
-        
-        public async Task<IActionResult> ConfrimEmail(string Email)
-        {
-            User user = new User();
-            user = await StaffMgr.FindByEmailAsync(Email);
-            if (user != null)
-            {
-                return Json(data: true);
-            }
-            return Json(data: false);
-
-        }
         [TempData]
         public string MessForgotPassword { get; set; }
         [TempData]
         public string Password { get; set; }
+        [TempData]
+        public string MessageLogin { get; set; }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(string Email)
@@ -114,13 +104,17 @@ namespace QuanLiRapPhim.Controllers
             {
                 if (SendEmailForgotPassword(Email, user.UserName, user.SecurityStamp))
                 {
-
-
                     ViewData["MessForgotPassword"] = "Vui lòng vào Email để thực hiện bước kế tiếp";
-                    return View("ForgotPassword");
+                }
+                else
+                {
+                    ViewData["MessForgotPassword"] = "Có lỗi xảy ra trong quá trình gửi email";
                 }
             }
-            ViewData["MessForgotPassword"] = "Có lỗi xảy ra trong quá trình gửi email";
+            else
+            {
+                ViewData["MessForgotPassword"] = "Không tìm thấy tài khoản này";
+            }
             return View();
         }
         [AllowAnonymous]
@@ -133,7 +127,6 @@ namespace QuanLiRapPhim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-
                     user.FullName = users.FullName;
                     user.DateOfBirth = users.DateOfBirth;
                     user.Email = users.Email;
@@ -144,10 +137,9 @@ namespace QuanLiRapPhim.Controllers
                     
                     if (result.Succeeded && SendEmail(users.Email, users.UserName))
                     {
-                        ViewData["Mess"] = "Tài khoản của bạn đã tạo thành công vui lòng vào Email của bạn để xác nhận tài khoản ";
-                        return View("Index");
+                        MessageLogin = "Tài khoản của bạn đã tạo thành công vui lòng vào Email của bạn để xác nhận tài khoản ";
+                        return View("ConfirmEmail");
                     }
-                    
                 }
             }
             catch (Exception ex)
@@ -156,7 +148,12 @@ namespace QuanLiRapPhim.Controllers
             }
             return View("Index");
         }
-        public async Task<IActionResult> confirmEmail(string username)
+        public IActionResult ConfirmEmail()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> confirmEmailUser(string username)
         {
             User user = new User();
             user = await StaffMgr.FindByNameAsync(username);
@@ -188,6 +185,17 @@ namespace QuanLiRapPhim.Controllers
             return Json(data: true);
 
         }
+        public async Task<IActionResult> Verifyemail2(string email)
+        {
+            User user = new User();
+            user = await StaffMgr.FindByEmailAsync(email);
+            if (user == null||!user.ConfirmEmail)
+            {
+                return Json(data: false);
+            }
+            return Json(data: true);
+
+        }
         //public async Task<IActionResult> CheckPassword(string PasswordHash)
         //{
 
@@ -198,7 +206,7 @@ namespace QuanLiRapPhim.Controllers
         //public JsonResult 
         public bool SendEmail(string email, string username)
         {
-            return Email.SendMailGoogleSmtp("giabao158357@gmail.com", email, "Xác nhận Email cho tài khoản", "Vui lòng bấm vào link để xác nhận Email cho tài khoản https://localhost:44350/Register/confirmEmail?username=" + username).Result
+            return Email.SendMailGoogleSmtp("giabao158357@gmail.com", email, "Xác nhận Email cho tài khoản", "Vui lòng bấm vào link để xác nhận Email cho tài khoản https://localhost:44350/Register/confirmEmailUser?username=" + username).Result
                 ? true
                 : false;
         }
@@ -230,7 +238,7 @@ namespace QuanLiRapPhim.Controllers
         {
             [Required(ErrorMessage = "Vui lòng nhập Email")]
             [EmailAddress(ErrorMessage = "Trường Email không phải là một địa chỉ e-mail hợp lệ")]
-            [Remote(action: "ConfrimEmail", controller: "Register", ErrorMessage = "Email chưa được xác thực hoặc không có tài khoản nào sử dụng email này")]
+            [Remote(action: "Verifyemail2", controller: "Register", ErrorMessage = "Email chưa được xác thực hoặc không có tài khoản nào sử dụng email này")]
             public string Email { get; set; }
         }
     }

@@ -30,6 +30,32 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
         {
             return View();
         }
+
+        public JsonResult Purchase(int id,bool IsT)
+        {
+            try
+            {
+                if (IsT)
+                {
+                    var a = _context.Tickets.Find(id);
+                    a.IsPurchased = true;
+                    _context.Update(a);
+                }
+                else
+                {
+                    var a = _context.Bills.Find(id);
+                    a.IsPurchased = true;
+                    _context.Update(a);
+                }
+                _context.SaveChanges();
+            }
+            catch (Exception err)
+            {
+                return Json(false);
+            }
+            return Json(true);
+        }
+
         [HttpPost]
         public JsonResult BuyTicket([FromBody]STime st) {
             JMessage message = new JMessage();
@@ -112,7 +138,8 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
                             b.TotalPrice,
                             b.BillDetails,
                             b.Status,
-                            b.Username
+                            b.Username,
+                            b.IsPurchased
                         };
             var Tickets = from t in _context.Tickets
                           where t.Username == User.Identity.Name

@@ -34,31 +34,46 @@ namespace QuanLiRapPhim.Controllers
             {
                 if (date == null)
                 {
-                    date =DateTime.Parse(DateTime.Now.ToShortDateString());
+                    date = DateTime.Parse(DateTime.Now.ToShortDateString());
                 }
-                jmess.Object = (from st in _context.ShowTimes
-                                where st.DateTime.CompareTo((DateTime)date) == 0 && !st.IsDelete
-                                orderby st.startTime.TimeOfDay
-                                select new
-                                {
-                                    st.Id,
-                                    st.Movie.Title,
-                                    st.Movie.Poster,
-                                    st.Room.Name,
-                                    Soghe = st.Tickets.Where(x => x.IsDelete == false).Count(),
-                                    Total = st.Room.Seats.Count(),
-                                    st.DateTime,
-                                    Time = string.Format("{0:t}", st.startTime),
-                                    Day = st.DateTime
-                                }).ToList();
-
-                jmess.Error = jmess.Object == null;
-                if (jmess.Error)
+                if (date.Value.CompareTo(DateTime.Now.Date.AddDays(7)) <= 0 && date.Value.CompareTo(DateTime.Now.Date) >0 )
                 {
-                    jmess.Title = "Không tìm thấy lịch chiếu";
+                    date = (DateTime)date.Value.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute);
+
+                    var lst = (from st in _context.ShowTimes
+                                    where st.DateTime.AddHours(st.startTime.Hour).AddMinutes(st.startTime.Minute)
+                                    .CompareTo((DateTime)date)>= 0 && !st.IsDelete
+                                    orderby st.startTime.TimeOfDay
+                                    select new
+                                    {
+                                        st.Id,
+                                        st.Movie.Title,
+                                        st.Movie.Poster,
+                                        st.Room.Name,
+                                        Soghe = st.Tickets.Where(x => x.IsDelete == false).Count(),
+                                        Total = st.Room.Seats.Count(),
+                                        st.DateTime,
+                                        Time = string.Format("{0:t}", st.startTime),
+                                        Day = st.DateTime
+                                    }).ToList();
+                        
+                    jmess.Error = lst.Count()==0;
+                    if (jmess.Error)
+                    {
+                        jmess.Title = "Không tìm thấy lịch chiếu";
+                    }
+                    else
+                    {
+                        jmess.Object = lst;
+                    }
+                }
+                else
+                {
+                    jmess.Error = true;
+                    jmess.Title = "Ngày quá 7 ngày";
                 }
             }
-            catch(Exception er)
+            catch (Exception er)
             {
                 jmess.Error = true;
                 jmess.Title = "Có lỗi xãy ra";

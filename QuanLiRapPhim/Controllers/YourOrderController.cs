@@ -124,6 +124,9 @@ namespace QuanLiRapPhim.Controllers
             }
             return Json(jMessage);
         }
+
+
+
         public List<yourOrder> yourOrders { get; set; }
 
         public JsonResult GetAll()
@@ -139,6 +142,7 @@ namespace QuanLiRapPhim.Controllers
             //Truy vấn lấy ds bill và ticket theo username sắp xếp theo thời gian 
             var Bills = from b in _context.Bills
                         where b.Username == User.Identity.Name
+                        && b.IsPurchased==false
                         //&& (String.IsNullOrEmpty(jTablePara.date) || b.Date.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
                         select new
                         {
@@ -147,14 +151,13 @@ namespace QuanLiRapPhim.Controllers
                             b.Date,
                             b.TotalPrice,
                             b.BillDetails,
-                            b.Status
+                            b.Status,
+                            b.IsPurchased
                         };
             var Tickets = from t in _context.Tickets
                       where t.Username == User.Identity.Name
-                      //&& (String.IsNullOrEmpty(jTablePara.date) || t.ShowTime.DateTime.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
+                          //&& (String.IsNullOrEmpty(jTablePara.date) || t.ShowTime.DateTime.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
                           select t;
-
-            
             yourOrders = new List<yourOrder>();
             yourOrders.AddRange((from x in Bills
                                  where x.Status == false
@@ -162,7 +165,8 @@ namespace QuanLiRapPhim.Controllers
                                  {
                                      id = "HD" + x.Id,
                                      Objects = x,
-                                     Date = x.Date
+                                     Date = x.Date,
+                                     
                                  }).ToList());
 
             yourOrders.AddRange((from x in Tickets
@@ -177,7 +181,8 @@ namespace QuanLiRapPhim.Controllers
                                         Time=x.ShowTime.startTime.ToShortTimeString(),
                                         x.Name,
                                         Date=x.ShowTime.DateTime.ToShortDateString(),
-                                        Room=x.Seat.Room.Name
+                                        Room=x.Seat.Room.Name,
+                                        IsPurchased=x.IsPurchased
                                      },
                                      Date = x.PurchaseDate
                                  }).ToList());
