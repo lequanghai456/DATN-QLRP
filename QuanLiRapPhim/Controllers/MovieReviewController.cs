@@ -190,7 +190,7 @@ namespace QuanLiRapPhim.Controllers
                     x.Poster,
                     x.Trailer,
                     Lstcategories=x.Lstcategories.Select(x=>x.Title),
-                    comment = User.Identity.Name != null,
+                    comment = User.Identity.Name != null&&User.FindFirst("Role").Value.Contains("User"),
                     IsRated = User.Identity.Name == null || x.RatedUsers.Where(x => x.UserName == User.Identity.Name).Count() > 0,
                     x.Describe
                 }).First();

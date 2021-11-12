@@ -36,7 +36,7 @@ namespace QuanLiRapPhim.Controllers
                 {
                     date = DateTime.Parse(DateTime.Now.ToShortDateString());
                 }
-                if (date.Value.CompareTo(DateTime.Now.Date.AddDays(7)) <= 0 && date.Value.CompareTo(DateTime.Now.Date) >0 )
+                if (date.Value.CompareTo(DateTime.Now.Date.AddDays(7)) <= 0 && date.Value.CompareTo(DateTime.Now.Date) >=0 )
                 {
                     date = (DateTime)date.Value.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute);
 
