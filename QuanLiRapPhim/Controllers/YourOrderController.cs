@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 namespace QuanLiRapPhim.Controllers
 {
 
-    [AuthorizeRoles("User")]
     public class YourOrderController : Controller
     {
         public readonly IdentityContext _context;
@@ -25,8 +24,9 @@ namespace QuanLiRapPhim.Controllers
 
         public YourOrderController(IdentityContext context)
         {
-            _context = context;           
+            _context = context;
         }
+        [AuthorizeRoles("User")]
         [HttpPost]
         public IActionResult BuySevice(List<BillDetail> Billdetails)
         {
@@ -93,6 +93,7 @@ namespace QuanLiRapPhim.Controllers
             return price;
         }
 
+        [AuthorizeRoles("User")]
         public IActionResult Index()
         {
             return View();
@@ -137,6 +138,7 @@ namespace QuanLiRapPhim.Controllers
 
 
 
+        [AuthorizeRoles("User")]
         [HttpGet]
         public string JtableTestModel(JModel jTablePara)
         {
@@ -209,6 +211,7 @@ namespace QuanLiRapPhim.Controllers
             return JsonConvert.SerializeObject(jdata);
         }
 
+        [AuthorizeRoles("User")]
         public bool SendEmailSuccesOder(User user, Bill bill,Ticket ticket)
         {
             String res="";
