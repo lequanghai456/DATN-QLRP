@@ -24,8 +24,12 @@ namespace QuanLiRapPhim.Controllers
             SignInMgr = signInManager;
             //_httpContextAccessor = httpContextAccessor;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            if (SignInMgr.IsSignedIn(User))
+            {
+                await SignInMgr.SignOutAsync();
+            }
             return View();
         }
         [TempData]
