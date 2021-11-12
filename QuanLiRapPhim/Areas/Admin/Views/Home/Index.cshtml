@@ -28,7 +28,7 @@
                 }
             }
 
-            <img id="imgPre" src="~/admin/img/@(ViewData["Img"] == null ? "avatar.png" : ViewData["Img"])" alt="Alternate Text" style="width:300px; height:300px;" />
+            <img id="imgPre" src="~/admin/img/@Model.Img" alt="Alternate Text" style="width:300px; height:300px;" />
 
 
         </div>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="DateOfBirth" class="control-label"></label>
-                        <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control" value="@Model.DateOfBirth.ToString("yyyy-dd-MM")" />
+                        <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control"/>
                         <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -65,7 +65,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="DateOfBirth" class="control-label"></label>
-                        <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control" value="@Model.DateOfBirth.ToString("yyyy-dd-MM")" disabled />
+                        <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control" disabled />
                         <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                     </div>
                     <div class="form-group">

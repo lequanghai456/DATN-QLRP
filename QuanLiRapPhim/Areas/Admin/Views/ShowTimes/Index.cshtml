@@ -21,7 +21,7 @@
             @{
                 if (TempData.Peek("Message") != null)
                 {
-                    <h2>@TempData.Peek("Message")</h2>
+                    <h2 class="alert alert-success">@TempData.Peek("Message")</h2>
                 }
                 if (ViewBag.ListMovies != null)
                 {
@@ -107,19 +107,32 @@
                 <div class="modal-body">
                     <form asp-action="CoppyShowTimes" class="row" id="CopyShowTimes">
                         <div class="form-group col-6">
-                            <label>Ngày copy:</label>
+                            <label>Ngày sao chép</label>
                             <input type="date" class="form-control" ng-model="Date" name="from" />
-                            <select name="idFrom" class="form-control" ng-model="RoomId"
-                                    asp-items="@ViewBag.ListRooms">
-                            </select>
-
+                            @if (ViewBag.Manager == null)
+                            {
+                                <select name="idFrom" class="form-control" ng-model="RoomId"
+                                        asp-items="@ViewBag.ListRooms">
+                                </select>
+                            }
+                            else
+                            {
+                                <input ng-model="RoomId" name="idFrom" ng-init="RoomId=@ViewBag.Manager" hidden />
+                            }
                         </div>
                         <div class="form-group col-6">
                             <label>Ngày đến:</label>
                             <input type="date" class="form-control" ng-model="to" name="to" />
-                            <select name="idTo" ng-model="idTo" class="form-control"
-                                    asp-items="@ViewBag.ListRooms">
-                            </select>
+                            @if (ViewBag.Manager == null)
+                            {
+                                <select name="idTo" ng-model="idTo" class="form-control"
+                                        asp-items="@ViewBag.ListRooms">
+                                </select>
+                            }
+                            else
+                            {
+                                <input ng-model="idTo" name="idTo" ng-init="idTo=@ViewBag.Manager" hidden />
+                            }
                         </div>
                         
                     </form>

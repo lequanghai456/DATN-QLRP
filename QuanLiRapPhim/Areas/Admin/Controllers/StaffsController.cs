@@ -219,8 +219,6 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                                 await ful.CopyToAsync(stream);
                             }
                             staffold.Img = staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                            _context.Update(staffold);
-                            await _context.SaveChangesAsync();
                         }
                         else
                         {
@@ -234,15 +232,13 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                                 await ful.CopyToAsync(stream);
                             }
                             staffold.Img = staffold.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                            _context.Update(staffold);
-                            await _context.SaveChangesAsync();
-                            Message = "Cập nhật nhân viên thành công";
+                            
                         }
+
+                        _context.Update(staffold);
                     }
-                    else
-                    {
-                        Message = "Thêm thất bại";
-                    }
+                    await _context.SaveChangesAsync();
+                    Message = "Cập nhật nhân viên thành công";
                 }
                 catch (Exception err)
                 {

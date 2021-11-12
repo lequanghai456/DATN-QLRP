@@ -30,14 +30,18 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
         public class InputUser
         {
+            [DisplayName("Họ tên")]
             public string FullName { get; set; }
-            
+
             [DisplayName("Ngày sinh")]
             [DataType(DataType.Date)]
             [Required]
             [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
             public DateTime DateOfBirth { get; set; }
+
+            [DisplayName("Tài khoản")]
             public string UserName { get; set; }
+            public string Img { get; set; }
         }
         public IActionResult Index()
         {
@@ -49,69 +53,50 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 users.UserName = User.Identity.Name;
                 users.FullName = user.FullName;
                 users.DateOfBirth = user.DateOfBirth.Date;
-                ViewData["Img"] = user.Img;
-                return View(users);
+                users.Img = user.Img;
             }
-            catch
+            catch (Exception er)
             {
-                
+                Mess = "Có lỗi xảy ra";
             }
             return View(users);
         }
         [TempData]
         public String Mess { get; set; }
-        public async Task<IActionResult> EditUser(InputUser users, IFormFile ful)
+        public IActionResult EditUser(InputUser users, IFormFile ful)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
+                Staff user = _context.Staffs.FirstOrDefault(x => x.UserName == User.Identity.Name);
+                user.FullName = users.FullName;
+                user.DateOfBirth = users.DateOfBirth;
+                
+                if (ful != null)
                 {
-                    Staff user = _context.Staffs.FirstOrDefault(x => x.UserName == User.Identity.Name);
-                    user.FullName = users.FullName;
-                    user.DateOfBirth = users.DateOfBirth;
-                    
-                    if (ful != null)
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img", user.Img);
+                    System.IO.File.Delete(path);
+
+                    path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
+                    user.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
                     {
-                        if (user.Img.Contains("avatar.png"))
-                        {
-                            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
-                            user.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
-                            using (var stream = new FileStream(path, FileMode.Create))
-                            {
-                                await ful.CopyToAsync(stream);
-                            }
-                            user.Img = user.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                            _context.Update(user);
-                            await _context.SaveChangesAsync();
-                        }
-                        else
-                        {
-                            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img", user.Img);
-                            System.IO.File.Delete(path);
-
-                            path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/admin/img",
-                            user.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1]);
-                            using (var stream = new FileStream(path, FileMode.Create))
-                            {
-                                await ful.CopyToAsync(stream);
-                            }
-                            user.Img = user.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                            _context.Update(user);
-                            await _context.SaveChangesAsync();
-                        }
+                        ful.CopyTo(stream);
                     }
-                    await _context.SaveChangesAsync();
 
-                    Mess = "Cập nhật thành công";
-                    return RedirectToAction("Index");
+                    user.Img = user.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
+                    //
                 }
-                catch (Exception err)
-                {
-                    Mess = "Cập nhật thất bại";
-                    return RedirectToAction("Index");
-                }
+
+                _context.Update(user);
+                _context.SaveChanges();
+
+               /// Mess = ful.ToString();// "Cập nhật thành công";
             }
-            Mess = "Cập nhật thất bại";
+            catch (Exception err)
+            {
+                //Mess = "Cập nhật thất bại";
+            }
             return RedirectToAction("Index");
         }
     }

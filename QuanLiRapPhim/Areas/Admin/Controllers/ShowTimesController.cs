@@ -158,7 +158,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             if (Date != null)
             {
-                if (Roomid == null)
+                if (Roomid == -1||Roomid==null)
                 {
                     Message = "Bạn chưa chọn phòng";
                     return RedirectToAction(nameof(Index));
@@ -310,7 +310,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     _context.Add(item);
                 }
                 _context.SaveChanges();
-                Message = "Copy thành công ngày "+from.ToShortDateString()+" đên ngày "+ to.ToShortDateString();
+                Message = "Sao chép thành công ngày "+from.ToShortDateString()+" đén ngày "+ to.ToShortDateString();
             }
             catch (Exception e)
             {
