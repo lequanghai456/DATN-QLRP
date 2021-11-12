@@ -28,7 +28,24 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
+            if (SignInMgr.IsSignedIn(User))
+            {
+                if(User.FindFirst("Role").Value.Contains("User"))
+                {
+                    return View("Login");
+                }
+                if (User.FindFirst("Role").Value.ToLower().Contains("admin") || User.FindFirst("Role").Value.ToLower().Contains("manager room"))
+                {
+                    return RedirectToAction("Index", "home");
+                }
+                else
+                {
+                    var url = Url.RouteUrl("areas", new { controller = "Home", action = "index", area = "Staffs" });
+                    return Redirect(url);
+                }
+            }
             return View("Login");
+            
         }
         
         public async Task<IActionResult> Logout()
