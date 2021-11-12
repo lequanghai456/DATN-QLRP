@@ -34,15 +34,14 @@ namespace QuanLiRapPhim.Controllers
             {
                 if (date == null)
                 {
-                    date = DateTime.Parse(DateTime.Now.ToShortDateString());
+                    date = DateTime.Now;
                 }
                 if (date.Value.CompareTo(DateTime.Now.Date.AddDays(7)) <= 0 && date.Value.CompareTo(DateTime.Now.Date) >=0 )
                 {
-                    date = (DateTime)date.Value.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute);
-
                     var lst = (from st in _context.ShowTimes
                                     where st.DateTime.AddHours(st.startTime.Hour).AddMinutes(st.startTime.Minute)
                                     .CompareTo((DateTime)date)>= 0 && !st.IsDelete
+                                    && st.DateTime.Date.CompareTo(date.Value.Date)==0
                                     orderby st.startTime.TimeOfDay
                                     select new
                                     {

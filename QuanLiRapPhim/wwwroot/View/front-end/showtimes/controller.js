@@ -22,14 +22,13 @@ app.controller('Ctroller', function ($scope, dataservice) {
     });
     $scope.GetDate = function (date) {
         dataservice.GetListShowTime(date, function (rs) {
+            $scope.data = null;
+            $scope.mess = null;
             rs = rs.data;
-            if (rs != null && !rs.error) {
                 console.log(rs);
                 $scope.data = rs;
-            }
-            else {
                 $scope.mess = rs.title;
-            }
+            $scope.$apply;
         });
     }
     $scope.init = function () {

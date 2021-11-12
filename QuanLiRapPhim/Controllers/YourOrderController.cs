@@ -52,11 +52,12 @@ namespace QuanLiRapPhim.Controllers
 
                 _context.Add(bill);
                 _context.SaveChanges();
-                User u = _context.Users.Find(bill.Username);
+                User u = _context.Users.FirstOrDefault(x=>x.UserName==bill.Username);
                 bool a = SendEmailSuccesOder(u,bill,null);
                 if (a)
-                    Message = "Thanh toán thành công ";
-                else Message = u.Email;
+                    Message = "Đặt hàng thành công";
+                else
+                    Message = u.Email;
             }
             catch (Exception er)
             {
@@ -225,7 +226,7 @@ namespace QuanLiRapPhim.Controllers
                     res = "Bạn đã đặt hóa đơn có mã: HD" + bill.Id+ " Vào ngày: " + bill.Date.Date;
                 }
             }
-            return Email.SendMailGoogleSmtp("giabao158357@gmail.com",user.Email, "Lấy mã đơn hàng",res).Result?
+            return Email.SendMailGoogleSmtp("0306181113@caothang.edu.vn",user.Email, "Lấy mã đơn hàng",res).Result?
                 true: false;
         }
     }

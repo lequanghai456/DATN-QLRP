@@ -85,17 +85,17 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     }
 
                     user.Img = user.Id + "." + ful.FileName.Split(".")[ful.FileName.Split(".").Length - 1];
-                    //
+                    
                 }
 
                 _context.Update(user);
                 _context.SaveChanges();
 
-               /// Mess = ful.ToString();// "Cập nhật thành công";
+                Mess =  "Cập nhật thành công";
             }
             catch (Exception err)
             {
-                //Mess = "Cập nhật thất bại";
+                Mess = "Cập nhật thất bại";
             }
             return RedirectToAction("Index");
         }
