@@ -191,7 +191,8 @@ namespace QuanLiRapPhim.Controllers
                     x.Trailer,
                     Lstcategories=x.Lstcategories.Select(x=>x.Title),
                     comment = User.Identity.Name != null&&User.FindFirst("Role").Value.Contains("User"),
-                    IsRated = User.Identity.Name == null || x.RatedUsers.Where(x => x.UserName == User.Identity.Name).Count() > 0,
+                    IsRated = User.Identity.Name == null ||!User.FindFirst("Role").Value.Contains("User")
+                    || x.RatedUsers.Where(x => x.UserName == User.Identity.Name).Count() > 0,
                     x.Describe
                 }).First();
             jMess.Error = Object == null;
