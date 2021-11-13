@@ -60,7 +60,8 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
             var query = _context.ShowTimes.Include(a => a.Room).Include(b => b.Movie).Where(x => x.IsDelete == false
             && (String.IsNullOrEmpty(jTablePara.date) || x.DateTime.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
-            && (jTablePara.RoomId == 0 || x.RoomId == jTablePara.RoomId));
+            && (jTablePara.RoomId == 0 || x.RoomId == jTablePara.RoomId))
+                .OrderBy(x=>x.DateTime.AddHours(x.startTime.Hour).AddMinutes(x.startTime.Minute));
             int count = query.Count();
 
             var data = query.AsQueryable().Select(x => new { x.Id, DateTime = x.DateTime.ToString("MM/dd/yyyy"),
@@ -163,6 +164,11 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     Message = "Bạn chưa chọn phòng";
                     return RedirectToAction(nameof(Index));
                 }
+                if (Date.Value.Date.CompareTo(DateTime.Now.Date)<0)
+                {
+                    Message = "Bạn chọn sai ngày";
+                    return RedirectToAction(nameof(Index));
+                }
                 ShowTimes showTimes = new ShowTimes();
 
                 showTimes.showTimes = _context.ShowTimes.Include(x => x.Movie)
@@ -202,12 +208,23 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         public async Task<IActionResult> CreateTimes([Bind("TimeStart,Date,TotalTime,ListMivie,RoomId")] ShowTimes showTimes)
         {
             var a = showTimes.TimeStart.AddMinutes(showTimes.TotalTime);
+
+
+            if (SignInManager.IsSignedIn(User) && !User.FindFirst("Role").Value.Contains("admin"))
+                ViewBag.Manager = _context.Rooms.Where(x => x.Role.Name.Contains(User.FindFirst("Role").Value)).First().Id;
+            else
+                ViewBag.ListRooms = new SelectList(_context.Rooms.Where(x => x.IsDelete == false).ToList(), "Id", "Name");
+
+
             if (a.Date > showTimes.TimeStart.Date)
             {
                 ModelState.AddModelError(showTimes.TimeStart.ToString(), "Quá 12 giờ");
             }
             //showTimes.showTimes = _context.ShowTimes.Where(s => s.DateTime == showTimes.Date).ToList();
-
+            if (showTimes.ListMivie.Count() == 0)
+            {
+                ModelState.AddModelError(showTimes.TimeStart.ToString(), "Bạn chưa chọn phim");
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -216,13 +233,13 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     //Lấy danh sách lịch chiếu trong ng
                     showTimes.showTimes = _context.ShowTimes
                         .Where(x => x.DateTime == showTimes.Date)
-                        .Where(x=>x.IsDelete==false)
                         .Where(x => x.RoomId == showTimes.RoomId)
                         .Where(x => x.Room.IsDelete == false)
                         .OrderBy(x => x.startTime).ToList();
 
                     DateTime startTime = showTimes.TimeStart;
-                    
+                    showTimes.showTimes.All(x => x.IsDelete = true);
+
                     foreach (var item in showTimes.ListMivie.Select((value, index) => (index, value)))
                     {
                         var movie = _context.Movies.FirstOrDefault(x => x.Id == item.value);
@@ -235,6 +252,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                             s.startTime = startTime;
                             s.RoomId=showTimes.RoomId;
                             startTime = startTime.AddMinutes(movie.Time + 30);
+                            s.IsDelete = false;
                             _context.Update(s);
                         }
                         else
@@ -264,12 +282,11 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     Message ="Có lỗi xảy ra";
                 }
             }
-
-            if (SignInManager.IsSignedIn(User) && !User.FindFirst("Role").Value.Contains("admin"))
-                ViewBag.Manager = _context.Rooms.Where(x => x.Role.Name.Contains(User.FindFirst("Role").Value)).First().Id;
             else
-                ViewBag.ListRooms = new SelectList(_context.Rooms.Where(x => x.IsDelete == false).ToList(), "Id", "Name");
-            
+            {
+                ViewBag.ListMovies = new SelectList(_context.Movies.Where(x => x.IsDelete == false).ToList(), "Id", "Title");
+                return View("Index", showTimes);
+            }            
             return RedirectToAction(nameof(Index));
         }
         public JsonResult GetMovieTitle(int id)

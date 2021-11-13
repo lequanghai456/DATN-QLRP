@@ -244,11 +244,11 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         },
 
         getTimeEnd: function (data) {
+            $scope.Time;
             var time = $(".TimeStart").val();
             var dt = new Date();
             dt.setHours(time.split(':')[0]);
             dt.setMinutes(time.split(':')[1]);
-            dt.setSeconds(time.split(':')[2]);
             dt.setMinutes(dt.getMinutes() + $scope.action.getTotalTime(data));
             return dt.getHours() + ":" + dt.getMinutes();
         },
