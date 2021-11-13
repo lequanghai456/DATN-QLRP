@@ -24,6 +24,24 @@ namespace QuanLiRapPhim.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bills",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    IsPurchased = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bills", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -262,29 +280,6 @@ namespace QuanLiRapPhim.Migrations
                         name: "FK_seviceSeviceCategories_Sevices_IdSevice",
                         column: x => x.IdSevice,
                         principalTable: "Sevices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Bills",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    IsDelete = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bills", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Bills_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -569,7 +564,8 @@ namespace QuanLiRapPhim.Migrations
                     PurchaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false)
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    IsPurchased = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -593,9 +589,8 @@ namespace QuanLiRapPhim.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "IsDelete", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, "5d318828-65e3-4e0c-8701-89bd5c8ad903", false, "admin", "ADMIN" },
-                    { 2, "873beeb9-18be-4d57-a88e-5c3c172eac2e", false, "manager movie", "MANAGER MOVIE" },
-                    { 3, "74267f84-842c-4d3f-89f3-2fea4c3da04b", false, "staff", "STAFF" }
+                    { 1, "9292fef4-81d9-4e67-9d5f-0741669a1a15", false, "admin", "ADMIN" },
+                    { 2, "c25d81ec-e12a-428d-a918-8d767714f8d9", false, "staff", "STAFF" }
                 });
 
             migrationBuilder.InsertData(
@@ -603,8 +598,10 @@ namespace QuanLiRapPhim.Migrations
                 columns: new[] { "Id", "IsDelete", "Title" },
                 values: new object[,]
                 {
-                    { 1, false, "Detective" },
-                    { 2, false, "Adventure" }
+                    { 1, false, "Trinh thám" },
+                    { 2, false, "Phiêu lưu" },
+                    { 3, false, "Hành động" },
+                    { 4, false, "Hoạt hình" }
                 });
 
             migrationBuilder.InsertData(
@@ -619,9 +616,33 @@ namespace QuanLiRapPhim.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "SeviceCategories",
+                columns: new[] { "Id", "IsDelete", "Name" },
+                values: new object[,]
+                {
+                    { 1, false, "Big" },
+                    { 2, false, "Small" },
+                    { 3, false, "Medium" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Sevices",
+                columns: new[] { "Id", "IsDelete", "IsFood", "Name" },
+                values: new object[,]
+                {
+                    { 1, false, true, "Bắp rang" },
+                    { 2, false, false, "CoCa" },
+                    { 3, false, false, "Pepsi" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FullName", "Img", "IsDelete", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "94fa9f39-d90f-4bda-a310-d92eee97ef13", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "0306181100@caothang.edu.vn", false, "Hồ Gia Bảo", "admin.img", false, false, null, null, "admin", "AI+IncYSq6lKNZTrUCfCR0bM/YgU7vWuX/mwGOhC/Q4J175SX9ic5eHR3cElTr7zjw==", null, false, 1, "a367934f-b45a-461f-b86b-8987996b82a2", false, "admin" });
+                values: new object[,]
+                {
+                    { 1, 0, "e34f9c48-de6a-42e5-a430-bdb5349a01c6", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "0306181100@caothang.edu.vn", false, "Hồ Gia Bảo", "admin.img", false, false, null, null, "admin", "ADhxMZvoFZNlMykTHZrp3tfGtIVKok6zoB9thdqP72QCM4Sjdma4imoP67064PUOgg==", null, false, 1, "b52e90ea-7ed3-45c4-8ddb-7395c1f0d618", false, "admin" },
+                    { 2, 0, "448dea0a-cb57-4528-a479-40b4c12bf06c", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "0306181113@caothang.edu.vn", false, "Lê Quang Hải", "manager1.img", false, false, null, null, "manager1", "AKFbIyOwupTh9jhH91R2+HfEOcfvw85AckwzPJ0ZELVP7NXdJFERbr2S/7OSPYHM3Q==", null, false, 2, "7b29e0c7-a31a-49a4-9d5d-7e9174b4aa10", false, "manager1" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Movies",
@@ -630,7 +651,23 @@ namespace QuanLiRapPhim.Migrations
                 {
                     { 1, "Lý Hải trở lại với dòng phim hành động sở trường của mình. Bối cảnh hoành tráng với sự đầu tư nghiêm túc, siêu phẩm hành động Việt Lật Mặt 48h sẽ kể về một hành trình trốn chạy đầy kịch tính, nghẹt thở đến phút cuối cùng.", false, 1, "1.jpg", 0, 110, "Lật mặt", 0, 0, "1.mp4" },
                     { 2, "Sau những sự kiện tàn khốc của Avengers: Infinity War (2018), vũ trụ đang dần tàn lụi. Với sự giúp đỡ của các đồng minh còn lại, các Avengers tập hợp một lần nữa để đảo ngược hành động của Thanos và khôi phục lại sự cân bằng cho vũ trụ.", false, 1, "2.jpg", 0, 110, "Biệt đội báo thù", 0, 0, "2.mp4" },
-                    { 3, "Đây là phần tiếp theo của bom tấn vô cùng ăn khách – “G.I. Joe: The Rise of Cobra”. Nội dung phần 2 của “G.I. Joe” bắt đầu khi những người lãnh đạo nước Mỹ bị tổ chức Cobra (kẻ thù không đội trời chung của đội đặc nhiệm G.I.Joe) kiểm soát và ra lệnh loại bỏ G.I.Joe. Toàn bộ nhóm đặc vụ bị gài bẫy và gần như bị xóa sổ. Những người còn sống của đội đặc nhiệm tìm đến sự giúp đỡ của người lãnh đạo G.I. Joe năm xưa – tướng Joe Colton để cùng nhau tìm nguyên nhân thực sự của mọi chuyện và tìm cách giải cứu nước Mỹ.", false, 1, "3.jpg", 0, 110, "BIỆT ĐỘI G.I. JOE: BÁO THÙ", 0, 0, "3.mp4" }
+                    { 3, "Đây là phần tiếp theo của bom tấn vô cùng ăn khách – “G.I. Joe: The Rise of Cobra”. Nội dung phần 2 của “G.I. Joe” bắt đầu khi những người lãnh đạo nước Mỹ bị tổ chức Cobra (kẻ thù không đội trời chung của đội đặc nhiệm G.I.Joe) kiểm soát và ra lệnh loại bỏ G.I.Joe. Toàn bộ nhóm đặc vụ bị gài bẫy và gần như bị xóa sổ. Những người còn sống của đội đặc nhiệm tìm đến sự giúp đỡ của người lãnh đạo G.I. Joe năm xưa – tướng Joe Colton để cùng nhau tìm nguyên nhân thực sự của mọi chuyện và tìm cách giải cứu nước Mỹ.", false, 1, "3.jpg", 0, 110, "BIỆT ĐỘI G.I. JOE: BÁO THÙ", 0, 0, "3.mp4" },
+                    { 4, "Cuối thời Nam Tống, Tiểu Bạch vì muốn cứu Hứa Tiên mà dâng nước dìm Kim Sơn tự, cuối cùng bị Pháp Hải nhốt dưới tháp Lôi Phong. Tiểu Thanh bất ngờ bị Pháp Hải đánh rơi vào ảo cảnh của Tu La thành quỷ dị. Mấy lần nguy cấp, Tiểu Thanh được một thiếu niên thần bí cứu, Tiểu Thanh mang theo chấp niệm cứu Tiểu Bạch ra ngoài mà trải qua kiếp nạn rồi trưởng thành, cùng thiếu niên thần bí đi tìm biện pháp.", false, 1, "4.jpg", 0, 132, "BẠCH XÀ 2: THANH XÀ KIẾP KHỞI", 0, 0, "4.mp4" },
+                    { 5, "Trước khi Himura Kenshin gặp Kaoru, anh ta là một sát thủ đáng sợ được gọi là Hitokiri Battousai. 'Rurouni Kenshin: The Beginning' kể câu chuyện về một Kenshin trẻ tuổi, người trở thành sát thủ số một cho Ishin Shishi (sau này trở thành 'thời Minh Trị'), người đã chiến đấu chống lại Mạc phủ trong những ngày cuối cùng của thời đại Tokugawa, và làm thế nào anh ấy có dấu 'X' nổi tiếng trên má trái của mình. Trong những ngày đầu của HimuraKenshin trong vai Hitokiri Battousai, một ngày nọ, anh gặp Yukishiro Tomoe, một thiếu nữ xinh đẹp, có vẻ ngoài thanh thoát nhưng luôn mang một khuôn mặt buồn bã. Battousai và Tomoe yêu nhau nhưng ít ai biết rằng, Tomoe mang trong lòng một gánh nặng to lớn sẽ thay đổi cuộc đời của Himura Kenshin mãi mãi.", false, 1, "5.jpg", 0, 140, "LÃNG KHÁCH KENSHIN: KHỞI ĐẦU", 0, 0, "5.mp4" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "seviceSeviceCategories",
+                columns: new[] { "Id", "IdSevice", "IdSeviceCategory", "Price", "isDelete" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, 30000m, false },
+                    { 4, 2, 1, 10000m, false },
+                    { 6, 3, 1, 10000m, false },
+                    { 2, 1, 2, 25000m, false },
+                    { 5, 2, 2, 30000m, false },
+                    { 7, 3, 2, 30000m, false },
+                    { 3, 1, 3, 10000m, false }
                 });
 
             migrationBuilder.CreateIndex(
@@ -686,11 +723,6 @@ namespace QuanLiRapPhim.Migrations
                 name: "IX_BillDetails_idSeviceSeviceCategories",
                 table: "BillDetails",
                 column: "idSeviceSeviceCategories");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Bills_UserId",
-                table: "Bills",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryMovie_lstMovieId",
@@ -814,13 +846,13 @@ namespace QuanLiRapPhim.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "Seats");
 
             migrationBuilder.DropTable(
                 name: "ShowTimes");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "SeviceCategories");

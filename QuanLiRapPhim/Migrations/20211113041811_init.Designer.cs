@@ -10,8 +10,8 @@ using QuanLiRapPhim.Areas.Admin.Data;
 namespace QuanLiRapPhim.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20211022112042_update")]
-    partial class update
+    [Migration("20211113041811_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -165,18 +165,19 @@ namespace QuanLiRapPhim.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPurchased")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Bills");
                 });
@@ -235,13 +236,25 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             IsDelete = false,
-                            Title = "Detective"
+                            Title = "Trinh thám"
                         },
                         new
                         {
                             Id = 2,
                             IsDelete = false,
-                            Title = "Adventure"
+                            Title = "Phiêu lưu"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDelete = false,
+                            Title = "Hành động"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsDelete = false,
+                            Title = "Hoạt hình"
                         });
                 });
 
@@ -451,6 +464,34 @@ namespace QuanLiRapPhim.Migrations
                             TotalRating = 0,
                             TotalReviewers = 0,
                             Trailer = "3.mp4"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Describe = "Cuối thời Nam Tống, Tiểu Bạch vì muốn cứu Hứa Tiên mà dâng nước dìm Kim Sơn tự, cuối cùng bị Pháp Hải nhốt dưới tháp Lôi Phong. Tiểu Thanh bất ngờ bị Pháp Hải đánh rơi vào ảo cảnh của Tu La thành quỷ dị. Mấy lần nguy cấp, Tiểu Thanh được một thiếu niên thần bí cứu, Tiểu Thanh mang theo chấp niệm cứu Tiểu Bạch ra ngoài mà trải qua kiếp nạn rồi trưởng thành, cùng thiếu niên thần bí đi tìm biện pháp.",
+                            IsDelete = false,
+                            MacId = 1,
+                            Poster = "4.jpg",
+                            Status = 0,
+                            Time = 132,
+                            Title = "BẠCH XÀ 2: THANH XÀ KIẾP KHỞI",
+                            TotalRating = 0,
+                            TotalReviewers = 0,
+                            Trailer = "4.mp4"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Describe = "Trước khi Himura Kenshin gặp Kaoru, anh ta là một sát thủ đáng sợ được gọi là Hitokiri Battousai. 'Rurouni Kenshin: The Beginning' kể câu chuyện về một Kenshin trẻ tuổi, người trở thành sát thủ số một cho Ishin Shishi (sau này trở thành 'thời Minh Trị'), người đã chiến đấu chống lại Mạc phủ trong những ngày cuối cùng của thời đại Tokugawa, và làm thế nào anh ấy có dấu 'X' nổi tiếng trên má trái của mình. Trong những ngày đầu của HimuraKenshin trong vai Hitokiri Battousai, một ngày nọ, anh gặp Yukishiro Tomoe, một thiếu nữ xinh đẹp, có vẻ ngoài thanh thoát nhưng luôn mang một khuôn mặt buồn bã. Battousai và Tomoe yêu nhau nhưng ít ai biết rằng, Tomoe mang trong lòng một gánh nặng to lớn sẽ thay đổi cuộc đời của Himura Kenshin mãi mãi.",
+                            IsDelete = false,
+                            MacId = 1,
+                            Poster = "5.jpg",
+                            Status = 0,
+                            Time = 140,
+                            Title = "LÃNG KHÁCH KENSHIN: KHỞI ĐẦU",
+                            TotalRating = 0,
+                            TotalReviewers = 0,
+                            Trailer = "5.mp4"
                         });
                 });
 
@@ -489,7 +530,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "70996687-0659-4ec9-9562-292cd77494cd",
+                            ConcurrencyStamp = "9292fef4-81d9-4e67-9d5f-0741669a1a15",
                             IsDelete = false,
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -497,15 +538,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "ed3b5017-c83e-4bdf-9c21-04963bec6e0a",
-                            IsDelete = false,
-                            Name = "manager movie",
-                            NormalizedName = "MANAGER MOVIE"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ConcurrencyStamp = "9d45d3b3-e2c8-4365-82b9-031ceeadb77f",
+                            ConcurrencyStamp = "c25d81ec-e12a-428d-a918-8d767714f8d9",
                             IsDelete = false,
                             Name = "staff",
                             NormalizedName = "STAFF"
@@ -596,6 +629,29 @@ namespace QuanLiRapPhim.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sevices");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDelete = false,
+                            IsFood = true,
+                            Name = "Bắp rang"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDelete = false,
+                            IsFood = false,
+                            Name = "CoCa"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDelete = false,
+                            IsFood = false,
+                            Name = "Pepsi"
+                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.SeviceCategory", b =>
@@ -609,12 +665,31 @@ namespace QuanLiRapPhim.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("SeviceCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDelete = false,
+                            Name = "Big"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDelete = false,
+                            Name = "Small"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDelete = false,
+                            Name = "Medium"
+                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.SeviceSeviceCategories", b =>
@@ -643,6 +718,64 @@ namespace QuanLiRapPhim.Migrations
                     b.HasIndex("IdSeviceCategory");
 
                     b.ToTable("seviceSeviceCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IdSevice = 1,
+                            IdSeviceCategory = 1,
+                            Price = 30000m,
+                            isDelete = false
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IdSevice = 1,
+                            IdSeviceCategory = 2,
+                            Price = 25000m,
+                            isDelete = false
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IdSevice = 1,
+                            IdSeviceCategory = 3,
+                            Price = 10000m,
+                            isDelete = false
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IdSevice = 2,
+                            IdSeviceCategory = 1,
+                            Price = 10000m,
+                            isDelete = false
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IdSevice = 2,
+                            IdSeviceCategory = 2,
+                            Price = 30000m,
+                            isDelete = false
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IdSevice = 3,
+                            IdSeviceCategory = 1,
+                            Price = 10000m,
+                            isDelete = false
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IdSevice = 3,
+                            IdSeviceCategory = 2,
+                            Price = 30000m,
+                            isDelete = false
+                        });
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.ShowTime", b =>
@@ -765,7 +898,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "53381a11-fd8e-4518-a91d-4d2a019d90b9",
+                            ConcurrencyStamp = "e34f9c48-de6a-42e5-a430-bdb5349a01c6",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181100@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -774,12 +907,32 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "admin",
-                            PasswordHash = "AGEbd4Gu2j8ce7yqqQm5bDvfecrwUtTIeA2+546C5BQwaUQZlOkHJIQVvlKkj/qZZQ==",
+                            PasswordHash = "ADhxMZvoFZNlMykTHZrp3tfGtIVKok6zoB9thdqP72QCM4Sjdma4imoP67064PUOgg==",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "ff145e38-83f2-467c-b1d9-aaa73a85b3a5",
+                            SecurityStamp = "b52e90ea-7ed3-45c4-8ddb-7395c1f0d618",
                             TwoFactorEnabled = false,
                             UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "448dea0a-cb57-4528-a479-40b4c12bf06c",
+                            DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "0306181113@caothang.edu.vn",
+                            EmailConfirmed = false,
+                            FullName = "Lê Quang Hải",
+                            Img = "manager1.img",
+                            IsDelete = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "manager1",
+                            PasswordHash = "AKFbIyOwupTh9jhH91R2+HfEOcfvw85AckwzPJ0ZELVP7NXdJFERbr2S/7OSPYHM3Q==",
+                            PhoneNumberConfirmed = false,
+                            RoleId = 2,
+                            SecurityStamp = "7b29e0c7-a31a-49a4-9d5d-7e9174b4aa10",
+                            TwoFactorEnabled = false,
+                            UserName = "manager1"
                         });
                 });
 
@@ -812,6 +965,9 @@ namespace QuanLiRapPhim.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPurchased")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -993,17 +1149,6 @@ namespace QuanLiRapPhim.Migrations
                         .HasForeignKey("RatedUsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.Bill", b =>
-                {
-                    b.HasOne("QuanLiRapPhim.Areas.Admin.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("QuanLiRapPhim.Areas.Admin.Models.BillDetail", b =>

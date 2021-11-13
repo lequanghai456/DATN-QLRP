@@ -71,16 +71,14 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        public async Task<IActionResult> VerifyTitle(string name)
+        public async Task<IActionResult> VerifyTitle(string Title)
         {
-            return Json(data: CheckTitle(name));
-
+            return Json(data: !CheckTitle(Title));
         }
-        public bool CheckTitle(string name)
+        private bool CheckTitle(string name)
         {
-            Category category = _context.Categories.Where(x => x.Title.Equals(name) && x.IsDelete == false).FirstOrDefault();
+            Category category = _context.Categories.FirstOrDefault(x => x.Title==name && x.IsDelete == false);
             return category != null;
-            
         }
 
         public async Task<JsonResult> CreateAPI(String name)

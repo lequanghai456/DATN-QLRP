@@ -528,7 +528,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "d2a74ae2-92e9-46a9-bd91-b653a388a763",
+                            ConcurrencyStamp = "9292fef4-81d9-4e67-9d5f-0741669a1a15",
                             IsDelete = false,
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -536,7 +536,7 @@ namespace QuanLiRapPhim.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "c4b1f48a-343b-475f-9dc8-5dbb65c7216f",
+                            ConcurrencyStamp = "c25d81ec-e12a-428d-a918-8d767714f8d9",
                             IsDelete = false,
                             Name = "staff",
                             NormalizedName = "STAFF"
@@ -896,7 +896,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ba7a6ce7-d853-4a2d-bd52-cabb66c3e2fe",
+                            ConcurrencyStamp = "e34f9c48-de6a-42e5-a430-bdb5349a01c6",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181100@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -905,10 +905,10 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "admin",
-                            PasswordHash = "ANYoDIwYiz7Qp2UNvOP7qa6N1mMkZkekuZQV8C0pvb82qM5ucpcVThYhojxPM7zcpg==",
+                            PasswordHash = "ADhxMZvoFZNlMykTHZrp3tfGtIVKok6zoB9thdqP72QCM4Sjdma4imoP67064PUOgg==",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "14dfa38c-ab84-460e-ade1-2ec257fee69b",
+                            SecurityStamp = "b52e90ea-7ed3-45c4-8ddb-7395c1f0d618",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -916,7 +916,7 @@ namespace QuanLiRapPhim.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2e325527-ffa4-4a5e-8c57-6ffbfcbb8990",
+                            ConcurrencyStamp = "448dea0a-cb57-4528-a479-40b4c12bf06c",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "0306181113@caothang.edu.vn",
                             EmailConfirmed = false,
@@ -925,10 +925,10 @@ namespace QuanLiRapPhim.Migrations
                             IsDelete = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "manager1",
-                            PasswordHash = "AFNiUwJQ5hF4e/A1M4coPc5UdlNhZNGPYKNLRU6F0nGZLBVlCJXaqDjGizMXqHRRww==",
+                            PasswordHash = "AKFbIyOwupTh9jhH91R2+HfEOcfvw85AckwzPJ0ZELVP7NXdJFERbr2S/7OSPYHM3Q==",
                             PhoneNumberConfirmed = false,
                             RoleId = 2,
-                            SecurityStamp = "2b43b56c-c622-484e-8088-3840cbbe0557",
+                            SecurityStamp = "7b29e0c7-a31a-49a4-9d5d-7e9174b4aa10",
                             TwoFactorEnabled = false,
                             UserName = "manager1"
                         });
