@@ -16,9 +16,11 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         [Display(Name = "Số lượng ghế ngang")]
         [Range(0,15, ErrorMessage = "Số lượng tối thiểu là 0, lớn nhất là 15")]
         [Required(ErrorMessage = "Không được bỏ trống")]
+        [RegularExpression("[0-9]*$", ErrorMessage = "Vui lòng nhập số nguyên")]
         public int Row{get; set;}
         [Display(Name = "Số lượng ghế dọc")]
         [Range(0, 15, ErrorMessage = "Số lượng tối thiểu là 0, lớn nhất là 15")]
+        [RegularExpression("[0-9]*$", ErrorMessage = "Vui lòng nhập số nguyên")]
         [Required(ErrorMessage = "Không được bỏ trống")]
         public int Col{get; set;}
         public int? RoleId { get; set; }
@@ -26,7 +28,7 @@ namespace QuanLiRapPhim.Areas.Admin.Models
         public virtual Role Role { get; set; }
         [Display(Name = "Giá")]
         [Required(ErrorMessage = "Không được bỏ trống")]
-        [RegularExpression("[0-9]*$")]
+        [RegularExpression("[0-9]*$",ErrorMessage ="Vui lòng nhập số nguyên")]
         public Decimal Price { get; set; }
         public virtual ICollection<ShowTime> LstShowTime { get; set; }
         public virtual ICollection<Device> Devices { get; set; }

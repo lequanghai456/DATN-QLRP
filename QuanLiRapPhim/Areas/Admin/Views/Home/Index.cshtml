@@ -22,7 +22,8 @@
             @{ if (User.FindFirst("Role").Value.Contains("admin"))
                 {
                     <div class="custom-file" style="margin-top: 30px; width:300px;">
-                        <input accept="*.png|*.jpg|*.jpep" type="file" name="ful" class="custom-file-input" id="ful" />
+                        <input  accept="image/*" type="file" name="ful" class="custom-file-input" id="ful" />
+                        <span class="text-danger" id="loianh"></span>
                         <label class="custom-file-label" for="ful" style="text-align:left;"><span><i class="fa fa-camera"></i> Đổi avatar</span></label>
                     </div>
                 }
@@ -38,7 +39,7 @@
                     <div class="form-group">
                         <label asp-for="FullName" class="control-label"></label>
                         <input asp-for="FullName" name="FullName" class="form-control" value="@Model.FullName" />
-                        <span asp-validation-for="FullName" class="text-danger"></span>
+                        <span asp-validation-for="FullName" class="text-danger" ></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="DateOfBirth" class="control-label"></label>
@@ -106,17 +107,24 @@
     <script src="~/View/admin/Home/controller.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        function readURL(input, idImg) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $(idImg).attr('src', e.target.result);
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
         $("#ful").change(function () {
             readURL(this, '#imgPre');
         })
+        function readURL(input, idImg) {
+
+            if (input.files[0].type.includes("image",0)) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $(idImg).attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                    $('#loianh').html("");
+                }
+            } else {
+                $('#ful').val(null);
+                $('#loianh').html("Chỉ chấp nhận file định dạng hình ảnh");
+            }
+        }
     </script>
 }

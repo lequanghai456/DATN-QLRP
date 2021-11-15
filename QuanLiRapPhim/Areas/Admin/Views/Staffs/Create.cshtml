@@ -46,7 +46,8 @@
 </div>
     <div class="form-group col-6">
         <div class="custom-file" style="margin-top: 30px;">
-            <input accept="*.png|*.jpg|*.jpep" type="file" name="ful" class="custom-file-input" id="ful" />
+            <input accept="image/*" type="file" name="ful" class="custom-file-input" id="ful" />
+            <span class="text-danger" id="loianh"></span>
             <label class="custom-file-label" for="ful">Thêm ảnh</label>
         </div>
         <img id="imgPre" src="~/admin/img/@(ViewContext.RouteData.Values["id"] == null ? "Noimage.png" : ViewData["Img"])" alt="Alternate Text" style="width:400px; height:400px;" />

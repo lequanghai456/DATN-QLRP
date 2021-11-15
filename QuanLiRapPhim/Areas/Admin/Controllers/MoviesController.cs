@@ -63,7 +63,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             }
             ViewData["MacId"] = new SelectList(_context.Macs.Where(x=>x.IsDelete==false), "Id", "Title");
            
-            ViewBag.categories = JsonConvert.SerializeObject(movie.Lstcategories==null?"" :movie.Lstcategories.Select(x => x.Id).ToList());
+            ViewBag.categories = JsonConvert.SerializeObject(movie.Lstcategories==null?"":movie.Lstcategories.Select(x => x.Id).ToList());
             
             return View(movie);
         }
