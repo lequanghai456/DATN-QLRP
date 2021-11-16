@@ -15,116 +15,126 @@
             <h2 class="alert alert-success">@TempData.Peek("Mess")</h2>
         }
     }
-    <form asp-action="EditUser" asp-controller="Home" asp-area="Admin" method="post" class="row" enctype="multipart/form-data">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input id="idEdit" type="hidden" />
-        <div class="form-group col-6" style="text-align:center;">
-            @{ if (User.FindFirst("Role").Value.Contains("admin"))
+    <div class="card m-1 p-2">
+
+        <form asp-action="EditUser" asp-controller="Home" asp-area="Admin" method="post" class="row" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input id="idEdit" type="hidden" />
+            <div class="form-group col-6" style="text-align:center;">
+                @{ if (User.FindFirst("Role").Value.Contains("admin"))
+                    {
+                        <div class="custom-file" style="margin-top: 30px; width:300px;">
+                            <input accept="image/*" type="file" name="ful" class="custom-file-input" id="ful" />
+                            <span class="text-danger" id="loianh"></span>
+                            <label class="custom-file-label" for="ful" style="text-align:left;"><span><i class="fa fa-camera"></i> Đổi avatar</span></label>
+                        </div>
+                    }
+                }
+
+                <img id="imgPre" src="~/admin/img/@Model.Img" alt="Alternate Text" style="width:300px; height:300px;" />
+
+
+            </div>
+            @{if (User.FindFirst("Role").Value.Contains("admin"))
                 {
-                    <div class="custom-file" style="margin-top: 30px; width:300px;">
-                        <input  accept="image/*" type="file" name="ful" class="custom-file-input" id="ful" />
-                        <span class="text-danger" id="loianh"></span>
-                        <label class="custom-file-label" for="ful" style="text-align:left;"><span><i class="fa fa-camera"></i> Đổi avatar</span></label>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="FullName" class="control-label"></label>
+                            <input asp-for="FullName" name="FullName" class="form-control" value="@Model.FullName" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="DateOfBirth" class="control-label"></label>
+                            <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserName" class="control-label"></label>
+                            <input asp-for="UserName" value="@Model.UserName" class="form-control" disabled />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-12 d-flex justify-content-center">
+                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                    </div>
+
+                }
+                else
+                {
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="FullName" class="control-label"></label>
+                            <input asp-for="FullName" name="FullName" class="form-control" value="@Model.FullName" disabled />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="DateOfBirth" class="control-label"></label>
+                            <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control" disabled />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserName" class="control-label"></label>
+                            <input asp-for="UserName" value="@Model.UserName" class="form-control" disabled />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
                     </div>
                 }
             }
 
-            <img id="imgPre" src="~/admin/img/@Model.Img" alt="Alternate Text" style="width:300px; height:300px;" />
-
-
-        </div>
-        @{if (User.FindFirst("Role").Value.Contains("admin"))
-            {
-                <div class="col-6">
-                    <div class="form-group">
-                        <label asp-for="FullName" class="control-label"></label>
-                        <input asp-for="FullName" name="FullName" class="form-control" value="@Model.FullName" />
-                        <span asp-validation-for="FullName" class="text-danger" ></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="DateOfBirth" class="control-label"></label>
-                        <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control"/>
-                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="UserName" class="control-label"></label>
-                        <input asp-for="UserName" value="@Model.UserName" class="form-control" disabled />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group col-12 d-flex justify-content-center">
-                    <input type="submit" value="Cập nhật" class="btn btn-primary" />
-                </div>
-            }
-            else
-            {
-                <div class="col-6">
-                    <div class="form-group">
-                        <label asp-for="FullName" class="control-label"></label>
-                        <input asp-for="FullName" name="FullName" class="form-control" value="@Model.FullName" disabled />
-                        <span asp-validation-for="FullName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="DateOfBirth" class="control-label"></label>
-                        <input asp-for="DateOfBirth" name="DateOfBirth" class="form-control" disabled />
-                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="UserName" class="control-label"></label>
-                        <input asp-for="UserName" value="@Model.UserName" class="form-control" disabled />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-                </div>
-            }
-        }
-
-    </form>
-
-</div>
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="row modal-header">
-                <h4 class="col-3 modal-title">Thông báo</h4>
-                <div class="col-5"></div>
-                <button type="button" class="col-3 close" ng-click="reloadData(true)" data-dismiss="modal">&times;</button>
-
-            </div>
-            <div class="modal-body">
-                <h2 class="alert alert-success">{{notification}}</h2>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" ng-click="reloadData(true)" data-dismiss="modal">Close</button>
-            </div>
-        </div>
+        </form>
 
     </div>
-</div>
-
-@section Scripts {
-    <script src="~/View/admin/Home/controller.js"></script>
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        $("#ful").change(function () {
-            readURL(this, '#imgPre');
-        })
-        function readURL(input, idImg) {
-
-            if (input.files[0].type.includes("image",0)) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $(idImg).attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                    $('#loianh').html("");
-                }
-            } else {
-                $('#ful').val(null);
-                $('#loianh').html("Chỉ chấp nhận file định dạng hình ảnh");
-            }
+    @{if (User.FindFirst("Role").Value.Contains("admin"))
+        {
+            @await Html.PartialAsync("Statistical")
         }
-    </script>
-}
+    }
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="row modal-header">
+                    <h4 class="col-3 modal-title">Thông báo</h4>
+                    <div class="col-5"></div>
+                    <button type="button" class="col-3 close" ng-click="reloadData(true)" data-dismiss="modal">&times;</button>
+
+                </div>
+                <div class="modal-body">
+                    <h2 class="alert alert-success">{{notification}}</h2>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="reloadData(true)" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+        @section Scripts {
+            <script src="~/View/admin/Home/controller.js"></script>
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            <script>
+                $("#ful").change(function () {
+                    readURL(this, '#imgPre');
+                })
+                function readURL(input, idImg) {
+
+                    if (input.files[0].type.includes("image", 0)) {
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                $(idImg).attr('src', e.target.result);
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                            $('#loianh').html("");
+                        }
+                    } else {
+                        $('#ful').val(null);
+                        $('#loianh').html("Chỉ chấp nhận file định dạng hình ảnh");
+                    }
+                }
+            </script>
+        }

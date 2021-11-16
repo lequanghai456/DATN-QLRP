@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using QuanLiRapPhim.SupportJSON;
 
 namespace QuanLiRapPhim.Areas.Admin.Controllers
 {
@@ -98,6 +99,40 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 Mess = "Cập nhật thất bại";
             }
             return RedirectToAction("Index");
+        }
+        [AuthorizeRoles("admin")]
+        public async Task<JsonResult> ThongKeTheoNgay()
+        {
+            var a = _context.Users.Select(x => new {
+                x.FullName,
+                x.Img,
+                SL = _context.Tickets.Where(t => t.Username.Equals(x.UserName))
+                .Where(x => true).Count()
+            }).OrderBy(x => x.SL).Take(5);
+            return Json(a);
+        }
+        [AuthorizeRoles("admin")]
+        public async Task<JsonResult> ThongKeTheoThang()
+        {
+            var a = _context.Users.Select(x => new {
+                x.FullName,
+                x.Img,
+                SL = _context.Tickets.Where(t => t.Username.Equals(x.UserName))
+                .Where(x => true).Count()
+            }).OrderBy(x => x.SL).Take(5);
+            return Json(a);
+        }
+        [AuthorizeRoles("admin")]
+        public async Task<JsonResult> ThongKeTheoQuy()
+        {
+            var a = _context.Users.Select(x => new
+            {
+                x.FullName,
+                x.Img,
+                SL = _context.Tickets.Where(t => t.Username.Equals(x.UserName))
+                .Where(x=>true).Count()
+            }).OrderBy(x=>x.SL).Take(5) ;
+            return Json(a);
         }
     }
 }

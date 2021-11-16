@@ -1,0 +1,93 @@
+﻿<h1>Thống kê người dùng mua nhiều vé</h1>
+<section class="mt-30px mb-30px" ng-init="Thongke()">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <!-- Daily Feed Widget-->
+                <div id="daily" class="card updates daily-feeds">
+                    <div id="feeds-header" class="card-header d-flex justify-content-between align-items-center">
+                        <h2 class="h5 display"><a data-toggle="collapse" data-parent="#daily-feeds" href="#feeds-box" aria-expanded="true" aria-controls="feeds-box">Theo ngày</a></h2>
+                    </div>
+                    <div id="feeds-box" role="tabpanel" class="collapse show">
+                        <div class="feed-box">
+                            <ul class="feed-elements list-unstyled">
+                                <!-- List-->
+                                <li class="clearfix" ng-repeat="item in TheoNgay">
+                                    <div class="feed d-flex justify-content-between">
+                                        <div class="feed-body d-flex justify-content-between">
+                                            <a href="#" class="feed-profile"><img src="https://localhost:44350/images/pro/{{item.img}}" alt="person" class="img-fluid rounded-circle"></a>
+                                            <div class="content">
+                                                <strong>{{item.fullName}}</strong>
+                                                <br />
+                                                <em>Số lượng:{{item.sl}}</em>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Daily Feed Widget End-->
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <!-- Daily Feed Widget-->
+                <div id="monthly" class="card updates daily-feeds">
+                    <div id="feeds-header" class="card-header d-flex justify-content-between align-items-center">
+                        <h2 class="h5 display"><a data-toggle="collapse" data-parent="#daily-feeds" href="#feeds-box" aria-expanded="true" aria-controls="feeds-box">Theo Tháng</a></h2>
+                    </div>
+                    <div id="feeds-box" role="tabpanel" class="collapse show">
+                        <div class="feed-box">
+                            <ul class="feed-elements list-unstyled">
+                                <!-- List-->
+                                <li class="clearfix" ng-repeat="item in TheoThang">
+                                    <div class="feed d-flex justify-content-between">
+                                        <div class="feed-body d-flex justify-content-between">
+                                            <a href="#" class="feed-profile"><img src="https://localhost:44350/images/pro/{{item.img}}" alt="person" class="img-fluid rounded-circle"></a>
+                                            <div class="content">
+                                                <strong>{{item.fullName}}</strong>
+                                                <br />
+                                                <em>Số lượng:{{item.sl}}</em>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Daily Feed Widget End-->
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <!-- Daily Feed Widget-->
+                <div id="season" class="card updates daily-feeds">
+                    <div id="feeds-header" class="card-header d-flex justify-content-between align-items-center">
+                        <h2 class="h5 display"><a data-toggle="collapse" data-parent="#daily-feeds" href="#feeds-box" aria-expanded="true" aria-controls="feeds-box">Theo quý</a></h2>
+                    </div>
+                    <div id="feeds-box" role="tabpanel" class="collapse show">
+                        <div class="feed-box">
+                            <ul class="feed-elements list-unstyled">
+                                <!-- List-->
+                                <li class="clearfix" ng-repeat="item in TheoQuy">
+                                    <div class="feed d-flex justify-content-between">
+                                        <div class="feed-body d-flex justify-content-between">
+                                            <a href="#" class="feed-profile"><img src="https://localhost:44350/images/pro/{{item.img}}" alt="person" class="img-fluid rounded-circle"></a>
+                                            <div class="content">
+                                                <strong>{{item.fullName}}</strong>
+                                                <br />
+                                                <em>Số lượng:{{item.sl}}</em>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Daily Feed Widget End-->
+            </div>
+        </div>
+    </div>
+</section>
