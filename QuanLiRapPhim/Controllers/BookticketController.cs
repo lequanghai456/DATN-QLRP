@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using QuanLiRapPhim.App;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
@@ -35,17 +36,56 @@ namespace QuanLiRapPhim.Controllers
 
             return View(St);
         }
+        //public IActionResult Thanhtoan()
+        //{
+        //    string ENDPOINT = "https://payment.momo.vn/gw_payment/transactionProcessor";
+        //    string PARTNER_CODE = "MOMOQ3N820211116";
+        //    string ACCESS_KEY = "izZSheQQlSA72oKw";
+        //    string SECRET_KEY = "z4E3VQKqbTFdwmHDGPOAmyqEvIdH0erl";
+        //    string ORDER_ID = Guid.NewGuid().ToString();
+        //    string REQUEST_ID = Guid.NewGuid().ToString();
+        //    string EXTRADATA = "";
+        //    string rawHash = "partnerCode=" +
+        //        PARTNER_CODE + "&accessKey=" +
+        //        ACCESS_KEY + "&requestId=" +
+        //        REQUEST_ID + "&amount=" + "2000" + "&orderId=" +
+        //        ORDER_ID + "&orderInfo=" + "HD" + "&returnUrl=" + "https://localhost:44350/#!/" + "&notifyUrl=" + "true" +
+        //        "&extraData=" + EXTRADATA;
+        //    MoMoSecurity crypto = new MoMoSecurity();
+        //    string signature = crypto.signSHA256(rawHash, SECRET_KEY);
+        //    JObject message = new JObject
+        //    {
+        //        {"partnerCode", PARTNER_CODE },
+        //        {"accessKey", ACCESS_KEY },
+        //        {"requestId", REQUEST_ID },
+        //        {"amount", "2000" },
+        //        {"orderId",ORDER_ID },
+        //        {"orderInfo", "HD" },
+        //        {"returnUrl", "https://localhost:44350/#!/" },
+        //        {"notifyUrl", "true" },
+        //        {"requestType", "captureMoMoWallet" },
+        //        {"signature", signature }
+        //    };
+        //    string url = PaymentRequest.sendPaymentRequest(ENDPOINT, message.ToString());
+        //    JObject jmessage = JObject.Parse(url);
+        //    return Redirect(jmessage.GetValue("payURL").ToString());
+        //    //return url;
+        //}
+
         [HttpPost]
         public IActionResult BookTicket(Ticket ticket)
         {
 
             try
             {
-
-
+                string ENDPOINT = "https://payment.momo.vn/gw_payment/transactionProcessor";
+                string PARTNER_CODE = "MOMOQ3N820211116";
+                string ACCESS_KEY = "izZSheQQlSA72oKw";
+                string SECRET_KEY = "z4E3VQKqbTFdwmHDGPOAmyqEvIdH0erl";
                 ticket.Username = User.Identity.Name;
                 ticket.Price = Price((int)ticket.SeatId, (int)ticket.ShowTimeId);
                 ticket.PurchaseDate = DateTime.Now;
+                
                 var isbooked = (from T in _context.Tickets
                                 where T.SeatId == ticket.SeatId && T.IsDelete == false
                                 select T).Count() > 0;
@@ -145,7 +185,7 @@ namespace QuanLiRapPhim.Controllers
         }
 
         [AuthorizeRoles("User,Staff,Admin")]
-        public JsonResult getListSeatOfShowtime(int id)
+        public async Task<JsonResult> getListSeatOfShowtime(int id)
         {
             JMessage jMessage = new JMessage();
             jMessage.ID = id;
