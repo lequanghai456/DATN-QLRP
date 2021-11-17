@@ -62,6 +62,7 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http) 
                     }
                     else {
                         $scope.ListSeat = rs.object;
+                        $.unblockUI();
                     }
                 });
 
@@ -100,7 +101,6 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http) 
             console.log("dang load ghe");
             $scope.$apply;
 
-            $.unblockUI();
         });
     });
 

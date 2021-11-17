@@ -136,14 +136,12 @@ namespace QuanLiRapPhim.Controllers
             return Json(yourOrders);
         }
 
-
-
         [AuthorizeRoles("User")]
         [HttpGet]
         public string JtableTestModel(JModel jTablePara)
         {
             //Truy vấn lấy ds bill và ticket theo username sắp xếp theo thời gian 
-            var Bills = from b in _context.Bills
+            var Bills = from b in _context.Bills.Where(x => !x.IsDelete).Where(x => x.IsPurchased)
                         where b.Username == User.Identity.Name
                         && b.IsPurchased==false
                         //&& (String.IsNullOrEmpty(jTablePara.date) || b.Date.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
@@ -157,7 +155,7 @@ namespace QuanLiRapPhim.Controllers
                             b.Status,
                             b.IsPurchased
                         };
-            var Tickets = from t in _context.Tickets
+            var Tickets = from t in _context.Tickets.Where(x=>!x.IsDelete).Where(x=>x.IsPurchased)
                       where t.Username == User.Identity.Name
                           //&& (String.IsNullOrEmpty(jTablePara.date) || t.ShowTime.DateTime.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
                           select t;
