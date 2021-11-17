@@ -33,7 +33,6 @@ app.controller('Ctroller', function ($scope, dataservice) {
     }
     $scope.init = function () {
         $("#showtimes").addClass("current-menu-item");
-        $scope.GetDate();
     }
     $scope.init();
     

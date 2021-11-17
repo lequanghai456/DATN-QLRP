@@ -3,7 +3,7 @@
 }
 <div ng-app="App" ng-controller="Ctroller">
     <div style="width:100%">
-        <ul class="listday">
+        <ul class="listday" ng-init="GetDate('@ViewBag.Dates[0].ToShortDateString()')">
             @foreach (DateTime a in ViewBag.Dates)
             {
                 <li ng-click="GetDate('@a.ToShortDateString()')">

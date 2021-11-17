@@ -1,14 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json.Linq;
 using QuanLiRapPhim.App;
 using QuanLiRapPhim.Areas.Admin.Data;
 using QuanLiRapPhim.Areas.Admin.Models;
+using QuanLiRapPhim.Areas.Staffs.Controllers;
 using QuanLiRapPhim.SupportJSON;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace QuanLiRapPhim.Controllers
 {
@@ -17,7 +22,14 @@ namespace QuanLiRapPhim.Controllers
         [TempData]
         public string Message { get; set; }
         private readonly IdentityContext _context;
-        
+
+        public const string ENDPOINT = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
+        public const string PARTNER_CODE = "MOMOEQWT20211117";
+        public const string ACCESS_KEY = "YRqd4mAHshaRNv6b";
+        public const string SECRET_KEY = "AU8eFuLyYzJBKEeTH9p8LWi1xWTlHPc4";
+
+        public const string RETURN_URL = "https://localhost:44350/Bookticket/returnurl";
+        public const string NOTIFY_URL = "https://localhost:44350/Bookticket/notifyurl";
         public BookticketController(IdentityContext context)
         {
             _context = context;
@@ -25,8 +37,8 @@ namespace QuanLiRapPhim.Controllers
         [AuthorizeRoles("User")]
         public IActionResult Index(int id)
         {
-            var deleted = _context.ShowTimes.Include(x=>x.Room).Where(x=>x.IsDelete)
-                .Where(x=>x.Room.IsDelete)
+            var deleted = _context.ShowTimes.Include(x => x.Room).Where(x => x.IsDelete)
+                .Where(x => x.Room.IsDelete)
                 .Any(x => x.Id == id);
             if (id <= 0 || deleted)
             {
@@ -36,52 +48,202 @@ namespace QuanLiRapPhim.Controllers
 
             return View(St);
         }
-        //public IActionResult Thanhtoan()
-        //{
-        //    string ENDPOINT = "https://payment.momo.vn/gw_payment/transactionProcessor";
-        //    string PARTNER_CODE = "MOMOQ3N820211116";
-        //    string ACCESS_KEY = "izZSheQQlSA72oKw";
-        //    string SECRET_KEY = "z4E3VQKqbTFdwmHDGPOAmyqEvIdH0erl";
-        //    string ORDER_ID = Guid.NewGuid().ToString();
-        //    string REQUEST_ID = Guid.NewGuid().ToString();
-        //    string EXTRADATA = "";
-        //    string rawHash = "partnerCode=" +
-        //        PARTNER_CODE + "&accessKey=" +
-        //        ACCESS_KEY + "&requestId=" +
-        //        REQUEST_ID + "&amount=" + "2000" + "&orderId=" +
-        //        ORDER_ID + "&orderInfo=" + "HD" + "&returnUrl=" + "https://localhost:44350/#!/" + "&notifyUrl=" + "true" +
-        //        "&extraData=" + EXTRADATA;
-        //    MoMoSecurity crypto = new MoMoSecurity();
-        //    string signature = crypto.signSHA256(rawHash, SECRET_KEY);
-        //    JObject message = new JObject
-        //    {
-        //        {"partnerCode", PARTNER_CODE },
-        //        {"accessKey", ACCESS_KEY },
-        //        {"requestId", REQUEST_ID },
-        //        {"amount", "2000" },
-        //        {"orderId",ORDER_ID },
-        //        {"orderInfo", "HD" },
-        //        {"returnUrl", "https://localhost:44350/#!/" },
-        //        {"notifyUrl", "true" },
-        //        {"requestType", "captureMoMoWallet" },
-        //        {"signature", signature }
-        //    };
-        //    string url = PaymentRequest.sendPaymentRequest(ENDPOINT, message.ToString());
-        //    JObject jmessage = JObject.Parse(url);
-        //    return Redirect(jmessage.GetValue("payURL").ToString());
-        //    //return url;
-        //}
+
+        public class order:STime
+        {
+            public string orderInfo { get; set; }
+            public long amout { get; set; }
+        }
+        public IActionResult Thanhtoan(order o)
+        {
+            string ORDER_ID = Guid.NewGuid().ToString();
+            string REQUEST_ID = Guid.NewGuid().ToString();
+            string EXTRADATA = JsonConvert.SerializeObject(o);
+            string rawHash = "partnerCode=" +
+                PARTNER_CODE + "&accessKey=" +
+                ACCESS_KEY + "&requestId=" +
+                REQUEST_ID + "&amount=" +
+                o.amout + "&orderId=" +
+                ORDER_ID + "&orderInfo=" +
+                o.orderInfo + "&returnUrl=" +
+                RETURN_URL + "&notifyUrl=" + 
+                NOTIFY_URL+ "&extraData=" + EXTRADATA;
+            MoMoSecurity crypto = new MoMoSecurity();
+            string signature = crypto.signSHA256(rawHash, SECRET_KEY);
+            JObject message = new JObject
+            {
+                {"partnerCode", PARTNER_CODE },
+                {"accessKey", ACCESS_KEY },
+                {"requestId", REQUEST_ID },
+                {"amount", o.amout.ToString() },
+                {"orderId",ORDER_ID },
+                {"orderInfo", o.orderInfo },
+                {"returnUrl", RETURN_URL },
+                {"notifyUrl", NOTIFY_URL },
+                {"requestType", "captureMoMoWallet" },
+                {"signature", signature },
+                {"extraData", EXTRADATA }
+            };
+            string url = PaymentRequest.sendPaymentRequest(ENDPOINT, message.ToString());
+            JObject jmessage = JObject.Parse(url);
+            string a = jmessage.GetValue("errorCode").ToString();
+            if (a=="0")
+            return Redirect(jmessage.GetValue("payUrl").ToString());
+            return NotFound();
+            //return url;
+        }
+
+        public IActionResult ReturnUrl()
+        {
+            string param = Request.QueryString.ToString()
+                .Substring(0, Request.QueryString.ToString().IndexOf("signature") - 1);
+            param = WebUtility.UrlDecode(param);
+            MoMoSecurity crypto = new MoMoSecurity();
+            string serectKey = SECRET_KEY;
+            string signature = crypto.signSHA256(param, serectKey);
+            string a = Request.Query["signature"].ToString();
+            if (signature != a)
+            {
+                Message = "Thông tin Request không hợp lệ";
+            }
+            if (!Request.Query["errorCode"].Equals("0"))
+            {
+                Message = "Thanh toán thất bại";
+            }
+            else
+            {
+                Message = "Thanh toán thành công";
+            }
+            return RedirectToAction("Index", "YourOrder");
+        }
+        [HttpPost("notifyurl")]
+        public JsonResult NotifyUrl()
+        {
+            string param = "partner_code=" + Request.Query["partner_code"] +
+            "&access_key=" + Request.Query["access_key"] +
+            "&amount=" + Request.Query["amount"] +
+            "&order_id=" + Request.Query["order_id"] +
+            "&order_info=" + Request.Query["order_info"] +
+            "&order_type=" + Request.Query["order_type"] +
+            "&transaction_id=" + Request.Query["transaction_id"] +
+            "&message=" + Request.Query["message"] +
+            "&response_time=" + Request.Query["response_time"] +
+            "&status_code=" + Request.Query["status_code"]+
+            "&extraData=" + Request.Query["extraData"];
+
+            param = WebUtility.UrlDecode(param);
+            MoMoSecurity crypto = new MoMoSecurity();
+            string serectKey = SECRET_KEY;
+            string status_code = Request.Query["status_code"].ToString();
+
+            string signature = crypto.signSHA256(param, serectKey);
+
+            string a = Request.Query["signature"].ToString();
+            if (signature != a)
+            {
+                return Json(a);
+            }
+
+            if ((status_code != "0"))
+            {
+                
+
+            }
+            else
+            {
+                try
+                {
+                    order ob = (order)JsonConvert.DeserializeObject(Request.Query["extraData"].ToString());
+                    var obj = _context.Tickets.Where(x => !x.IsDelete)
+                        .Where(x => x.Username.Equals(User.FindFirst("Username")))
+                        .Where(x => x.ShowTimeId == int.Parse(ob.id))
+                        .Where(x => ob.idS.Any(id => id == x.SeatId));
+                    foreach(Ticket t in obj)
+                    {
+                        t.IsDelete = true;
+                        _context.Update(t);
+                    }
+                    _context.SaveChanges();
+                }
+                catch
+                {
+
+                }
+            }
+            return Json(a);
+            //return new Newtonsoft.Json.JsonSerializerSettings();
+        }
+        [HttpPost]
+        public IActionResult BuyTicket(STime st)
+        {
+            JMessage message = new JMessage();
+            order a = new order();
+            try
+            {
+                a.id = st.id;
+                a.idS = st.idS;
+                message.Object = st;
+                var ShowTime = _context.ShowTimes.Where(x => !x.IsDelete && x.Id == int.Parse(st.id)).FirstOrDefault();
+                message.Error = ShowTime == null;
+                if (message.Error)
+                {
+                    message.Title = "Không tìm thấy lịch chiếu";
+                }
+                else
+                {
+                    message.Error = st.idS.Count() == 0;
+                    if (message.Error)
+                    {
+                        message.Title = "Bạn chưa chọn ghế";
+                    }
+                    else
+                    {
+                        var s = _context.Tickets.Where(x => !x.IsDelete&&x.ShowTimeId==ShowTime.Id);
+                        foreach (int id in st.idS)
+                        {
+                            if (!s.Any(x=>x.SeatId==id))
+                            {
+                                Ticket ticket = new Ticket();
+                                ticket.Username = User.Identity.Name;
+                                ticket.SeatId = id;
+                                ticket.Price = Price(id, int.Parse(st.id));
+                                ticket.PurchaseDate = DateTime.Now;
+                                ticket.Name = "--------";
+                                ticket.ShowTimeId = int.Parse(st.id);
+                                ticket.IsPurchased = false;
+                                a.orderInfo += "S" + id;
+                                a.amout = 1000;//(long)ticket.Price;
+                                _context.Add(ticket);
+                            }
+                            else
+                            {
+                                message.Error = true;
+                                message.Title = "Có ghế dã có người đặt";
+                            }
+                        }
+                        if(!message.Error)
+                        _context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                message.Error = true;
+                message.Title = "Có lỗi xảy ra " + err.ToString();
+            }
+            if (message.Error)
+            {
+                return RedirectToAction("Index","YourOrder");
+            }
+            return Thanhtoan(a);
+        }
+
 
         [HttpPost]
         public IActionResult BookTicket(Ticket ticket)
         {
-
             try
             {
-                string ENDPOINT = "https://payment.momo.vn/gw_payment/transactionProcessor";
-                string PARTNER_CODE = "MOMOQ3N820211116";
-                string ACCESS_KEY = "izZSheQQlSA72oKw";
-                string SECRET_KEY = "z4E3VQKqbTFdwmHDGPOAmyqEvIdH0erl";
                 ticket.Username = User.Identity.Name;
                 ticket.Price = Price((int)ticket.SeatId, (int)ticket.ShowTimeId);
                 ticket.PurchaseDate = DateTime.Now;
@@ -109,7 +271,7 @@ namespace QuanLiRapPhim.Controllers
             }
             return RedirectToAction("Index", "YourOrder");
         }
-
+        
         public bool SendEmailSuccesOder(User user, Ticket ticket)
         {
             String res = "";
@@ -183,6 +345,10 @@ namespace QuanLiRapPhim.Controllers
 
             return price;
         }
+
+
+
+
 
         [AuthorizeRoles("User,Staff,Admin")]
         public async Task<JsonResult> getListSeatOfShowtime(int id)

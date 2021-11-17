@@ -32,7 +32,7 @@ namespace QuanLiRapPhim.Controllers
             JMessage jmess = new JMessage();
             try
             {
-                if (date == null)
+                if (date.Value.CompareTo(DateTime.Now.Date)==0)
                 {
                     date = DateTime.Now;
                 }

@@ -152,6 +152,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                     staff.PasswordHash = staffUsers.PasswordHash;
                     staff.FullName = staffUsers.FullName;
                     staff.DateOfBirth = staffUsers.DateOfBirth;
+                    staff.RoleId = staffUsers.RoleId;
 
                     IdentityResult result = await StaffMgr.CreateAsync(staff, staff.PasswordHash);
                     if (result.Succeeded)

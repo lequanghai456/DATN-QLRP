@@ -231,7 +231,7 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
                         Date = DateTime.Now,
                         TotalPrice = Billdetails.Sum(x => x.UnitPrice * x.Amount),
                         Username = User.Identity.Name,
-                        IsPurchased = true
+                        IsPurchased = false
                     };
                     message.Object = JsonConvert.SerializeObject(bill);
                     _context.Add(bill);

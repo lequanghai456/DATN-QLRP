@@ -7,6 +7,10 @@
         {
             <h2>@TempData.Peek("Message")</h2>
         }
+        if (ViewData["Message"] != null)
+        {
+            <h2 class="alert alert-success">@ViewData["Message"]</h2>
+        }
     }
     <div ng-view>
 
