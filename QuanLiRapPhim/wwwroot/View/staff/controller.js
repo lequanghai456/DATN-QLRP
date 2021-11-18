@@ -32,10 +32,10 @@ app.factory('service', function ($http) {
 
     return {
         GetAllSevice: function (callback) {
-            $http.get("http://haile123-001-site1.ctempurl.com/YourOrder/GetAllServices").then(callback);
+            $http.get("https://localhost:44350/YourOrder/GetAllServices").then(callback);
         },
         BuyBill: function (data, callback) {
-            $http.post("http://haile123-001-site1.ctempurl.com/Staffs/home/BuySevice",data).then(callback);
+            $http.post("https://localhost:44350/Staffs/home/BuySevice",data).then(callback);
         }
     }
 });
@@ -302,7 +302,7 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http) 
                     html += HtmlTicket(model);
                 });
                 console.log(html);
-                ////$http.get("http://haile123-001-site1.ctempurl.com/staffs/Home/Ticket/11").then(function (rs) {
+                ////$http.get("https://localhost:44350/staffs/Home/Ticket/11").then(function (rs) {
                 ////console.log(rs);
 
                 payload = {
@@ -401,8 +401,8 @@ app.controller('TicketPrint', function ($scope, $uibModal, DTOptionsBuilder, DTC
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Objects', 'Đơn hàng của bạn').withOption('sWidth', '250px').renderWith(function (data, type, full, meta) {
         data = JSON.parse(data);
         if (data.isTicket == false)
-            return '<div my-Bill model="All[' + meta.row + ']" ></div > ';
-        return '<div my-Ticket model="All[' + meta.row + ']" ></div > ';
+            return '<div my-Bill model="All[' + meta.row + ']" ></div > ' + data.IsPurchased;
+        return '<div my-Ticket model="All[' + meta.row + ']" ></div > ' + data.IsPurchased;
     }).notSortable());
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Date', 'Ngày đặt').withOption('sWidth', '40px').renderWith(function (data, type) {
         return data;
@@ -571,7 +571,7 @@ app.controller('choseService', function ($scope, service,$http) {
                 };
                 html += HtmlBill(model);
                 console.log(html);
-                ////$http.get("http://haile123-001-site1.ctempurl.com/staffs/Home/Ticket/11").then(function (rs) {
+                ////$http.get("https://localhost:44350/staffs/Home/Ticket/11").then(function (rs) {
                 ////console.log(rs);
 
                 payload = {

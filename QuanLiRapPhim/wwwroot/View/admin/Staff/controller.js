@@ -1,5 +1,5 @@
 ﻿
-var ctxfolderurl = "http://haile123-001-site1.ctempurl.com";
+var ctxfolderurl = "https://localhost:44350";
 
 var app = angular.module('App', ['datatables', 'ngRoute', 'checklist-model']);
 

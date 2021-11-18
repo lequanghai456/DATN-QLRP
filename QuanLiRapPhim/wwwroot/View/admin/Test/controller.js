@@ -23,11 +23,11 @@ app.config(function ($routeProvider) {
             controller: 'index1'
         })
         .when('/create', {
-            templateUrl: 'http://haile123-001-site1.ctempurl.com/admin/Test/CreateEdit',
+            templateUrl: 'https://localhost:44350/admin/Test/CreateEdit',
             controller: 'create'
         })
         .when('/:id*', {
-            templateUrl: function (urlattr) { return 'http://haile123-001-site1.ctempurl.com/admin/Test/CreateEdit/' + urlattr.id },
+            templateUrl: function (urlattr) { return 'https://localhost:44350/admin/Test/CreateEdit/' + urlattr.id },
             controller: 'edit'
         })
 });
