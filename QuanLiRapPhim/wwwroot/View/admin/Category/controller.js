@@ -72,16 +72,16 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', titleHtml).withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
             $("input:checkbox[name=type]:checked").removeAttr('checked');
             return '<input id="checkbox" style="margin: 0 auto;" value=' + data + ' ng-checked="selectAll" name="type" type="checkbox" ng-click="toggleOne(' + data + ',$event)">';
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Title', 'Tên thể loại').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Tùy chọn').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
             return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Categories/Index/' + data + '#! > Cập nhật</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Xóa</button>';
-        }));
+        }).notSortable());
         
        
         if (id != null) {

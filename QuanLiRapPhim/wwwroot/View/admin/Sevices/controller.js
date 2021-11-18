@@ -1,6 +1,6 @@
 ﻿
 
-var ctxfolderurl = "https://localhost:44350";
+var ctxfolderurl = "http://haile123-001-site1.ctempurl.com";
 
 var app = angular.module('App', ['datatables', 'ui.bootstrap', 'ngRoute', 'checklist-model']);
 
@@ -113,13 +113,13 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', titleHtml).withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
             $("input:checkbox[name=type]:checked").removeAttr('checked');
             return '<input id="checkbox" style="margin: 0 auto;" value=' + data + ' ng-checked="selectAll" name="type" type="checkbox" ng-click="toggleOne(' + data + ',$event)">';
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Name', 'Tên dịch vụ').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Size', 'Kích thước - giá').withClass('Center').notSortable().renderWith(function (data, type) {
             var Name = "";
             console.log(data);
@@ -127,13 +127,13 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
                 Name += '<div class="p-1">'+value.Name + " - " + value.Price + ' |<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="deleteSeviceCategory(' + value.Id + ')">Xóa</button></div>';
             });
             return Name.slice(0, Name.length - 1);
-        }));
+        }).notSortable());
 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Tùy chọn').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, stt, full, type) {
             console.log(full)
             return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Sevices/Index/' + data + '#! > Cập nhật</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete(' + data + ')">Xóa</button> </br> <input type="button" value="Thêm giá" class="btn btn-info" ng-click="addPrice(' + full.Id + ')" style="margin: 15px;" />';
 
-        }));
+        }).notSortable());
 
         vm.addCategory = true;
         vm.editCategory = false;

@@ -10,7 +10,7 @@ app.factory('dataservice', function ($http) {
 
 app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice, $filter) {
     var vm = $scope;
-    var LengthPage = 3;
+    var LengthPage = 6;
    
     
     
@@ -61,16 +61,16 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns = [];
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').notSortable().renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Date', 'Ngày lập').notSortable().withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('TotalPrice', 'Tổng giá').notSortable().withClass('Center').renderWith(function (data, type) {
             return data;
-        })); 
+        }).notSortable()); 
         vm.dtColumns.push(DTColumnBuilder.newColumn('UserName', 'Tài khoản').notSortable().withClass('Center').renderWith(function (data, type) {
             return data;
-        })); 
+        }).notSortable()); 
     }
     $scope.init();
     

@@ -231,7 +231,7 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http, 
     //                html += HtmlTicket(model);
     //            });
     //            console.log(html);
-    //            ////$http.get("https://localhost:44350/staffs/Home/Ticket/11").then(function (rs) {
+    //            ////$http.get("http://haile123-001-site1.ctempurl.com/staffs/Home/Ticket/11").then(function (rs) {
     //            ////console.log(rs);
 
     //            payload = {

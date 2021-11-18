@@ -10,7 +10,7 @@ app.factory('dataservice', function ($http) {
 
 app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, $compile, dataservice) {
     var vm = $scope;
-    var LengthPage = 3;
+    var LengthPage = 6;
    
     
     
@@ -59,19 +59,19 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns = [];
         vm.dtColumns.push(DTColumnBuilder.newColumn('BillId', 'BillId').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Amount', 'Số lượng').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('UnitPrice', 'Giá').withClass('Center').renderWith(function (data, type) {
             return data;
-        })); 
+        }).notSortable()); 
         vm.dtColumns.push(DTColumnBuilder.newColumn('NameSevice', 'Tên dịch vụ(Loại)').withClass('Center').renderWith(function (data, type) {
             return data;
-        })); 
+        }).notSortable()); 
     }
     $scope.init();
     

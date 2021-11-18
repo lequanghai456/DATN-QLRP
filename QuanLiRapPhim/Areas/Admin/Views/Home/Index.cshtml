@@ -21,7 +21,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <input id="idEdit" type="hidden" />
-            <div class="form-group col-6" style="text-align:center;">
+            <div class="form-group col-md-6" style="text-align:center;">
                 @{ if (User.FindFirst("Role").Value.Contains("admin"))
                     {
                         <div class="custom-file" style="margin-top: 30px; width:300px;">
@@ -38,7 +38,7 @@
             </div>
             @{if (User.FindFirst("Role").Value.Contains("admin"))
                 {
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="FullName" class="control-label"></label>
                             <input asp-for="FullName" name="FullName" class="form-control" value="@Model.FullName" />
@@ -62,7 +62,7 @@
                 }
                 else
                 {
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="FullName" class="control-label"></label>
                             <input asp-for="FullName" name="FullName" class="form-control" value="@Model.FullName" disabled />

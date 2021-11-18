@@ -144,7 +144,7 @@
     <div class="commentItems">
         <div class="comment-item row p-1" ng-repeat="cmt in Comments">
             <div class="comment-author col-1">
-                <img src="/admin/img/{{cmt.img}}" height="60" width="60" />
+                <img src="/images/pro/{{cmt.img}}" height="60" width="60" />
                 <div>
                     <input type="submit" class="btn btn-success" value="trả lời" height="5" ng-show="model.comment" ng-click="traloi(cmt.id)" />
                 </div>
@@ -166,7 +166,7 @@
 
                 <div class="comment-item2 row" ng-repeat="cmt2 in cmt.listCmt">
                     <div class="comment-author col-1">
-                        <img src="/admin/img/{{cmt2.img}}" height="60" width="60" />
+                        <img src="/images/pro/{{cmt2.img}}" height="60" width="60" />
                     </div>
                     <div class="summary col-11">
                         <div><span><h2>{{cmt2.fullName}}</h2></span></div>

@@ -37,6 +37,7 @@ namespace QuanLiRapPhim.Areas.Admin.Views
         [HttpGet]
         public async Task<String> JtableBillModel(JTableModelCustom jTablePara)
         {
+            
             int intBegin = (jTablePara.CurrentPage - 1) * jTablePara.Length;
             var query = _context.Bills.Where(x => x.IsDelete == false && (String.IsNullOrEmpty(jTablePara.Date) || x.Date.Date.CompareTo(DateTime.Parse(jTablePara.Date).Date) == 0) && ((String.IsNullOrEmpty(jTablePara.UserName)) || ((x.Username.Contains(jTablePara.UserName)))) && ((jTablePara.Price) < x.TotalPrice));
             int count = query.Count();

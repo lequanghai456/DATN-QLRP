@@ -59,20 +59,20 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns = [];
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('FullName', 'Tên đầy dủ').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('UserName', 'Tài khoản').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Email', 'Email').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Img', 'Ảnh').withClass('Center').renderWith(function (data, type) {
             
             return '<img id="imgPre" src="../images/pro/' + data + '" alt="Alternate Text" class="img-thumbnail" />';
-        }));
+        }).notSortable());
     }
     $scope.init();
     vm.reloadData = reloadData;

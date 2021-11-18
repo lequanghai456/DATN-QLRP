@@ -1,4 +1,4 @@
-﻿var ctxfolderurl = "https://localhost:44350";
+﻿var ctxfolderurl = "http://haile123-001-site1.ctempurl.com";
 
 var app = angular.module('App', ['datatables', 'ngRoute', 'checklist-model']);
 
@@ -78,30 +78,30 @@ app.controller('Ctroller', function ($scope, DTOptionsBuilder, DTColumnBuilder, 
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', titleHtml).withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
             $("input:checkbox[name=type]:checked").removeAttr('checked');
             return '<input id="checkbox" style="margin: 0 auto;" value=' + data + ' ng-checked="selectAll" name="type" type="checkbox" ng-click="toggleOne(' + data + ',$event)">';
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Id').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Price', 'Giá').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Name', 'Tên phòng').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Row', 'Số lượng ghế ngang').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('Col', 'Số lượng ghế dọc').withClass('Center').renderWith(function (data, type) {
             return data;
-        }));
+        }).notSortable());
         vm.dtColumns.push(DTColumnBuilder.newColumn('FullName', 'Tên nhân viên quản lí').withClass('Center').renderWith(function (data, type) {
        
             return data != "" ? data : 'Chưa có người quản lí phòng này';
-        }));
+        }).notSortable());
         
         vm.dtColumns.push(DTColumnBuilder.newColumn('Id', 'Tùy chọn').withClass('Center').notSortable().withOption('searchable', false).renderWith(function (data, type) {
             return '<a class="btn btn-primary" href=' + ctxfolderurl + '/Admin/Rooms/Index/' + data + '> Cập nhật</a >|<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="delete('+data+')">Xóa</button>';
-        }));
+        }).notSortable());
         
        
         if (id != null) {

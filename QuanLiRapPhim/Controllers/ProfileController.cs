@@ -36,7 +36,7 @@ namespace QuanLiRapPhim.Controllers
                 var user = _identityConext.Users.Where(x => x.IsDelete == false).FirstOrDefault(x => x.UserName == User.Identity.Name);
                 users.UserName = User.Identity.Name;
                 users.FullName = User.FindFirst("FullNameUser").Value;
-                users.DateOfBirth = user.DateOfBirth.Date;
+                users.DateOfBirth = user.DateOfBirth;
                 ViewData["Img"] = user.Img;
                 return View(users);
 
@@ -50,12 +50,7 @@ namespace QuanLiRapPhim.Controllers
         public class InputUser
         {
             public string FullName { get; set; }
-            [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
-            [DataType(DataType.Password)]
-            [MinLength(6, ErrorMessage = "Mật khẩu ít nhất 6 kí tự")]
-            public string PasswordHash { get; set; }
-            [Compare(otherProperty: "PasswordHash", ErrorMessage = "Mật khẩu không trùng khớp")]
-            public string confirmPasswordHash { get; set; }
+            
             [DisplayName("Ngày sinh")]
             [DataType(DataType.Date)]
             [Required]
@@ -72,11 +67,6 @@ namespace QuanLiRapPhim.Controllers
                     User user = _identityConext.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
                     user.FullName = users.FullName;
                     user.DateOfBirth = users.DateOfBirth;
-                    if (users.PasswordHash != null || users.PasswordHash != "capnhatprofile")
-                    {
-                        await StaffMgr.RemovePasswordAsync(user);
-                        IdentityResult result = await StaffMgr.AddPasswordAsync(user, users.PasswordHash);
-                    }
                     _identityConext.Update(user);
                     if (ful != null)
                     {

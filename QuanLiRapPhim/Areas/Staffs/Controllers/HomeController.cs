@@ -128,7 +128,7 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
         public string JtableTestModel(JModel jTablePara)
         {
             //Truy vấn lấy ds bill và ticket theo username sắp xếp theo thời gian 
-            var Bills = from b in _context.Bills.Where(x=>!x.IsDelete)
+            var Bills = from b in _context.Bills.Where(x=>!x.IsDelete).Where(x=>x.IsPurchased)
                         where (String.IsNullOrEmpty(jTablePara.date) || b.Date.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
                         select new
                         {
@@ -141,7 +141,7 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
                             b.Username,
                             b.IsPurchased
                         };
-            var Tickets = from t in _context.Tickets
+            var Tickets = from t in _context.Tickets.Where(x => !x.IsDelete).Where(x => x.IsPurchased)
                           where t.Username == User.Identity.Name
                           && (String.IsNullOrEmpty(jTablePara.date) || t.ShowTime.DateTime.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
                           select t;
@@ -231,7 +231,7 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
                         Date = DateTime.Now,
                         TotalPrice = Billdetails.Sum(x => x.UnitPrice * x.Amount),
                         Username = User.Identity.Name,
-                        IsPurchased = false
+                        IsPurchased = true
                     };
                     message.Object = JsonConvert.SerializeObject(bill);
                     _context.Add(bill);
