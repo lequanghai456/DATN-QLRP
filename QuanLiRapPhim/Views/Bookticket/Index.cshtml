@@ -17,25 +17,28 @@
 </style>
 <div ng-app="App" ng-controller="bookTicket" ng-init="idShowtime=@Model.Id">
     <div class="card" ng-show="room">
+        
         <div class="card-body">
-            <form asp-action="BuyTicket" method="post">
-                <input name="st.id" value="@Model.Id" hidden/>
-            <div class="row">
-                <div class="col-sm-2">
-                    <h2 class="text-center" style="color: #000000;">Danh sách vé</h2>
-                    <div style="height:50%">
-                        <div class="border" style="text-align:center;padding:1px;margin:1px" ng-repeat="s in listseat">
-                            {{s.x+s.y}}-{{s.price}}
-                            <input name="st.idS[{{$index}}]" value="{{s.id}}" hidden/>
+            <form asp-action="BuyTicket" method="post" target="_blank">
+                <input name="st.id" value="@Model.Id" hidden />
+                <div class="row">
+                    <div class="col-sm-2">
+                        <h2 class="text-center" style="color: #000000;">Danh sách vé</h2>
+                        <div style="height:50%">
+                            <div class="border" style="text-align:center;padding:1px;margin:1px" ng-repeat="s in listseat">
+                                {{s.x+s.y}}-{{s.price}}
+                                <input name="st.idS[{{$index}}]" value="{{s.id}}" hidden />
+                            </div>
                         </div>
+
+                        <button class="btn btn-success" ng-click="InVe()" style="width: 100%;">Đặt vé</button>
+                        <span>Tổng tiền: {{Total(listseat)}}</span>
+                        <span class="btn btn-success" ng-click="choseService()" style="width: 100%;">Dịch vụ</span>
                     </div>
-                    <button class="btn btn-success" ng-click="InVe()" style="width: 100%;">Đặt vé</button>
-                    <span>Tổng tiền: {{Total(listseat)}}</span>
-                </div>
-                <div class="col-sm-7">
-                    <h1 class="text-center" style="color: #000000;">Chọn ghế</h1>
+                    <div class="col-sm-7">
+                        <h1 class="text-center" style="color: #000000;">Chọn ghế</h1>
                         <div>
-                            <div class="row" style="margin: 15px 15px 15px 15px;" >
+                            <div class="row" style="margin: 15px 15px 15px 15px;">
                                 <div class="col-sm-12" style="height: 100px ; background-color:black">
                                     <h1 class="text-center" style="width: 100%;padding-top:30px; color: aliceblue ">Màn hình</h1>
                                 </div>
@@ -77,35 +80,44 @@
                                 </div>
                             </div>
                         </div>
-                </div>
-                <div class="col-sm-2">
-                    <h2 class="text-center" style="color: #000000;">Thông tin</h2>
-                    <div class="row">
-                        <img width="100%" src="~/admin/img/Poster/{{room.poster}}" />
-                        <div class="col-12">
-                            <span>Phòng:{{room.name}}</span>
-                        </div>
-                        <div class="col-12">
-                            <span>Phim: {{room.title}}</span>
-                            
-                        </div>
-                        <div class="col-12">
-                            <div class="row" ng-show="seat">
-                                <div class="col-12">
-                                    <span>Ghế:</span>
-                                    <span style="color: #f20;">{{seat==null?'Chưa chọn':seat.x+seat.y}}</span>
-                                </div>
-                                <div class="col-12" style="display: flex; justify-content: center;">
-                                    <button type="button" ng-click="addseat()" class="btn btn-success" ng-click="">Thêm</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <h2 class="text-center" style="color: #000000;">Thông tin</h2>
+                        <div class="row">
+                            <img width="100%" src="~/admin/img/Poster/{{room.poster}}" />
+                            <div class="col-12">
+                                <span>Phòng:{{room.name}}</span>
+                            </div>
+                            <div class="col-12">
+                                <span>Phim: {{room.title}}</span>
+
+                            </div>
+                            <div class="col-12">
+                                <div class="row" ng-show="seat">
+                                    <div class="col-12">
+                                        <span>Ghế:</span>
+                                        <span style="color: #f20;">{{seat==null?'Chưa chọn':seat.x+seat.y}}</span>
+                                    </div>
+                                    <div class="col-12" style="display: flex; justify-content: center;">
+                                        <button type="button" ng-click="addseat()" class="btn btn-success" ng-click="">Thêm</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
+            </form>
+            <div ng-show="listseat.length>0">
+                <div style="">
+                    <p style="font-weight: bold; ">
+                        Thời gian thanh toán trong:
+                        <span>{{minuted}}:{{second}}</span>
+                    </p>
+                </div>
             </div>
-                </form>
         </div>
+
     </div>
 
 </div>

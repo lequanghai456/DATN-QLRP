@@ -27,7 +27,7 @@ app.factory("datasevice", function ($http) {
     }
 });
 
-app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http) {
+app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http, $uibModal) {
     $scope.seat;
     $scope.dsghedachon = [];
 
@@ -104,6 +104,33 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http) 
         });
     });
 
+    $scope.Time = function () {
+        $scope.minuted = 1;
+        $scope.second = 10;
+        $scope.timeID = setInterval(function () {
+            $scope.second -= 1;
+            if ($scope.second == 0) {
+                if ($scope.minuted == 0) {
+                    $scope.back();
+                } else
+                    $scope.minuted -= 1;
+                $scope.second = 60;
+            }
+            $scope.$apply();
+        }, 1000);
+    }
+
+    $scope.back = function () {
+        clearInterval($scope.timeID);
+        $scope.listseat.forEach(function (ghe) {
+            var data = {
+                idGhe: ghe.id,
+            };
+            socket.emit('HuyGhe', data);
+        });
+        $scope.listseat = [];
+    }
+
     $scope.Click = function (seat) {
         if (seat.status == 0) {
             if ($scope.dsghedachon.indexOf(seat.id) === -1) {
@@ -132,7 +159,14 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http) 
 
     $scope.listseat = [];
     $scope.addseat = function () {
+        
         if ($scope.seat != null) {
+
+            if ($scope.listseat.length == 0) {
+                $scope.Time();
+            } else {
+                $scope.minuted += 1;
+            }
             var data = {
                 idGhe: $scope.seat.id,
             };
@@ -141,7 +175,9 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http) 
 
             $scope.listseat.push($scope.seat);
             $scope.seat = null;
+
         }
+
     }
 
     $scope.Total = function (listseat) {
@@ -232,6 +268,18 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http) 
             a.push(b += step);
         }
         return a;
+    }
+    $scope.choseService = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: ctxfolderurl + "/your_order/chose-services.html",
+            controller: "choseService",
+            size: 'xl'
+        });
+
+        modalInstance.result.then(function (res) {
+            
+        });
     }
 });
 
@@ -364,18 +412,7 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http) 
 //            alert('Ban chưa chon ghe');
 //        }
 //    };
-//    $scope.choseService = function () {
-//        var modalInstance = $uibModal.open({
-//            animation: true,
-//            templateUrl: ctxfolderurl + "/your_order/chose-services.html",
-//            controller: "choseService",
-//            size: 'xl'
-//        });
-
-//        modalInstance.result.then(function (res) {
-//            //xử lý payment và cancel
-//        });
-//    }
+//    
 //});
 //app.controller('payment', function ($scope, $uibModalInstance, $uibModal) {
 //    $scope.data = {

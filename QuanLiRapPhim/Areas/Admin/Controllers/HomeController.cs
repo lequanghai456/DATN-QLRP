@@ -108,7 +108,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 x.Img,
                 SL = _context.Tickets.Where(x => x.IsDelete == false).Where(t => t.Username.Equals(x.UserName))
                 .Where(x => true).Count()
-            }).OrderBy(x => x.SL).Take(5);
+            }).OrderByDescending(x => x.SL).Take(5);
             return Json(a);
         }
         [AuthorizeRoles("admin")]
@@ -119,7 +119,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 x.Img,
                 SL = _context.Tickets.Where(x => x.IsDelete == false).Where(t => t.Username.Equals(x.UserName))
                 .Where(x => true).Count()
-            }).OrderBy(x => x.SL).Take(5);
+            }).OrderByDescending(x => x.SL).Take(5);
             return Json(a);
         }
         [AuthorizeRoles("admin")]
@@ -131,7 +131,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
                 x.Img,
                 SL = _context.Tickets.Where(x => x.IsDelete == false).Where(t => t.Username.Equals(x.UserName))
                 .Where(x=>true).Count()
-            }).OrderBy(x=>x.SL).Take(5) ;
+            }).OrderByDescending(x=>x.SL).Take(5) ;
             return Json(a);
         }
     }

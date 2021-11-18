@@ -242,7 +242,6 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
             {
                 message.Error = true;
                 message.Title = "Có lỗi xảy ra";
-
             }
 
             return Json(message);
@@ -251,7 +250,9 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
 
     public class STime
     {
+        [JsonProperty("id")]
         public String id { get; set; }
+        [JsonProperty("idS")]
         public int[] idS { get; set; }
     }
 }

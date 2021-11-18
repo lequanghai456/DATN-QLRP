@@ -29,10 +29,13 @@ namespace QuanLiRapPhim.Controllers
 
         public const string RETURN_URL = "https://localhost:44350/Bookticket/returnurl";
         public const string NOTIFY_URL = "https://localhost:44350/Bookticket/notifyurl";
+
         public BookticketController(IdentityContext context)
         {
             _context = context;
         }
+
+
         [AuthorizeRoles("User")]
         public IActionResult Index(int id)
         {
@@ -54,7 +57,12 @@ namespace QuanLiRapPhim.Controllers
             public string orderInfo { get; set; }
             [JsonProperty("amout")]
             public long amout { get; set; }
+            [JsonProperty("isbill")]
+            public bool isbill { get; set; }
+            [JsonProperty("billid")]
+            public int billid { get; set; }
         }
+        
         public IActionResult Thanhtoan(order o)
         {
             string ORDER_ID = Guid.NewGuid().ToString();
@@ -93,6 +101,8 @@ namespace QuanLiRapPhim.Controllers
             return NotFound();
             //return url;
         }
+        
+        
 
         public IActionResult ReturnUrl()
         {
@@ -121,33 +131,54 @@ namespace QuanLiRapPhim.Controllers
 
                 if (!err.Equals("0"))
                 {
-                    foreach (int id in ob.idS)
+                    if (ob.isbill == false)
                     {
-                        var t = obj.Where(x => x.SeatId == id).FirstOrDefault();
-                        if (t != null)
-                            t.IsDelete = true;
-                        _context.Update(t);
-                    }
-                    _context.SaveChanges();
-                    Message = "Thanh toán thất bại";
 
+                        foreach (int id in ob.idS)
+                        {
+                            var t = obj.Where(x => x.SeatId == id).FirstOrDefault();
+                            if (t != null)
+                                t.IsDelete = true;
+                            _context.Update(t);
+                        }
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        var b = _context.Bills.Find(ob.billid);
+                        b.IsDelete = true;
+                        _context.Update(b);
+                        _context.SaveChanges();
+                    }
+
+                    Message = "Thanh toán thất bại";
                 }
                 else
                 {
-                    
-                    foreach (int id in ob.idS)
-                    {
-                        var t = obj.Where(x => x.SeatId == id).FirstOrDefault();
-                        if (t != null)
-                        {
-                            t.IsPurchased = true;
-                            _context.Update(t);
-                        }
-                    }
-                    _context.SaveChanges();
-                    Message = "Thanh toán thành công";
 
-                    var maill = SendEmailSuccesOder(user, obj.ToList());
+                    if (ob.isbill == false)
+                    {
+                        foreach (int id in ob.idS)
+                        {
+                            var t = obj.Where(x => x.SeatId == id).FirstOrDefault();
+                            if (t != null)
+                            {
+                                t.IsPurchased = true;
+                                _context.Update(t);
+                            }
+                        }
+                        _context.SaveChanges();
+                        var maill = SendEmailSuccesOder(user, obj.ToList());
+                    }
+                    else
+                    {
+                        var b = _context.Bills.Find(ob.billid);
+                        b.IsPurchased = true;
+                        _context.Update(b);
+                        _context.SaveChanges();
+                        var maill = SendEmailSuccesOderBill(user, b);
+                    }
+                    Message = "Thanh toán thành công";
                 }
             }
             catch (Exception er)
@@ -156,46 +187,7 @@ namespace QuanLiRapPhim.Controllers
             }
             return RedirectToAction("Index", "YourOrder");
         }
-        [HttpPost("notifyurl")]
-        public JsonResult NotifyUrl()
-        {
-            string param = "partner_code=" + Request.Query["partner_code"] +
-            "&access_key=" + Request.Query["access_key"] +
-            "&amount=" + Request.Query["amount"] +
-            "&order_id=" + Request.Query["order_id"] +
-            "&order_info=" + Request.Query["order_info"] +
-            "&order_type=" + Request.Query["order_type"] +
-            "&transaction_id=" + Request.Query["transaction_id"] +
-            "&message=" + Request.Query["message"] +
-            "&response_time=" + Request.Query["response_time"] +
-            "&status_code=" + Request.Query["status_code"] +
-            "&extraData=" + Request.Query["extraData"];
-
-            param = WebUtility.UrlDecode(param);
-            MoMoSecurity crypto = new MoMoSecurity();
-            string serectKey = SECRET_KEY;
-            string status_code = Request.Query["status_code"].ToString();
-
-            string signature = crypto.signSHA256(param, serectKey);
-
-            string a = Request.Query["signature"].ToString();
-            if (signature != a)
-            {
-                return Json(a);
-            }
-
-            if ((status_code != "0"))
-            {
-
-
-            }
-            else
-            {
-
-            }
-            return Json(a);
-            //return new Newtonsoft.Json.JsonSerializerSettings();
-        }
+       
         [HttpPost]
         public IActionResult BuyTicket(STime st)
         {
@@ -246,6 +238,7 @@ namespace QuanLiRapPhim.Controllers
                         }
                         if (!message.Error)
                             _context.SaveChanges();
+                        a.isbill = false;
                     }
                 }
             }
@@ -260,37 +253,6 @@ namespace QuanLiRapPhim.Controllers
             }
             return Thanhtoan(a);
         }
-
-        //[HttpPost]
-        //public IActionResult BookTicket(Ticket ticket)
-        //{
-        //    try
-        //    {
-        //        ticket.Username = User.Identity.Name;
-        //        ticket.Price = Price((int)ticket.SeatId, (int)ticket.ShowTimeId);
-        //        ticket.PurchaseDate = DateTime.Now;
-
-        //        var isbooked = (from T in _context.Tickets
-        //                        where T.SeatId == ticket.SeatId && T.IsDelete == false
-        //                        select T).Count() > 0;
-
-        //        if (ticket.SeatId == null || isbooked || !ModelState.IsValid)
-        //        {
-        //            Message = "Không tìm thấy ghế";
-        //            return RedirectToAction("Index/" + ticket.ShowTimeId.Value);
-        //        }
-        //        _context.Add(ticket);
-        //        _context.SaveChanges();
-        //        Message = "Bạn đã mua thành công";
-
-        //    }
-        //    catch (Exception er)
-        //    {
-        //        Message = "Lỗi";
-        //        return RedirectToAction("Index/" + ticket.ShowTimeId.Value);
-        //    }
-        //    return RedirectToAction("Index", "YourOrder");
-        //}
 
         public bool SendEmailSuccesOder(User user, List<Ticket> ticket)
         {
@@ -308,6 +270,67 @@ namespace QuanLiRapPhim.Controllers
             return Email.SendMailGoogleSmtp("giabao158357@gmail.com", user.Email, "Lấy mã đơn hàng", res).Result ?
                 true : false;
         }
+
+
+        [AuthorizeRoles("User")]
+        //[HttpPost]
+        public IActionResult BuySevice(List<BillDetail> Billdetails)
+        {
+            order a = new order();
+            try
+            {
+                foreach (var x in Billdetails)
+                {
+                    var seviceSeviceCategories = _context.seviceSeviceCategories.Find(x.idSeviceSeviceCategories);
+                    seviceSeviceCategories.Sevice = _context.Sevices.Find(seviceSeviceCategories.IdSevice);
+                    seviceSeviceCategories.SeviceCategory = _context.SeviceCategories.Find(seviceSeviceCategories.IdSeviceCategory);
+
+                    x.Name = seviceSeviceCategories.Sevice.Name + "(" + seviceSeviceCategories.SeviceCategory.Name + ")";
+                    x.UnitPrice = seviceSeviceCategories.Price;
+                    x.Bill = null;
+                    
+                }
+                Bill bill = new Bill()
+                {
+                    BillDetails = Billdetails,
+                    Date = DateTime.Now,
+                    TotalPrice = Billdetails.Sum(x => x.UnitPrice * x.Amount),
+                    Username = User.Identity.Name,
+                    IsPurchased = false
+                };
+                a.amout =(long) bill.TotalPrice;
+                _context.Add(bill);
+                _context.SaveChanges();
+                User u = _context.Users.FirstOrDefault(x => x.UserName == bill.Username);
+
+                a.orderInfo = "HD" + bill.Id;
+                a.isbill = true;
+                a.billid = bill.Id;
+            }
+            catch (Exception er)
+            {
+                Message += "Lỗi";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return Thanhtoan(a);
+        }
+
+        public bool SendEmailSuccesOderBill(User user, Bill bill)
+        {
+            String res = "";
+            if (bill == null)
+            {
+                res = "Có lỗi xảy ra! Vui lòng thông báo lại vào email này.";
+            }
+            else
+            {
+                    res = "Bạn đã đặt hóa đơn có mã: HD" + bill.Id + " Vào ngày: " + bill.Date.Date;
+            }
+            return Email.SendMailGoogleSmtp("0306181113@caothang.edu.vn", user.Email, "Lấy mã đơn hàng", res).Result ?
+                true : false;
+        }
+
 
         [AuthorizeRoles("User,Staff,Manager,Admin")]
         public JsonResult getRoomByIdShowtime(int id)

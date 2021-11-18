@@ -153,7 +153,32 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http) 
         socket.emit('Join room', { idLichChieu: $scope.idShowtime });
 
     });
+    $scope.Time = function () {
+        $scope.minuted = 0;
+        $scope.second = 10;
+        $scope.timeID = setInterval(function () {
+            $scope.second -= 1;
+            if ($scope.second == 0) {
+                if ($scope.minuted == 0) {
+                    $scope.back();
+                } else
+                    $scope.minuted -= 1;
+                $scope.second = 60;
+            }
+            $scope.$apply();
+        }, 1000);
+    }
 
+    $scope.back = function () {
+        clearInterval($scope.timeID);
+        $scope.listseat.forEach(function (ghe) {
+            var data = {
+                idGhe: ghe.id,
+            };
+            socket.emit('HuyGhe', data);
+        });
+        $scope.listseat = [];
+    }
     $scope.dsGheDaThanhToan = [];
 
     //load những ghế đang được người khác chọn
