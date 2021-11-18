@@ -72,7 +72,13 @@ app.controller('bookTicket', function ($scope, datasevice, $routeParams, $http, 
         socket.emit('Join room', { idLichChieu: $scope.idShowtime });
 
     });
+    $scope.InVe = function () {
+        if ($scope.listseat.length > 0) {
+        $("#submit").submit();
+        location.reload();
 
+        }
+    }
     $scope.dsGheDaThanhToan = [];
 
     //load những ghế đang được người khác chọn

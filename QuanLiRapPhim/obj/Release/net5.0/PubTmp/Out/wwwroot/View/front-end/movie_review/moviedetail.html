@@ -1,0 +1,184 @@
+﻿<div class="page">
+    <div class="breadcrumbs">
+        <a href="../#!/">Trang chủ</a>
+        <a href="#!">Danh sách phim</a>
+        <span>{{NameMovie}}</span>
+    </div>
+    <div ng-show="model">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-6">
+                    <figure class="movie-poster" style="display: flex; justify-content: center;">
+                        <img width="100%" src="../admin/img/Poster/{{model.poster}}" alt="#">
+                    </figure>
+                </div>
+                <div class="col-md-6">
+                    <h2 class="movie-title">{{model.title}}</h2>
+                    <ul class="movie-meta">
+                        <li class="Rated">
+                            <strong>Đánh giá:</strong>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                        </li>
+                        <li><strong>Thời gian chiếu: </strong>{{model.time}} phút</li>
+                        <li><strong>Ngày khởi chiếu: </strong>{{model.date}}</li>
+                        <li><strong>Thể loại: </strong>{{model.lstcategories.join("/")}} </li>
+                    </ul>
+                    <ul class="starring">
+                        <li>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-success" ng-click="BookTicket()">
+                                        Đặt vé
+                                    </button>
+                                </div>
+                                <div class="col-sm-6" ng-hide="model.isRated">
+                                    <button type="button" class="btn btn-success" ng-click="btnRate()">
+                                        Đánh giá
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div> <!-- .row -->
+            <div>
+                <h1>Mô tả phim</h1>
+            </div>
+            <div class="entry-content">
+                <p>{{model.describe}}</p>
+            </div>
+            <div>
+                <h1>Trailer phim</h1>
+                <div>
+                    <video id="Prevideo" width="100%" height="400" controls="controls" src="/admin/img/Trailer/{{model.trailer}}"></video>
+                </div>
+
+            </div>
+        </div>
+        <style>
+            .Rate {
+                width: 50%;
+                margin: auto;
+                display: flex;
+                justify-content: space-between;
+            }
+
+                .Rate span {
+                    width: auto;
+                    margin: auto;
+                    padding: 10px;
+                }
+        </style>
+    </div>
+</div>
+<style>
+    .loadmore:hover{
+       text-decoration:underline;
+       cursor:pointer;
+    }
+    .comment-author img {
+        margin: 0 auto;
+    }
+
+    .comment-content {
+        color: #999;
+        width: 80%;
+        min-height: 60px;
+        max-height: 60px;
+        padding: 5px 10px;
+        background-color: #fff;
+        cursor: text;
+        border: 1px solid #bbb;
+    }
+
+    .summary {
+        padding: 5px;
+        background-color: #fff;
+        cursor: text;
+        border: 1px solid #bbb;
+    }
+
+    .commentItems {
+        padding-top: 10px;
+    }
+
+    .commentItems2 {
+        padding: 10px 0 0 100px;
+    }
+
+    .comment-item2 {
+        padding-top: 10px;
+    }
+
+    .form-comment2 {
+        padding-top: 10px;
+    }
+
+    .comment {
+        padding: 10px;
+    }
+
+    .Rate {
+        width: 50%;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .Rate span {
+            width: auto;
+            margin: auto;
+            padding: 10px;
+        }
+</style>
+<div class="comment"  ng-show="model">
+    <span><h1>Bình luận</h1></span>
+    <div class="comment-area row" ng-init="comment.id=model.id" ng-show="model.comment">
+        <textarea class="comment-content col-11" ng-model="comment.content" name="comment" placeholder="Nhập bình luận"></textarea>
+        <input type="submit" ng-click="Comment()" class="btn btn-success col-1" value="Gửi" />
+    </div>
+    <div class="commentItems">
+        <div class="comment-item row p-1" ng-repeat="cmt in Comments">
+            <div class="comment-author col-1">
+                <img src="/images/pro/{{cmt.img}}" height="60" width="60" />
+                <div>
+                    <input type="submit" class="btn btn-success" value="trả lời" height="5" ng-show="model.comment" ng-click="traloi(cmt.id)" />
+                </div>
+            </div>
+
+            <div class="summary col-11">
+                <div><span><h2>{{cmt.fullName}}</h2></span></div>
+                <div><span>{{cmt.content}}</span></div>
+            </div>
+
+            <div ng-show="comment == cmt.id" class="col-12 form-comment2">
+                <div class="comment-area2 row">
+                    <textarea class="comment-content col-11" ng-model="commentlv2" name="comment" placeholder="Nhập bình luận"></textarea>
+                    <input type="submit" ng-click="CommentLV2(commentlv2)" class="btn btn-success col-1" value="Gửi" />
+                </div>
+            </div>
+
+            <div class="commentItems2 col-12">
+
+                <div class="comment-item2 row" ng-repeat="cmt2 in cmt.listCmt">
+                    <div class="comment-author col-1">
+                        <img src="/images/pro/{{cmt2.img}}" height="60" width="60" />
+                    </div>
+                    <div class="summary col-11">
+                        <div><span><h2>{{cmt2.fullName}}</h2></span></div>
+                        <div><span>{{cmt2.content}}</span></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <span class="loadmore p-1" ng-click="AddMoreComments()" ng-show="total>NumOfComments"><h3>Tải thêm {{total-NumOfComments>4?4:total-NumOfComments}} bình luận</h3></span>
+</div>
+
+<div ng-bind-html="renderHtml(message)"></div>

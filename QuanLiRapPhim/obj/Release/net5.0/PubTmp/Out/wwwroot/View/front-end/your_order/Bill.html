@@ -1,0 +1,23 @@
+﻿<div>
+    <style>
+        .Hd td,.Hd tr,.Hd th{
+            border:none;
+        }
+    </style>
+    <table class="Hd" style="background:white;width:100%">
+            <tr style="border-bottom:DarkGray dashed">
+                <th>Tên</th>
+                <th width="200px">Số lượng</th>
+                <th width="200px">Đơn giá</th>
+            </tr>
+            <tr ng-repeat="x in data.BillDetails" style="background:white;border:none">
+                <td>{{x.Name}}</td>
+                <td>{{x.Amount}}</td>
+                <td>{{x.UnitPrice}}</td>
+            </tr>
+    </table>
+    <hr />
+    <div>
+        <span>Tổng tiền:  {{data.TotalPrice}}</span>
+    </div>
+</div>

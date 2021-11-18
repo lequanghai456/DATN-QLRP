@@ -49,7 +49,7 @@
         
         <div class="form-group col">
             <label asp-for="TimeStart" class="control-label"></label>
-            <input asp-for="TimeStart" class="TimeStart form-control" value="@Model.TimeStart.TimeOfDay" />
+            <input asp-for="TimeStart" ng-model="time" class="TimeStart form-control" ng-init="time='@Model.TimeStart.TimeOfDay'" />
             <h3>Thời gian kết thúc: {{action.getTimeEnd(LitIdMovie)}}</h3>
             <div class="text-danger">
                 @Html.ValidationSummary()

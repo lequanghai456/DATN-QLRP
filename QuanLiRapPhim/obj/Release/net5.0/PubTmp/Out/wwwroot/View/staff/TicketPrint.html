@@ -1,0 +1,29 @@
+﻿<style>
+    .order td, .order th {
+        border: 0.5px solid;
+        border-collapse: collapse;
+        background: white;
+    }
+</style>
+<div class="row">
+    <!--<button class="btn btn-success float-right" ng-click="choseService()">Đặt dịch vụ</button>-->
+    <div class="col-sm-12">
+        <h1 class="text-center" style="color: #000000;">Đơn hàng đã đặt</h1>
+        <div class="row">
+            <p class="col-12 m-1 d-flex">
+                <input class="form-control col-4 m-1 border-dark p-2" placeholder="Nhập mã..." ng-init="idsearch=''" ng-model="idsearch" ng-change="reloadData(true)" />
+                <input class="form-control col-4 m-1 border-dark p-2" type="date" ng-model="Date" ng-change="reloadData(true)" />
+                <span style="padding:4px;"><i class="fa fa-2x fa-search"></i></span>
+            </p>
+        </div>
+
+        <!--<p class="col-12 m-1 d-flex"><input class="form-control col-4" type="text" ng-model="search" placeholder="Tìm kiếm ..."></p>-->
+
+        <table class="order table dataTable table-hover table-striped" style="border:solid; background:white"
+               datatable
+               dt-options="dtOrderhOptions"
+               dt-columns="dtOrderColumns"
+               dt-instance="dtInstance"
+               id="tblData"></table>
+    </div>
+</div>

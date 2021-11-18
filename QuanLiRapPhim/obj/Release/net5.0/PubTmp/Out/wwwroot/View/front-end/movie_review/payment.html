@@ -1,0 +1,113 @@
+﻿<div class="modal-content">
+    <div class="modal-header">
+        <img class="icon-remove" title="Close" src="/images/default/close.png" ng-click="cancel()" />
+        <i class="fa fa-plus-circle icon-insert "></i>
+        <span class="modal-title" id="modal-title"> Payment</span>
+    </div>
+    <div class="modal-body userFormAreaHeader pb-0" id="modal-body">
+        <div class="row" style="height: 300px;">
+            <div class="col-sm-7" style="height: 100%; display: flex; justify-content: center ; align-items: center;">
+        <!-- Ticker -->
+        <div style="height: 200px; width: fit-content;">
+                    <div class="row">
+                        <div class="col-sm-8" style="height: 190px; width: 400px; padding-right: 0px; background: linear-gradient(to bottom, #e84c3d 0%, #e84c3d 26%, #ecedef 26%, #ecedef 100%); border-radius: 8px; ">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p style="display: flex; align-items: center; height: 100%; margin-left: 15px; color: #ffffff; font-size: 20px;">Tên rạp</p>
+                                </div>
+                            </div>
+                            <div class="row" style="height: fit-content; margin-top: 10px;">
+                                <div class="col-sm-12" style="height: 40px;">
+                                    <p style=" text-transform: uppercase;margin-bottom: 0px; height: fit-content; font-size: 15px; color: #000000; font-weight: bold; margin-left: 15px; margin-top: 8px;">Cô gái đến từ hôm qua</p>
+                                    <p style="margin-left: 15px; text-transform: uppercase; font-size: 13px;">MOVIE</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p style="text-transform: uppercase; margin-bottom: 0px; height: fit-content; font-size: 15px; color: #000000; font-weight: bold; margin-left: 15px; margin-top: 8px;">Ngô Lâm Quang Tín</p>
+                                    <p style="margin-left: 15px; text-transform: uppercase; font-size: 13px;">Name</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <p style="font-size: 13px; margin-left: 15px; color: #000000; font-weight: bold; margin-bottom: 0px; ">{{seat}}</p>
+                                    <p style="font-size: 13px; margin-left: 15px;  text-transform: uppercase; ">Seat</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p style="font-size: 13px; margin-left: 15px; color: #000000; font-weight: bold; margin-bottom: 0px; ">12:00</p>
+                                    <p style="font-size: 13px; margin-left: 15px;  text-transform: uppercase; ">TIME</p>
+                                </div>
+                                <div class="col-sm-2 ">
+                                    <p style="font-size: 13px; margin-left: 15px; color: #000000; font-weight: bold; margin-bottom: 0px; ">A</p>
+                                    <p style="font-size: 13px; margin-left: 15px;  text-transform: uppercase; ">Row</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4" style="background: linear-gradient(to bottom, #e84c3d 0%, #e84c3d 26%, #ecedef 26%, #ecedef 100%); border-radius: 8px;  border-left: 3px dashed #fff; height: 190px; display: flex; align-items: center; justify-content: center;">
+
+                            <div class="row" style="margin-top: 20px; width: fit-content; margin-left: -20px;  height: fit-content;">
+                                <div class="col-sm-12">
+                                    <p style="margin-bottom: 0px; align-items: center; color: #e84c3d; font-size: 40px; font-weight: bold; display: flex; justify-content: center;">156</p>
+                                    <p class="text-center" style="font-size: 20px;   text-transform: uppercase; ">Seat</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-1" style="display: flex; justify-content: center ;">
+                <div style="border-left: 1px solid green;height: 300px;"></div>
+            </div>
+            <div class="col-sm-4" style="height: 100%;">
+                <h3 class="text-center">Thông tin thanh toán</h3>
+                <div class="form-group row">
+                    <label style="padding: 0px 0px 0px 0px; display: flex; align-items: center;" for="staticEmail" class="col-sm-2 col-form-label">Họ Tên:</label>
+                    <div style="padding-left: 8px;" class="col-sm-10">
+                        <input type="text" class="form-control" id="inputPassword" value="Ngô Lâm Quang Tín">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label style="padding: 0px 0px 0px 0px; display: flex; align-items: center;" for="staticEmail" class="col-sm-2 col-form-label">Giá vé:</label>
+                    <div style="padding-left: 8px;" class="col-sm-10">
+                        <label style="margin-bottom: 0px; width: 100%; padding: 0px 0px 0px 0px; display: flex; align-items: center; color: #000000; font-weight: bold;" for="staticEmail">45000 Đồng</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button style="width: 100%;" type="button" class="btn btn-success" ng-click="payment()">Payment</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button style="width: 100%;" type="button" class="btn btn-dark" ng-click="back()">Back</button>
+                    </div>
+                </div>
+                <br />
+                <br />
+
+                <div class="row">
+                    <div class="col-sm-8" style="display: flex; align-items: center;">
+                        <p style="font-weight: bold; ">Thời gian thanh toán trong: </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <h1 style=" color: red; float: left;">{{minuted}}:{{second}}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="background-color:transparent">
+        <div class="btn-group actions d-flex pull-right">
+            <div class="text-center pr10">
+                <a class="btn btn-icon-only btn-circle btn-outline red-custom" ng-click="cancel()">
+                    <span><i class="fa fa-close"></i></span>
+                </a>
+                <p class="text-underline fs9 mb5 pt3">cancel</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+</script>

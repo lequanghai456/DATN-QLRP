@@ -223,11 +223,11 @@ namespace QuanLiRapPhim.Controllers
                                 ticket.SeatId = id;
                                 ticket.Price = Price(id, int.Parse(st.id));
                                 ticket.PurchaseDate = DateTime.Now;
-                                ticket.Name = "--------";
+                                ticket.Name = User.FindFirst("FullNameUser").Value;
                                 ticket.ShowTimeId = int.Parse(st.id);
                                 ticket.IsPurchased = false;
                                 a.orderInfo += "S" + id;
-                                a.amout = 1000;//(long)ticket.Price;
+                                a.amout = (long)ticket.Price;
                                 _context.Add(ticket);
                             }
                             else
@@ -296,7 +296,8 @@ namespace QuanLiRapPhim.Controllers
                     Date = DateTime.Now,
                     TotalPrice = Billdetails.Sum(x => x.UnitPrice * x.Amount),
                     Username = User.Identity.Name,
-                    IsPurchased = false
+                    IsPurchased = false,
+                    IsDelete=false
                 };
                 a.amout =(long) bill.TotalPrice;
                 _context.Add(bill);

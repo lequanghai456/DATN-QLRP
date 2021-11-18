@@ -75,7 +75,7 @@ namespace QuanLiRapPhim.Controllers
             catch (Exception er)
             {
                 jmess.Error = true;
-                jmess.Title = "Có lỗi xãy ra";
+                jmess.Title = "Vui lòng chọn ngày";
             }
 
             return Json(jmess);

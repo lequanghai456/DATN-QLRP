@@ -1,0 +1,62 @@
+﻿<style>
+    .left-nav, .right-nav {
+        float: left;
+    }
+
+    .right-nav {
+        margin-left: 20px;
+    }
+
+    a {
+        cursor: pointer;
+    }
+
+
+    .modal-header {
+        text-align: center;
+    }
+</style>
+<div class="modal-header">
+    <h3>Cập thể loại</h3>
+</div>
+<div class="modal-body">
+
+    <form id="update" action="../../Sevices/updateCategorySevice" method="get">
+        <div class="form-group">
+            <label class="control-label">Kích thước</label>
+            <select id="#mySelect2" style="width:100%" class="form-control"  name="model.IdSeviceCategory" ng-model="model.IdSeviceCategory">
+                <option ng-repeat="value in sevicesCategories" value="{{value.id}}">{{value.name}}</option>
+            </select>
+            <span asp-validation-for="Lstcategories" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Giá</label>
+            <input class="form-control" name="model.Price" type="number" ng-model="model.Price" />
+            <span style="color:red">{{messApiPrice}}</span>
+        </div>
+        <input hidden  name="model.IdSevice" class="form-control" ng-model="idupdate" />
+        
+
+        <!--<h2>Danh sách kích thước</h2>
+    <div class="" ng-repeat="item in ListSeviecs">
+        <div class="Sevice">
+            <span class="" style="color: white;">Tên loại:{{item.name}} - Giá: {{item.price}}</span>
+
+            <a class="btn btn-danger" ng-click="delCategorySevice(item.id,$index)"> Xóa </a>
+
+            <a class="btn btn-danger" ng-click="action.del($index)"> Xóa </a>
+
+
+
+            <a class="btn btn-danger" ng-click="action.edit($index)"> Cập nhật </a>
+        </div>
+
+    </div>-->
+
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="update()">Cập nhật</button>
+    <button class="btn btn-warning" ng-click="cancel()">Hủy</button>
+</div>

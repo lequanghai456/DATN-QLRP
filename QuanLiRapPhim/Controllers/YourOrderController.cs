@@ -143,7 +143,6 @@ namespace QuanLiRapPhim.Controllers
             //Truy vấn lấy ds bill và ticket theo username sắp xếp theo thời gian 
             var Bills = from b in _context.Bills.Where(x => !x.IsDelete).Where(x => x.IsPurchased)
                         where b.Username == User.Identity.Name
-                        && b.IsPurchased==false
                         //&& (String.IsNullOrEmpty(jTablePara.date) || b.Date.Date.CompareTo(DateTime.Parse(jTablePara.date).Date) == 0)
                         select new
                         {

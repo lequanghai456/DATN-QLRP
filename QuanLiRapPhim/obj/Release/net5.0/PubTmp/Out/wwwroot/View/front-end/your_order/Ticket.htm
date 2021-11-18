@@ -1,0 +1,81 @@
+﻿<div style="height: 200px; width: fit-content; display:flex">
+        <div style="height: 190px; width: 400px; background: linear-gradient(to bottom, #e84c3d 0%, #e84c3d 26%, #ecedef 26%, #ecedef 100%); border-radius: 8px; ">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p style="display: flex; align-items: center; height: 100%; margin-left: 15px; color: #ffffff; font-size: 20px;">
+                        My Cinema
+                    </p>
+                </div>
+            </div>
+            <div class="row" style="height: fit-content; margin-top: 10px;">
+                <div class="col-sm-12" style="height: 40px;">
+                    <p style=" text-transform: uppercase;margin-bottom: 0px; height: fit-content; font-size: 15px; color: #000000; font-weight: bold; margin-left: 15px; margin-top: 8px;">
+                        {{data.Title}}
+                    </p>
+                    <p style="margin-left: 15px; text-transform: uppercase; font-size: 13px;">
+                        PHIM
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p style="text-transform: uppercase; margin-bottom: 0px; height: fit-content; font-size: 15px; color: #000000; font-weight: bold; margin-left: 15px; margin-top: 8px;">
+                        {{data.Name}}
+                    </p>
+                    <p style="margin-left: 15px; text-transform: uppercase; font-size: 13px;">
+                        Người mua
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p style="text-transform: uppercase; margin-bottom: 0px; height: fit-content; font-size: 15px; color: #000000; font-weight: bold; margin-left: 15px; margin-top: 8px;">
+                        {{data.Room}}
+                    </p>
+                    <p style="margin-left: 15px; text-transform: uppercase; font-size: 13px;">
+                        Phòng
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <p style="font-size: 13px; margin-left: 15px; color: #000000; font-weight: bold; margin-bottom: 0px; ">
+                        {{data.Seat.X}}{{data.Seat.Y}}
+                    </p>
+                    <p style="font-size: 13px; margin-left: 15px;  text-transform: uppercase; ">
+                        Ghế
+                    </p>
+                </div>
+                <div class="col-5">
+                    <p style="font-size: 13px; margin-left: 15px; color: #000000; font-weight: bold; margin-bottom: 0px; ">
+                        {{data.Time}}
+                    </p>
+                    <p style="font-size: 13px; margin-left: 15px;  text-transform: uppercase; ">
+                        Giờ chiếu
+                    </p>
+                </div>
+                <div class="col-5">
+                    <p style="font-size: 13px; margin-left: 15px; color: #000000; font-weight: bold; margin-bottom: 0px; ">
+                        {{data.Date}}
+                    </p>
+                    <p style="font-size: 13px; margin-left: 15px;  text-transform: uppercase; ">
+                        Ngày chiếu
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4"
+             style="background: linear-gradient(to bottom, #e84c3d 0%, #e84c3d 26%, #ecedef 26%, #ecedef 100%); border-radius: 8px;  border-left: 3px dashed #fff; height: 190px; display: flex; align-items: center; justify-content: center;">
+
+            <div class="row"
+                 style="margin-top: 20px; width: fit-content; margin-left: -20px;  height: fit-content;">
+                <div class="col-sm-12">
+                    <p style="margin-bottom: 0px; align-items: center; color: #e84c3d; font-size: 40px; font-weight: bold; display: flex; justify-content: center;">
+                        {{data.Seat.X}}{{data.Seat.Y}}
+                    </p>
+                    <p class="text-center"
+                       style="font-size: 20px;   text-transform: uppercase; ">
+                        Số ghế
+                    </p>
+                </div>
+            </div>
+        </div>
+</div>

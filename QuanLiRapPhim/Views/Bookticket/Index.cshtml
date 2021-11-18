@@ -19,7 +19,7 @@
     <div class="card" ng-show="room">
         
         <div class="card-body">
-            <form asp-action="BuyTicket" method="post" target="_blank">
+            <form id="submit" asp-action="BuyTicket" method="post" target="_blank">
                 <input name="st.id" value="@Model.Id" hidden />
                 <div class="row">
                     <div class="col-sm-2">
@@ -31,9 +31,9 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-success" ng-click="InVe()" style="width: 100%;">Đặt vé</button>
                         <span>Tổng tiền: {{Total(listseat)}}</span>
-                        <span class="btn btn-success" ng-click="choseService()" style="width: 100%;">Dịch vụ</span>
+                        <span class="btn btn-success m-1" ng-click="InVe()" style="width: 100%;">Đặt vé</span>
+                        <span class="btn btn-success m-1" ng-click="choseService()" style="width: 100%;">Dịch vụ</span>
                     </div>
                     <div class="col-sm-7">
                         <h1 class="text-center" style="color: #000000;">Chọn ghế</h1>

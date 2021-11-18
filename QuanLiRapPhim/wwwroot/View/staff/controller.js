@@ -401,8 +401,8 @@ app.controller('TicketPrint', function ($scope, $uibModal, DTOptionsBuilder, DTC
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Objects', 'Đơn hàng của bạn').withOption('sWidth', '250px').renderWith(function (data, type, full, meta) {
         data = JSON.parse(data);
         if (data.isTicket == false)
-            return '<div my-Bill model="All[' + meta.row + ']" ></div > ' + data.IsPurchased;
-        return '<div my-Ticket model="All[' + meta.row + ']" ></div > ' + data.IsPurchased;
+            return '<div my-Bill model="All[' + meta.row + ']" ></div > ';
+        return '<div my-Ticket model="All[' + meta.row + ']" ></div > ';
     }).notSortable());
     vm.dtOrderColumns.push(DTColumnBuilder.newColumn('Date', 'Ngày đặt').withOption('sWidth', '40px').renderWith(function (data, type) {
         return data;
