@@ -103,7 +103,7 @@ namespace QuanLiRapPhim.Areas.Staffs.Controllers
         private decimal Price(int seatId, int showTimeId)
         {
             decimal price = _context.ShowTimes
-                .Include(x => x.Room).FirstOrDefault(x => x.Id == showTimeId).Room.Price;
+                .Include(x => x.Room).Where(x => x.IsDelete == false).FirstOrDefault(x => x.Id == showTimeId).Room.Price;
             var s = _context.Seats.Find(seatId);
             switch (s.X)
             {

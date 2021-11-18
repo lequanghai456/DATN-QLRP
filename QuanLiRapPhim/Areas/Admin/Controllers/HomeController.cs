@@ -50,7 +50,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             Staff user = new Staff();
             try
             {
-                user = _context.Staffs.FirstOrDefault(x => x.UserName.Equals(User.Identity.Name));
+                user = _context.Staffs.Where(x => x.IsDelete == false).FirstOrDefault(x => x.UserName.Equals(User.Identity.Name));
                 users.UserName = User.Identity.Name;
                 users.FullName = user.FullName;
                 users.DateOfBirth = user.DateOfBirth.Date;
@@ -68,7 +68,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         {
             try
             {
-                Staff user = _context.Staffs.FirstOrDefault(x => x.UserName == User.Identity.Name);
+                Staff user = _context.Staffs.Where(x => x.IsDelete == false).FirstOrDefault(x => x.UserName == User.Identity.Name);
                 user.FullName = users.FullName;
                 user.DateOfBirth = users.DateOfBirth;
                 
@@ -106,7 +106,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             var a = _context.Users.Select(x => new {
                 x.FullName,
                 x.Img,
-                SL = _context.Tickets.Where(t => t.Username.Equals(x.UserName))
+                SL = _context.Tickets.Where(x => x.IsDelete == false).Where(t => t.Username.Equals(x.UserName))
                 .Where(x => true).Count()
             }).OrderBy(x => x.SL).Take(5);
             return Json(a);
@@ -117,7 +117,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             var a = _context.Users.Select(x => new {
                 x.FullName,
                 x.Img,
-                SL = _context.Tickets.Where(t => t.Username.Equals(x.UserName))
+                SL = _context.Tickets.Where(x => x.IsDelete == false).Where(t => t.Username.Equals(x.UserName))
                 .Where(x => true).Count()
             }).OrderBy(x => x.SL).Take(5);
             return Json(a);
@@ -129,7 +129,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             {
                 x.FullName,
                 x.Img,
-                SL = _context.Tickets.Where(t => t.Username.Equals(x.UserName))
+                SL = _context.Tickets.Where(x => x.IsDelete == false).Where(t => t.Username.Equals(x.UserName))
                 .Where(x=>true).Count()
             }).OrderBy(x=>x.SL).Take(5) ;
             return Json(a);

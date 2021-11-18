@@ -43,7 +43,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             if (SignInManager.IsSignedIn(User) && !User.FindFirst("Role").Value.Contains("admin"))
-                ViewBag.Manager = _context.Rooms.Where(x => x.Role.Name.Contains(User.FindFirst("Role").Value)).First().Id;
+                ViewBag.Manager = _context.Rooms.Where(x => x.IsDelete == false).Where(x => x.Role.Name.Contains(User.FindFirst("Role").Value)).First().Id;
             else
                 ViewBag.ListRooms = new SelectList(_context.Rooms.Where(x => x.IsDelete == false).ToList(), "Id", "Name");
             return View();

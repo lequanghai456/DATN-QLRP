@@ -42,7 +42,8 @@ namespace QuanLiRapPhim.Controllers
             {
                 User user = new User();
                 user = await StaffMgr.FindByNameAsync(obj.UserName);
-                if (user != null)
+                
+                if (user != null && !user.IsDelete)
                 {
                     if (!user.ConfirmEmail)
                     {

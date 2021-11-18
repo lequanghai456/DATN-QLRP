@@ -36,7 +36,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             Room room = null;
             if (id != null)
             {
-                room = _context.Rooms.FirstOrDefault(s => s.Id == id);
+                room = _context.Rooms.Where(x => x.IsDelete == false).FirstOrDefault(s => s.Id == id);
                 if (room == null)
                 {
                     return NotFound();

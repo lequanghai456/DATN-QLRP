@@ -43,7 +43,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
             };
             if (id != null)
             {
-                sevice = _context.Sevices.FirstOrDefault(x => x.Id == id);
+                sevice = _context.Sevices.Where(x => x.IsDelete == false).FirstOrDefault(x => x.Id == id);
                 if (sevice == null)
                 {
                     return NotFound();
@@ -166,7 +166,7 @@ namespace QuanLiRapPhim.Areas.Admin.Controllers
         }
         public bool checkCategory(string name)
         {
-            return _context.SeviceCategories.Where(x => name == x.Name).FirstOrDefault() != null;
+            return _context.SeviceCategories.Where(x => name == x.Name).Where(x => x.IsDelete == false).FirstOrDefault() != null;
         }
         public class Model
         {

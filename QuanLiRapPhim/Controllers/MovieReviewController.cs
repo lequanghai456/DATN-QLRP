@@ -27,13 +27,13 @@ namespace QuanLiRapPhim.Controllers
             JMessage message = new JMessage();
             try
             {
-                var a = _context.Comments.Include(x=>x.User).Where(X=>X.MovieId==id&&X.Parent==0).Select(x=>new{
+                var a = _context.Comments.Include(x=>x.User).Where(X=>X.MovieId==id&&X.Parent==0).Where(x => x.IsDelete == false).Select(x=>new{
                     x.Id,
                     x.User.FullName,
                     x.User.Img,
                     x.SubmittedDate,
                     x.Content,
-                    ListCmt=_context.Comments.Where(x1=>x1.Parent==x.Id).Select(x2 => new
+                    ListCmt=_context.Comments.Where(x1=>x1.Parent==x.Id).Where(x => x.IsDelete == false).Select(x2 => new
                     {
                         x2.Id,
                         x2.User.FullName,
@@ -104,7 +104,7 @@ namespace QuanLiRapPhim.Controllers
         [AuthorizeRoles("")]
         public JsonResult Rate(int id, int star)
         {
-            var movie = _context.Movies.Include(x => x.RatedUsers).Where(x => x.Id == id).First();
+            var movie = _context.Movies.Include(x => x.RatedUsers).Where(x => x.Id == id).Where(x => x.IsDelete == false).First();
             JMessage jMessage = new JMessage();
             if (User.Identity.Name != null)
             {
@@ -117,7 +117,7 @@ namespace QuanLiRapPhim.Controllers
                     {
                         movie.TotalRating += star;
                         movie.TotalReviewers += 1;
-                        var us = _context.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
+                        var us = _context.Users.Where(x => x.UserName == User.Identity.Name).Where(x => x.IsDelete == false).FirstOrDefault();
                         if (us != null)
                         {
                             if (movie.RatedUsers == null)
