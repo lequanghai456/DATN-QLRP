@@ -33,7 +33,7 @@ namespace QuanLiRapPhim.Controllers
             {
 
                 InputUser users = new InputUser();
-                var user = _identityConext.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+                var user = _identityConext.Users.Where(x => x.IsDelete == false).FirstOrDefault(x => x.UserName == User.Identity.Name);
                 users.UserName = User.Identity.Name;
                 users.FullName = User.FindFirst("FullNameUser").Value;
                 users.DateOfBirth = user.DateOfBirth.Date;
